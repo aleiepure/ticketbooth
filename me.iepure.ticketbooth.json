@@ -47,7 +47,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/ale/Development/ticketbooth/repo"
+                    "url" :  "https://github.com/aleiepure/ticketbooth",
+                    "branch": "main"
                 }
             ]
         }
