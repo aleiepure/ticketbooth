@@ -1,0 +1,6 @@
+data/me.iepure.ticketbooth.desktop.in
+data/me.iepure.ticketbooth.appdata.xml.in
+data/me.iepure.ticketbooth.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

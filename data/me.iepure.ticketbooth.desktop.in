@@ -1,0 +1,12 @@
+# Copyright (C) 2023 Alessandro Iepure
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[Desktop Entry]
+Name=ticketbooth
+Exec=ticketbooth
+Icon=me.iepure.ticketbooth
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

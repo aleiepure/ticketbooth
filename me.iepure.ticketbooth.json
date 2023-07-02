@@ -1,0 +1,55 @@
+{
+    "app-id" : "me.iepure.ticketbooth",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "44",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "ticketbooth",
+    "separate-locales": false,
+    "finish-args" : [
+        "--share=network",
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--device=dri",
+        "--socket=wayland"
+    ],
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules" : [
+        "pypi-dependencies.json",
+        {
+            "name": "blueprint-compiler",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
+                    "tag": "v0.8.1"
+                }
+	        ]
+	    },
+        {
+            "name" : "ticketbooth",
+            "builddir" : true,
+            "buildsystem" : "meson",
+            "post-install": [
+                "mv /app/bin/ticketbooth /app/bin/ticketbooth-bin",
+                "install -Dm755 /app/ticketbooth/ticketbooth-run-script /app/bin/ticketbooth"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "file:///home/ale/Development/ticketbooth/repo"
+                }
+            ]
+        }
+    ]
+}

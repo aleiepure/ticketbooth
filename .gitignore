@@ -1,0 +1,18 @@
+# Copyright (C) 2023 Alessandro Iepure
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# IDE folders
+.flatpak/
+.flatpak-builder/
+.vscode/
+
+# Build direcctories
+builddir/
+_build/
+
+# Configs
+.pre-commit-config.yaml
+
+# Env files
+.env

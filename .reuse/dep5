@@ -1,0 +1,37 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Ticket Booth
+Upstream-Contact: Alessandro Iepure <alessandro@iepure.me>
+Source: https://github.com/aleiepure/ticketbooth
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
+
+# App icons
+Files: data/icons/hicolor/*
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+# Manifests
+Files: me.iepure.ticketbooth.json
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+Files: pypi-dependencies.json
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+# Translations
+Files: po/POTFILES
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+Files: po/LINGUAS
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+Files: po/*.po
+Copyright: Translators' authors
+License: GPL-3.0-or-later
