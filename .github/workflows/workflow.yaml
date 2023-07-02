@@ -1,0 +1,21 @@
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+name: Build
+jobs:
+  flatpak:
+    name: "Build Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-44
+      options: --privileged
+    steps:
+    - uses: fsfe/reuse-action@v1.2.0
+    - uses: actions/checkout@v3
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v5
+      with:
+        bundle: ticketbooth-devel.flatpak
+        manifest-path: me.iepure.ticketbooth.json
+        cache-key: flatpak-builder-${{ github.sha }}

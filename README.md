@@ -12,6 +12,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <a href="https://github.com/aleiepure/devtoolbox/blob/main/LICENSES/GPL-3.0-or-later.txt">
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg">
   </a>
+   <a href="https://api.reuse.software/info/github.com/aleiepure/ticketbooth" title="REUSE compliance">
+    <img src="https://api.reuse.software/badge/github.com/aleiepure/ticketbooth" />
+  </a>
   <a href="https://stopthemingmy.app" title="Please do not theme this app">
     <img src="https://stopthemingmy.app/badge.svg" />
   </a>

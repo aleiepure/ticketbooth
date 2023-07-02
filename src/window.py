@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Adw, Gtk
+
 
 @Gtk.Template(resource_path='/me/iepure/ticketbooth/ui/window.ui')
 class TicketboothWindow(Adw.ApplicationWindow):

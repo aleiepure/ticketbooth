@@ -23,6 +23,11 @@ Files: pypi-dependencies.json
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
+# GitHub Actions
+Files: .github/*
+Copyright: 2023 Alessandro <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
 # Translations
 Files: po/POTFILES
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
@@ -30,8 +35,12 @@ License: GPL-3.0-or-later
 
 Files: po/LINGUAS
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
-License: GPL-3.0-or-later
+License: CC0-1.0
 
 Files: po/*.po
-Copyright: Translators' authors
+Copyright: see each file's header
+License: GPL-3.0-or-later
+
+Files: po/ticketbooth.pot
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later

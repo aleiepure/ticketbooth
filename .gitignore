@@ -13,6 +13,7 @@ _build/
 
 # Configs
 .pre-commit-config.yaml
+.mypy_cache/
 
 # Env files
 .env

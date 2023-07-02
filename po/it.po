@@ -1,0 +1,38 @@
+# Italian translations for ticketbooth package.
+# Copyright (C) 2023 THE ticketbooth'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ticketbooth package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ticketbooth\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-02 23:02+0200\n"
+"PO-Revision-Date: 2023-07-02 23:02+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/me.iepure.ticketbooth.desktop.in:7
+msgid "ticketbooth"
+msgstr ""
+
+#: data/me.iepure.ticketbooth.metainfo.xml.in:14
+msgid "No description"
+msgstr ""
+
+#: src/ui/window.blp:37
+msgid "_Preferences"
+msgstr ""
+
+#: src/ui/window.blp:42
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/window.blp:47
+msgid "_About Ticketbooth"
+msgstr ""
