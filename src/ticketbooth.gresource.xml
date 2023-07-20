@@ -11,4 +11,11 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>
+  <gresource prefix="/me/iepure/ticketbooth/icons/scalable/actions/">
+    <file preprocess="xml-stripblanks" alias="series-symbolic.svg">../data/icons/symbolic/series-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="movies-symbolic.svg">../data/icons/symbolic/movies-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="view-grid-symbolic.svg">../data/icons/symbolic/view-grid-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="view-list-symbolic.svg">../data/icons/symbolic/view-list-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="loupe-symbolic.svg">../data/icons/symbolic/loupe-symbolic.svg</file>
+  </gresource>
 </gresources>

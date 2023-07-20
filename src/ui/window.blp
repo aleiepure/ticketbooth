@@ -5,33 +5,128 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $TicketboothWindow : Adw.ApplicationWindow {
-  default-width: 600;
-  default-height: 300;
+template $TicketboothWindow: Adw.ApplicationWindow {
+  default-width: 1024;
+  default-height: 600;
+  width-request: 360;
+  height-request: 294;
 
   Box {
     orientation: vertical;
 
-    HeaderBar header_bar {
+    Adw.HeaderBar {
+      centering-policy: strict;
+
+      [start]
+      ToggleButton _search_btn {
+        icon-name: "loupe";
+        tooltip-text: _("Show/hide search bar");
+        sensitive: false; // TODO: enable when search is implemented
+      }
+
+      [title]
+      Adw.ViewSwitcherTitle _title {
+        stack: _stack;
+        title: "Ticket Booth";
+      }
+
       [end]
-      MenuButton {
-        icon-name: "open-menu-symbolic";
-        menu-model: primary_menu;
+      MenuButton _menu_btn {
+        icon-name: "open-menu";
+        menu-model: _primary_menu;
+        tooltip-text: _("Main Menu");
       }
     }
 
-    Label label {
-      label: "Hello, World!";
-      vexpand: true;
+    Gtk.Box {
+      orientation: vertical;
 
-      styles [
-        "title-1",
-      ]
+      Adw.ViewStack _stack {
+        vexpand: true;
+        hexpand: true;
+
+        Adw.ViewStackPage {
+          name: "movies";
+          title: _("Movies");
+          icon-name: "movies";
+
+          child: Label {
+            label: "Movies";
+          };
+        }
+
+        Adw.ViewStackPage {
+          name: "series";
+          title: _("TV Series");
+          icon-name: "series";
+
+          child: Label {
+            label: "TV Series";
+          };
+        }
+      }
+
+      Adw.ViewSwitcherBar {
+        stack: _stack;
+        reveal: bind _title.title-visible;
+      }
     }
+
   }
+
 }
 
-menu primary_menu {
+menu _primary_menu {
+
+  // TODO: add theme switcher
+
+  submenu {
+    label: _("View style");
+
+    item {
+      label: _("Grid");
+      action: "win.view-style";
+      target: "grid";
+    }
+
+    item {
+      label: _("List");
+      action: "win.view-style";
+      target: "list";
+    }
+  }
+
+  submenu {
+    label: _("Sorting");
+
+    item {
+      label: _("A-Z");
+      action: "win.view-sorting";
+      target: "az";
+    }
+
+    item {
+      label: _("Z-A");
+      action: "win.view-sorting";
+      target: "za";
+    }
+
+
+    item {
+      label: _("Date added");
+      action: "win.view-sorting";
+      target: "added-date";
+    }
+
+
+    item {
+      label: _("Release date");
+      action: "win.view-sorting";
+      target: "release-date";
+
+    }
+  }
+
   section {
     item {
       label: _("_Preferences");
@@ -48,4 +143,5 @@ menu primary_menu {
       action: "app.about";
     }
   }
+
 }

@@ -8,5 +8,47 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 <schemalist gettext-domain="ticketbooth">
 	<schema id="me.iepure.ticketbooth" path="/me/iepure/ticketbooth/">
+
+		<!-- Window state -->
+		<key name="win-width" type="i">
+			<default>1024</default>
+			<summary>Window width</summary>
+		</key>
+		<key name="win-height" type="i">
+			<default>600</default>
+			<summary>Window height</summary>
+		</key>
+		<key name="win-maximized" type="b">
+			<default>false</default>
+			<summary>Window maximized</summary>
+		</key>
+		<key name="win-tab" type="s">
+			<default>"movies"</default>
+			<summary>Active tab</summary>
+			<description>
+				Allowed values: "movies", "series"
+			</description>
+		</key>
+
+		<!-- View style/sorting -->
+		<key name="view-style" type="s">
+			<default>"grid"</default>
+			<summary>View display style</summary>
+			<description>
+				Determine how movies/tv-series are displayed in the main view, either as a list or a
+				grid.
+				Allowed values: "grid", "list"
+			</description>
+		</key>
+		<key name="view-sorting" type="s">
+			<default>"added-date"</default>
+			<summary>View sorting style</summary>
+			<description>
+				Determine how movies/tv-series are sorted in the view.
+				Allowed values: "az", "za", "added-date", "released-date"
+			</description>
+		</key>
+
+
 	</schema>
 </schemalist>

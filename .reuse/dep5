@@ -14,6 +14,19 @@ Files: data/icons/hicolor/*
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
+# Symbolic icons
+Files: data/icons/symbolic/*
+Copyright: The GNOME project
+License: LGPL-3.0-only
+
+Files: data/icons/symbolic/movies-symbolic.svg
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
+Files: data/icons/symbolic/series-symbolic.svg
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
 # Manifests
 Files: me.iepure.ticketbooth.json
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
