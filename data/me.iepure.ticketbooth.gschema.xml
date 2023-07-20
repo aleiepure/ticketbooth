@@ -49,6 +49,15 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</description>
 		</key>
 
+		<!-- Settings -->
+		<key name="style-scheme" type="s">
+			<default>"auto"</default>
+			<summary>App color scheme</summary>
+			<description>
+				The color scheme the app should follow.
+				Allowed values: "auto", "light", "dark"
+			</description>
+		</key>
 
 	</schema>
 </schemalist>

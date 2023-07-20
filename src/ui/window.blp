@@ -78,52 +78,58 @@ template $TicketboothWindow: Adw.ApplicationWindow {
 
 menu _primary_menu {
 
-  // TODO: add theme switcher
-
-  submenu {
-    label: _("View style");
-
+  section {
     item {
-      label: _("Grid");
-      action: "win.view-style";
-      target: "grid";
-    }
-
-    item {
-      label: _("List");
-      action: "win.view-style";
-      target: "list";
+      custom: "themeswitcher";
     }
   }
 
-  submenu {
-    label: _("Sorting");
+  section {
+    submenu {
+      label: _("View style");
 
-    item {
-      label: _("A-Z");
-      action: "win.view-sorting";
-      target: "az";
+      item {
+        label: _("Grid");
+        action: "win.view-style";
+        target: "grid";
+      }
+
+      item {
+        label: _("List");
+        action: "win.view-style";
+        target: "list";
+      }
     }
 
-    item {
-      label: _("Z-A");
-      action: "win.view-sorting";
-      target: "za";
-    }
+    submenu {
+      label: _("Sorting");
+
+      item {
+        label: _("A-Z");
+        action: "win.view-sorting";
+        target: "az";
+      }
+
+      item {
+        label: _("Z-A");
+        action: "win.view-sorting";
+        target: "za";
+      }
 
 
-    item {
-      label: _("Date added");
-      action: "win.view-sorting";
-      target: "added-date";
-    }
+      item {
+        label: _("Date added");
+        action: "win.view-sorting";
+        target: "added-date";
+      }
 
 
-    item {
-      label: _("Release date");
-      action: "win.view-sorting";
-      target: "release-date";
+      item {
+        label: _("Release date");
+        action: "win.view-sorting";
+        target: "release-date";
 
+      }
     }
   }
 

@@ -11,6 +11,7 @@ blueprints = custom_target('blueprints',
   input: files(
     'ui/gtk/help-overlay.blp',
     'ui/window.blp',
+    'ui/widgets/theme_switcher.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
@@ -65,6 +66,7 @@ configure_file(
   install_dir: get_option('bindir')
 )
 
+subdir('widgets')
 
 # Install sources
 ticketbooth_sources = [

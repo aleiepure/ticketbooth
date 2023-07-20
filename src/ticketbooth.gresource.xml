@@ -7,10 +7,23 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 <gresources>
+
   <gresource prefix="/me/iepure/ticketbooth">
+
+    <!-- Stylesheets -->
+    <file alias="style.css">css/style.css</file>
+    <!-- <file alias="style-hc.css">css/style-hc.css</file>
+    <file alias="style-dark.css">css/style-dark.css</file>
+    <file alias="style-dark-hc.css">css/style-dark-hc.css</file> -->
+
+    <!-- Widgets -->
+    <file preprocess="xml-stripblanks">ui/widgets/theme_switcher.ui</file>
+
+    <!-- Views -->
     <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>
+
   <gresource prefix="/me/iepure/ticketbooth/icons/scalable/actions/">
     <file preprocess="xml-stripblanks" alias="series-symbolic.svg">../data/icons/symbolic/series-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="movies-symbolic.svg">../data/icons/symbolic/movies-symbolic.svg</file>
@@ -18,4 +31,5 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks" alias="view-list-symbolic.svg">../data/icons/symbolic/view-list-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="loupe-symbolic.svg">../data/icons/symbolic/loupe-symbolic.svg</file>
   </gresource>
+
 </gresources>
