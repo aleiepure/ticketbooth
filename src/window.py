@@ -29,12 +29,15 @@ class TicketboothWindow(Adw.ApplicationWindow):
         ('view-style', None, 's', f"'{_settings.get_string('view-style')}'", _style_on_changed),
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, debug,  **kwargs):
         super().__init__(**kwargs)
         self._restore_settings()
         self.add_action_entries(self._actions, self)
 
-        # Theme (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
+        if debug == 'True':
+            self.add_css_class('devel')
+
+        # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
 
     def _restore_settings(self):

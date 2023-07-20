@@ -1,4 +1,4 @@
-#!@PYTHON@
+#!@python@
 
 # ticketbooth.in
 #
@@ -25,9 +25,10 @@ import signal
 import locale
 import gettext
 
-VERSION = '@VERSION@'
+version = '@version@'
 pkgdatadir = '@pkgdatadir@'
 localedir = '@localedir@'
+debug = '@debug@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -43,4 +44,4 @@ if __name__ == '__main__':
     resource._register()
 
     from ticketbooth import main
-    sys.exit(main.main(VERSION))
+    sys.exit(main.main(version, debug))

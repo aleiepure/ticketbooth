@@ -11,6 +11,7 @@ blueprints = custom_target('blueprints',
   input: files(
     'ui/gtk/help-overlay.blp',
     'ui/window.blp',
+    'ui/about_window.blp',
     'ui/widgets/theme_switcher.blp',
   ),
   output: '.',
@@ -51,8 +52,8 @@ endif
 python = import('python')
 
 conf = configuration_data()
-conf.set('PYTHON', python.find_installation('python3').path())
-conf.set('VERSION', version_number)
+conf.set('python', python.find_installation('python3').path())
+conf.set('version', version_number)
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 conf.set('debug', get_option('debug'))
