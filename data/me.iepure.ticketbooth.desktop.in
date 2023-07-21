@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 [Desktop Entry]
-Name=ticketbooth
+Name=Ticket Booth
 Exec=ticketbooth
 Icon=me.iepure.ticketbooth
 Terminal=false
