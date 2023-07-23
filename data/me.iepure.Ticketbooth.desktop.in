@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 [Desktop Entry]
-Name=Ticket Booth
+Name=@app_name@
 Exec=ticketbooth
-Icon=me.iepure.ticketbooth
+Icon=@app_id@
 Terminal=false
 Type=Application
 Categories=GTK;

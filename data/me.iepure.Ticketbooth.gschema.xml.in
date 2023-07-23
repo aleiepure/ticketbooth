@@ -7,7 +7,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 <schemalist gettext-domain="ticketbooth">
-	<schema id="me.iepure.ticketbooth" path="/me/iepure/ticketbooth/">
+	<schema id="@app_id@" path="@prefix@/">
 
 		<!-- Window state -->
 		<key name="win-width" type="i">
@@ -32,6 +32,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 		<!-- View style/sorting -->
 		<key name="view-style" type="s">
+			<choices>
+				<choice value="grid"/>
+				<choice value="list"/>
+			</choices>
 			<default>"grid"</default>
 			<summary>View display style</summary>
 			<description>
@@ -41,6 +45,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</description>
 		</key>
 		<key name="view-sorting" type="s">
+			<choices>
+				<choice value="az"/>
+				<choice value="za"/>
+				<choice value="added-date"/>
+				<choice value="released-date"/>
+			</choices>
 			<default>"added-date"</default>
 			<summary>View sorting style</summary>
 			<description>
@@ -56,6 +66,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<description>
 				The color scheme the app should follow.
 				Allowed values: "auto", "light", "dark"
+			</description>
+		</key>
+		<key name="tmdb-lang" type="s">
+			<default>"en"</default>
+			<summary>Language used by TMDB results</summary>
+			<description>
+				iso_639_1 format.
 			</description>
 		</key>
 

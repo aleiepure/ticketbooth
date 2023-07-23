@@ -1,0 +1,133 @@
+// Copyright (C) 2022 - 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $AddManualDialog: Adw.Window {
+  modal: true;
+
+  ShortcutController {
+    Shortcut {
+      trigger: "Escape";
+      action: "action(window.close)";
+    }
+  }
+
+  Box {
+    orientation: vertical;
+    spacing: 12;
+    margin-bottom: 12;
+
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
+
+      title-widget: Adw.WindowTitle {
+        title: _("Add title manually");
+      };
+
+      [start]
+      Button _cancel_btn {
+        label: _("Cancel");
+        action-name: "window.close";
+      }
+
+      [end]
+      Button _done_btn {
+        label: _("Done");
+        sensitive: false;
+
+        styles ["suggested-action"]
+
+        clicked => $_on_done_btn_clicked();
+      }
+    }
+
+    Adw.Clamp {
+      Adw.PreferencesGroup {
+        vexpand: true;
+
+        Adw.Clamp _cover {
+          maximum-size: 200;
+          Overlay {
+            [overlay]
+            Spinner _spinner {
+              margin-start: 72;
+              margin-end: 72;
+            }
+
+            Overlay _cover_overlay {
+              halign: center;
+              valign: center;
+
+              [overlay]
+              Button _cover_edit_btn {
+                icon-name: "document-edit";
+                tooltip-text: _("New Cover");
+                halign: end;
+                valign: end;
+                margin-bottom: 6;
+                margin-end: 6;
+
+                styles [
+                  "circular", "osd"
+                ]
+
+                clicked => $_on_edit_btn_clicked();
+              }
+
+              [overlay]
+              Revealer _cover_delete_revealer {
+                transition-type: crossfade;
+                margin-end: 40;
+
+                Button _cover_delete_btn {
+                  icon-name: "user-trash";
+                  tooltip-text: _("Delete Cover");
+                  halign: end;
+                  valign: end;
+                  margin-bottom: 6;
+                  margin-end: 6;
+
+                  styles [
+                    "circular", "osd"
+                  ]
+
+                  clicked => $_on_delete_btn_clicked();
+                }
+              }
+
+              Picture _cover_picture {
+                width-request: 200;
+                height-request: 300;
+
+                styles [
+                  "card"
+                ]
+              }
+            }
+          }
+        }
+
+        Adw.Clamp {
+          margin-top: 12;
+          maximum-size: 336;
+          Adw.PreferencesGroup {
+
+            Adw.EntryRow _title_entry {
+              title: _("Title");
+              changed => $_on_title_entry_changed();
+            }
+
+            Adw.EntryRow _year_entry {
+              title: _("Release Year");
+              changed => $_on_year_entry_changed();
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -27,14 +27,22 @@ Files: data/icons/symbolic/series-symbolic.svg
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
+Files: data/blank_poster.jpg
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
 # Manifests
-Files: me.iepure.ticketbooth.json
+Files: me.iepure.Ticketbooth.Devel.json
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
 Files: pypi-dependencies.json
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
+
+Files: requirements.txt
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: CC0-1.0
 
 # GitHub Actions
 Files: .github/*

@@ -1,0 +1,97 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Gio 2.0;
+using Adw 1;
+
+template $AddTMDBDialog: Adw.Window {
+  modal: true;
+  focus-widget: _search_entry;
+
+  ShortcutController {
+    Shortcut {
+      trigger: "Escape";
+      action: "action(window.close)";
+    }
+  }
+
+  Box {
+    orientation: vertical;
+    spacing: 12;
+    margin-bottom: 12;
+
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
+
+      title-widget: SearchEntry _search_entry {
+        activates-default: true;
+        placeholder-text: _("Search The Movie Database");
+        search-delay: 200;
+        search-changed => $_on_searchentry_search_changed();
+      };
+
+      [start]
+      Button _cancel_btn {
+        label: _("Cancel");
+        action-name: "window.close";
+      }
+
+      [end]
+      Button _done_btn {
+        label: _("Done");
+        sensitive: false;
+
+        styles ["suggested-action"]
+
+        action-name: "window.close";
+      }
+    }
+
+    Adw.ViewStack _stack {
+      Adw.ViewStackPage {
+        name: "empty";
+        child: Adw.StatusPage {
+          title: _("Search for a title");
+          icon-name: "loupe";
+          description: _("Start typing in the searchbar to see a list of movies and tv-series");
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "no-results";
+        child: Adw.StatusPage {
+          title: _("No results found");
+          icon-name: "loupe";
+          description: _("Try a different search");
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "results";
+        child: ScrolledWindow {
+          vexpand: true;
+
+          // TODO: change to list
+          GridView _grid_view {
+            min-columns: 2;
+            orientation: vertical;
+            model: NoSelection {
+              model: Gio.ListStore _model {};
+            };
+            factory: BuilderListItemFactory {
+              template ListItem  {
+                child: $PosterTile {
+                  title: bind template.item as <$SearchResultModel>.title;
+                  poster-path: bind template.item as <$SearchResultModel>.poster-path;
+                };
+              }
+            };
+          }
+        };
+      }
+    }
+  }
+}

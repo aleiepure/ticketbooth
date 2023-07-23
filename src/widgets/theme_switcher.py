@@ -12,13 +12,12 @@
 
 from gi.repository import Adw, Gdk, Gio, GObject, Gtk
 
+from .. import shared  # type: ignore
 
-@Gtk.Template(resource_path='/me/iepure/ticketbooth/ui/widgets/theme_switcher.ui')
+
+@Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/theme_switcher.ui')
 class ThemeSwitcher(Gtk.Box):
     __gtype_name__ = 'ThemeSwitcher'
-
-    # GSettings
-    _settings = Gio.Settings(schema_id='me.iepure.ticketbooth')
 
     show_system = GObject.property(type=bool, default=True)
     color_scheme = 'light'
@@ -58,16 +57,16 @@ class ThemeSwitcher(Gtk.Box):
             GObject.BindingFlags.SYNC_CREATE
         )
 
-        self.selected_color_scheme = self._settings.get_string('style-scheme')
+        self.selected_color_scheme = shared.schema.get_string('style-scheme')
 
     @Gtk.Template.Callback()
     def _on_color_scheme_changed(self, _widget, _paramspec):
         if self.system.get_active():
-            self.selected_color_scheme = 'auto'
-            self._settings.set_string('style-scheme', 'auto')
+            self.selected_color_scheme = 'auto'  # type: ignore
+            shared.schema.set_string('style-scheme', 'auto')
         if self.light.get_active():
-            self.selected_color_scheme = 'light'
-            self._settings.set_string('style-scheme', 'light')
+            self.selected_color_scheme = 'light'  # type: ignore
+            shared.schema.set_string('style-scheme', 'light')
         if self.dark.get_active():
-            self.selected_color_scheme = 'dark'
-            self._settings.set_string('style-scheme', 'dark')
+            self.selected_color_scheme = 'dark'  # type: ignore
+            shared.schema.set_string('style-scheme', 'dark')

@@ -3,25 +3,39 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
+from typing import Callable
 
 # isort: off
 # autopep8: off
 import gi
-
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Adw, Gio, Gtk
 # isort: on
+from gettext import gettext as _
+
+from gi.repository import Adw, Gio, GObject, Gtk
+
+from . import shared  # type: ignore
+from .models.search_result_model import SearchResultModel
+from .widgets.poster_tile import PosterTile
+from .window import TicketboothWindow
+
 # autopep: on
 
-from .window import TicketboothWindow
+
+
 
 
 class TicketboothApplication(Adw.Application):
     """The main application singleton class."""
 
-    def __init__(self, version, debug):
-        super().__init__(application_id='me.iepure.ticketbooth',
+    _custom_widgets = [
+        SearchResultModel,
+        PosterTile,
+    ]
+
+    def __init__(self, version: str, debug: str):
+        super().__init__(application_id=shared.APP_ID,
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
 
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
@@ -31,8 +45,13 @@ class TicketboothApplication(Adw.Application):
         self.version = version
         self.debug = debug
 
+        # Register custom types
+        for i in self._custom_widgets:
+            GObject.type_ensure(i)
+
     def do_activate(self):
-        """Called when the application is activated.
+        """
+        Called when the application is activated.
 
         We raise the application's main window, creating it if
         necessary.
@@ -42,23 +61,40 @@ class TicketboothApplication(Adw.Application):
             win = TicketboothWindow(self.debug, application=self)
         win.present()
 
-    def on_about_action(self, widget, _):
+    def on_about_action(self, widget: Gtk.Widget, user_data: GObject.GPointer):
         """Callback for the app.about action."""
-        builder = Gtk.Builder.new_from_resource('/me/iepure/ticketbooth/ui/about_window.ui')
+
+        builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/about_window.ui')
         about_window = builder.get_object('about_window')
-        if self.debug == 'True':
-            about_window.set_application_name(f'{about_window.get_application_name()}\n(Development snapshot)')
-            about_window.set_icon_name('me.iepure.ticketbooth')
-        about_window.set_version(self.version)
+        # about_window = Adw.AboutWindow(
+        #     modal=True,
+        #     transient_for=self.props.active_window,
+        #     application_name=shared.APP_NAME,
+        #     icon_name=shared.APP_ID,
+        #     copyright="Copyright © 2023 Alessandro Iepure",
+        #     license=Gtk.License.GPL_3_0,
+        #     version=shared.VERSION,
+        #     website="https://github.com/aleiepure/ticketbooth",
+        #     issue_url="https://github.com/aleiepure/ticketbooth/issues",
+        #     developer_name='Alessandro Iepure',
+        #     # Translators: Replace this with your name with an optional email/website
+        #     translator_credits=_("translator_credits"),
+        # )
+        about_window.set_application_name(shared.APP_NAME)
+        about_window.set_application_icon(shared.APP_ID)
+        about_window.set_version(shared.VERSION)
         about_window.set_transient_for(self.props.active_window)
         about_window.add_credit_section('Contributors', [])
         about_window.present()
 
-    def on_preferences_action(self, widget, _):
+    def on_preferences_action(self, widget: Gtk.Widget, user_data: GObject.GPointer):
+        # TODO: implement preferences window
+        # TODO:    - clear cache setting
+        # TODO:    - change results language
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
 
-    def create_action(self, name, callback, shortcuts=None):
+    def create_action(self, name: Gtk.Widget, callback: Callable, shortcuts=None):
         """Add an application action.
 
         Args:
@@ -74,7 +110,7 @@ class TicketboothApplication(Adw.Application):
             self.set_accels_for_action(f'app.{name}', shortcuts)
 
 
-def main(version, debug):
+def main(version: str, debug: str):
     """The application's entry point."""
     app = TicketboothApplication(version, debug)
     return app.run(sys.argv)

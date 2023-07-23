@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-widgetsdir = join_paths(pkgdatadir, 'src/widgets')
+dialogsdir = join_paths(pkgdatadir, 'src/dialogs')
 
 sources = [
   '__init__.py',
-  'theme_switcher.py',
-  'poster_tile.py',
+  'add_manual_dialog.py',
+  'add_tmdb_dialog.py',
 ]
 
-install_data(sources, install_dir: widgetsdir)
+install_data(sources, install_dir: dialogsdir)

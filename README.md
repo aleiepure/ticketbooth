@@ -5,12 +5,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 <div align="center">
-  <h1><img src="./data/icons/hicolor/scalable/apps/me.iepure.ticketbooth.svg" height="64"/><br>Ticket Booth</h1>
+  <h1><img src="./data/icons/hicolor/scalable/apps/me.iepure.Ticketbooth.svg" height="64"/><br>Ticket Booth</h1>
   <h4>Keep track of your favorite shows</h4>
 </div>
 <div align="center">
-  <a href="https://github.com/aleiepure/ticketbooth/actions/workflows/workflow.yml" title="Build flatpak action">
-    <img src="https://github.com/aleiepure/ticketbooth/actions/workflows/workflow.yml/badge.svg"/>
+  <a href="https://github.com/aleiepure/ticketbooth/actions/workflows/workflow.yaml" title="Build flatpak action">
+    <img src="https://github.com/aleiepure/ticketbooth/actions/workflows/workflow.yaml/badge.svg"/>
   </a>
   <a href="https://github.com/aleiepure/devtoolbox/blob/main/LICENSES/GPL-3.0-or-later.txt" title="GPL-3 License">
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg">

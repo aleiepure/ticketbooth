@@ -24,5 +24,19 @@ ShortcutsWindow help_overlay {
         action-name: "app.quit";
       }
     }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Library management");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Add title from TMDB");
+        accelerator: "<Primary>n";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Add title manually");
+        accelerator: "<Primary><shift>n";
+      }
+    }
   }
 }

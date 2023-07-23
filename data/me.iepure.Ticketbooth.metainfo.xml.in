@@ -6,11 +6,12 @@ Copyright (C) 2023 Alessandro Iepure
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
-<component type="desktop">
-	<id>me.iepure.ticketbooth.desktop</id>
+<component type="desktop-application">
+	<id>@app_id@</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<description>
 	  <p>No description</p>
 	</description>
+	<launchable type="desktop-id">@app_id@.desktop</launchable>
 </component>

@@ -3,12 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-widgetsdir = join_paths(pkgdatadir, 'src/widgets')
+providersdir = join_paths(pkgdatadir, 'src/providers')
 
 sources = [
   '__init__.py',
-  'theme_switcher.py',
-  'poster_tile.py',
+  'tmdb_provider.py',
 ]
 
-install_data(sources, install_dir: widgetsdir)
+install_data(sources, install_dir: providersdir)

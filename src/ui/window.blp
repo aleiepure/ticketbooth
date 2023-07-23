@@ -11,6 +11,21 @@ template $TicketboothWindow: Adw.ApplicationWindow {
   width-request: 360;
   height-request: 294;
 
+  ShortcutController {
+    scope: global;
+
+    Shortcut {
+      trigger: "<control>n";
+      action: "action(win.add-tmdb)";
+    }
+
+    Shortcut {
+      trigger: "<control><shift>n";
+      action: "action(win.add-manual)";
+    }
+
+  }
+
   Box {
     orientation: vertical;
 
@@ -18,10 +33,10 @@ template $TicketboothWindow: Adw.ApplicationWindow {
       centering-policy: strict;
 
       [start]
-      ToggleButton _search_btn {
-        icon-name: "loupe";
-        tooltip-text: _("Show/hide search bar");
-        sensitive: false; // TODO: enable when search is implemented
+      MenuButton _add_btn {
+        icon-name: "plus";
+        tooltip-text: _("Add a title to your library");
+        menu-model: _add_menu;
       }
 
       [title]
@@ -150,4 +165,16 @@ menu _primary_menu {
     }
   }
 
+}
+
+menu _add_menu {
+  item {
+    label: _("From The Movie Database");
+    action: "win.add-tmdb";
+  }
+
+  item {
+    label: _("Manually");
+    action: "win.add-manual";
+  }
 }
