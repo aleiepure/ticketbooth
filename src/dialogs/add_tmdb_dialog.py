@@ -16,7 +16,6 @@ class AddTMDBDialog(Adw.Window):
     _search_entry = Gtk.Template.Child()
     _stack = Gtk.Template.Child()
     _model = Gtk.Template.Child()
-    _grid_view = Gtk.Template.Child()
 
     def __init__(self, parent: Gtk.Window):
         super().__init__()
@@ -24,6 +23,9 @@ class AddTMDBDialog(Adw.Window):
 
     @Gtk.Template.Callback('_on_searchentry_search_changed')
     def _on_searchentry_search_changed(self, user_data: GObject.GPointer):
+
+        if self._model.get_property('n-items') > 0:
+            self._model.remove_all()
 
         if self._search_entry.get_text():
             response = TMDBProvider().search(query=self._search_entry.get_text())
@@ -33,7 +35,7 @@ class AddTMDBDialog(Adw.Window):
                 # Populate model
                 for result in response['results']:
                     if result['media_type'] in ['movie', 'tv']:
-                        self._model.append(SearchResultModel(result))  # TODO: empty between searches
+                        self._model.append(SearchResultModel(result))
 
                 # Show results
                 self._stack.set_visible_child_name('results')

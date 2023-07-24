@@ -12,13 +12,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
     <!-- Stylesheets -->
     <file alias="style.css">css/style.css</file>
-    <!-- <file alias="style-hc.css">css/style-hc.css</file>
     <file alias="style-dark.css">css/style-dark.css</file>
+    <!-- <file alias="style-hc.css">css/style-hc.css</file>
     <file alias="style-dark-hc.css">css/style-dark-hc.css</file> -->
 
     <!-- Widgets -->
     <file preprocess="xml-stripblanks">ui/widgets/theme_switcher.ui</file>
     <file preprocess="xml-stripblanks">ui/widgets/poster_tile.ui</file>
+    <file preprocess="xml-stripblanks">ui/widgets/search_result_row.ui</file>
 
     <!-- Dialogs -->
     <file preprocess="xml-stripblanks">ui/dialogs/add_manual.ui</file>

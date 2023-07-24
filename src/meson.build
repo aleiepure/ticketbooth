@@ -16,6 +16,7 @@ blueprints = custom_target('blueprints',
     'ui/dialogs/add_tmdb.blp',
     'ui/widgets/theme_switcher.blp',
     'ui/widgets/poster_tile.blp',
+    'ui/widgets/search_result_row.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
@@ -55,7 +56,7 @@ ticketbooth_sources = [
     input: 'shared.py.in',
     output: 'shared.py',
     configuration: conf
-  )
+  ),
 ]
 
 install_data(ticketbooth_sources, install_dir: moduledir)

@@ -8,12 +8,15 @@ from typing import Callable
 # isort: off
 # autopep8: off
 import gi
+
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 # isort: on
 from gettext import gettext as _
 
 from gi.repository import Adw, Gio, GObject, Gtk
+
+from src.widgets.search_result_row import SearchResultRow
 
 from . import shared  # type: ignore
 from .models.search_result_model import SearchResultModel
@@ -32,6 +35,7 @@ class TicketboothApplication(Adw.Application):
     _custom_widgets = [
         SearchResultModel,
         PosterTile,
+        SearchResultRow,
     ]
 
     def __init__(self, version: str, debug: str):
@@ -66,20 +70,6 @@ class TicketboothApplication(Adw.Application):
 
         builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/about_window.ui')
         about_window = builder.get_object('about_window')
-        # about_window = Adw.AboutWindow(
-        #     modal=True,
-        #     transient_for=self.props.active_window,
-        #     application_name=shared.APP_NAME,
-        #     icon_name=shared.APP_ID,
-        #     copyright="Copyright © 2023 Alessandro Iepure",
-        #     license=Gtk.License.GPL_3_0,
-        #     version=shared.VERSION,
-        #     website="https://github.com/aleiepure/ticketbooth",
-        #     issue_url="https://github.com/aleiepure/ticketbooth/issues",
-        #     developer_name='Alessandro Iepure',
-        #     # Translators: Replace this with your name with an optional email/website
-        #     translator_credits=_("translator_credits"),
-        # )
         about_window.set_application_name(shared.APP_NAME)
         about_window.set_application_icon(shared.APP_ID)
         about_window.set_version(shared.VERSION)
@@ -91,6 +81,7 @@ class TicketboothApplication(Adw.Application):
         # TODO: implement preferences window
         # TODO:    - clear cache setting
         # TODO:    - change results language
+        # TODO:    - update descriptions/images
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
 

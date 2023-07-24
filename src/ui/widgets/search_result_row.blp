@@ -1,0 +1,80 @@
+// Copyright (C) 2022 - 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $SearchResultRow: ListBoxRow {
+
+  map => $_on_map();
+  css-name: "search_result_row";
+
+  hexpand: true;
+  vexpand: true;
+  child: Box {
+    valign: start;
+    vexpand: true;
+    spacing: 12;
+    orientation: horizontal;
+    margin-top: 12;
+    margin-bottom: 12;
+
+    Overlay {
+      [overlay]
+      Spinner _spinner {
+        height-request: 32;
+        width-request: 32;
+      }
+
+      Picture _poster_picture {
+        margin-start: 12;
+        width-request: 100;
+        height-request: 150;
+      }
+    }
+
+    Box {
+      orientation: vertical;
+      margin-end: 12;
+
+      Label _title_lbl {
+        halign: start;
+        ellipsize: end;
+        hexpand: true;
+        label: bind template.title;
+        styles ["heading"]
+      }
+
+      Box _caption_box {
+        orientation: horizontal;
+        spacing: 12;
+        halign: start;
+
+        Label _year_lbl {
+          hexpand: true;
+          halign: start;
+          label: bind template.year;
+          styles ["caption", "chip"]
+          visible: bind template.year-visible;
+        }
+
+        Label {
+          label: bind template.media_type;
+          styles ["caption", "chip"]
+        }
+      }
+
+      Label _description {
+        hexpand: true;
+        margin-top: 6;
+        halign: start;
+        wrap: true;
+        wrap-mode: word;
+        label: bind template.description;
+        lines: 2;
+        ellipsize: end;
+      }
+    }
+  };
+}

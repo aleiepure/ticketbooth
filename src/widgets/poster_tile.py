@@ -6,7 +6,7 @@ import glob
 from typing import Callable
 
 import requests
-from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 

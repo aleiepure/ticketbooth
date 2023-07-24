@@ -17,3 +17,6 @@ _build/
 
 # Env files
 .env
+
+# Flatpak
+me.iepure.Ticketbooth.flatpak

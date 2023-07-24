@@ -9,6 +9,10 @@ using Adw 1;
 template $AddTMDBDialog: Adw.Window {
   modal: true;
   focus-widget: _search_entry;
+  width-request: 350;
+  height-request: 550;
+  default-width: 700;
+  default-height: 550;
 
   ShortcutController {
     Shortcut {
@@ -29,7 +33,7 @@ template $AddTMDBDialog: Adw.Window {
       title-widget: SearchEntry _search_entry {
         activates-default: true;
         placeholder-text: _("Search The Movie Database");
-        search-delay: 200;
+        search-delay: 500;
         search-changed => $_on_searchentry_search_changed();
       };
 
@@ -74,17 +78,19 @@ template $AddTMDBDialog: Adw.Window {
         child: ScrolledWindow {
           vexpand: true;
 
-          // TODO: change to list
-          GridView _grid_view {
-            min-columns: 2;
+          ListView _list_view {
+            show-separators: true;
             orientation: vertical;
             model: NoSelection {
               model: Gio.ListStore _model {};
             };
             factory: BuilderListItemFactory {
               template ListItem  {
-                child: $PosterTile {
+                child: $SearchResultRow {
                   title: bind template.item as <$SearchResultModel>.title;
+                  year: bind template.item as <$SearchResultModel>.year;
+                  media-type: bind template.item as <$SearchResultModel>.media-type;
+                  description: bind template.item as <$SearchResultModel>.description;
                   poster-path: bind template.item as <$SearchResultModel>.poster-path;
                 };
               }
