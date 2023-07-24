@@ -20,13 +20,11 @@ from src.widgets.search_result_row import SearchResultRow
 
 from . import shared  # type: ignore
 from .models.search_result_model import SearchResultModel
+from .preferences import PreferencesWindow
 from .widgets.poster_tile import PosterTile
 from .window import TicketboothWindow
 
 # autopep: on
-
-
-
 
 
 class TicketboothApplication(Adw.Application):
@@ -78,12 +76,12 @@ class TicketboothApplication(Adw.Application):
         about_window.present()
 
     def on_preferences_action(self, widget: Gtk.Widget, user_data: GObject.GPointer):
-        # TODO: implement preferences window
-        # TODO:    - clear cache setting
-        # TODO:    - change results language
-        # TODO:    - update descriptions/images
         """Callback for the app.preferences action."""
-        print('app.preferences action activated')
+        # TODO: change results language
+        # TODO: update descriptions/images
+        pref_window = PreferencesWindow()
+        pref_window.set_transient_for(self.props.active_window)
+        pref_window.present()
 
     def create_action(self, name: Gtk.Widget, callback: Callable, shortcuts=None):
         """Add an application action.

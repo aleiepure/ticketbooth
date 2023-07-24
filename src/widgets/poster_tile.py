@@ -70,7 +70,6 @@ class PosterTile(Gtk.Box):
         if files:
             return Gio.File.new_for_path(GLib.get_tmp_dir() + '/' + files[0])
         else:
-            # TODO: add option to clean cached files
             url = f'https://image.tmdb.org/t/p/original{self.poster_path}'
             r = requests.get(url)
             tmp_file = Gio.File.new_tmp(f'{self.poster_path[1:-4]}.XXXXXX.jpg')[0]

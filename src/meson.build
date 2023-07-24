@@ -12,6 +12,7 @@ blueprints = custom_target('blueprints',
     'ui/gtk/help-overlay.blp',
     'ui/window.blp',
     'ui/about_window.blp',
+    'ui/preferences.blp',
     'ui/dialogs/add_manual.blp',
     'ui/dialogs/add_tmdb.blp',
     'ui/widgets/theme_switcher.blp',
@@ -57,6 +58,7 @@ ticketbooth_sources = [
     output: 'shared.py',
     configuration: conf
   ),
+  'preferences.py',
 ]
 
 install_data(ticketbooth_sources, install_dir: moduledir)

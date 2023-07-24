@@ -1,0 +1,50 @@
+// Copyright (C) 2022 - 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesWindow: Adw.PreferencesWindow {
+  default-height: 500;
+
+  Adw.PreferencesPage {
+    name: "general";
+    title: _("General");
+
+    Adw.PreferencesGroup {
+      title: _("Languages");
+
+      Adw.ComboRow {
+        title: _("Prefered TMDB language (NOT IMPLEMENTED YET)");
+        subtitle: _("If search results are not available in the selected language, English US will be used as fallback");
+        model: StringList {
+          strings[
+            "IT",
+            "EN",
+            "DE",
+            "ZH",
+            "JP",
+          ]
+        };
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Housekeeping");
+
+      Adw.PreferencesGroup {
+        Adw.ActionRow {
+          title: _("Clear cached data");
+          activatable-widget: _clear_cache_btn;
+
+          // TODO: add confirmation dialog with selectable options to delete
+          Button _clear_cache_btn {
+            label: _("Clear");
+            clicked => $_on_clear_cache_btn_clicked();
+          }
+        }
+      }
+    }
+  }
+}
