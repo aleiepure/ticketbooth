@@ -18,5 +18,6 @@ _build/
 # Env files
 .env
 
-# Flatpak
+# Flatpak bundles
 me.iepure.Ticketbooth.flatpak
+me.iepure.Ticketbooth.Devel.flatpak
