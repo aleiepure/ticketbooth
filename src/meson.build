@@ -13,6 +13,8 @@ blueprints = custom_target('blueprints',
     'ui/window.blp',
     'ui/about_window.blp',
     'ui/preferences.blp',
+    'ui/views/main_view.blp',
+    'ui/views/first_run_view.blp',
     'ui/dialogs/add_manual.blp',
     'ui/dialogs/add_tmdb.blp',
     'ui/widgets/theme_switcher.blp',
@@ -47,6 +49,7 @@ subdir('widgets')
 subdir('dialogs')
 subdir('providers')
 subdir('models')
+subdir('views')
 
 # Install sources
 ticketbooth_sources = [

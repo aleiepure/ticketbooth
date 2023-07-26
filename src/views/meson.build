@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-modelsdir = join_paths(pkgdatadir, 'src/models')
+viewsdir = join_paths(pkgdatadir, 'src/views')
 
 sources = [
   '__init__.py',
-  'search_result_model.py',
-  'language_model.py',
+  'main_view.py',
+  'first_run_view.py',
 ]
 
-install_data(sources, install_dir: modelsdir)
+install_data(sources, install_dir: viewsdir)

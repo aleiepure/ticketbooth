@@ -3,11 +3,22 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gi.repository import Gdk, Gio, GLib
+from pathlib import Path
 
 APP_ID = "@app_id@"
 VERSION = "@version@"
-DEBUG = "@debug@"
 PREFIX = "@prefix@"
 APP_NAME = "@app_name@"
 
+if "@debug@" == "True":
+    DEBUG = True
+else:
+    DEBUG = False
+
 schema = Gio.Settings.new(APP_ID)
+
+data_dir = Path(GLib.get_user_data_dir())
+cache_dir = Path(GLib.get_user_cache_dir())
+
+poster_dir = data_dir / "ticketbooth" / "posters"
+backgrounds_dir = data_dir / "ticketbooth" / "backgrounds"

@@ -8,6 +8,7 @@ providersdir = join_paths(pkgdatadir, 'src/providers')
 sources = [
   '__init__.py',
   'tmdb_provider.py',
+  'local_provider.py',
 ]
 
 install_data(sources, install_dir: providersdir)

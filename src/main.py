@@ -2,9 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-from typing import Callable
-
 # isort: off
 # autopep8: off
 import gi
@@ -12,42 +9,43 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 # isort: on
+# autopep: on
+
+import sys
 from gettext import gettext as _
+from typing import Callable
 
 from gi.repository import Adw, Gio, GObject, Gtk
-
-from src.widgets.search_result_row import SearchResultRow
 
 from . import shared  # type: ignore
 from .models.search_result_model import SearchResultModel
 from .preferences import PreferencesWindow
+from .views.first_run_view import FirstRunView
+from .views.main_view import MainView
 from .widgets.poster_tile import PosterTile
+from .widgets.search_result_row import SearchResultRow
 from .window import TicketboothWindow
-
-# autopep: on
 
 
 class TicketboothApplication(Adw.Application):
     """The main application singleton class."""
 
+    # Types used in blueprint files
     _custom_widgets = [
         SearchResultModel,
         PosterTile,
         SearchResultRow,
+        FirstRunView,
+        MainView,
     ]
 
-    def __init__(self, version: str, debug: str):
-        super().__init__(application_id=shared.APP_ID,
-                         flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
+    def __init__(self):
+        super().__init__(application_id=shared.APP_ID, flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
 
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('preferences', self.on_preferences_action)
 
-        self.version = version
-        self.debug = debug
-
-        # Register custom types
         for i in self._custom_widgets:
             GObject.type_ensure(i)
 
@@ -60,10 +58,10 @@ class TicketboothApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = TicketboothWindow(self.debug, application=self)
+            win = TicketboothWindow(application=self)
         win.present()
 
-    def on_about_action(self, widget: Gtk.Widget, user_data: GObject.GPointer):
+    def on_about_action(self, widget: Gtk.Widget, user_data: object | None):
         """Callback for the app.about action."""
 
         builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/about_window.ui')
@@ -75,7 +73,7 @@ class TicketboothApplication(Adw.Application):
         about_window.add_credit_section('Contributors', [])
         about_window.present()
 
-    def on_preferences_action(self, widget: Gtk.Widget, user_data: GObject.GPointer):
+    def on_preferences_action(self, widget: Gtk.Widget, user_data: object | None):
         """Callback for the app.preferences action."""
         # TODO: change results language
         # TODO: update descriptions/images
@@ -84,12 +82,12 @@ class TicketboothApplication(Adw.Application):
         pref_window.present()
 
     def create_action(self, name: Gtk.Widget, callback: Callable, shortcuts=None):
-        """Add an application action.
+        """
+        Add an application action.
 
         Args:
             name: the name of the action
-            callback: the function to be called when the action is
-              activated
+            callback: the function to be called when the action is activated
             shortcuts: an optional list of accelerators
         """
         action = Gio.SimpleAction.new(name, None)
@@ -99,7 +97,7 @@ class TicketboothApplication(Adw.Application):
             self.set_accels_for_action(f'app.{name}', shortcuts)
 
 
-def main(version: str, debug: str):
+def main():
     """The application's entry point."""
-    app = TicketboothApplication(version, debug)
+    app = TicketboothApplication()
     return app.run(sys.argv)
