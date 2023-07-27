@@ -8,6 +8,24 @@ from gi.repository import GObject
 
 
 class SearchResultModel(GObject.GObject):
+    """
+    This class rappresents the object returned from the TMDB search endpoint.
+
+    Properties:
+        title (str): content's title
+        year (str): content's release year
+        description (str): content's description
+        poster_path (str): API endpoint for the content poster
+        tmdb_id (int): content's unique id in the API
+        media_type (str): content's media type
+
+    Methods:
+        None
+
+    Signals:
+        None
+    """
+
     __gtype_name__ = 'SearchResultModel'
 
     title = GObject.Property(type=str, default='')

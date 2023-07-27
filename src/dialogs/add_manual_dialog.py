@@ -9,6 +9,20 @@ from .. import shared  # type: ignore
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/add_manual.ui')
 class AddManualDialog(Adw.Window):
+    """
+    This class rappresents the window to manually add content to the db.
+    Not finished yet.
+
+    Properties:
+        None
+
+    Methods:
+        None
+
+    Signals:
+        None
+    """
+
     __gtype_name__ = 'AddManualDialog'
 
     _done_btn = Gtk.Template.Child()

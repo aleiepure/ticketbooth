@@ -11,6 +11,19 @@ from ..providers.tmdb_provider import TMDBProvider
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/add_tmdb.ui')
 class AddTMDBDialog(Adw.Window):
+    """
+    This class rappresents the window used to search for movies and tv-series on TMDB.
+
+    Properties:
+        None
+
+    Methods:
+        None
+
+    Signals:
+        None
+    """
+
     __gtype_name__ = 'AddTMDBDialog'
 
     _search_entry = Gtk.Template.Child()
@@ -22,24 +35,32 @@ class AddTMDBDialog(Adw.Window):
         self.set_transient_for(parent)
 
     @Gtk.Template.Callback('_on_searchentry_search_changed')
-    def _on_searchentry_search_changed(self, user_data: GObject.GPointer):
+    def _on_searchentry_search_changed(self, user_data: object | None) -> None:
+        """
+        Callback for the "seach-changed" signal.
+        Updates the GtkListModel used by the factory to populate the GtkListView.
+
+        Args:
+            user_data (object or None): user data passed to the callback.
+
+        Returns:
+            None
+        """
 
         if self._model.get_property('n-items') > 0:
             self._model.remove_all()
 
-        if self._search_entry.get_text():
-            response = TMDBProvider().search(query=self._search_entry.get_text())
-
-            if response['results']:
-
-                # Populate model
-                for result in response['results']:
-                    if result['media_type'] in ['movie', 'tv']:
-                        self._model.append(SearchResultModel(result))
-
-                # Show results
-                self._stack.set_visible_child_name('results')
-            else:
-                self._stack.set_visible_child_name('no-results')
-        else:
+        if not self._search_entry.get_text():
             self._stack.set_visible_child_name('empty')
+            return
+
+        response = TMDBProvider().search(query=self._search_entry.get_text())
+        if not response['results']:
+            self._stack.set_visible_child_name('no-results')
+            return
+
+        for result in response['results']:
+            if result['media_type'] in ['movie', 'tv']:
+                self._model.append(SearchResultModel(result))
+
+        self._stack.set_visible_child_name('results')

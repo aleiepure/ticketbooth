@@ -93,7 +93,7 @@ class FirstRunView(Adw.Bin):
             self._offline_btn.set_visible(False)
             self._retry_check_btn.set_visible(False)
 
-    def _on_first_reach_done(self, source: GObject.Object | None, result: Gio.AsyncResult, data: object | None):
+    def _on_first_reach_done(self, source: GObject.Object | None, result: Gio.AsyncResult, data: object | None) -> None:
         """
         Callback for asynchronous network check, reached after the first call.
         If the network is available, proced with the download, otherwise keep checking every second until it becomes

@@ -12,8 +12,8 @@ class LanguageModel(GObject.GObject):
     This class rappresents a language object stored in the db.
 
     Properties:
-        iso_name (str): ISO_639_1 code.
-        name (str): localized or English name.
+        iso_name (str): ISO_639_1 code
+        name (str): localized or English name
 
     Methods:
         None
@@ -21,6 +21,7 @@ class LanguageModel(GObject.GObject):
     Signals:
         None
     """
+
     __gtype_name__ = 'LanguageModel'
 
     iso_name = GObject.Property(type=str, default='')
