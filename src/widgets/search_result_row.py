@@ -6,7 +6,7 @@ import glob
 from gettext import gettext as _
 
 import requests
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..providers.local_provider import LocalProvider as local
@@ -38,6 +38,7 @@ class SearchResultRow(Gtk.ListBoxRow):
     _poster_picture = Gtk.Template.Child()
     _spinner = Gtk.Template.Child()
     _media_type_lbl = Gtk.Template.Child()
+    _add_btn = Gtk.Template.Child()
 
     tmdb_id = GObject.Property(type=int, default=0)
     title = GObject.Property(type=str, default='')
@@ -116,7 +117,7 @@ class SearchResultRow(Gtk.ListBoxRow):
     def _on_add_btn_clicked(self, user_data: object | None) -> None:
         """
         Callback for "clicked" signal.
-        Adds the associated title to the corresponding table in the db.
+        Invokes a thread to insert the content into the local db.
 
         Args:
             user_data (object or None): user data passed to the callback
@@ -125,7 +126,20 @@ class SearchResultRow(Gtk.ListBoxRow):
             None
         """
 
+        GLib.Thread.new(f'Adding {self.tmdb_id}', self._add_content_to_db_thread, None)
+
+    def _add_content_to_db_thread(self, thread_data: object | None) -> None:
+        """
+        Adds the associated title to the corresponding table in the db. Disables the 'add' button when done
+
+        Args:
+            thread_data (object or None): data passed to the thread
+        """
+
         local.add_content(tmdb_id=self.tmdb_id, media_type=self.media_type)
+        self._add_btn.set_label(_('Added to whatchlist'))
+        self._add_btn.set_icon_name('check-plain')
+        self._add_btn.set_sensitive(False)
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
                            cancelable: Gio.Cancellable | None) -> None:

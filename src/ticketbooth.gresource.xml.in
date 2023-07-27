@@ -46,6 +46,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks" alias="plus-symbolic.svg">../data/icons/symbolic/plus-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="document-edit-symbolic.svg">../data/icons/symbolic/document-edit-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="user-trash-symbolic.svg">../data/icons/symbolic/user-trash-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="check-plain-symbolic.svg">../data/icons/symbolic/check-plain-symbolic.svg</file>
   </gresource>
 
 </gresources>
