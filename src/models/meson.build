@@ -9,6 +9,7 @@ sources = [
   '__init__.py',
   'search_result_model.py',
   'language_model.py',
+  'movie_model.py',
 ]
 
 install_data(sources, install_dir: modelsdir)

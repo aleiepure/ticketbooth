@@ -3,12 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+from gettext import gettext as _
 
 import requests
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
-from ..providers.tmdb_provider import TMDBProvider as tmdb
+from ..providers.local_provider import LocalProvider as local
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/search_result_row.ui')
@@ -36,7 +37,9 @@ class SearchResultRow(Gtk.ListBoxRow):
 
     _poster_picture = Gtk.Template.Child()
     _spinner = Gtk.Template.Child()
+    _media_type_lbl = Gtk.Template.Child()
 
+    tmdb_id = GObject.Property(type=int, default=0)
     title = GObject.Property(type=str, default='')
     year = GObject.Property(type=str, default='')
     description = GObject.Property(type=str, default='')
@@ -51,7 +54,7 @@ class SearchResultRow(Gtk.ListBoxRow):
     def _on_map(self, user_data: object | None) -> None:
         """
         Callback for the "map" signal.
-        Sets the visibility of the release year and the poster to show.
+        Sets the visibility of the release year, the media type label and the poster to show.
 
         Args:
             user_data (object or None): user data passed to the callback
@@ -62,6 +65,11 @@ class SearchResultRow(Gtk.ListBoxRow):
 
         if self.year:
             self.year_visible = True
+
+        if self.media_type == 'movie':
+            self._media_type_lbl.set_label(_('Movie'))
+        else:
+            self._media_type_lbl.set_label(_('TV Series'))
 
         self._spinner.set_visible(True)
         self._poster_picture.set_file(self._get_poster_file())
@@ -77,7 +85,7 @@ class SearchResultRow(Gtk.ListBoxRow):
             None
 
         Returns:
-            None or a Gio.File containing an image.
+            None or a Gio.File containing an image
         """
         if self.poster_path:
             self._spinner.set_visible(True)
@@ -94,7 +102,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         Args:
             source (GObject.Object or None): the object the asynchronous operation was started with.
             result (Gio.AsyncResult): a Gio.AsyncResult
-            user_data (object or None): user data passed to the callback.
+            user_data (object or None): user data passed to the callback
 
         Returns:
             None
@@ -103,6 +111,21 @@ class SearchResultRow(Gtk.ListBoxRow):
         poster = self._get_poster_file_finish(result, self)
         self._spinner.set_visible(False)
         self._poster_picture.set_file(poster)
+
+    @Gtk.Template.Callback('_on_add_btn_clicked')
+    def _on_add_btn_clicked(self, user_data: object | None) -> None:
+        """
+        Callback for "clicked" signal.
+        Adds the associated title to the corresponding table in the db.
+
+        Args:
+            user_data (object or None): user data passed to the callback
+
+        Returns:
+            None
+        """
+
+        local.add_content(tmdb_id=self.tmdb_id, media_type=self.media_type)
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
                            cancelable: Gio.Cancellable | None) -> None:

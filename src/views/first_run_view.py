@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
 from gettext import gettext as _
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
@@ -48,7 +49,7 @@ class FirstRunView(Adw.Bin):
     def _on_map(self, user_data: object | None) -> None:
         """
         Callback for "map" signal.
-        Creates the tables in the local db and attempts to download required data if connected to the Internet.
+        Creates the directories, tables in the local db and attempts to download required data if connected to the Internet.
 
         Args:
             user_data (object or None): user data passed to the callback.
@@ -56,6 +57,10 @@ class FirstRunView(Adw.Bin):
         Returns:
             None
         """
+
+        for path in [shared.background_dir, shared.poster_dir]:
+            if not os.path.exists(path):
+                os.makedirs(path)
 
         local.create_tables()
 

@@ -87,6 +87,7 @@ template $AddTMDBDialog: Adw.Window {
             factory: BuilderListItemFactory {
               template ListItem  {
                 child: $SearchResultRow {
+                  tmdb-id: bind template.item as <$SearchResultModel>.tmdb-id;
                   title: bind template.item as <$SearchResultModel>.title;
                   year: bind template.item as <$SearchResultModel>.year;
                   media-type: bind template.item as <$SearchResultModel>.media-type;

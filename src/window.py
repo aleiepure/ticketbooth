@@ -123,7 +123,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
             self.first_run_view = FirstRunView()
             self._win_stack.add_named(child=self.first_run_view, name='first-run')
             self._win_stack.set_visible_child_name('first-run')
-            self.first_run_view.connect('exit', self._on_first_run_done)
+            self.first_run_view.connect('exit', self._on_first_run_exit)
 
     def _on_first_run_exit(self, source: Gtk.Widget) -> None:
         """

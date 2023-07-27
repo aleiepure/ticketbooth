@@ -2,18 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import glob
 import os
-from typing import Callable
 
-import requests
 import tmdbsimple as tmdb
-from gi.repository import Gio, GObject
 
 from .. import shared  # type: ignore
 
 
-class TMDBProvider(GObject.Object):
+class TMDBProvider:
     """
     This class provides methods to interface with the TMDB API.
 
@@ -24,11 +20,8 @@ class TMDBProvider(GObject.Object):
         search(query: str, lang: str): Searches the API for the given query
         get_languages(): Retrieves all available languages usable with the API
     """
-    __gtype_name__ = 'TMDBProvider'
 
     tmdb.API_KEY = os.environ.get('TMDB_KEY')
-
-    _path = ''
 
     def __init__(self):
         super().__init__()
@@ -61,3 +54,17 @@ class TMDBProvider(GObject.Object):
         """
 
         return tmdb.Configuration().languages()
+
+    @staticmethod
+    def get_movie(tmdb_id: int, lang: str = shared.schema.get_string('tmdb-lang')) -> dict:
+        """
+        Retrieves general information about the movie with the provided id.
+
+        Args:
+            tmdb_id (int): id of the movie
+
+        Returns:
+            dict containg the API result.
+        """
+
+        return tmdb.Movies(tmdb_id).info(language=lang)

@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gettext import gettext as _
-
 from gi.repository import GObject
 
 
@@ -32,7 +30,7 @@ class SearchResultModel(GObject.GObject):
     year = GObject.Property(type=str, default='')
     description = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
-    tmdb_id = GObject.Property(type=int)
+    tmdb_id = GObject.Property(type=int, default=0)
     media_type = GObject.Property(type=str, default='')
 
     def __init__(self, d=None):
@@ -44,10 +42,10 @@ class SearchResultModel(GObject.GObject):
             self.description = d['overview']
 
             if d['media_type'] == 'movie':
-                self.media_type = _('Movie')
+                self.media_type = d['media_type']
                 self.title = d['title']
                 self.year = d['release_date'][0:4]
             elif d['media_type'] == 'tv':
-                self.media_type = _('TV Series')
+                self.media_type = d['media_type']
                 self.title = d['name']
                 self.year = d['first_air_date'][0:4]

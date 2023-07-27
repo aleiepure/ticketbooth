@@ -13,6 +13,10 @@
     background-color: @light_3;
 }
 
+.poster {
+    border-radius: 12px;
+}
+
 /* Theme Switcher
  * Modified from https://gitlab.gnome.org/tijder/blueprintgtk
  * Original header below
