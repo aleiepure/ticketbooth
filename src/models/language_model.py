@@ -27,7 +27,7 @@ class LanguageModel(GObject.GObject):
     iso_name = GObject.Property(type=str, default='')
     name = GObject.Property(type=str, default='')
 
-    def __init__(self, d=None, iso_name: str = '', name: str = ''):
+    def __init__(self, d=None, t=None):
         super().__init__()
 
         if d is not None:
@@ -38,5 +38,5 @@ class LanguageModel(GObject.GObject):
             else:
                 self.name = d['english_name']
         else:
-            self.iso_name = iso_name
-            self.name = name
+            self.iso_name = t[0]  # type: ignore
+            self.name = t[1]  # type: ignore

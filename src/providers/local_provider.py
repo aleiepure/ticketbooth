@@ -37,7 +37,7 @@ class LocalProvider:
             None
         """
 
-        with sqlite3.connect(shared.data_dir / 'data') as connection:
+        with sqlite3.connect(shared.db) as connection:
             sql = """CREATE TABLE IF NOT EXISTS movies (
                         backdrop_path TEXT,
                         budget INTEGER,
@@ -86,7 +86,7 @@ class LocalProvider:
             None
         """
 
-        with sqlite3.connect(shared.data_dir / 'data') as connection:
+        with sqlite3.connect(shared.db) as connection:
             sql = """CREATE TABLE IF NOT EXISTS languages (
                         iso_639_1 TEXT PRIMARY KEY,
                         name TEXT NOT NULL
@@ -122,7 +122,7 @@ class LocalProvider:
             lastrowid: int or None containing the id of the last inserted row
         """
 
-        with sqlite3.connect(shared.data_dir / 'data') as connection:
+        with sqlite3.connect(shared.db) as connection:
             sql = 'INSERT INTO languages VALUES (?,?);'
             result = connection.cursor().execute(sql, (language.iso_name, language.name))
             connection.commit()
@@ -141,14 +141,14 @@ class LocalProvider:
         """
 
         movie = MovieModel(tmdb.get_movie(tmdb_id))
-        with sqlite3.connect(shared.data_dir / 'data') as connection:
+        with sqlite3.connect(shared.db) as connection:
             sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
                 movie.backdrop_path,
                 movie.budget,
                 ','.join(movie.genres),
                 movie.id,
-                movie.original_language.iso_name,
+                movie.original_language.iso_name,  # type: ignore
                 movie.original_title,
                 movie.overview,
                 movie.poster_path,
@@ -194,8 +194,41 @@ class LocalProvider:
             return LocalProvider.add_series(tmdb_id=tmdb_id)
 
     @staticmethod
-    def get_language_by_code(code: str) -> LanguageModel:
-        with sqlite3.connect(shared.data_dir / 'data') as connection:
+    def get_language_by_code(iso_code: str) -> LanguageModel | None:
+        """
+        Retrieves a language from the db via its iso_639_1 code.
+
+        Args:
+            iso_code (str): iso_639_1 code of the language to look for
+
+        Returns:
+            LanguageModel of the requested language or None if not found in db
+        """
+
+        with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM languages WHERE iso_639_1 = ?"""
-            result = connection.cursor().execute(sql, (code,)).fetchone()
-            return LanguageModel(iso_name=result[0], name=result[1])
+            result = connection.cursor().execute(sql, (iso_code,)).fetchone()
+            if result:
+                return LanguageModel(t=result)
+            else:
+                return None
+
+    @staticmethod
+    def get_movie_by_id(id: int) -> MovieModel | None:
+        """
+        Retrieves a movie from the db via its id.
+
+        Args:
+            id (int): id of the movie to look for
+
+        Returns:
+            MovieModel of the requested movie or None if not found in db
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM movies WHERE id = ?;"""
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            if result:
+                return MovieModel(t=result)
+            else:
+                return None

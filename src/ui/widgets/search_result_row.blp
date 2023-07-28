@@ -22,15 +22,17 @@ template $SearchResultRow: ListBoxRow {
     margin-bottom: 12;
 
     Overlay {
+      margin-start: 12;
+
       [overlay]
       Spinner _spinner {
         height-request: 32;
         width-request: 32;
         spinning: true;
+        valign: center;
       }
 
       Picture _poster_picture {
-        margin-start: 12;
         width-request: 100;
         height-request: 150;
 

@@ -58,23 +58,7 @@ class MovieModel(GObject.GObject):
     tagline = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
 
-    def __init__(self,
-                 d=None,
-                 backdrop_path: str = '',
-                 budget: int = 0,
-                 genres: str = '',
-                 id: int = 0,
-                 original_language: LanguageModel = LanguageModel(iso_name='xx', name='No Language'),
-                 original_title: str = '',
-                 overview: str = '',
-                 poster_path: str = '',
-                 release_date: str = '',
-                 revenue: int = 0,
-                 runtime: int = 0,
-                 status: str = '',
-                 tagline: str = '',
-                 title: str = ''
-                 ):
+    def __init__(self, d=None, t=None):
         super().__init__()
 
         if d is not None:
@@ -93,20 +77,20 @@ class MovieModel(GObject.GObject):
             self.tagline = d['tagline']
             self.title = d['title']
         else:
-            self.backdrop_path = backdrop_path
-            self.budget = budget
-            self.genres = self._parse_genres(db_str=genres)
-            self.id = id
-            self.original_language = local.LocalProvider.get_language_by_code(original_language)  # type: ignore
-            self.original_title = original_title
-            self.overview = overview
-            self.poster_path = poster_path
-            self.release_date = release_date
-            self.revenue = revenue
-            self.runtime = runtime
-            self.status = status
-            self.tagline = tagline
-            self.title = title
+            self.backdrop_path = t[0]  # type: ignore
+            self.budget = t[1]  # type: ignore
+            self.genres = self._parse_genres(db_str=t[2])  # type: ignore
+            self.id = t[3]  # type: ignore
+            self.original_language = local.LocalProvider.get_language_by_code(t[4])  # type: ignore
+            self.original_title = t[5]  # type: ignore
+            self.overview = t[6]  # type: ignore
+            self.poster_path = t[7]  # type: ignore
+            self.release_date = t[8]  # type: ignore
+            self.revenue = t[9]  # type: ignore
+            self.runtime = t[10]  # type: ignore
+            self.status = t[11]  # type: ignore
+            self.tagline = t[12]  # type: ignore
+            self.title = t[13]  # type: ignore
 
     def _parse_genres(self, api_dict: dict = {}, db_str: str = '') -> List[str]:
         """

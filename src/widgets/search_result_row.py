@@ -56,6 +56,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
         Callback for the "map" signal.
         Sets the visibility of the release year, the media type label and the poster to show.
+        Additionally checks if the content is already in db and disables the 'add' button.
 
         Args:
             user_data (object or None): user data passed to the callback
@@ -75,6 +76,14 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._spinner.set_visible(True)
         self._poster_picture.set_file(self._get_poster_file())
 
+        GLib.Thread.new(None, self._check_in_db_thread, None)
+
+    def _check_in_db_thread(self, thread_data):
+        if local.get_movie_by_id(self.tmdb_id):
+            self._add_btn.set_label(_('Already in your whatchlist'))
+            self._add_btn.set_icon_name('check-plain')
+            self._add_btn.set_sensitive(False)
+
     def _get_poster_file(self) -> None | Gio.File:
         """
         Get the associated poster image. Files can be retrieved from Internet
@@ -89,9 +98,9 @@ class SearchResultRow(Gtk.ListBoxRow):
             None or a Gio.File containing an image
         """
         if self.poster_path:
-            self._spinner.set_visible(True)
             Gio.Task.new(self, None, self._on_get_poster_done, None).run_in_thread(self._get_poster_thread)
         else:
+            self._spinner.set_visible(False)
             return Gio.File.new_for_uri(f'resource://{shared.PREFIX}/blank_poster.jpg')
 
     def _on_get_poster_done(self, source_widget: GObject.Object | None, result: Gio.AsyncResult,
@@ -137,7 +146,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         local.add_content(tmdb_id=self.tmdb_id, media_type=self.media_type)
-        self._add_btn.set_label(_('Added to whatchlist'))
+        self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_btn.set_sensitive(False)
 
