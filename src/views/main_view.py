@@ -17,7 +17,7 @@ class MainView(Adw.Bin):
         None
 
     Methods:
-        None
+        refresh(): Causes the window to update its contents
 
     Signals:
         None
@@ -37,3 +37,15 @@ class MainView(Adw.Bin):
 
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
+
+    def refresh(self) -> None:
+        """
+        Refreshes the visible window.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        self._tab_stack.get_visible_child().refresh_view()

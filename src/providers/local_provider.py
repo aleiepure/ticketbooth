@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sqlite3
+from typing import List
 
 from .. import shared  # type: ignore
 from ..models.language_model import LanguageModel
@@ -230,5 +231,28 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
                 return MovieModel(t=result)
+            else:
+                return None
+
+    @staticmethod
+    def get_all_movies() -> List[MovieModel] | None:
+        """
+        Retrieves all movies from the db.
+
+        Args:
+            None
+
+        Returns:
+            List of MovieModel or None
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM movies;"""
+            result = connection.cursor().execute(sql).fetchall()
+            if result:
+                movies = []
+                for movie in result:
+                    movies.append(MovieModel(t=movie))
+                return movies
             else:
                 return None

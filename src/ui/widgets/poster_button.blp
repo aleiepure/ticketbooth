@@ -1,0 +1,68 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $PosterButton: Box {
+
+  orientation: vertical;
+  halign: center;
+  valign: start;
+
+  map => $_on_map();
+
+  Adw.Clamp {
+    maximum-size: 200;
+
+    Button _poster_btn {
+      styles ["flat"]
+      overflow: hidden;
+
+      accessibility {
+        labelled-by: _title_lbl;
+      }
+
+      Box {
+        orientation: vertical;
+
+        Overlay {
+          [overlay]
+          Spinner _spinner {
+            height-request: 32;
+            spinning: true;
+            valign: center;
+          }
+
+          Picture _picture {
+            width-request: 150;
+            height-request: 261;
+            content-fit: fill;
+
+            styles ["poster"]
+          }
+        }
+
+        Box {
+          orientation: vertical;
+          spacing: 3;
+
+          Label _title_lbl {
+            ellipsize: end;
+            hexpand: true;
+            halign: start;
+            margin-top: 6;
+            label: bind template.title;
+          }
+
+          Label _year_lbl {
+            label: bind template.year;
+            halign: start;
+            styles ["caption", "chip"]
+          }
+        }
+      }
+    }
+  }
+}

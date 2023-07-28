@@ -9,6 +9,7 @@ sources = [
   '__init__.py',
   'main_view.py',
   'first_run_view.py',
+  'movies_view.py',
 ]
 
 install_data(sources, install_dir: viewsdir)

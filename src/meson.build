@@ -13,12 +13,16 @@ blueprints = custom_target('blueprints',
     'ui/window.blp',
     'ui/about_window.blp',
     'ui/preferences.blp',
+
     'ui/views/main_view.blp',
     'ui/views/first_run_view.blp',
+    'ui/views/movies_view.blp',
+
     'ui/dialogs/add_manual.blp',
     'ui/dialogs/add_tmdb.blp',
+
     'ui/widgets/theme_switcher.blp',
-    'ui/widgets/poster_tile.blp',
+    'ui/widgets/poster_button.blp',
     'ui/widgets/search_result_row.blp',
   ),
   output: '.',

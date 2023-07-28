@@ -119,15 +119,18 @@ class MovieModel(GObject.GObject):
 
     def _download_image(self, image_type: str, path: str) -> str:
         """
-        Returns the path of the image on the local filesystem, downloading if necessary.
+        Returns the uri of the image on the local filesystem, downloading if necessary.
 
         Args:
             image_type (str): image type, determines where it is stored
             path (str): path to dowload from
 
         Returns:
-            str with the path of the image
+            str with the uri of the image
         """
+
+        if not path:
+            return f'resource://{shared.PREFIX}/blank_poster.jpg'
 
         if image_type == 'poster':
             directory = shared.poster_dir
@@ -136,11 +139,11 @@ class MovieModel(GObject.GObject):
 
         files = glob.glob(f'{path[1:-4]}.jpg', root_dir=directory)
         if files:
-            return f'{directory}/{files[0]}'
+            return f'file://{directory}/{files[0]}'
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
         r = requests.get(url)
         if r.status_code == 200:
             with open(f'{directory}{path}', 'wb') as f:
                 f.write(r.content)
-        return f'{directory}{path}'
+        return f'file://{directory}{path}'

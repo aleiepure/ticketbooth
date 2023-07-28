@@ -22,7 +22,8 @@ from .models.search_result_model import SearchResultModel
 from .preferences import PreferencesWindow
 from .views.first_run_view import FirstRunView
 from .views.main_view import MainView
-from .widgets.poster_tile import PosterTile
+from .views.movies_view import MoviesView
+from .widgets.poster_button import PosterButton
 from .widgets.search_result_row import SearchResultRow
 from .window import TicketboothWindow
 
@@ -33,10 +34,11 @@ class TicketboothApplication(Adw.Application):
     # Types used in blueprint files
     _custom_widgets = [
         SearchResultModel,
-        PosterTile,
+        PosterButton,
         SearchResultRow,
         FirstRunView,
         MainView,
+        MoviesView,
     ]
 
     def __init__(self):

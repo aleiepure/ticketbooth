@@ -73,6 +73,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddTMDBDialog(source)
+        dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
         dialog.present()
 
     def _add_manual(self, new_state: None, source: Gtk.Widget) -> None:
@@ -88,6 +89,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddManualDialog(source)
+        dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
         dialog.present()
 
     _actions = {
@@ -117,13 +119,15 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
-        self._win_stack.add_named(child=MainView(), name='main')
-        self._win_stack.set_visible_child_name('main')
-        if shared.schema.get_boolean('first-run'):
-            self.first_run_view = FirstRunView()
-            self._win_stack.add_named(child=self.first_run_view, name='first-run')
-            self._win_stack.set_visible_child_name('first-run')
-            self.first_run_view.connect('exit', self._on_first_run_exit)
+        if not shared.schema.get_boolean('first-run'):
+            self._win_stack.add_named(child=MainView(), name='main')
+            self._win_stack.set_visible_child_name('main')
+            return
+
+        self.first_run_view = FirstRunView()
+        self._win_stack.add_named(child=self.first_run_view, name='first-run')
+        self._win_stack.set_visible_child_name('first-run')
+        self.first_run_view.connect('exit', self._on_first_run_exit)
 
     def _on_first_run_exit(self, source: Gtk.Widget) -> None:
         """
@@ -136,6 +140,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
+        self._win_stack.add_named(child=MainView(), name='main')
         self._win_stack.set_visible_child_name('main')
 
     def _restore_state(self) -> None:

@@ -39,17 +39,7 @@ template $AddTMDBDialog: Adw.Window {
 
       [start]
       Button _cancel_btn {
-        label: _("Cancel");
-        action-name: "window.close";
-      }
-
-      [end]
-      Button _done_btn {
-        label: _("Done");
-        sensitive: false;
-
-        styles ["suggested-action"]
-
+        label: _("Close");
         action-name: "window.close";
       }
     }

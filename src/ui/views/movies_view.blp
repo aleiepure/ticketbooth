@@ -1,0 +1,77 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $MoviesView: Adw.Bin {
+  Adw.ViewStack _stack {
+    Adw.ViewStackPage {
+      name: "empty";
+      child: Adw.StatusPage {
+        icon-name: "plus";
+        title: _("Your watchlist is empty");
+        description: _("Add movies with the button in the corner");
+      };
+    }
+
+    Adw.ViewStackPage {
+      name: "loading";
+      child: Adw.StatusPage {
+        child: Box {
+          orientation: vertical;
+          Spinner {
+            spinning: true;
+            height-request: 64;
+          }
+
+          Box {
+            orientation: vertical;
+            margin-start: 12;
+            margin-end: 12;
+
+            Label _heading_lbl {
+              label: "Loading your watchlist";
+              wrap: true;
+              halign: center;
+              justify: center;
+              styles ["title-1"]
+            }
+
+            Label _status_lbl {
+              label: "Get your popcorns ready";
+              halign: center;
+              justify: center;
+              wrap: true;
+            }
+          }
+        };
+      };
+    }
+
+    Adw.ViewStackPage {
+      name: "filled";
+      child: ScrolledWindow {
+        Box {
+          orientation: vertical;
+          spacing: 12;
+          halign: start;
+
+          Label {
+            halign: start;
+            margin-start: 12;
+            margin-top: 12;
+            label: _("Your watchlist");
+            styles ["title-1"]
+          }
+
+          FlowBox _flow_box {
+            orientation: horizontal;
+            min-children-per-line: 2;
+          }
+        }
+      };
+    }
+  }
+}

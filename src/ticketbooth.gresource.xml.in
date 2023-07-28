@@ -18,7 +18,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
     <!-- Widgets -->
     <file preprocess="xml-stripblanks">ui/widgets/theme_switcher.ui</file>
-    <file preprocess="xml-stripblanks">ui/widgets/poster_tile.ui</file>
+    <file preprocess="xml-stripblanks">ui/widgets/poster_button.ui</file>
     <file preprocess="xml-stripblanks">ui/widgets/search_result_row.ui</file>
 
     <!-- Dialogs -->
@@ -32,6 +32,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/preferences.ui</file>
     <file preprocess="xml-stripblanks">ui/views/first_run_view.ui</file>
     <file preprocess="xml-stripblanks">ui/views/main_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/views/movies_view.ui</file>
 
     <!-- Others -->
     <file alias="blank_poster.jpg">../data/blank_poster.jpg</file>

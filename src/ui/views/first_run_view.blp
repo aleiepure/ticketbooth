@@ -5,7 +5,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $FirstRunView: Adw.Bin  {
+template $FirstRunView: Adw.Bin {
 
   map => $_on_map();
 
@@ -21,8 +21,8 @@ template $FirstRunView: Adw.Bin  {
 
     Box {
       orientation: vertical;
-        margin-start: 12;
-        margin-end: 12;
+      margin-start: 12;
+      margin-end: 12;
 
       Label _heading_lbl {
         label: "Getting things ready";
@@ -41,11 +41,11 @@ template $FirstRunView: Adw.Bin  {
     }
 
     Button _offline_btn {
-        visible: false;
-        halign: center;
-        label: _("Use Offline Mode");
-        clicked => $_on_offline_btn_clicked();
-        styles ["suggested-action", "pill"]
+      visible: false;
+      halign: center;
+      label: _("Use Offline Mode");
+      clicked => $_on_offline_btn_clicked();
+      styles ["suggested-action", "pill"]
     }
 
     CheckButton _retry_check_btn {

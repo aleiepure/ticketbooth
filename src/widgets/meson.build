@@ -8,7 +8,7 @@ widgetsdir = join_paths(pkgdatadir, 'src/widgets')
 sources = [
   '__init__.py',
   'theme_switcher.py',
-  'poster_tile.py',
+  'poster_button.py',
   'search_result_row.py',
 ]
 
