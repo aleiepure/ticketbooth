@@ -11,48 +11,59 @@ template $FirstRunView: Adw.Bin {
 
   Box {
     orientation: vertical;
-    spacing: 12;
-    valign: center;
+    vexpand: true;
 
-    Spinner {
-      spinning: true;
-      height-request: 64;
+    Adw.HeaderBar {
+      styles ["flat"]
+      title-widget: Label {};
     }
 
     Box {
       orientation: vertical;
-      margin-start: 12;
-      margin-end: 12;
+      spacing: 12;
+      valign: center;
+      vexpand: true;
 
-      Label _heading_lbl {
-        label: "Getting things ready";
-        wrap: true;
-        halign: center;
-        justify: center;
-        styles ["title-1"]
+      Spinner {
+        spinning: true;
+        height-request: 64;
       }
 
-      Label _status_lbl {
-        label: "Please wait, this might take a while.";
-        halign: center;
-        justify: center;
-        wrap: true;
+      Box {
+        orientation: vertical;
+        margin-start: 12;
+        margin-end: 12;
+
+        Label _heading_lbl {
+          label: "Getting things ready";
+          wrap: true;
+          halign: center;
+          justify: center;
+          styles ["title-1"]
+        }
+
+        Label _status_lbl {
+          label: "Please wait, this might take a while.";
+          halign: center;
+          justify: center;
+          wrap: true;
+        }
       }
-    }
 
-    Button _offline_btn {
-      visible: false;
-      halign: center;
-      label: _("Use Offline Mode");
-      clicked => $_on_offline_btn_clicked();
-      styles ["suggested-action", "pill"]
-    }
+      Button _offline_btn {
+        visible: false;
+        halign: center;
+        label: _("Use Offline Mode");
+        clicked => $_on_offline_btn_clicked();
+        styles ["suggested-action", "pill"]
+      }
 
-    CheckButton _retry_check_btn {
-      label: _("Try again on next run");
-      visible: false;
-      active: true;
-      halign: center;
+      CheckButton _retry_check_btn {
+        label: _("Try again on next run");
+        visible: false;
+        active: true;
+        halign: center;
+      }
     }
   }
 }
