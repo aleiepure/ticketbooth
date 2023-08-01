@@ -2,4 +2,4 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-option('debug', type : 'boolean', value : true)
+option('prerelease', type : 'boolean', value : true)

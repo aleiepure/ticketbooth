@@ -1,0 +1,342 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $DetailsView: Adw.Window {
+
+  map => $_on_map();
+
+  Box {
+    orientation: vertical;
+    valign: start;
+
+    Overlay {
+      valign: start;
+      vexpand: true;
+      height-request: 400;
+      overflow: hidden;
+
+      Picture _background_picture {
+        content-fit: cover;
+        hexpand: true;
+        height-request: 300;
+      }
+
+      [overlay]
+      Box {
+        orientation: horizontal;
+
+        Picture _poster_picture {
+          margin-start: 50;
+          margin-top: 50;
+          margin-bottom: 50;
+          height-request: 300;
+          width-request: 200;
+          content-fit: fill;
+
+          styles ["poster"]
+        }
+
+        Box {
+          orientation: vertical;
+          hexpand: true;
+          margin-start: 50;
+          margin-top: 50;
+          margin-bottom: 50;
+          margin-end: 50;
+          spacing: 6;
+          valign: center;
+          halign: start;
+          height-request: -1;
+          width-request: 400;
+
+          Label _title_lbl {
+            lines: 2;
+            halign: start;
+            wrap: true;
+            label: bind template.movie as < $MovieModel > .title;
+
+            styles ["title-1"]
+          }
+
+          Label _tagline_lbl {
+            visible: bind $_set_visibility(template.movie as < $MovieModel > .tagline) as < bool > ;
+            halign: start;
+            label: bind template.movie as < $MovieModel > .tagline;
+            styles ["heading"]
+          }
+
+          Label _genres_lbl {
+            halign: start;
+          }
+
+          Box {
+            orientation: horizontal;
+            spacing: 6;
+
+            Label _release_date_lbl {
+              visible: bind $_set_visibility(template.movie as < $MovieModel > .release_date) as < bool > ;
+              label: bind $_format_release_date(template.movie as < $MovieModel > .release_date) as < string > ;
+              styles ["caption", "chip"]
+            }
+
+            Label _runtime_lbl {
+              visible: bind $_set_visibility(template.movie as < $MovieModel > .runtime) as < bool > ;
+              label: bind $_format_runtime(template.movie as < $MovieModel > .runtime) as < string > ;
+              styles ["caption", "chip"]
+            }
+          }
+
+          Box {
+            orientation: horizontal;
+
+            Button {
+              child: Adw.ButtonContent _watched_btn {};
+              valign: center;
+              styles ["pill", "opaque"]
+              clicked => $_on_watched_btn_clicked();
+            }
+
+            Box {
+              orientation: horizontal;
+              spacing: 6;
+              margin-start: 16;
+
+              Button _edit_btn {
+                icon-name: "document-edit";
+                tooltip-text: _("Edit");
+                valign: center;
+                visible: bind template.movie as < $MovieModel > .manual;
+                styles ["circular"]
+                clicked => $_on_edit_btn_clicked();
+              }
+
+              Button _delete_btn {
+                icon-name: "user-trash-symbolic";
+                tooltip-text: _("Delete");
+                valign: center;
+                styles ["circular"]
+                clicked => $_on_delete_btn_clicked();
+              }
+            }
+          }
+
+          Box {
+            orientation: vertical;
+            visible: bind $_set_visibility(template.movie as < $MovieModel > .overview) as < bool > ;
+
+            Separator {
+              margin-top: 12;
+              styles ["spacer"]
+            }
+
+            Label {
+              label: _("Description");
+              halign: start;
+              styles ["title-2"]
+            }
+
+            Label _overview_lbl {
+              label: bind template.movie as < $MovieModel > .overview;
+              halign: start;
+              wrap: true;
+            }
+          }
+
+        }
+      }
+    }
+
+    Separator {
+      margin-bottom: 16;
+      styles ["spacer"]
+    }
+
+    Box {
+      valign: start;
+      vexpand: true;
+      orientation: vertical;
+      margin-bottom: 50;
+
+      Label {
+        label: _("Additional information");
+        styles ["title-2"]
+        halign: start;
+        margin-start: 50;
+      }
+
+      FlowBox _flow_box {
+        orientation: horizontal;
+        hexpand: true;
+        selection-mode: none;
+        margin-start: 50;
+        margin-end: 50;
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .status) as < bool > ;
+
+        //   Label {
+        //     label: _("Status");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _status_lbl {
+        //     label: bind template.movie as < $MovieModel > .status;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .budget) as < bool > ;
+
+        //   Label {
+        //     label: _("Budget");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _budget_lbl {
+        //     label: bind $_format_money(template.movie as < $MovieModel > .budget) as < string > ;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .revenue) as < bool > ;
+
+        //   Label {
+        //     label: _("Revenue");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _revenue_lbl {
+        //     label: bind $_format_money(template.movie as < $MovieModel > .revenue) as < string > ;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .original_language as < $LanguageModel > .name) as < bool > ;
+
+        //   Label {
+        //     label: _("Original Language");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _original_lang_lbl {
+        //     label: bind template.movie as < $MovieModel > .original_language as < $LanguageModel > .name;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .original_title) as <bool>;
+
+        //   Label {
+        //     label: _("Original Title");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _original_title_lbl {
+        //     label: bind template.movie as < $MovieModel > .original_title;
+        //   }
+        // }
+      }
+
+      // Box {
+      //   orientation: horizontal;
+      //   margin-start: 50;
+      //   spacing: 12;
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .status) as < bool > ;
+
+        //   Label {
+        //     label: _("Status");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _status_lbl {
+        //     label: bind template.movie as < $MovieModel > .status;
+        // }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .budget) as < bool > ;
+
+        //   Label {
+        //     label: _("Budget");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _budget_lbl {
+        //     label: bind $_format_money(template.movie as < $MovieModel > .budget) as < string > ;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .revenue) as < bool > ;
+
+        //   Label {
+        //     label: _("Revenue");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _revenue_lbl {
+        //     label: bind $_format_money(template.movie as < $MovieModel > .revenue) as < string > ;
+        //   }
+        // }
+      // }
+
+      // Box {
+      //   orientation: horizontal;
+      //   margin-start: 50;
+      //   spacing: 12;
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .original_language as < $LanguageModel > .name) as < bool > ;
+
+        //   Label {
+        //     label: _("Original Language");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _original_lang_lbl {
+        //     label: bind template.movie as < $MovieModel > .original_language as < $LanguageModel > .name;
+        //   }
+        // }
+
+        // Box {
+        //   orientation: horizontal;
+        //   spacing: 6;
+        //   visible: bind $_set_visibility(template.movie as < $MovieModel > .original_title) as <bool>;
+
+        //   Label {
+        //     label: _("Original Title");
+        //     styles ["heading"]
+        //   }
+
+        //   Label _original_title_lbl {
+        //     label: bind template.movie as < $MovieModel > .original_title;
+        //   }
+        // }
+      // }
+    }
+  }
+}

@@ -45,21 +45,6 @@ class TicketboothWindow(Adw.ApplicationWindow):
         self.set_state(new_state)
         shared.schema.set_string('view-sorting', str(new_state)[1:-1])
 
-    def _style_on_changed(self, new_state: str, source: Gtk.Widget) -> None:
-        """
-        Callback for the win.view-style action
-
-        Args:
-            new_state (str): new selected state
-            source (Gtk.Widget): widget that caused the activation
-
-        Returns:
-            None
-        """
-
-        self.set_state(new_state)
-        shared.schema.set_string('view-style', str(new_state)[1:-1])
-
     def _add_tmdb(self, new_state: None, source: Gtk.Widget) -> None:
         """
         Callback for the win.add-tmdb action
@@ -94,7 +79,6 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
     _actions = {
         ('view-sorting', None, 's', f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
-        ('view-style', None, 's', f"'{shared.schema.get_string('view-style')}'", _style_on_changed),
         ('add-tmdb', _add_tmdb),
         ('add-manual', _add_manual),
     }

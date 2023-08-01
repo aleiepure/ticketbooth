@@ -21,3 +21,5 @@ _build/
 # Flatpak bundles
 me.iepure.Ticketbooth.flatpak
 me.iepure.Ticketbooth.Devel.flatpak
+
+/subprojects/blueprint-compiler

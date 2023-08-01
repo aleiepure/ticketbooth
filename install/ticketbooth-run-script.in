@@ -3,5 +3,4 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-export TMPDIR="$XDG_RUNTIME_DIR/app/@app_id@"
 TMDB_KEY="3cea7ff23278a75460ead4d6e2cef9af" exec /app/bin/ticketbooth-bin "$@"

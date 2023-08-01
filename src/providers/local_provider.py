@@ -40,20 +40,23 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """CREATE TABLE IF NOT EXISTS movies (
+                        add_date TEXT,
                         backdrop_path TEXT,
                         budget INTEGER,
                         genres TEXT,
                         id INTEGER PRIMARY KEY,
+                        manual BOOLEAN,
                         original_language TEXT,
                         original_title TEXT,
                         overview TEXT,
                         poster_path TEXT,
                         release_date TEXT,
                         revenue INTEGER,
-                        runtime INTEGER NOT NULL,
+                        runtime INTEGER,
                         status TEXT,
                         tagline TEXT,
                         title TEXT NOT NULL,
+                        watched BOOLEAN,
                         FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
                      );"""
             connection.cursor().execute(sql)
@@ -143,12 +146,14 @@ class LocalProvider:
 
         movie = MovieModel(tmdb.get_movie(tmdb_id))
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
+                movie.add_date,
                 movie.backdrop_path,
                 movie.budget,
                 ','.join(movie.genres),
                 movie.id,
+                movie.manual,
                 movie.original_language.iso_name,  # type: ignore
                 movie.original_title,
                 movie.overview,
@@ -159,6 +164,7 @@ class LocalProvider:
                 movie.status,
                 movie.tagline,
                 movie.title,
+                movie.watched,
             ))
             connection.commit()
         return result.lastrowid
@@ -256,3 +262,40 @@ class LocalProvider:
                 return movies
             else:
                 return None
+
+    @staticmethod
+    def mark_watched_movie(id: int, watched: bool) -> int | None:
+        """
+        Sets the watched flag on the movie with the provided id.
+
+        Args:
+            id (int): movie id to change
+            watched (bool): status to set the flag to
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE movies SET watched = ? WHERE id = ?"""
+            result = connection.cursor().execute(sql, (watched, id,))
+            connection.commit()
+        return result.lastrowid
+
+    @staticmethod
+    def delete_movie(id: int) -> int | None:
+        """
+        Deletes the movie with the provided id.
+
+        Args:
+            id (int): movie id to delete
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """DELETE FROM movies WHERE id = ?"""
+            result = connection.cursor().execute(sql, (id,))
+            connection.commit()
+        return result.lastrowid

@@ -12,7 +12,7 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 # Debug info
-if get_option('debug')
+if get_option('prerelease')
   name_suffix = ' (Development snapshot)'
   app_id = 'me.iepure.Ticketbooth.Devel'
   prefix = '/me/iepure/Ticketbooth/Devel'
@@ -32,6 +32,7 @@ else
   name_suffix = ''
   app_id = 'me.iepure.Ticketbooth'
   prefix = '/me/iepure/Ticketbooth'
+  version_number = meson.version()
 endif
 
 
@@ -43,7 +44,7 @@ conf = configuration_data()
 conf.set('python', python.find_installation('python3').full_path())
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()))
-conf.set('debug', get_option('debug'))
+conf.set('debug', get_option('prerelease'))
 conf.set('app_id', app_id)
 conf.set('version', version_number)
 conf.set('app_name', 'Ticket Booth@0@'.format(name_suffix))

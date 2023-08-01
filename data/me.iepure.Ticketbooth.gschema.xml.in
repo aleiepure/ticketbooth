@@ -37,33 +37,19 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<default>true</default>
 			<summary>Specifies if the app is run for the first time</summary>
 		</key>
-
-		<!-- View style/sorting -->
-		<key name="view-style" type="s">
-			<choices>
-				<choice value="grid" />
-				<choice value="list" />
-			</choices>
-			<default>"grid"</default>
-			<summary>View display style</summary>
-			<description>
-				Determine how movies/tv-series are displayed in the main view, either as a list or a
-				grid.
-				Allowed values: "grid", "list"
-			</description>
-		</key>
 		<key name="view-sorting" type="s">
 			<choices>
 				<choice value="az" />
 				<choice value="za" />
-				<choice value="added-date" />
-				<choice value="released-date" />
+				<choice value="added-date-new" />
+				<choice value="added-date-old" />
+				<choice value="released-date-new" />
+				<choice value="released-date-old" />
 			</choices>
-			<default>"added-date"</default>
+			<default>"added-date-new"</default>
 			<summary>View sorting style</summary>
 			<description>
-				Determine how movies/tv-series are sorted in the view.
-				Allowed values: "az", "za", "added-date", "released-date"
+				Determines how movies/tv-series are sorted in the view.
 			</description>
 		</key>
 

@@ -6,7 +6,7 @@ jobs:
     name: "Build Flatpak (arm64)"
     runs-on: ubuntu-latest
     container:
-      image: bilelmoussaoui/flatpak-github-actions:gnome-44
+      image: bilelmoussaoui/flatpak-github-actions:gnome-master
       options: --privileged
     steps:
     - uses: fsfe/reuse-action@v1.2.0

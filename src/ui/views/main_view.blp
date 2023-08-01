@@ -98,22 +98,6 @@ menu _primary_menu {
 
   section {
     submenu {
-      label: _("View style");
-
-      item {
-        label: _("Grid");
-        action: "win.view-style";
-        target: "grid";
-      }
-
-      item {
-        label: _("List");
-        action: "win.view-style";
-        target: "list";
-      }
-    }
-
-    submenu {
       label: _("Sorting");
 
       item {
@@ -128,19 +112,28 @@ menu _primary_menu {
         target: "za";
       }
 
-
       item {
-        label: _("Date added");
+        label: _("Date added (newest first)");
         action: "win.view-sorting";
-        target: "added-date";
+        target: "added-date-new";
       }
 
+      item {
+        label: _("Date added (oldest first)");
+        action: "win.view-sorting";
+        target: "added-date-old";
+      }
 
       item {
-        label: _("Release date");
+        label: _("Release date (newest first)");
         action: "win.view-sorting";
-        target: "release-date";
+        target: "released-date-new";
+      }
 
+      item {
+        label: _("Release date (oldest first)");
+        action: "win.view-sorting";
+        target: "released-date-old";
       }
     }
   }

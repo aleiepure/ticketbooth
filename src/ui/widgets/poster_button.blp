@@ -17,6 +17,9 @@ template $PosterButton: Box {
     maximum-size: 200;
 
     Button _poster_btn {
+
+      clicked => $_on_poster_btn_clicked();
+
       styles ["flat"]
       overflow: hidden;
 
@@ -28,6 +31,8 @@ template $PosterButton: Box {
         orientation: vertical;
 
         Overlay {
+          halign: center;
+
           [overlay]
           Spinner _spinner {
             height-request: 32;
@@ -37,7 +42,7 @@ template $PosterButton: Box {
 
           Picture _picture {
             width-request: 150;
-            height-request: 261;
+            height-request: 225;
             content-fit: fill;
 
             styles ["poster"]
@@ -54,6 +59,8 @@ template $PosterButton: Box {
             halign: start;
             margin-top: 6;
             label: bind template.title;
+            lines: 2;
+            wrap: true;
           }
 
           Label _year_lbl {

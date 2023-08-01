@@ -1,18 +1,19 @@
 {
-    "id" : "me.iepure.Ticketbooth.Devel",
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "44",
-    "sdk" : "org.gnome.Sdk",
-    "command" : "ticketbooth",
-    "separate-locales" : false,
-    "finish-args" : [
+    "id": "me.iepure.Ticketbooth.Devel",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "master",
+    "sdk": "org.gnome.Sdk",
+    "command": "ticketbooth",
+    "separate-locales": false,
+    "finish-args": [
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--socket=session-bus"
     ],
-    "cleanup" : [
+    "cleanup": [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -23,34 +24,23 @@
         "*.la",
         "*.a"
     ],
-    "modules" : [
+    "modules": [
         "pypi-dependencies.json",
         {
-            "name" : "blueprint-compiler",
-            "buildsystem" : "meson",
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/jwestman/blueprint-compiler",
-                    "tag" : "v0.10.0"
-                }
-            ]
-        },
-        {
-            "name" : "ticketbooth",
-            "buildsystem" : "meson",
-            "config-opts" : [
-                "-Ddebug=true"
+            "name": "ticketbooth",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dprerelease=true"
             ],
-            "post-install" : [
+            "post-install": [
                 "mv /app/bin/ticketbooth /app/bin/ticketbooth-bin",
                 "install -Dm755 /app/ticketbooth/ticketbooth-run-script /app/bin/ticketbooth"
             ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "git",
-                    "url" : "https://github.com/aleiepure/ticketbooth",
-                    "branch" : "main"
+                    "type": "git",
+                    "url": "https://github.com/aleiepure/ticketbooth",
+                    "branch": "main"
                 }
             ]
         }
