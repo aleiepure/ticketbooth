@@ -9,7 +9,7 @@ jobs:
     name: "Build Flatpak"
     runs-on: ubuntu-latest
     container:
-      image: bilelmoussaoui/flatpak-github-actions:gnome-master
+      image: bilelmoussaoui/flatpak-github-actions:gnome-nightly
       options: --privileged
     steps:
     - uses: fsfe/reuse-action@v1.2.0
