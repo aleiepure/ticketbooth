@@ -32,7 +32,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/preferences.ui</file>
     <file preprocess="xml-stripblanks">ui/views/first_run_view.ui</file>
     <file preprocess="xml-stripblanks">ui/views/main_view.ui</file>
-    <file preprocess="xml-stripblanks">ui/views/movies_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/views/content_view.ui</file>
     <file preprocess="xml-stripblanks">ui/views/details_view.ui</file>
 
     <!-- Others -->

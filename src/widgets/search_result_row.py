@@ -36,9 +36,10 @@ class SearchResultRow(Gtk.ListBoxRow):
     __gtype_name__ = 'SearchResultRow'
 
     _poster_picture = Gtk.Template.Child()
-    _spinner = Gtk.Template.Child()
+    _poster_spinner = Gtk.Template.Child()
     _media_type_lbl = Gtk.Template.Child()
     _add_btn = Gtk.Template.Child()
+    _add_spinner = Gtk.Template.Child()
 
     tmdb_id = GObject.Property(type=int, default=0)
     title = GObject.Property(type=str, default='')
@@ -73,13 +74,13 @@ class SearchResultRow(Gtk.ListBoxRow):
         else:
             self._media_type_lbl.set_label(_('TV Series'))
 
-        self._spinner.set_visible(True)
+        self._poster_spinner.set_visible(True)
         self._poster_picture.set_file(self._get_poster_file())
 
         GLib.Thread.new(None, self._check_in_db_thread, None)
 
     def _check_in_db_thread(self, thread_data):
-        if local.get_movie_by_id(self.tmdb_id):
+        if local.get_movie_by_id(self.tmdb_id) or local.get_series_by_id(self.tmdb_id):
             self._add_btn.set_label(_('Already in your whatchlist'))
             self._add_btn.set_icon_name('check-plain')
             self._add_btn.set_sensitive(False)
@@ -100,7 +101,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         if self.poster_path:
             Gio.Task.new(self, None, self._on_get_poster_done, None).run_in_thread(self._get_poster_thread)
         else:
-            self._spinner.set_visible(False)
+            self._poster_spinner.set_visible(False)
             return Gio.File.new_for_uri(f'resource://{shared.PREFIX}/blank_poster.jpg')
 
     def _on_get_poster_done(self, source_widget: GObject.Object | None, result: Gio.AsyncResult,
@@ -119,7 +120,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         poster = self._get_poster_file_finish(result, self)
-        self._spinner.set_visible(False)
+        self._poster_spinner.set_visible(False)
         self._poster_picture.set_file(poster)
 
     @Gtk.Template.Callback('_on_add_btn_clicked')
@@ -135,6 +136,8 @@ class SearchResultRow(Gtk.ListBoxRow):
             None
         """
 
+        self._add_spinner.set_visible(True)
+        self._add_btn.set_sensitive(False)
         GLib.Thread.new(f'Adding {self.tmdb_id}', self._add_content_to_db_thread, None)
 
     def _add_content_to_db_thread(self, thread_data: object | None) -> None:
@@ -148,7 +151,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         local.add_content(id=self.tmdb_id, media_type=self.media_type)
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
-        self._add_btn.set_sensitive(False)
+        self._add_spinner.set_visible(False)
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
                            cancelable: Gio.Cancellable | None) -> None:

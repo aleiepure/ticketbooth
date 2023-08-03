@@ -25,7 +25,7 @@ template $SearchResultRow: ListBoxRow {
       margin-start: 12;
 
       [overlay]
-      Spinner _spinner {
+      Spinner _poster_spinner {
         height-request: 32;
         width-request: 32;
         spinning: true;
@@ -82,18 +82,30 @@ template $SearchResultRow: ListBoxRow {
         ellipsize: end;
       }
 
-      Button {
-        child: Adw.ButtonContent _add_btn {
-          label: _("Add to watchlist");
-          icon-name: "plus";
-        };
-        halign: start;
-        vexpand: true;
+      Box {
+        orientation: horizontal;
+        spacing: 12;
         valign: end;
 
-        clicked => $_on_add_btn_clicked();
+        Button {
+          child: Adw.ButtonContent _add_btn {
+            label: _("Add to watchlist");
+            icon-name: "plus";
+          };
+          halign: start;
+          vexpand: true;
+          valign: end;
 
-        styles ["suggested-action"]
+          clicked => $_on_add_btn_clicked();
+
+          styles ["suggested-action"]
+        }
+
+        Spinner _add_spinner {
+          spinning: true;
+          height-request: 16;
+          visible: false;
+        }
       }
     }
   };

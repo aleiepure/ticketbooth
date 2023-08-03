@@ -61,23 +61,25 @@ template $MainView: Adw.Bin {
         vexpand: true;
         hexpand: true;
 
-        Adw.ViewStackPage {
-          name: "movies";
-          title: _("Movies");
-          icon-name: "movies";
+        // Adw.ViewStackPage {
+        //   name: "movies";
+        //   title: _("Movies");
+        //   icon-name: "movies";
 
-          child: $MoviesView {};
-        }
+        //   child: $ContentView {
+        //     movie-view: true;
+        //   };
+        // }
 
-        Adw.ViewStackPage {
-          name: "series";
-          title: _("TV Series");
-          icon-name: "series";
+        // Adw.ViewStackPage {
+        //   name: "series";
+        //   title: _("TV Series");
+        //   icon-name: "series";
 
-          child: Label {
-            label: "TV Series";
-          };
-        }
+        //   child: $ContentView {
+        //     movie-view: false;
+        //   };
+        // }
       }
 
       Adw.ViewSwitcherBar {

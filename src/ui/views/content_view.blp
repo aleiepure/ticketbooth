@@ -5,14 +5,14 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $MoviesView: Adw.Bin {
+template $ContentView: Adw.Bin {
   Adw.ViewStack _stack {
     Adw.ViewStackPage {
       name: "empty";
       child: Adw.StatusPage {
         icon-name: "plus";
         title: _("Your watchlist is empty");
-        description: _("Add movies with the button in the corner");
+        description: _("Add content with the button in the corner");
       };
     }
 
@@ -69,6 +69,7 @@ template $MoviesView: Adw.Bin {
           FlowBox _flow_box {
             orientation: horizontal;
             min-children-per-line: 2;
+            selection-mode: none;
           }
         }
       };

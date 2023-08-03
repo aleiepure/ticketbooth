@@ -102,6 +102,7 @@ class LocalProvider:
                             original_title TEXT,
                             overview TEXT,
                             poster_path TEXT,
+                            release_date TEXT,
                             seasons_number INT,
                             status TEXT,
                             tagline TEXT,
@@ -242,11 +243,11 @@ class LocalProvider:
 
         serie = SeriesModel(tmdb.get_serie(id))
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
                 serie.add_date,
                 serie.backdrop_path,
-                serie.created_by,
+                ','.join(serie.created_by),
                 serie.episodes_number,
                 ','.join(serie.genres),
                 serie.id,
@@ -256,6 +257,7 @@ class LocalProvider:
                 serie.original_title,
                 serie.overview,
                 serie.poster_path,
+                serie.release_date,
                 serie.seasons_number,
                 serie.status,
                 serie.tagline,
@@ -483,5 +485,28 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
                 return SeriesModel(t=result)
+            else:
+                return None
+
+    @staticmethod
+    def get_all_series() -> List[SeriesModel] | None:
+        """
+        Retrieves all tv series from the db.
+
+        Args:
+            None
+
+        Returns:
+            List of SeriesModel or None
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM series;"""
+            result = connection.cursor().execute(sql).fetchall()
+            if result:
+                series = []
+                for serie in result:
+                    series.append(SeriesModel(t=serie))
+                return series
             else:
                 return None

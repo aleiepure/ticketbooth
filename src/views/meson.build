@@ -9,7 +9,7 @@ sources = [
   '__init__.py',
   'main_view.py',
   'first_run_view.py',
-  'movies_view.py',
+  'content_view.py',
   'details_view.py',
 ]
 

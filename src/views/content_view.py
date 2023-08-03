@@ -6,13 +6,14 @@ from gi.repository import Adw, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..models.movie_model import MovieModel
+from ..models.series_model import SeriesModel
 from ..providers.local_provider import LocalProvider as local
-from ..views.details_view import DetailsView
 from ..widgets.poster_button import PosterButton
+from .details_view import DetailsView
 
 
-@Gtk.Template(resource_path=shared.PREFIX + '/ui/views/movies_view.ui')
-class MoviesView(Adw.Bin):
+@Gtk.Template(resource_path=shared.PREFIX + '/ui/views/content_view.ui')
+class ContentView(Adw.Bin):
     """
     This class rappresents the movies view of the app.
 
@@ -26,18 +27,22 @@ class MoviesView(Adw.Bin):
         None
     """
 
-    __gtype_name__ = 'MoviesView'
+    __gtype_name__ = 'ContentView'
+
+    movie_view = GObject.Property(type=bool, default=True)
 
     _stack = Gtk.Template.Child()
     _flow_box = Gtk.Template.Child()
 
-    def __init__(self):
+    def __init__(self, movie_view: bool):
         super().__init__()
+        self.movie_view = movie_view
 
         self._stack.set_visible_child_name('loading')
-        GLib.Thread.new(None, self._load_movies, None)
-        self._set_sorting_function()
 
+        GLib.Thread.new(None, self._load_content, movie_view)
+
+        self._set_sorting_function()
         shared.schema.connect('changed::view-sorting', self._on_sort_changed)
 
     def _on_sort_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
@@ -55,27 +60,36 @@ class MoviesView(Adw.Bin):
 
         self._set_sorting_function()
 
-    def _load_movies(self, data: object | None) -> None:
+    def _load_content(self, movie_view: bool) -> None:
         """
-        For each movie currently in the db, creates a PosterButton and adds it to the FlowBox.
+        For each title currently in the db, creates a PosterButton and adds it to the FlowBox.
 
         Args:
-            data (object or None): data passed to the thread
+            movie_view (bool): if true it will load movies, otherwise it will load series
 
         Returns:
             None
         """
 
-        movies = local.get_all_movies()
+        if movie_view:
+            content = local.get_all_movies()
+        else:
+            content = local.get_all_series()
 
-        if not movies:
+        if not content:
             self._stack.set_visible_child_name('empty')
             return
 
-        for movie in movies:
-            btn = PosterButton(movie=movie)
-            btn.connect('clicked', self._on_movie_clicked)
+        for item in content:
+            btn = PosterButton(content=item)
+            btn.connect('clicked', self._on_clicked)
             self._flow_box.insert(btn, -1)
+
+        idx = 0
+        while self._flow_box.get_child_at_index(idx):
+            self._flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
         self._stack.set_visible_child_name('filled')
 
     def refresh_view(self) -> None:
@@ -94,9 +108,9 @@ class MoviesView(Adw.Bin):
         while self._flow_box.get_child_at_index(0):
             self._flow_box.remove(self._flow_box.get_child_at_index(0))
 
-        GLib.Thread.new(None, self._load_movies, None)
+        GLib.Thread.new(None, self._load_content, self.movie_view)
 
-    def _on_movie_clicked(self, source: Gtk.Widget, movie: MovieModel) -> None:
+    def _on_clicked(self, source: Gtk.Widget, content: MovieModel | SeriesModel) -> None:
         """
         Callback for the "clicked" signal.
         Opens the details view for the selected content.
@@ -109,7 +123,7 @@ class MoviesView(Adw.Bin):
             None
         """
 
-        win = DetailsView(movie)  # TODO: make it a navigationView when keybindings are available
+        win = DetailsView(content)  # TODO: make it a navigationView when keybindings are available
         win.connect('deleted', lambda *args: self.refresh_view())
         win.present()
 
@@ -137,22 +151,22 @@ class MoviesView(Adw.Bin):
                 ), None)
             case 'added-date-new':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
-                    (child1.get_child().movie.add_date < child2.get_child().movie.add_date) -
-                    (child1.get_child().movie.add_date > child2.get_child().movie.add_date)
+                    (child1.get_child().content.add_date < child2.get_child().content.add_date) -
+                    (child1.get_child().content.add_date > child2.get_child().content.add_date)
                 ), None)
             case 'added-date-old':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
-                    (child1.get_child().movie.add_date > child2.get_child().movie.add_date) -
-                    (child1.get_child().movie.add_date < child2.get_child().movie.add_date)
+                    (child1.get_child().content.add_date > child2.get_child().content.add_date) -
+                    (child1.get_child().content.add_date < child2.get_child().content.add_date)
                 ), None)
             case 'released-date-new':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
-                    (child1.get_child().movie.release_date < child2.get_child().movie.release_date) -
-                    (child1.get_child().movie.release_date > child2.get_child().movie.release_date)
+                    (child1.get_child().content.release_date < child2.get_child().content.release_date) -
+                    (child1.get_child().content.release_date > child2.get_child().content.release_date)
                 ), None)
             case 'released-date-old':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
-                    (child1.get_child().movie.release_date > child2.get_child().movie.release_date) -
-                    (child1.get_child().movie.release_date < child2.get_child().movie.release_date)
+                    (child1.get_child().content.release_date > child2.get_child().content.release_date) -
+                    (child1.get_child().content.release_date < child2.get_child().content.release_date)
                 ), None)
         self._flow_box.invalidate_sort()

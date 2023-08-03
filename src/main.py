@@ -20,9 +20,9 @@ from gi.repository import Adw, Gio, GObject, Gtk
 from . import shared  # type: ignore
 from .models.search_result_model import SearchResultModel
 from .preferences import PreferencesWindow
+from .views.content_view import ContentView
 from .views.first_run_view import FirstRunView
 from .views.main_view import MainView
-from .views.movies_view import MoviesView
 from .widgets.poster_button import PosterButton
 from .widgets.search_result_row import SearchResultRow
 from .window import TicketboothWindow
@@ -38,7 +38,7 @@ class TicketboothApplication(Adw.Application):
         SearchResultRow,
         FirstRunView,
         MainView,
-        MoviesView,
+        ContentView,
     ]
 
     def __init__(self):

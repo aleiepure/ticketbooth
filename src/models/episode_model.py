@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import os
 
 import requests
 from gi.repository import GObject
@@ -81,6 +82,9 @@ class EpisodeModel(GObject.GObject):
 
         if not path:
             return f'resource://{shared.PREFIX}/blank_poster.jpg'
+
+        if not os.path.exists(f'{shared.series_dir}/{self.show_id}/{self.season_number}'):
+            os.makedirs(f'{shared.series_dir}/{self.show_id}/{self.season_number}')
 
         files = glob.glob(f'{path[1:-4]}.jpg', root_dir=f'{shared.series_dir}/{self.show_id}/{self.season_number}')
         if files:

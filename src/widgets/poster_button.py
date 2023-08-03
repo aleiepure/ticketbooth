@@ -2,14 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import glob
-from typing import Callable
 
-import requests
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..models.movie_model import MovieModel
+from ..models.series_model import SeriesModel
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/poster_button.ui')
@@ -27,7 +25,7 @@ class PosterButton(Gtk.Box):
         None
 
     Signals:
-        clicked(movie: MovieModel): emited when the user clicks on the widget
+        clicked(content: MovieModel or SeriesModel): emited when the user clicks on the widget
     """
 
     __gtype_name__ = 'PosterButton'
@@ -41,19 +39,19 @@ class PosterButton(Gtk.Box):
     year = GObject.Property(type=str, default='')
     tmdb_id = GObject.Property(type=int, default=0)
     poster_path = GObject.Property(type=str, default='')
-    movie = GObject.Property(type=MovieModel, default=None)
+    content = GObject.Property(type=object, default=None)
 
     __gsignals__ = {
         'clicked': (GObject.SIGNAL_RUN_FIRST, None, (MovieModel,)),
     }
 
-    def __init__(self, movie: MovieModel):
+    def __init__(self, content: MovieModel | SeriesModel):
         super().__init__()
-        self.title = movie.title
-        self.year = movie.release_date[0:4]
-        self.tmdb_id = movie.id
-        self.poster_path = movie.poster_path
-        self.movie = movie
+        self.title = content.title
+        self.year = content.release_date[0:4]
+        self.tmdb_id = content.id
+        self.poster_path = content.poster_path
+        self.content = content
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -75,4 +73,4 @@ class PosterButton(Gtk.Box):
 
     @Gtk.Template.Callback('_on_poster_btn_clicked')
     def _on_poster_btn_clicked(self, user_data: object | None) -> None:
-        self.emit('clicked', self.movie)
+        self.emit('clicked', self.content)

@@ -2,9 +2,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gio, GLib, GObject, Gtk
+from gettext import gettext as _
+
+from gi.repository import Adw, Gio, Gtk
 
 from .. import shared  # type: ignore
+from ..views.content_view import ContentView
 from ..widgets.theme_switcher import ThemeSwitcher
 
 
@@ -32,6 +35,18 @@ class MainView(Adw.Bin):
     def __init__(self):
         super().__init__()
 
+        self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
+                                             'movies',
+                                             _('Movies'),
+                                             'movies'
+                                             )
+
+        self._tab_stack.add_titled_with_icon(ContentView(movie_view=False),
+                                             'series',
+                                             _('TV Series'),
+                                             'series'
+                                             )
+
         shared.schema.bind('win-tab', self._tab_stack, 'visible-child-name', Gio.SettingsBindFlags.DEFAULT)
         shared.schema.bind('offline-mode', self._banner, 'revealed', Gio.SettingsBindFlags.GET)
 
@@ -48,4 +63,5 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
-        self._tab_stack.get_visible_child().refresh_view()
+        self._tab_stack.get_child_by_name('movies').refresh_view()
+        self._tab_stack.get_child_by_name('series').refresh_view()
