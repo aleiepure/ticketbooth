@@ -145,7 +145,7 @@ class SearchResultRow(Gtk.ListBoxRow):
             thread_data (object or None): data passed to the thread
         """
 
-        local.add_content(tmdb_id=self.tmdb_id, media_type=self.media_type)
+        local.add_content(id=self.tmdb_id, media_type=self.media_type)
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_btn.set_sensitive(False)

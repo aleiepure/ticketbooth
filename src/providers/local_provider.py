@@ -6,8 +6,11 @@ import sqlite3
 from typing import List
 
 from .. import shared  # type: ignore
+from ..models.episode_model import EpisodeModel
 from ..models.language_model import LanguageModel
 from ..models.movie_model import MovieModel
+from ..models.season_model import SeasonModel
+from ..models.series_model import SeriesModel
 from ..providers.tmdb_provider import TMDBProvider as tmdb
 
 
@@ -24,6 +27,17 @@ class LocalProvider:
         create_languages_table(): Creates the table used to store the available languages in a local database
         create_tables(): Convenience method to create all tables with a single call
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
+        add_movie(id: int): Queries the movie and inserts it into the db
+        add_series(id: int): Queries the series and inserts it into the db
+        add_content(id: int, media_type: str): Convenience method to add movies and series without using separate methods
+        get_language_by_code(iso_code: str): Retrieves a language from the db
+        get_movie_by_id(id: int): Retrieves a movie from the db via its id
+        get_all_movies(): Retrieves all movies from the db
+        mark_watched_movie(id: int, status: bool): Sets the watched flag on a movie
+        delete_movie(id: int): Deletes a movie
+        get_all_seasons(show: int): Retrieves all seasons of a show
+        get_season_episodes(show: int, season_number: int): Retrieves the episodes for a season of a show
+        get_series_by_id(id: int): Retrieves a series from the db via its id
     """
 
     @staticmethod
@@ -66,7 +80,6 @@ class LocalProvider:
     def create_series_table() -> None:
         """
         Creates the table used to store tv series details in a local database.
-        Not implemented yet.
 
         Args:
             None
@@ -75,7 +88,53 @@ class LocalProvider:
             None
         """
 
-        pass
+        with sqlite3.connect(shared.db) as connection:
+            series_sql = """CREATE TABLE IF NOT EXISTS series (
+                            add_date TEXT,
+                            backdrop_path TEXT,
+                            created_by TEXT,
+                            episodes_number INT,
+                            genres TEXT,
+                            id INTEGER PRIMARY KEY,
+                            in_production BOOLEAN,
+                            manual BOOLEAN,
+                            original_language TEXT,
+                            original_title TEXT,
+                            overview TEXT,
+                            poster_path TEXT,
+                            seasons_number INT,
+                            status TEXT,
+                            tagline TEXT,
+                            title TEXT NOT NULL,
+                            watched BOOLEAN,
+                            FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
+                        );"""
+            seasons_sql = """CREATE TABLE IF NOT EXISTS seasons (
+                                episodes_number INTEGER,
+                                id INTEGER PRIMARY KEY,
+                                number INTEGER,
+                                overview TEXT,
+                                poster_path TEXT,
+                                title TEXT,
+                                show_id INTERGER,
+                                FOREIGN KEY (show_id) REFERENCES series (id)
+                            );"""
+            episodes_sql = """CREATE TABLE IF NOT EXISTS episodes (
+                                id INTEGER PRIMARY KEY,
+                                number INTEGER,
+                                overview TEXT,
+                                runtime INTEGER,
+                                season_number INTEGER,
+                                show_id INTEGER,
+                                still_path TEXT,
+                                title TEXT,
+                                watched BOOLEAN,
+                                FOREIGN KEY (show_id) REFERENCES series (id)
+                            );"""
+            connection.cursor().execute(series_sql)
+            connection.cursor().execute(seasons_sql)
+            connection.cursor().execute(episodes_sql)
+            connection.commit()
 
     @staticmethod
     def create_languages_table() -> None:
@@ -133,18 +192,18 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def add_movie(tmdb_id: int) -> int | None:
+    def add_movie(id: int) -> int | None:
         """
         Queries the information about the movie with the id provided and inserts it into the movie table.
 
         Args:
-            tmdb_id (int): id of the content
+            id (int): id of the content
 
         Returns:
             int or None containing the id of the last inserted row
         """
 
-        movie = MovieModel(tmdb.get_movie(tmdb_id))
+        movie = MovieModel(tmdb.get_movie(id))
         with sqlite3.connect(shared.db) as connection:
             sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
@@ -170,25 +229,76 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def add_series(tmdb_id: int) -> int | None:
+    def add_series(id: int) -> int | None:
         """
         Queries the information about the tv series with the id provided and inserts it into the tv series table.
 
         Args:
-            tmdb_id (int): id of the content
+            id (int): id of the content
 
         Returns:
             int or None containing the id of the last inserted row
         """
-        pass
+
+        serie = SeriesModel(tmdb.get_serie(id))
+        with sqlite3.connect(shared.db) as connection:
+            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            result = connection.cursor().execute(sql, (
+                serie.add_date,
+                serie.backdrop_path,
+                serie.created_by,
+                serie.episodes_number,
+                ','.join(serie.genres),
+                serie.id,
+                serie.in_production,
+                serie.manual,
+                serie.original_language.iso_name,  # type: ignore
+                serie.original_title,
+                serie.overview,
+                serie.poster_path,
+                serie.seasons_number,
+                serie.status,
+                serie.tagline,
+                serie.title,
+                serie.watched,
+            ))
+
+            for season in serie.seasons:
+                sql = 'INSERT INTO seasons VALUES (?,?,?,?,?,?,?);'
+                connection.cursor().execute(sql, (
+                    season.episodes_number,
+                    season.id,
+                    season.number,
+                    season.overview,
+                    season.poster_path,
+                    season.title,
+                    season.show_id
+                ))
+
+                for episode in season.episodes:
+                    sql = 'INSERT INTO episodes VALUES (?,?,?,?,?,?,?,?,?);'
+                    connection.cursor().execute(sql, (
+                        episode.id,
+                        episode.number,
+                        episode.overview,
+                        episode.runtime,
+                        episode.season_number,
+                        episode.show_id,
+                        episode.still_path,
+                        episode.title,
+                        episode.watched
+                    ))
+
+            connection.commit()
+        return result.lastrowid
 
     @staticmethod
-    def add_content(tmdb_id: int, media_type: str) -> int | None:
+    def add_content(id: int, media_type: str) -> int | None:
         """
         Convenience method to add movies and series without using separate methods.
 
         Args:
-            tmdb_id (int): id of the content
+            id (int): id of the content
             media_type (str): content's media type
 
         Returns:
@@ -196,9 +306,9 @@ class LocalProvider:
         """
 
         if media_type == 'movie':
-            return LocalProvider.add_movie(tmdb_id=tmdb_id)
+            return LocalProvider.add_movie(id)
         else:
-            return LocalProvider.add_series(tmdb_id=tmdb_id)
+            return LocalProvider.add_series(id)
 
     @staticmethod
     def get_language_by_code(iso_code: str) -> LanguageModel | None:
@@ -299,3 +409,79 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (id,))
             connection.commit()
         return result.lastrowid
+
+    @staticmethod
+    def get_all_seasons(show: int) -> List[SeasonModel]:
+        """
+        Retrieves metadata for all seasons of a show.
+
+        Args:
+            show (int): id of the show
+
+        Returns:
+            list of SeasonModel
+        """
+
+        seasons = []
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT *
+                     FROM seasons
+                     WHERE show_id = ?
+                     ORDER BY number;"""
+
+            results = connection.cursor().execute(sql, (show,)).fetchall()
+            if results:
+                for result in results:
+                    seasons.append(SeasonModel(t=result))
+
+            return seasons
+
+    @staticmethod
+    def get_season_episodes(show: int, season_num: int) -> List[EpisodeModel]:
+        """
+        Retrieves the episodes for a season of a show.
+
+        Args:
+            show (int): id of the show
+            season_num (int): season number
+
+        Returns:
+            list of EpisodeModel
+        """
+
+        episodes = []
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT *
+                     FROM episodes
+                     WHERE show_id = ? AND
+                           season_number = ?
+                     ORDER BY number;"""
+
+            results = connection.cursor().execute(sql, (show, season_num,)).fetchall()
+            if results:
+                for result in results:
+                    episodes.append(EpisodeModel(t=result))
+
+            return episodes
+
+    @staticmethod
+    def get_series_by_id(id: int) -> SeriesModel | None:
+        """
+        Retrieves the series with the provided id.
+
+        Args:
+            id (int): id of the series to retrieve
+
+        Returns:
+            SeriesModel for the requested series or None
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = 'SELECT * FROM series WHERE id=?;'
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            if result:
+                return SeriesModel(t=result)
+            else:
+                return None

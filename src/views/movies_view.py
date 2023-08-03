@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gio, GLib, GObject, Gtk
+from gi.repository import Adw, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..models.movie_model import MovieModel

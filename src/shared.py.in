@@ -22,5 +22,6 @@ cache_dir = Path(GLib.get_user_cache_dir())
 
 poster_dir = data_dir / 'poster'
 background_dir = data_dir / 'background'
+series_dir = data_dir / 'series'
 
-db = data_dir / 'data'
+db = data_dir / 'data.db'

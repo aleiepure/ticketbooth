@@ -10,6 +10,9 @@ sources = [
   'search_result_model.py',
   'language_model.py',
   'movie_model.py',
+  'episode_model.py',
+  'season_model.py',
+  'series_model.py',
 ]
 
 install_data(sources, install_dir: modelsdir)

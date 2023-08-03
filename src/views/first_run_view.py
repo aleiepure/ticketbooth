@@ -58,7 +58,7 @@ class FirstRunView(Adw.Bin):
             None
         """
 
-        for path in [shared.background_dir, shared.poster_dir]:
+        for path in [shared.background_dir, shared.poster_dir, shared.series_dir]:
             if not os.path.exists(path):
                 os.makedirs(path)
 
