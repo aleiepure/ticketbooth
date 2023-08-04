@@ -10,6 +10,7 @@ sources = [
   'theme_switcher.py',
   'poster_button.py',
   'search_result_row.py',
+  'episode_row.py',
 ]
 
 install_data(sources, install_dir: widgetsdir)

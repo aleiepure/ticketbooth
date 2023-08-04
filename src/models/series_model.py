@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import re
 from datetime import datetime
 from typing import List
 
@@ -85,7 +86,7 @@ class SeriesModel(GObject.GObject):
             self.manual = False
             self.original_language = local.LocalProvider.get_language_by_code(d['original_language'])  # type: ignore
             self.original_title = d['original_name']
-            self.overview = d['overview']
+            self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path = self._download_poster(d['poster_path'])
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']

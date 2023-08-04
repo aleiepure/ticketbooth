@@ -25,6 +25,7 @@ blueprints = custom_target('blueprints',
     'ui/widgets/theme_switcher.blp',
     'ui/widgets/poster_button.blp',
     'ui/widgets/search_result_row.blp',
+    'ui/widgets/episode_row.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']

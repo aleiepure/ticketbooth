@@ -118,7 +118,7 @@ class LocalProvider:
                                 poster_path TEXT,
                                 title TEXT,
                                 show_id INTERGER,
-                                FOREIGN KEY (show_id) REFERENCES series (id)
+                                FOREIGN KEY (show_id) REFERENCES series (id) ON DELETE CASCADE
                             );"""
             episodes_sql = """CREATE TABLE IF NOT EXISTS episodes (
                                 id INTEGER PRIMARY KEY,
@@ -130,7 +130,7 @@ class LocalProvider:
                                 still_path TEXT,
                                 title TEXT,
                                 watched BOOLEAN,
-                                FOREIGN KEY (show_id) REFERENCES series (id)
+                                FOREIGN KEY (show_id) REFERENCES series (id) ON DELETE CASCADE
                             );"""
             connection.cursor().execute(series_sql)
             connection.cursor().execute(seasons_sql)
@@ -510,3 +510,44 @@ class LocalProvider:
                 return series
             else:
                 return None
+
+    @staticmethod
+    def mark_watched_series(id: int, watched: bool) -> int | None:
+        """
+        Sets the watched flag on all episodes in the series and the series itself.
+
+        Args:
+            id (int): tv series id to change
+            watched (bool): status to set the flag to
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE episodes SET watched = ? WHERE show_id = ?"""
+            connection.cursor().execute(sql, (watched, id,))
+            sql = 'UPDATE series SET watched = ? WHERE id = ?;'
+            result = connection.cursor().execute(sql, (watched, id,))
+            connection.commit()
+        return result.lastrowid
+
+    @staticmethod
+    def delete_series(id: int) -> int | None:
+        """
+        Deletes the tv series with the provided id.
+
+        Args:
+            id (int): tv series id to delete
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            connection.cursor().execute('PRAGMA foreign_keys = ON;')
+
+            sql = """DELETE FROM series WHERE id = ?"""
+            result = connection.cursor().execute(sql, (id,))
+            connection.commit()
+        return result.lastrowid

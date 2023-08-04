@@ -58,7 +58,6 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddTMDBDialog(source)
-        dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
         dialog.present()
 
     def _add_manual(self, new_state: None, source: Gtk.Widget) -> None:
@@ -74,13 +73,17 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddManualDialog(source)
-        dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
+        # dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
         dialog.present()
+
+    def _refresh(self, new_state: None, source: Gtk.Widget) -> None:
+        source._win_stack.get_child_by_name('main').refresh()
 
     _actions = {
         ('view-sorting', None, 's', f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
         ('add-tmdb', _add_tmdb),
         ('add-manual', _add_manual),
+        ('refresh', _refresh),
     }
 
     def __init__(self, **kwargs):

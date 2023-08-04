@@ -19,6 +19,16 @@ template $MainView: Adw.Bin {
       trigger: "<control><shift>n";
       action: "action(win.add-manual)";
     }
+
+    Shortcut {
+      trigger: "F5";
+      action: "action(win.refresh)";
+    }
+
+    Shortcut {
+      trigger: "<control>r";
+      action: "action(win.refresh)";
+    }
   }
 
   Box {
@@ -60,26 +70,6 @@ template $MainView: Adw.Bin {
       Adw.ViewStack _tab_stack {
         vexpand: true;
         hexpand: true;
-
-        // Adw.ViewStackPage {
-        //   name: "movies";
-        //   title: _("Movies");
-        //   icon-name: "movies";
-
-        //   child: $ContentView {
-        //     movie-view: true;
-        //   };
-        // }
-
-        // Adw.ViewStackPage {
-        //   name: "series";
-        //   title: _("TV Series");
-        //   icon-name: "series";
-
-        //   child: $ContentView {
-        //     movie-view: false;
-        //   };
-        // }
       }
 
       Adw.ViewSwitcherBar {
@@ -137,6 +127,11 @@ menu _primary_menu {
         action: "win.view-sorting";
         target: "released-date-old";
       }
+    }
+
+    item {
+      label: _("Refresh");
+      action: "win.refresh";
     }
   }
 

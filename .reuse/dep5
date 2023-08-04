@@ -31,6 +31,10 @@ Files: data/blank_poster.jpg
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
+Files: data/blank_still.jpg
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
+
 # Manifests
 Files: me.iepure.Ticketbooth.Devel.json
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>

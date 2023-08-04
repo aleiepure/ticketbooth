@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import re
+
 from gi.repository import GObject
 
 
@@ -39,7 +41,7 @@ class SearchResultModel(GObject.GObject):
         if d is not None:
             self.tmdb_id = d['id']
             self.poster_path = d['poster_path']
-            self.description = d['overview']
+            self.description = re.sub(r'\s{2}', ' ', d['overview'])
 
             if d['media_type'] == 'movie':
                 self.media_type = d['media_type']

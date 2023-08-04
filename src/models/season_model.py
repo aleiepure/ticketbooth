@@ -4,6 +4,7 @@
 
 import glob
 import os
+import re
 from typing import List
 
 import requests
@@ -56,7 +57,7 @@ class SeasonModel(GObject.GObject):
             self.episodes_number = d['episode_count']
             self.id = d['id']
             self.number = d['season_number']
-            self.overview = d['overview']
+            self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path = self._download_poster(show_id, d['poster_path'])
             self.title = d['name']
             self.show_id = show_id

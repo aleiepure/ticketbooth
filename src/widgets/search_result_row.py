@@ -6,7 +6,7 @@ import glob
 from gettext import gettext as _
 
 import requests
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..providers.local_provider import LocalProvider as local
@@ -152,6 +152,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
+        self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
                            cancelable: Gio.Cancellable | None) -> None:

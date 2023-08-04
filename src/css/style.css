@@ -17,6 +17,10 @@
     border-radius: 12px;
 }
 
+.still {
+    border-radius: 6px;
+}
+
 /* Theme Switcher
  * Modified from https://gitlab.gnome.org/tijder/blueprintgtk
  * Original header below

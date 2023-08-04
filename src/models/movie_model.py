@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import re
 from datetime import datetime
 from typing import List
 
@@ -78,7 +79,7 @@ class MovieModel(GObject.GObject):
             self.manual = False
             self.original_language = local.LocalProvider.get_language_by_code(d['original_language'])  # type: ignore
             self.original_title = d['original_title']
-            self.overview = d['overview']
+            self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path = self._download_poster(path=d['poster_path'])
             self.release_date = d['release_date']
             self.revenue = d['revenue']

@@ -42,7 +42,7 @@ class PosterButton(Gtk.Box):
     content = GObject.Property(type=object, default=None)
 
     __gsignals__ = {
-        'clicked': (GObject.SIGNAL_RUN_FIRST, None, (MovieModel,)),
+        'clicked': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
     }
 
     def __init__(self, content: MovieModel | SeriesModel):

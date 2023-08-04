@@ -4,9 +4,11 @@
 
 import glob
 import os
+import re
 
 import requests
 from gi.repository import GObject
+from PIL import Image
 
 from .. import shared  # type: ignore
 
@@ -51,7 +53,7 @@ class EpisodeModel(GObject.GObject):
         if d is not None:
             self.id = d['id']
             self.number = d['episode_number']
-            self.overview = d['overview']
+            self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.runtime = d['runtime'] if d['runtime'] else 0
             self.season_number = d['season_number']
             self.show_id = d['show_id']
@@ -81,7 +83,7 @@ class EpisodeModel(GObject.GObject):
         """
 
         if not path:
-            return f'resource://{shared.PREFIX}/blank_poster.jpg'
+            return f'resource://{shared.PREFIX}/blank_still.jpg'
 
         if not os.path.exists(f'{shared.series_dir}/{self.show_id}/{self.season_number}'):
             os.makedirs(f'{shared.series_dir}/{self.show_id}/{self.season_number}')
@@ -95,6 +97,10 @@ class EpisodeModel(GObject.GObject):
         if r.status_code == 200:
             with open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'wb') as f:
                 f.write(r.content)
+
+            with Image.open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}') as img:
+                img = img.resize((500, 281))
+                img.save(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'JPEG')
             return f'file://{shared.series_dir}/{self.show_id}/{self.season_number}{path}'
 
-        return f'resource://{shared.PREFIX}/blank_poster.jpg'
+        return f'resource://{shared.PREFIX}/blank_still.jpg'
