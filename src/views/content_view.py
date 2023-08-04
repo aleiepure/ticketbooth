@@ -1,13 +1,19 @@
 # Copyright (C) 2023 Alessandro Iepure
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..models.movie_model import MovieModel
+    from ..models.series_model import SeriesModel
 
 from gi.repository import Adw, GLib, GObject, Gtk
 
+import src.providers.local_provider as local
+
 from .. import shared  # type: ignore
-from ..models.movie_model import MovieModel
-from ..models.series_model import SeriesModel
-from ..providers.local_provider import LocalProvider as local
 from ..widgets.poster_button import PosterButton
 from .details_view import DetailsView
 
@@ -72,9 +78,9 @@ class ContentView(Adw.Bin):
         """
 
         if movie_view:
-            content = local.get_all_movies()
+            content = local.LocalProvider.get_all_movies()
         else:
-            content = local.get_all_series()
+            content = local.LocalProvider.get_all_series()
 
         if not content:
             self._stack.set_visible_child_name('empty')
