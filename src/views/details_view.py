@@ -16,7 +16,7 @@ from ..widgets.episode_row import EpisodeRow
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/details_view.ui')
-class DetailsView(Adw.Window):
+class DetailsView(Adw.NavigationPage):
     """
     Widget that represents the details view.
 
@@ -75,19 +75,23 @@ class DetailsView(Adw.Window):
             None
         """
 
+        self.set_title(self.content.title)
+
         # Both movies and tv series
         if self.content.backdrop_path:
-            self._background_picture.set_file(Gio.File.new_for_uri(self.content.backdrop_path))
-            with Image.open(self.content.backdrop_path[7:]) as image:
-                stat = ImageStat.Stat(image.convert('L'))
 
-                luminance = [
-                    min((stat.mean[0] + stat.extrema[0][0]) / 510, 0.7),
-                    max((stat.mean[0] + stat.extrema[0][1]) / 510, 0.3),
-                ]
-            self._background_picture.set_opacity(1 - luminance[0]
-                                                 if Adw.StyleManager.get_default().get_dark()
-                                                 else luminance[1])
+            if not Adw.StyleManager.get_default().get_high_contrast():
+                self._background_picture.set_file(Gio.File.new_for_uri(self.content.backdrop_path))
+                with Image.open(self.content.backdrop_path[7:]) as image:
+                    stat = ImageStat.Stat(image.convert('L'))
+
+                    luminance = [
+                        min((stat.mean[0] + stat.extrema[0][0]) / 510, 0.7),
+                        max((stat.mean[0] + stat.extrema[0][1]) / 510, 0.3),
+                    ]
+                self._background_picture.set_opacity(1 - luminance[0]
+                                                     if Adw.StyleManager.get_default().get_dark()
+                                                     else luminance[1])
 
         self._poster_picture.set_file(Gio.File.new_for_uri(self.content.poster_path))
 
@@ -152,6 +156,11 @@ class DetailsView(Adw.Window):
         Returns:
             None
         """
+
+        list_box = self._seasons_group.get_first_child().get_last_child().get_first_child()
+        if list_box.get_row_at_index(0):
+            return
+
         for season in self.content.seasons:
             season_row = Adw.ExpanderRow(title=season.title,
                                          subtitle=_('{num} Episodes').format(num=season.episodes_number))
@@ -185,6 +194,9 @@ class DetailsView(Adw.Window):
         Returns:
             None
         """
+
+        if self._flow_box.get_child_at_index(0):
+            return
 
         # Both movies and tv series
         if self.content.status:
@@ -315,7 +327,7 @@ class DetailsView(Adw.Window):
             None
         """
 
-        dialog = Adw.MessageDialog.new(self,
+        dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),
                                        _('Delete {title}?').format(title=self.content.title),
                                        _('This title will be deleted from your watchlist.')
                                        )
@@ -347,5 +359,5 @@ class DetailsView(Adw.Window):
         else:
             local.delete_series(self.content.id)
 
-        self.close()
+        self.get_ancestor(Adw.NavigationView).pop()
         self.emit('deleted')

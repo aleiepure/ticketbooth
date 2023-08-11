@@ -31,51 +31,60 @@ template $MainView: Adw.Bin {
     }
   }
 
-  Box {
-    orientation: vertical;
+  Adw.NavigationView {
+    Adw.NavigationPage {
+      title: _("My watchlist");
+      child: Adw.ToolbarView {
 
-    Adw.HeaderBar {
-      centering-policy: strict;
+        [top]
+        Adw.HeaderBar {
+          centering-policy: strict;
 
-      [start]
-      MenuButton _add_btn {
-        icon-name: "plus";
-        tooltip-text: _("Add a title to your library");
-        menu-model: _add_menu;
-      }
+          [start]
+          MenuButton _add_btn {
+            icon-name: "plus";
+            tooltip-text: _("Add a title to your library");
+            menu-model: _add_menu;
+          }
 
-      [title]
-      Adw.ViewSwitcherTitle _title {
-        stack: _tab_stack;
-        title: "Ticket Booth";
-      }
+          [title]
+          Adw.ViewSwitcherTitle _title {
+            stack: _tab_stack;
+            title: "Ticket Booth";
+          }
 
-      [end]
-      MenuButton _menu_btn {
-        icon-name: "open-menu";
-        menu-model: _primary_menu;
-        tooltip-text: _("Main Menu");
-      }
-    }
+          [end]
+          MenuButton _menu_btn {
+            icon-name: "open-menu";
+            menu-model: _primary_menu;
+            tooltip-text: _("Main Menu");
+          }
+        }
 
-    Adw.Banner _banner {
-      title: _("You are in offline mode");
-      button-label: _("Preferences");
-      action-name: "app.preferences";
-    }
+        content: Box {
+          orientation: vertical;
 
-    Gtk.Box {
-      orientation: vertical;
+          Adw.Banner _banner {
+            title: _("You are in offline mode");
+            button-label: _("Preferences");
+            action-name: "app.preferences";
+          }
 
-      Adw.ViewStack _tab_stack {
-        vexpand: true;
-        hexpand: true;
-      }
+          Gtk.Box {
+            orientation: vertical;
 
-      Adw.ViewSwitcherBar {
-        stack: _tab_stack;
-        reveal: bind _title.title-visible;
-      }
+            Adw.ViewStack _tab_stack {
+              vexpand: true;
+              hexpand: true;
+            }
+
+            Adw.ViewSwitcherBar {
+              stack: _tab_stack;
+              reveal: bind _title.title-visible;
+            }
+          }
+        };
+      };
     }
   }
 }

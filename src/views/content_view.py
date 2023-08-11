@@ -129,9 +129,9 @@ class ContentView(Adw.Bin):
             None
         """
 
-        win = DetailsView(content)  # TODO: make it a navigationView when keybindings are available
-        win.connect('deleted', lambda *args: self.refresh_view())
-        win.present()
+        page = DetailsView(content)
+        page.connect('deleted', lambda *args: self.refresh_view())
+        self.get_ancestor(Adw.NavigationView).push(page)
 
     def _set_sorting_function(self) -> None:
         """
