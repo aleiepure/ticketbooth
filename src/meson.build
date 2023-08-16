@@ -21,11 +21,15 @@ blueprints = custom_target('blueprints',
 
     'ui/dialogs/add_manual.blp',
     'ui/dialogs/add_tmdb.blp',
+    'ui/dialogs/edit_season.blp',
+    'ui/dialogs/edit_episode.blp',
 
     'ui/widgets/theme_switcher.blp',
     'ui/widgets/poster_button.blp',
     'ui/widgets/search_result_row.blp',
     'ui/widgets/episode_row.blp',
+    'ui/widgets/image_selector.blp',
+    'ui/widgets/season_expander.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']

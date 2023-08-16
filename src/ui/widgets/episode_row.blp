@@ -5,63 +5,92 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EpisodeRow: Adw.Bin {
+template $EpisodeRow: Adw.PreferencesRow {
 
-    map => $_on_map();
+  map => $_on_map();
+
+  Box {
+    margin-bottom: 12;
+    margin-top: 12;
+    margin-start: 12;
+    margin-end: 12;
+    orientation: horizontal;
+    hexpand: true;
+    spacing: 24;
+
+    Picture _still_picture {
+      height-request: 100;
+      width-request: 56;
+      content-fit: fill;
+
+      styles ["still"]
+    }
 
     Box {
-        margin-bottom: 12;
-        margin-top: 12;
-        margin-start: 12;
-        margin-end: 12;
-        orientation: horizontal;
-        hexpand: true;
-        spacing: 24;
+      orientation: vertical;
+      hexpand: true;
 
-        Picture _still_picture {
-            height-request: 100;
-            width-request: 56;
-            content-fit: fill;
+      Label _title_lbl {
+        halign: start;
+        lines: 2;
+        wrap: true;
 
-            styles ["still"]
-        }
+        styles ["heading"]
+      }
 
-        Box {
-            orientation: vertical;
-            hexpand: true;
+      Label _runtime_lbl {
+        halign: start;
 
-            Label _title_lbl {
-                halign: start;
-                lines: 2;
-                wrap: true;
+        styles ["dim-label"]
+      }
 
-                styles ["heading"]
-            }
-
-            Label _runtime_lbl {
-                halign: start;
-
-                styles ["dim-label"]
-            }
-
-            Label _overview {
-                margin-top: 3;
-                halign: start;
-                label: bind template.episode as < $EpisodeModel > .overview;
-                wrap: true;
-                lines: 3;
-                wrap-mode: word;
-                ellipsize: end;
-            }
-        }
-
-        CheckButton _check_btn {
-            margin-end: 24;
-            halign: end;
-            hexpand: true;
-            label: _("Watched");
-
-            toggled => $_on_check_btn_toggled();
-        }
+      Label _overview {
+        margin-top: 3;
+        halign: start;
+        label: bind template.overview;
+        wrap: true;
+        lines: 3;
+        wrap-mode: word;
+        ellipsize: end;
+      }
     }
+
+    Box {
+      visible: bind template.show-controls;
+      CheckButton _check_btn {
+        visible: bind template.editable inverted;
+        halign: end;
+        hexpand: true;
+        label: _("Watched");
+
+        toggled => $_on_check_btn_toggled();
+      }
+
+      Box {
+        styles ["linked"]
+
+        orientation: horizontal;
+        visible: bind template.editable;
+        halign: end;
+        hexpand: true;
+
+        Button _delete_btn {
+          valign: center;
+          icon-name: "user-trash-symbolic";
+
+          clicked => $_on_delete_btn_clicked();
+        }
+
+        Button _edit_btn {
+          valign: center;
+          child: Adw.ButtonContent {
+            icon-name: "document-edit";
+            label: _("Edit");
+          };
+
+          clicked => $_on_edit_btn_clicked();
+        }
+      }
+    }
+  }
 }

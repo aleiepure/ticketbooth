@@ -24,6 +24,7 @@ from .views.content_view import ContentView
 from .views.first_run_view import FirstRunView
 from .views.main_view import MainView
 from .widgets.episode_row import EpisodeRow
+from .widgets.image_selector import ImageSelector
 from .widgets.poster_button import PosterButton
 from .widgets.search_result_row import SearchResultRow
 from .window import TicketboothWindow
@@ -41,6 +42,7 @@ class TicketboothApplication(Adw.Application):
         MainView,
         ContentView,
         EpisodeRow,
+        ImageSelector,
     ]
 
     def __init__(self):

@@ -1,0 +1,63 @@
+// Copyright (C) 2022 - 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $ImageSelector: Adw.Bin {
+
+  map => $_on_map();
+
+  Overlay {
+    [overlay]
+    Spinner _spinner {
+      margin-start: 72;
+      margin-end: 72;
+    }
+
+    Overlay {
+      halign: center;
+      valign: center;
+
+      [overlay]
+      Button _edit_btn {
+        icon-name: "document-edit";
+        tooltip-text: _("Edit poster");
+        halign: end;
+        valign: end;
+        margin-bottom: 6;
+        margin-end: 6;
+
+        styles ["circular", "osd"]
+        clicked => $_on_edit_btn_clicked();
+      }
+
+      [overlay]
+      Revealer _delete_revealer {
+        reveal-child: false;
+        transition-type: crossfade;
+        margin-end: 40;
+
+        Button _delete_btn {
+          icon-name: "user-trash-symbolic";
+          tooltip-text: _("Delete poster");
+          halign: end;
+          valign: end;
+          margin-bottom: 6;
+          margin-end: 6;
+
+          styles ["circular", "osd"]
+          clicked => $_on_delete_btn_clicked();
+        }
+      }
+
+      Picture _poster_picture {
+        height-request: 200;
+        content-fit: bind template.content-fit;
+
+        styles ["poster"]
+      }
+    }
+  }
+}

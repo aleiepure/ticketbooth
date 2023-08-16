@@ -29,7 +29,8 @@ class LocalProvider:
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
         add_movie(id: int): Queries the movie and inserts it into the db
         add_series(id: int): Queries the series and inserts it into the db
-        add_content(id: int, media_type: str): Convenience method to add movies and series without using separate methods
+        add_content(id: int, media_type: str): Convenience method to add movies and series without using separate
+            methods
         get_language_by_code(iso_code: str): Retrieves a language from the db
         get_movie_by_id(id: int): Retrieves a movie from the db via its id
         get_all_movies(): Retrieves all movies from the db
@@ -38,6 +39,16 @@ class LocalProvider:
         get_all_seasons(show: int): Retrieves all seasons of a show
         get_season_episodes(show: int, season_number: int): Retrieves the episodes for a season of a show
         get_series_by_id(id: int): Retrieves a series from the db via its id
+        get_all_series(): Retrieves all tv series from the db.
+        mark_watched_series(id: int, watched: bool): Sets the watched flag on all episodes in the series and the series
+            itself.
+        delete_series(id: int): Deletes the tv series with the provided id.
+        get_all_languages(): Retrieves all languages from the db.
+        get_next_manual_movie(): Calculates the next id for a manually added movie.
+        get_next_manual_series(): Calculates the next id for a manually added tv series.
+        get_next_manual_season(): Calculates the next id for a manually added season.
+        get_next_manual_episode(): Calculates the next id for a manually added episode.
+        get_language_by_name(): Retrieves a language from the db via its name.
     """
 
     @staticmethod
@@ -58,7 +69,7 @@ class LocalProvider:
                         backdrop_path TEXT,
                         budget INTEGER,
                         genres TEXT,
-                        id INTEGER PRIMARY KEY,
+                        id TEXT PRIMARY KEY,
                         manual BOOLEAN,
                         original_language TEXT,
                         original_title TEXT,
@@ -69,7 +80,7 @@ class LocalProvider:
                         runtime INTEGER,
                         status TEXT,
                         tagline TEXT,
-                        title TEXT NOT NULL,
+                        title TEXT,
                         watched BOOLEAN,
                         FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
                      );"""
@@ -95,7 +106,7 @@ class LocalProvider:
                             created_by TEXT,
                             episodes_number INT,
                             genres TEXT,
-                            id INTEGER PRIMARY KEY,
+                            id TEXT PRIMARY KEY,
                             in_production BOOLEAN,
                             manual BOOLEAN,
                             original_language TEXT,
@@ -106,13 +117,13 @@ class LocalProvider:
                             seasons_number INT,
                             status TEXT,
                             tagline TEXT,
-                            title TEXT NOT NULL,
+                            title TEXT,
                             watched BOOLEAN,
                             FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
                         );"""
             seasons_sql = """CREATE TABLE IF NOT EXISTS seasons (
                                 episodes_number INTEGER,
-                                id INTEGER PRIMARY KEY,
+                                id TEXT PRIMARY KEY,
                                 number INTEGER,
                                 overview TEXT,
                                 poster_path TEXT,
@@ -121,7 +132,7 @@ class LocalProvider:
                                 FOREIGN KEY (show_id) REFERENCES series (id) ON DELETE CASCADE
                             );"""
             episodes_sql = """CREATE TABLE IF NOT EXISTS episodes (
-                                id INTEGER PRIMARY KEY,
+                                id TEXT PRIMARY KEY,
                                 number INTEGER,
                                 overview TEXT,
                                 runtime INTEGER,
@@ -193,18 +204,21 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def add_movie(id: int) -> int | None:
+    def add_movie(id: int = 0, movie: MovieModel | None = None) -> int | None:
         """
-        Queries the information about the movie with the id provided and inserts it into the movie table.
+        Inserts a movie in the movies table, querying the data from TMDB if only id is provided.
 
         Args:
-            id (int): id of the content
+            id (int): tmdb id to query
+            movie (MovieModel or None): movie to add
 
         Returns:
             int or None containing the id of the last inserted row
         """
 
-        movie = MovieModel(tmdb.get_movie(id))
+        if not movie:
+            movie = MovieModel(tmdb.get_movie(id))
+
         with sqlite3.connect(shared.db) as connection:
             sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
@@ -230,18 +244,21 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def add_series(id: int) -> int | None:
+    def add_series(id: int = 0, serie: SeriesModel | None = None) -> int | None:
         """
-        Queries the information about the tv series with the id provided and inserts it into the tv series table.
+        Inserts a tv series in the series table, querying the data from TMDB if only id is provided.
 
         Args:
-            id (int): id of the content
+            id (int): tmdb id to query
+            serie (SeriesModel or None): tv series to add
 
         Returns:
             int or None containing the id of the last inserted row
         """
 
-        serie = SeriesModel(tmdb.get_serie(id))
+        if not serie:
+            serie = SeriesModel(tmdb.get_serie(id))
+
         with sqlite3.connect(shared.db) as connection:
             sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
@@ -551,3 +568,126 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (id,))
             connection.commit()
         return result.lastrowid
+
+    @staticmethod
+    def get_all_languages() -> List[LanguageModel]:
+        """
+        Retrieves all languages from the db.
+
+        Args:
+            None
+
+        Returns:
+            List of LanguageModel
+        """
+        with sqlite3.connect(shared.db) as connection:
+            sql = 'SELECT * FROM languages ORDER BY iso_639_1'
+            result = connection.cursor().execute(sql).fetchall()
+            languages = []
+            for language in result:
+                languages.append(LanguageModel(t=language))
+            return languages
+
+    @staticmethod
+    def get_next_manual_movie() -> str:
+        """
+        Calculates the next id for a manually added movie.
+
+        Args:
+            None
+
+        Returns:
+            string with calculated id
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = "SELECT id FROM movies WHERE id LIKE 'M-%' ORDER BY id DESC;"
+            result = connection.cursor().execute(sql).fetchone()
+            if result:
+                l = result[0].split('-')
+                return f'{l[0]}-{int(l[1])+1}'
+            else:
+                return 'M-1'
+
+    @staticmethod
+    def get_next_manual_series() -> str:
+        """
+        Calculates the next id for a manually added tv series.
+
+        Args:
+            None
+
+        Returns:
+            string with calculated id
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = "SELECT id FROM series WHERE id LIKE 'M-%' ORDER BY id DESC;"
+            result = connection.cursor().execute(sql).fetchone()
+            if result:
+                l = result[0].split('-')
+                return f'{l[0]}-{int(l[1])+1}'
+            else:
+                return 'M-1'
+
+    @staticmethod
+    def get_next_manual_season() -> str:
+        """
+        Calculates the next id for a manually added season.
+
+        Args:
+            None
+
+        Returns:
+            string with calculated id
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = "SELECT id FROM seasons WHERE id LIKE 'M-%' ORDER BY id DESC;"
+            result = connection.cursor().execute(sql).fetchone()
+            if result:
+                l = result[0].split('-')
+                return f'{l[0]}-{int(l[1])+1}'
+            else:
+                return 'M-1'
+
+    @staticmethod
+    def get_next_manual_episode() -> str:
+        """
+        Calculates the next id for a manually added episode.
+
+        Args:
+            None
+
+        Returns:
+            string with calculated id
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = "SELECT id FROM episodes WHERE id LIKE 'M-%' ORDER BY id DESC;"
+            result = connection.cursor().execute(sql).fetchone()
+            if result:
+                l = result[0].split('-')
+                return f'{l[0]}-{int(l[1])+1}'
+            else:
+                return 'M-1'
+
+    @staticmethod
+    def get_language_by_name(name: str) -> LanguageModel | None:
+        """
+        Retrieves a language from the db via its name.
+
+        Args:
+            name (str):
+
+        Returns:
+            LanguageModel of the requested language or None if not found in db
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = 'SELECT * FROM languages WHERE name = ?;'
+            result = connection.cursor().execute(sql, (name,)).fetchone()
+            if result:
+                return LanguageModel(t=result)
+            else:
+                return None

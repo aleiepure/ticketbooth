@@ -165,7 +165,7 @@ class DetailsView(Adw.NavigationPage):
             season_row = Adw.ExpanderRow(title=season.title,
                                          subtitle=_('{num} Episodes').format(num=season.episodes_number))
 
-            poster = Gtk.Picture(height_request=112.5,
+            poster = Gtk.Picture(height_request=112,
                                  width_request=75,
                                  content_fit=Gtk.ContentFit.FILL,
                                  margin_top=12,

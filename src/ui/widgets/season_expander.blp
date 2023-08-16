@@ -1,0 +1,48 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $SeasonExpander: Adw.ExpanderRow {
+
+  title: bind template.season_title;
+
+  map => $_on_map();
+
+  [prefix]
+  Picture _poster {
+    height-request: 112;
+    width-request: 75;
+    content-fit: fill;
+    margin-top: 12;
+    margin-bottom: 12;
+
+    styles ["still"]
+  }
+
+  [suffix]
+  Box {
+    orientation: horizontal;
+    valign: center;
+
+    styles ["linked"]
+
+    Button _delete_btn {
+      icon-name: "user-trash-symbolic";
+
+      clicked => $_on_delete_btn_clicked();
+    }
+
+    Button _edit_btn {
+      valign: center;
+      child: Adw.ButtonContent {
+        icon-name: "document-edit";
+        label: _("Edit");
+      };
+
+      clicked => $_on_edit_btn_clicked();
+    }
+  }
+}

@@ -9,6 +9,8 @@ sources = [
   '__init__.py',
   'add_manual_dialog.py',
   'add_tmdb_dialog.py',
+  'edit_season_dialog.py',
+  'edit_episode_dialog.py',
 ]
 
 install_data(sources, install_dir: dialogsdir)

@@ -11,6 +11,8 @@ sources = [
   'poster_button.py',
   'search_result_row.py',
   'episode_row.py',
+  'image_selector.py',
+  'season_expander.py',
 ]
 
 install_data(sources, install_dir: widgetsdir)

@@ -26,7 +26,7 @@ class MovieModel(GObject.GObject):
         backdrop_path (str): path where the background image is stored
         budget (int): movie budget
         genres (List[str]): list of genres
-        id (int): movie id
+        id (str): movie id
         manual (bool): if movie is added manually
         original_language (LanguageModel): LanguageModel of the original language
         original_title (str): movie title in original language
@@ -53,7 +53,7 @@ class MovieModel(GObject.GObject):
     backdrop_path = GObject.Property(type=str, default='')
     budget = GObject.Property(type=int, default=0)
     genres = GObject.Property(type=GLib.strv_get_type())
-    id = GObject.Property(type=int, default=0)
+    id = GObject.Property(type=str, default='')
     manual = GObject.Property(type=bool, default=False)
     original_language = GObject.Property(type=LanguageModel)
     original_title = GObject.Property(type=str, default='')

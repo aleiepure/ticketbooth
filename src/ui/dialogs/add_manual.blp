@@ -7,6 +7,10 @@ using Adw 1;
 
 template $AddManualDialog: Adw.Window {
   modal: true;
+  default-height: 670;
+  default-width: 650;
+
+  map => $_on_map();
 
   ShortcutController {
     Shortcut {
@@ -17,113 +21,192 @@ template $AddManualDialog: Adw.Window {
 
   Box {
     orientation: vertical;
-    spacing: 12;
-    margin-bottom: 12;
 
     Adw.HeaderBar {
       show-end-title-buttons: false;
       show-start-title-buttons: false;
 
-      title-widget: Adw.WindowTitle {
-        title: _("Add title manually");
+      title-widget: Box {
+        orientation: horizontal;
+        valign: center;
+
+        styles ["linked"]
+
+        ToggleButton _movies_btn {
+          label: _("Movie");
+        }
+
+        ToggleButton _series_btn {
+          label: _("TV Series");
+          group: _movies_btn;
+        }
       };
 
       [start]
-      Button _cancel_btn {
+      Button {
         label: _("Cancel");
-        action-name: "window.close";
+        action-name: 'window.close';
       }
 
       [end]
-      Button _done_btn {
+      Button {
         label: _("Done");
-        sensitive: false;
-
-        styles ["suggested-action"]
 
         clicked => $_on_done_btn_clicked();
+        styles ["suggested-action"]
       }
     }
 
-    Adw.Clamp {
-      Adw.PreferencesGroup {
+    ScrolledWindow {
+      vexpand: true;
+      propagate-natural-width: true;
+
+      Box {
+        orientation: vertical;
         vexpand: true;
+        margin-start: 20;
+        margin-end: 20;
+        margin-bottom: 20;
 
-        Adw.Clamp _cover {
-          maximum-size: 200;
-          Overlay {
-            [overlay]
-            Spinner _spinner {
-              margin-start: 72;
-              margin-end: 72;
-            }
+        Box {
+          orientation: horizontal;
+          margin-top: 20;
+          margin-bottom: 20;
+          spacing: 20;
 
-            Overlay _cover_overlay {
-              halign: center;
-              valign: center;
+          $ImageSelector _poster {}
 
-              [overlay]
-              Button _cover_edit_btn {
-                icon-name: "document-edit";
-                tooltip-text: _("New Cover");
-                halign: end;
-                valign: end;
-                margin-bottom: 6;
-                margin-end: 6;
+          Box {
+            orientation: vertical;
+            spacing: 6;
+            valign: start;
+            width-request: 410;
 
-                styles [
-                  "circular", "osd"
-                ]
+            Adw.PreferencesGroup {
+              title: _("General");
 
-                clicked => $_on_edit_btn_clicked();
+              Adw.EntryRow _title_entry {
+                title: _("Title");
               }
 
-              [overlay]
-              Revealer _cover_delete_revealer {
-                transition-type: crossfade;
-                margin-end: 40;
+              Adw.ActionRow {
+                title: _("Release Date");
+                activatable-widget: _release_date_menu_btn;
 
-                Button _cover_delete_btn {
-                  icon-name: "user-trash";
-                  tooltip-text: _("Delete Cover");
-                  halign: end;
-                  valign: end;
-                  margin-bottom: 6;
-                  margin-end: 6;
+                MenuButton _release_date_menu_btn {
+                  valign: center;
+                  popover: Popover {
+                    Calendar _calendar {
+                      day-selected => $_on_calendar_day_selected();
+                    }
+                  };
 
-                  styles [
-                    "circular", "osd"
-                  ]
-
-                  clicked => $_on_delete_btn_clicked();
+                  styles ["flat"]
                 }
               }
 
-              Picture _cover_picture {
-                width-request: 200;
-                height-request: 300;
-
-                styles [
-                  "card"
-                ]
+              Adw.EntryRow _genres_entry {
+                title: _("Genres (Comma separated)");
               }
+
+              Adw.SpinRow _runtime_spinrow {
+                visible: bind _movies_btn.active;
+                title: _("Runtime (minutes)");
+                adjustment: Adjustment {
+                  lower: 0;
+                  upper: 900;
+                  step-increment: 1;
+                };
+              }
+
+              Adw.EntryRow _tagline_entry {
+                title: _("Tagline");
+              }
+
+              Adw.EntryRow _creator_entry {
+                visible: bind _series_btn.active;
+                title: _("Created by");
+              }
+
             }
           }
         }
 
-        Adw.Clamp {
-          margin-top: 12;
-          maximum-size: 336;
-          Adw.PreferencesGroup {
+        Adw.PreferencesGroup {
+          title: _("Overview");
+          margin-bottom: 20;
 
-            Adw.EntryRow _title_entry {
-              title: _("Title");
-              changed => $_on_title_entry_changed();
+          Gtk.TextView _overview_text {
+            height-request: 100;
+            top-margin: 12;
+            bottom-margin: 12;
+            right-margin: 12;
+            left-margin: 12;
+            wrap-mode: word;
+
+            styles ["card"]
+          }
+        }
+
+        Adw.PreferencesGroup _seasons_group {
+          visible: bind _series_btn.active;
+          title: _("Seasons");
+          description: _("Use the + button to add seasons");
+
+          [header-suffix]
+          Button {
+            Adw.ButtonContent {
+              label: _("Add");
+              icon-name: "plus";
             }
 
-            Adw.EntryRow _year_entry {
-              title: _("Release Year");
-              changed => $_on_year_entry_changed();
+            clicked => $_on_season_add_btn_clicked();
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("Additional Information");
+
+          Adw.EntryRow _status_entry {
+            title: _("Status");
+          }
+
+          Adw.ComboRow _original_language_comborow {
+            title: _("Original Language");
+            model: StringList _language_model {};
+          }
+
+          Adw.EntryRow _original_title_entry {
+            title: _("Original Title");
+          }
+
+          Adw.SpinRow _budget_spinrow {
+            visible: bind _movies_btn.active;
+            title: _("Budget (US$)");
+            adjustment: Adjustment {
+              lower: 0;
+              upper: 9999999999999999999;
+              step-increment: 1;
+            };
+          }
+
+          Adw.SpinRow _revenue_spinrow {
+            visible: bind _movies_btn.active;
+            title: _("Revenue (US$)");
+            adjustment: Adjustment {
+              lower: 0;
+              upper: 9999999999999999999;
+              step-increment: 1;
+            };
+          }
+
+          Adw.ActionRow {
+            title: _("In production");
+            visible: bind _series_btn.active;
+
+            [suffix]
+            CheckButton _production_checkbtn {
+              valign: center;
             }
           }
         }

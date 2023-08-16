@@ -12,10 +12,9 @@ from gi.repository import GObject
 
 import src.providers.local_provider as local
 import src.providers.tmdb_provider as tmdb
-from src.models.episode_model import EpisodeModel
 
 from .. import shared  # type: ignore
-from ..models.language_model import LanguageModel
+from ..models.episode_model import EpisodeModel
 
 
 class SeasonModel(GObject.GObject):
@@ -25,7 +24,7 @@ class SeasonModel(GObject.GObject):
     Properties:
         episodes (List[EpisodeModel]): list of episodes in self
         episodes_number (int): number of episodes in self
-        id (int): season id
+        id (str): season id
         number (int): season number
         overview (str): season overview
         poster_path (str): uri of the season's poster
@@ -43,11 +42,11 @@ class SeasonModel(GObject.GObject):
 
     episodes = GObject.Property(type=object)
     episodes_number = GObject.Property(type=int, default=0)
-    id = GObject.Property(type=int, default=0)
+    id = GObject.Property(type=str, default='')
     number = GObject.Property(type=int, default=0)
     overview = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
-    show_id = GObject.Property(type=int, default=0)
+    show_id = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
 
     def __init__(self, show_id: int = 0, d=None, t=None):
@@ -64,15 +63,18 @@ class SeasonModel(GObject.GObject):
 
             self.episodes = self._parse_episodes(tmdb.TMDBProvider.get_season_episodes(show_id, self.number))
         else:
-            self.episodes_number = t[0]  # type:ignore
-            self.id = t[1]  # type:ignore
-            self.number = t[2]  # type:ignore
-            self.overview = t[3]  # type:ignore
-            self.poster_path = t[4]  # type:ignore
-            self.title = t[5]  # type:ignore
-            self.show_id = t[6]  # type:ignore
+            self.episodes_number = t[0]  # type: ignore
+            self.id = t[1]  # type: ignore
+            self.number = t[2]  # type: ignore
+            self.overview = t[3]  # type: ignore
+            self.poster_path = t[4]  # type: ignore
+            self.title = t[5]  # type: ignore
+            self.show_id = t[6]  # type: ignore
 
-            self.episodes = local.LocalProvider.get_season_episodes(self.show_id, self.number)  # type: ignore
+            if len(t) == 8:  # type: ignore
+                self.episodes = t[7]    # type: ignore
+            else:
+                self.episodes = local.LocalProvider.get_season_episodes(self.show_id, self.number)  # type: ignore
 
     def _download_poster(self, show_id: int, path: str) -> str:
         """

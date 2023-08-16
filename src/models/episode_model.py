@@ -18,7 +18,7 @@ class EpisodeModel(GObject.GObject):
     This class rappresents an episode object stored in the db.
 
     Properties:
-        id (int): episode id
+        id (str): episode id
         number (int): episode number in its season
         overview (str): episode overview
         runtime (int): episode runtime in minutes
@@ -37,12 +37,12 @@ class EpisodeModel(GObject.GObject):
 
     __gtype_name__ = 'EpisodeModel'
 
-    id = GObject.Property(type=int, default=0)
+    id = GObject.Property(type=str, default='')
     number = GObject.Property(type=int, default=0)
     overview = GObject.Property(type=str, default='')
     runtime = GObject.Property(type=int, default=0)
     season_number = GObject.Property(type=int, default=0)
-    show_id = GObject.Property(type=int, default=0)
+    show_id = GObject.Property(type=str, default='')
     still_path = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
     watched = GObject.Property(type=bool, default=False)

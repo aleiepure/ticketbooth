@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-
 from gi.repository import Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
@@ -18,7 +17,7 @@ class PosterButton(Gtk.Box):
     Properties:
         title (str): content's title
         year (str): content's release year
-        tmdb_id (int): content's tmdb id
+        tmdb_id (str): content's tmdb id
         poster_path (str): content's poster uri
 
     Methods:
@@ -37,7 +36,7 @@ class PosterButton(Gtk.Box):
     # Properties
     title = GObject.Property(type=str, default='')
     year = GObject.Property(type=str, default='')
-    tmdb_id = GObject.Property(type=int, default=0)
+    tmdb_id = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
     content = GObject.Property(type=object, default=None)
 

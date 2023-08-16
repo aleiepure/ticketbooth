@@ -28,7 +28,7 @@ class SeriesModel(GObject.GObject):
         created_by (List[str]): list of creators
         episodes_number (int): number of total episodes
         genres (List[str]): list of genres
-        id (int): series id
+        id (str): series id
         in_production (bool): wheater the series is still in production
         manual (bool): if the series is added manually
         original_language (LanguageModel): LanguageModel of the original language
@@ -57,7 +57,7 @@ class SeriesModel(GObject.GObject):
     created_by = GObject.Property(type=GLib.strv_get_type())
     episodes_number = GObject.Property(type=int, default=0)
     genres = GObject.Property(type=GLib.strv_get_type())
-    id = GObject.Property(type=int, default=0)
+    id = GObject.Property(type=str, default='')
     in_production = GObject.Property(type=bool, default=True)
     manual = GObject.Property(type=bool, default=False)
     original_language = GObject.Property(type=LanguageModel)
@@ -110,11 +110,15 @@ class SeriesModel(GObject.GObject):
             self.poster_path = t[11]  # type: ignore
             self.release_date = t[12]  # type: ignore
             self.seasons_number = t[13]  # type: ignore
-            self.seasons = local.LocalProvider.get_all_seasons(self.id)  # type: ignore
             self.status = t[14]  # type: ignore
             self.tagline = t[15]  # type: ignore
             self.title = t[16]  # type: ignore
             self.watched = t[17]  # type: ignore
+
+            if len(t) == 19:  # type: ignore
+                self.seasons = t[18]  # type: ignore
+            else:
+                self.seasons = local.LocalProvider.get_all_seasons(self.id)  # type: ignore
 
     def _parse_genres(self, api_dict: dict = {}, db_str: str = '') -> List[str]:
         """

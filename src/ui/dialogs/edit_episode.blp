@@ -1,0 +1,104 @@
+// Copyright (C) 2022 - 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $EditEpisodeNavigationPage: Adw.NavigationPage {
+
+  map => $_on_map();
+
+  title: _("Edit Episode");
+  child: Adw.ToolbarView {
+
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
+
+      [end]
+      Button _save_btn {
+        label: _("Save");
+        sensitive: bind $_enable_save(_title_entry.text, (_episode_spin_row.value) as <int>) as <bool>;
+        clicked => $_on_save_btn_clicked();
+
+        styles ["suggested-action"]
+      }
+    }
+
+    content: ScrolledWindow {
+      vexpand: true;
+      propagate-natural-width: true;
+
+      Box {
+        orientation: vertical;
+        vexpand: true;
+        margin-start: 20;
+        margin-end: 20;
+        margin-bottom: 20;
+
+        Box {
+          orientation: horizontal;
+          margin-top: 20;
+          margin-bottom: 20;
+          spacing: 20;
+
+          $ImageSelector _still {
+            content-fit: cover;
+          }
+
+          Box {
+            orientation: vertical;
+            spacing: 6;
+            valign: start;
+            width-request: 300;
+
+            Adw.PreferencesGroup {
+              title: _("General");
+
+              Adw.SpinRow _episode_spin_row {
+                title: _("Episode Number<sup>*</sup>");
+                use-markup: true;
+                adjustment: Adjustment {
+                  lower: 0;
+                  upper: 900;
+                  step-increment: 1;
+                };
+              }
+
+              Adw.EntryRow _title_entry {
+                title: _("Title<sup>*</sup>"); // TRANSLATORS: don't remove markup
+                use-markup: true;
+              }
+
+              Adw.SpinRow _runtime_spin_row {
+                title: _("Runtime (minutes)");
+                adjustment: Adjustment {
+                  lower: 0;
+                  upper: 900;
+                  step-increment: 1;
+                };
+              }
+            }
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("Overview");
+
+          Gtk.TextView _overview_text {
+            height-request: 100;
+            top-margin: 12;
+            bottom-margin: 12;
+            right-margin: 12;
+            left-margin: 12;
+            wrap-mode: word;
+
+            styles ["card"]
+          }
+        }
+      }
+    };
+  };
+}
