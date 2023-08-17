@@ -15,7 +15,7 @@ from ..providers.local_provider import LocalProvider as local
 from ..widgets.episode_row import EpisodeRow
 
 
-@Gtk.Template(resource_path=shared.PREFIX + '/ui/views/details_view.ui')
+@Gtk.Template(resource_path=shared.PREFIX + '/ui/pages/details_page.ui')
 class DetailsView(Adw.NavigationPage):
     """
     Widget that represents the details view.
@@ -56,6 +56,7 @@ class DetailsView(Adw.NavigationPage):
     _creator_lbl = Gtk.Template.Child()
     _seasons_box = Gtk.Template.Child()
     _seasons_group = Gtk.Template.Child()
+    _additional_info_box = Gtk.Template.Child()
     _flow_box = Gtk.Template.Child()
 
     def __init__(self, content: MovieModel | SeriesModel):
@@ -101,7 +102,9 @@ class DetailsView(Adw.NavigationPage):
             self._tagline_lbl.set_visible(True)
             self._tagline_lbl.set_text(self.content.tagline)
 
-        self._genres_lbl.set_label(', '.join(self.content.genres))
+        if self.content.genres:
+            self._genres_lbl.set_visible(True)
+            self._genres_lbl.set_label(', '.join(self.content.genres))
 
         if self.content.release_date:
             self._chip1_lbl.set_visible(True)
@@ -207,7 +210,7 @@ class DetailsView(Adw.NavigationPage):
             box.append(Gtk.Label(label=self.content.status))
             self._flow_box.append(box)
 
-        if self.content.original_language:
+        if self.content.original_language and self.content.original_language.iso_name != 'xx':
             box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
             label = Gtk.Label(label=_('Original Language'))
             label.add_css_class('heading')
@@ -249,6 +252,9 @@ class DetailsView(Adw.NavigationPage):
             box.append(label)
             box.append(Gtk.Label(label=_('Yes') if self.content.in_production else _('No')))
             self._flow_box.append(box)
+
+        if self._flow_box.get_child_at_index(0) is None:
+            self._additional_info_box.set_visible(False)
 
     def _format_runtime(self, runtime: str) -> str:
         """

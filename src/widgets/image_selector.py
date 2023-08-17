@@ -27,6 +27,7 @@ class ImageSelector(Adw.Bin):
     __gtype_name__ = 'ImageSelector'
 
     content_fit = GObject.Property(type=Gtk.ContentFit, default=Gtk.ContentFit.FILL)
+    shown_image = GObject.Property(type=str, default=f'resource://{shared.PREFIX}/blank_poster.jpg')
     blank_image = GObject.Property(type=str, default=f'resource://{shared.PREFIX}/blank_poster.jpg')
 
     _poster_picture = Gtk.Template.Child()
@@ -39,7 +40,7 @@ class ImageSelector(Adw.Bin):
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data):
-        self._poster_picture.set_file(Gio.File.new_for_uri(self.blank_image))
+        self._poster_picture.set_file(Gio.File.new_for_uri(self.shown_image))
 
     @Gtk.Template.Callback('_on_edit_btn_clicked')
     def _on_edit_btn_clicked(self, user_data: object | None) -> None:
@@ -90,6 +91,7 @@ class ImageSelector(Adw.Bin):
             poster_file = None
 
         if poster_file:
+            self.shown_image = poster_file.get_uri()
             self._poster_picture.set_file(poster_file)
             self._delete_revealer.set_reveal_child(True)
 
@@ -109,7 +111,8 @@ class ImageSelector(Adw.Bin):
             None
         """
 
-        self._poster_picture.set_file(Gio.File.new_for_uri(self.blank_image))
+        self.shown_image = self.blank_image
+        self._poster_picture.set_file(Gio.File.new_for_uri(self.shown_image))
         self._delete_revealer.set_reveal_child(False)
 
     def set_blank_image(self, image_uri: str) -> None:
@@ -124,7 +127,8 @@ class ImageSelector(Adw.Bin):
         """
 
         self.blank_image = image_uri
-        self._poster_picture.set_file(Gio.File.new_for_uri(image_uri))
+        self.shown_image = self.blank_image
+        self._poster_picture.set_file(Gio.File.new_for_uri(self.shown_image))
 
     def get_uri(self) -> str:
         """

@@ -8,7 +8,7 @@ from typing import List
 from gi.repository import Adw, GObject, Gtk
 
 from .. import shared  # type: ignore
-from ..dialogs.edit_episode_dialog import EditEpisodeNavigationPage
+from ..pages.edit_episode_page import EditEpisodeNavigationPage
 from ..widgets.episode_row import EpisodeRow
 
 
@@ -81,7 +81,7 @@ class EditSeasonDialog(Adw.Window):
     def _on_title_entry_changed(self, user_data: object | None) -> None:
         """
         Callback for "changed" signal.
-        Wrap around to call self._enable_save_btn().
+        Wrapper around self._enable_save_btn().
 
         Args:
             user_data (object or None): user data passed to the callback.
@@ -194,8 +194,27 @@ class EditSeasonDialog(Adw.Window):
                                                 editable=True))
         self._enable_save_btn()
 
-    def get_episode(self, title, episode_number, runtime, overview, still_uri):
-        for episode in self.episodes:
+    def get_episode(self,
+                    title: str,
+                    episode_number: int,
+                    runtime: int,
+                    overview: str,
+                    still_uri: str) -> tuple:
+        """
+        Compares and retrieves the tuple containing the passed data.
+
+        Args:
+            title (str): a title
+            episode_number (int): an episode number
+            runtime (int): a runtime in minutes
+            overview (str): an overview
+            still_uri (str): an uri
+
+        Returns:
+            tuple matching the passed data
+        """
+
+        for episode in self._episodes:
             if (episode[0] == title and
                 episode[1] == episode_number and
                 episode[2] == runtime and

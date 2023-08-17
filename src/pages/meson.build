@@ -3,13 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-viewsdir = join_paths(pkgdatadir, 'src/views')
+pagesdir = join_paths(pkgdatadir, 'src/pages')
 
 sources = [
   '__init__.py',
-  'main_view.py',
-  'first_run_view.py',
-  'content_view.py',
+  'details_page.py',
+  'edit_episode_page.py',
 ]
 
-install_data(sources, install_dir: viewsdir)
+install_data(sources, install_dir: pagesdir)

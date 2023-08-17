@@ -28,7 +28,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/dialogs/add_manual.ui</file>
     <file preprocess="xml-stripblanks">ui/dialogs/add_tmdb.ui</file>
     <file preprocess="xml-stripblanks">ui/dialogs/edit_season.ui</file>
-    <file preprocess="xml-stripblanks">ui/dialogs/edit_episode.ui</file>
 
     <!-- Views -->
     <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>
@@ -38,7 +37,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/views/first_run_view.ui</file>
     <file preprocess="xml-stripblanks">ui/views/main_view.ui</file>
     <file preprocess="xml-stripblanks">ui/views/content_view.ui</file>
-    <file preprocess="xml-stripblanks">ui/views/details_view.ui</file>
+
+    <!-- Pages -->
+    <file preprocess="xml-stripblanks">ui/pages/details_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/pages/edit_episode_page.ui</file>
 
     <!-- Others -->
     <file alias="blank_poster.jpg">../data/blank_poster.jpg</file>

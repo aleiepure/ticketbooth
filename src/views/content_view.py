@@ -14,8 +14,8 @@ from gi.repository import Adw, GLib, GObject, Gtk
 import src.providers.local_provider as local
 
 from .. import shared  # type: ignore
+from ..pages.details_page import DetailsView
 from ..widgets.poster_button import PosterButton
-from .details_view import DetailsView
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/content_view.ui')

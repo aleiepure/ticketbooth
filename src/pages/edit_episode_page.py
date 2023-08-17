@@ -8,7 +8,7 @@ from .. import shared  # type: ignore
 from ..models.episode_model import EpisodeModel
 
 
-@Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/edit_episode.ui')
+@Gtk.Template(resource_path=shared.PREFIX + '/ui/pages/edit_episode_page.ui')
 class EditEpisodeNavigationPage(Adw.NavigationPage):
     """
     This class rappresents the 'edit episode' NavigationPane.
@@ -70,17 +70,20 @@ class EditEpisodeNavigationPage(Adw.NavigationPage):
         self._episode_spin_row.set_value(self._episode_number)
 
     @Gtk.Template.Callback('_enable_save')
-    def _enable_save(self, source: Gtk.Widget, title, episode):
+    def _enable_save(self, source: Gtk.Widget, title: str, episode_number: int) -> bool:
         """
         Closure to determine if the 'save' button should be enabled or not.
 
         Args:
             source (Gtk.Widget): caller widget
             title (str): title text
-            episode (int): episode number
+            episode_number (int): episode number
+
+        Returns:
+            bool
         """
 
-        return True if title and episode > 0 else False
+        return True if title and episode_number > 0 else False
 
     @Gtk.Template.Callback('_on_save_btn_clicked')
     def _on_save_btn_clicked(self, user_data: object | None) -> None:

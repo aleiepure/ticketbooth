@@ -40,6 +40,7 @@ class AddManualDialog(Adw.Window):
 
     _movies_btn = Gtk.Template.Child()
     _series_btn = Gtk.Template.Child()
+    _save_btn = Gtk.Template.Child()
     _poster = Gtk.Template.Child()
     _title_entry = Gtk.Template.Child()
     _release_date_menu_btn = Gtk.Template.Child()
@@ -90,6 +91,60 @@ class AddManualDialog(Adw.Window):
             self._language_model.append(language.name)
 
         self._release_date_menu_btn.set_label(self._calendar.get_date().format('%x'))
+        self._title_entry.grab_focus()
+
+    @Gtk.Template.Callback('_on_title_changed')
+    def _on_title_changed(self, user_data: object | None) -> None:
+        """
+        Callback for "changed" signal.
+        Wrapper around self._enable_save_btn().
+
+        Args:
+            user_data (object or None): user data passed to the callback.
+
+        Returns:
+            None
+        """
+
+        self._enable_save_btn()
+
+    @Gtk.Template.Callback('_on_movies_btn_toggled')
+    def _on_movies_btn_toggled(self, user_data: object | None) -> None:
+        """
+        Callback for "toggled" signal.
+        Wrapper around self._enable_save_btn().
+
+        Args:
+            user_data (object or None): user data passed to the callback.
+
+        Returns:
+            None
+        """
+
+        self._enable_save_btn()
+
+    def _enable_save_btn(self) -> None:
+        """
+        Checks whether the "save" button should be made active or not.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
+        # Movies: title required
+        if self._movies_btn.get_active() and self._title_entry.get_text():
+            self._save_btn.set_sensitive(True)
+            return
+
+        # TV Series: title and at least a season required
+        if self._series_btn.get_active() and self._title_entry.get_text() and len(self.seasons) > 0:
+            self._save_btn.set_sensitive(True)
+            return
+
+        self._save_btn.set_sensitive(False)
 
     @Gtk.Template.Callback('_on_calendar_day_selected')
     def _on_calendar_day_selected(self, user_data: object | None) -> None:
@@ -365,3 +420,28 @@ class AddManualDialog(Adw.Window):
         # Fill PreferencesGroup
         for season in self.seasons:
             self._seasons_group.add(SeasonExpander(season_title=season[0], poster_uri=season[1], episodes=season[2]))
+
+        self._enable_save_btn()
+
+    def get_season(self,
+                   title: str,
+                   uri: str,
+                   episodes: List[tuple]) -> tuple:
+        """
+        Compares and retrieves the tuple containing the passed data.
+
+        Args:
+            title (str): a title
+            uri (str): an uri
+            episodes (List[tuple]): a list of tuples rappresenting episodes
+
+        Returns:
+            tuple matching the passed data
+        """
+
+        for season in self.seasons:
+            if (season[0] == title and
+                season[1] == uri and
+                    season[2] == episodes):
+                return season
+        return ()

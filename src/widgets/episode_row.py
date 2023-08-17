@@ -7,8 +7,8 @@ from gettext import gettext as _
 from gi.repository import Adw, Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
-from ..dialogs.edit_episode_dialog import EditEpisodeNavigationPage
 from ..models.episode_model import EpisodeModel
+from ..pages.edit_episode_page import EditEpisodeNavigationPage
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/episode_row.ui')
@@ -238,5 +238,5 @@ class EpisodeRow(Adw.PreferencesRow):
                                          self.runtime,
                                          self.overview,
                                          self.still_uri)
-        parent.episodes.remove(old_episode)
+        parent._episodes.remove(old_episode)
         parent.update_episodes_ui()

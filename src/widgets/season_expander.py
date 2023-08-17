@@ -34,6 +34,7 @@ class SeasonExpander(Adw.ExpanderRow):
 
     season_title = GObject.Property(type=str)
     poster_uri = GObject.Property(type=str)
+    episodes = GObject.Property(type=object)
 
     _poster = Gtk.Template.Child()
 
@@ -159,6 +160,6 @@ class SeasonExpander(Adw.ExpanderRow):
             return
 
         parent_dialog = self.get_ancestor(dialog.AddManualDialog)
-        old_season = parent_dialog.get_season(self.season_title, self.poster_uri, [])
+        old_season = parent_dialog.get_season(self.season_title, self.poster_uri, self.episodes)
         parent_dialog.seasons.remove(old_season)
         parent_dialog.update_seasons_ui()
