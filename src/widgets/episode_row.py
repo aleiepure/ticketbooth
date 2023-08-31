@@ -6,6 +6,8 @@ from gettext import gettext as _
 
 from gi.repository import Adw, Gio, GObject, Gtk
 
+import src.dialogs.edit_season_dialog as dialog
+
 from .. import shared  # type: ignore
 from ..models.episode_model import EpisodeModel
 from ..pages.edit_episode_page import EditEpisodeNavigationPage
@@ -176,16 +178,17 @@ class EpisodeRow(Adw.PreferencesRow):
             None
         """
 
-        parent = self.get_ancestor(Adw.Window)
+        parent = self.get_ancestor(dialog.EditSeasonDialog)
 
         old_episode = parent.get_episode(self.title,
                                          self.episode_number,
                                          self.runtime,
                                          self.overview,
                                          self.still_uri)
-        parent.episodes.remove(old_episode)
+        parent._episodes.remove(old_episode)
+        parent.update_episodes_ui()
 
-        parent.episodes.append((title, episode_number, runtime, overview, still_uri))
+        parent._episodes.append((title, episode_number, runtime, overview, still_uri))
 
         parent.update_episodes_ui()
 
@@ -232,7 +235,7 @@ class EpisodeRow(Adw.PreferencesRow):
         if result == 'cancel':
             return
 
-        parent = self.get_ancestor(Adw.Window)
+        parent = self.get_ancestor(dialog.EditSeasonDialog)
         old_episode = parent.get_episode(self.title,
                                          self.episode_number,
                                          self.runtime,

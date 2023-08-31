@@ -66,7 +66,10 @@ class EditSeasonDialog(Adw.Window):
         """
 
         self._title_entry.set_text(self._title)
-        self._poster.set_blank_image(self._poster_uri)
+        if self._poster_uri.startswith('file'):
+            self._poster.set_image(self._poster_uri)
+
+        self._title_entry.grab_focus()
 
         for episode in self._episodes:
             self._episodes_group.add(EpisodeRow(title=episode[0],
@@ -181,8 +184,7 @@ class EditSeasonDialog(Adw.Window):
 
         # Empty PreferencesGroup
         list_box = self._episodes_group.get_first_child().get_last_child().get_first_child()  # ugly workaround
-        for child in list_box:
-            self._episodes_group.remove(child)
+        list_box.remove_all()
 
         # Fill PreferencesGroup
         for episode in self._episodes:

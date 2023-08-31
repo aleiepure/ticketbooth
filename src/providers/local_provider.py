@@ -691,3 +691,58 @@ class LocalProvider:
                 return LanguageModel(t=result)
             else:
                 return None
+
+    @staticmethod
+    def update_movie(old: MovieModel, new: MovieModel) -> int | None:
+        """
+        Updates a movie with new data.
+
+        Args:
+            old: movie to be updated
+            new: new movie data
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE movies
+                     SET add_date = ?,
+                         backdrop_path = ?,
+                         budget = ?,
+                         genres = ?,
+                         manual = ?,
+                         original_language = ?,
+                         original_title = ?,
+                         overview = ?,
+                         poster_path = ?,
+                         release_date = ?,
+                         revenue = ?,
+                         runtime = ?,
+                         status = ?,
+                         tagline = ?,
+                         title = ?,
+                         watched = ?
+                     WHERE id = ?;
+                  """
+            result = connection.cursor().execute(sql, (
+                new.add_date,
+                new.backdrop_path,
+                new.budget,
+                ','.join(new.genres),
+                new.manual,
+                new.original_language.iso_name,  # type: ignore
+                new.original_title,
+                new.overview,
+                new.poster_path,
+                new.release_date,
+                new.revenue,
+                new.runtime,
+                new.status,
+                new.tagline,
+                new.title,
+                new.watched,
+                new.id,
+            ))
+            connection.commit()
+        return result.lastrowid

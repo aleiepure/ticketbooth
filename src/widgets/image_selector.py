@@ -130,6 +130,21 @@ class ImageSelector(Adw.Bin):
         self.shown_image = self.blank_image
         self._poster_picture.set_file(Gio.File.new_for_uri(self.shown_image))
 
+    def set_image(self, image_uri: str) -> None:
+        """
+        Sets the image.
+
+        Args:
+            image_uri (str): uri to use
+
+        Returns:
+            None
+        """
+
+        self.shown_image = image_uri
+        self._poster_picture.set_file(Gio.File.new_for_uri(self.shown_image))
+        self._delete_revealer.set_reveal_child(True)
+
     def get_uri(self) -> str:
         """
         Returns the shown image uri.

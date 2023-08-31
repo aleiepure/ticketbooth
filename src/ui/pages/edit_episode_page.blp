@@ -40,7 +40,7 @@ template $EditEpisodeNavigationPage: Adw.NavigationPage {
 
         Label {
           margin-top: 6;
-          label: _("Fill in all required fields marked with <sup>*</sup>"); // TRANSLATORS: don't remove markup
+          label: _("Fill in all required fields");
           use-markup: true;
 
           styles ["dim-label"]
@@ -66,8 +66,7 @@ template $EditEpisodeNavigationPage: Adw.NavigationPage {
               title: _("General");
 
               Adw.SpinRow _episode_spin_row {
-                title: _("Episode Number<sup>*</sup>"); // TRANSLATORS: don't remove markup
-                use-markup: true;
+                title: _("Episode Number (required)");
                 adjustment: Adjustment {
                   lower: 0;
                   upper: 900;
@@ -76,7 +75,7 @@ template $EditEpisodeNavigationPage: Adw.NavigationPage {
               }
 
               Adw.EntryRow _title_entry {
-                title: _("Title<sup>*</sup>"); // TRANSLATORS: don't remove markup
+                title: _("Title (required)");
                 use-markup: true;
               }
 

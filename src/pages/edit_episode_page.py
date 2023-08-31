@@ -65,9 +65,13 @@ class EditEpisodeNavigationPage(Adw.NavigationPage):
 
         self._title_entry.set_text(self._title)
         self._runtime_spin_row.set_value(self._runtime)
-        self._still.set_blank_image(self._still_uri)
+        self._still.set_blank_image(f'resource://{shared.PREFIX}/blank_still.jpg')
+        if self._still_uri.startswith('file'):
+            self._still.set_image(self._still_uri)
         self._overview_text.get_buffer().set_text(self._overview, -1)
         self._episode_spin_row.set_value(self._episode_number)
+
+        self._title_entry.grab_focus()
 
     @Gtk.Template.Callback('_enable_save')
     def _enable_save(self, source: Gtk.Widget, title: str, episode_number: int) -> bool:

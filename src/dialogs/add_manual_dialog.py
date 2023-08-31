@@ -4,15 +4,17 @@
 
 import os
 import shutil
-from datetime import datetime
+from datetime import date, datetime
 from gettext import gettext as _
 from typing import List
+from urllib.parse import unquote
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..dialogs.edit_season_dialog import EditSeasonDialog
 from ..models.episode_model import EpisodeModel
+from ..models.language_model import LanguageModel
 from ..models.movie_model import MovieModel
 from ..models.season_model import SeasonModel
 from ..models.series_model import SeriesModel
@@ -26,17 +28,19 @@ class AddManualDialog(Adw.Window):
     This class rappresents the window to manually add content to the db.
 
     Properties:
-        None
+        edit_mode (bool): whether or not the window is in add/edit mode
 
     Methods:
         update_seasons_ui(): rebuilds the ui to reflect changes to seasons
         get_season(title: str, poster: str, episodes: list): returns the tuple with the provided data or an empty tuple
 
     Signals:
-        None
+        edit-saved(SeriesModel or MovieMovel): emited when the user clicks the save button
     """
 
     __gtype_name__ = 'AddManualDialog'
+
+    edit_mode = GObject.Property(type=bool, default=False)
 
     _movies_btn = Gtk.Template.Child()
     _series_btn = Gtk.Template.Child()
@@ -59,11 +63,27 @@ class AddManualDialog(Adw.Window):
     _revenue_spinrow = Gtk.Template.Child()
     _production_checkbtn = Gtk.Template.Child()
 
+    __gsignals__ = {
+        'edit-saved': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
+    }
+
     seasons: list = []
 
-    def __init__(self, parent: Gtk.Window):
+    def __init__(self,
+                 parent: Gtk.Window,
+                 edit_mode: bool = False,
+                 content: MovieModel | SeasonModel | None = None
+                 ):
         super().__init__()
         self.set_transient_for(parent)
+
+        self.edit_mode = edit_mode
+        self._content = content
+
+        if edit_mode and type(self._content) is MovieModel:
+            self.set_title(_('Edit Movie'))
+        elif edit_mode and type(self._content) is SeriesModel:
+            self.set_title(_('Edit TV Series'))
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -78,20 +98,94 @@ class AddManualDialog(Adw.Window):
             None
         """
 
-        if shared.schema.get_string('win-tab') == 'movies':
-            self._movies_btn.set_active(True)
-        else:
-            self._series_btn.set_active(True)
-
-        self._poster.set_blank_image(f'resource://{shared.PREFIX}/blank_poster.jpg')
-
         languages = local.get_all_languages()
         languages.insert(0, languages.pop(len(languages)-6))    # move 'no language' to 1st place
         for language in languages:
             self._language_model.append(language.name)
 
-        self._release_date_menu_btn.set_label(self._calendar.get_date().format('%x'))
+        self._poster.set_blank_image(f'resource://{shared.PREFIX}/blank_poster.jpg')
+
+        if not self._content:
+            if shared.schema.get_string('win-tab') == 'movies':
+                self._movies_btn.set_active(True)
+            else:
+                self._series_btn.set_active(True)
+
+            self._release_date_menu_btn.set_label(self._calendar.get_date().format('%x'))
+            return
+
+        # Both Movies and TV Series
+        self._poster.set_image(self._content.poster_path)
+        self._title_entry.set_text(self._content.title)
         self._title_entry.grab_focus()
+        self._release_date_menu_btn.set_label(date.fromisoformat(self._content.release_date).strftime('%x'))
+        self._calendar.select_day(GLib.DateTime.new_from_iso8601(
+            datetime.fromisoformat(self._content.release_date).isoformat()+'Z'))
+        self._genres_entry.set_text(', '.join(self._content.genres))
+        self._tagline_entry.set_text(self._content.tagline)
+        self._overview_text.get_buffer().set_text(self._content.overview, -1)
+        self._status_entry.set_text(self._content.status)
+        self._original_language_comborow.set_selected(
+            self._get_selected_language_index(self._content.original_language))
+        self._original_title_entry.set_text(self._content.original_title)
+
+        # Movies specific
+        if type(self._content) is MovieModel:
+            self._movies_btn.set_active(True)
+            self._runtime_spinrow.set_value(self._content.runtime)
+            self._budget_spinrow.set_value(self._content.budget)
+            self._revenue_spinrow.set_value(self._content.revenue)
+
+        # TV Series specific
+        if type(self._content) is SeriesModel:
+            self._series_btn.set_active(True)
+            self._creator_entry.set_text(','.join(self._content.created_by))
+            self._production_checkbtn.set_active(self._content.in_production)
+            self.seasons = self._parse_seasons(self._content.seasons)
+            self.update_seasons_ui()
+
+    def _parse_seasons(self, seasons_as_model: List[SeasonModel]) -> List[tuple]:
+        """
+        Parse seasons passed as a list of SeasonModels into a list of tuples.
+
+        Args:
+            seasons_as_model(List[SeasonModel]): a list of SeasonModels
+
+        Returns:
+            a list of tuples rappresenting the same data
+        """
+
+        seasons_as_tuple = []
+        for season in seasons_as_model:
+
+            episodes_as_tuple = []
+            for episode in season.episodes:
+                episodes_as_tuple.append((
+                    episode.title, episode.number, episode.runtime, episode.overview, episode.still_path
+                ))
+
+            seasons_as_tuple.append((
+                season.title,
+                season.poster_path,
+                episodes_as_tuple
+            ))
+        return seasons_as_tuple
+
+    def _get_selected_language_index(self, language: LanguageModel) -> int:
+        """
+        Loops languages looking for the index of the provided language.
+
+        Args:
+            language (LanguageModel): language to look for
+
+        Returns:
+            index (int)
+        """
+
+        for idx in range(0, self._language_model.get_n_items()):
+            if language.name == self._language_model.get_string(idx):
+                return idx
+        return -1
 
     @Gtk.Template.Callback('_on_title_changed')
     def _on_title_changed(self, user_data: object | None) -> None:
@@ -125,7 +219,7 @@ class AddManualDialog(Adw.Window):
 
     def _enable_save_btn(self) -> None:
         """
-        Checks whether the "save" button should be made active or not.
+        Checks whether the "save" button should be active or not.
 
         Args:
             None
@@ -178,7 +272,7 @@ class AddManualDialog(Adw.Window):
         dialog.connect('edit-saved', self._on_edit_saved)
         dialog.present()
 
-    def _on_edit_saved(self, source: Gtk.Widget, title: str, poster_uri: str, episodes: List) -> None:
+    def _on_edit_saved(self, source: Gtk.Widget, title: str, poster_uri: str, episodes: List[tuple]) -> None:
         """
         Callback for the "edit-saved" signal.
         Appends the recieved data as a tuple in the seasons list and updates the ui.
@@ -187,7 +281,7 @@ class AddManualDialog(Adw.Window):
             source (Gtk.Widget): caller widget
             title (str): season title
             poster_uri (str): season poster uri
-            episodes (List): season episodes
+            episodes (List[tuple]): season episodes
 
         Returns:
             None
@@ -209,7 +303,10 @@ class AddManualDialog(Adw.Window):
             None
         """
 
-        poster_uri = self._copy_image_to_data(self._poster.get_uri(), shared.poster_dir, self._title_entry.get_text())
+        poster_uri = self._copy_image_to_data(self._poster.get_uri(),
+                                              shared.poster_dir,
+                                              self._title_entry.get_text()
+                                              ) if not self.edit_mode else self._content.poster_path  # type: ignore
 
         if self._movies_btn.get_active():
             self._save_movie(poster_uri)
@@ -221,7 +318,7 @@ class AddManualDialog(Adw.Window):
 
     def _save_movie(self, poster_uri: str) -> None:
         """
-        Creates a MovieModel with the provided data and saves the movie to the local db.
+        Creates a MovieModel with the provided data and saves or updates the movie in the local db.
 
         Args:
             poster_uri (str): movie poster uri
@@ -236,33 +333,38 @@ class AddManualDialog(Adw.Window):
         overview = buffer.get_text(start_iter, end_iter, False)
 
         movie = MovieModel(t=(
-            datetime.now(),                                     # add date
-            '',                                                 # background
-            int(self._budget_spinrow.get_value()),              # budget
-            ''.join(self._genres_entry.get_text().split()),     # genres
-            local.get_next_manual_movie(),                      # id
-            True,                                               # manual
+            datetime.now(),                                                             # add date
+            '',                                                                         # background
+            int(self._budget_spinrow.get_value()),                                      # budget
+            ''.join(self._genres_entry.get_text().split()),                             # genres
+            local.get_next_manual_movie() if not self.edit_mode else self._content.id,  # id        # type: ignore
+            True,                                                                       # manual
             local.get_language_by_name(self._original_language_comborow.get_selected_item(
-            ).get_string()).iso_name,            # type: ignore # original language
-            self._original_title_entry.get_text(),              # original title
-            overview,                                           # overview
-            poster_uri,                                         # poster
-            self._calendar.get_date().format('%Y-%m-%d'),       # release date
-            int(self._revenue_spinrow.get_value()),             # revenue
-            int(self._runtime_spinrow.get_value()),             # runtime
-            self._status_entry.get_text(),                      # status
-            self._tagline_entry.get_text(),                     # tagline
-            self._title_entry.get_text(),                       # title
-            False                                               # watched
+            ).get_string()).iso_name,                                    # type: ignore # original language
+            self._original_title_entry.get_text(),                                      # original title
+            overview,                                                                   # overview
+            poster_uri,                                                                 # poster
+            self._calendar.get_date().format('%Y-%m-%d'),                               # release date
+            int(self._revenue_spinrow.get_value()),                                     # revenue
+            int(self._runtime_spinrow.get_value()),                                     # runtime
+            self._status_entry.get_text(),                                              # status
+            self._tagline_entry.get_text(),                                             # tagline
+            self._title_entry.get_text(),                                               # title
+            False if not self.edit_mode else self._content.watched       # type: ignore # watched
         ))
-        local.add_movie(movie=movie)
+
+        if not self.edit_mode:
+            local.add_movie(movie=movie)
+        else:
+            local.update_movie(old=self._content, new=movie)
+            self.emit('edit-saved', movie)
 
     def _save_series(self, series_poster_uri: str) -> None:
         """
-        Creates a SeriesModel and relative SeasonModels/EpisodeModels with the provided data and saves the tv series to the local db.
+        Creates a SeriesModel with associated SeasonModels/EpisodeModels with the provided data and saves or updates the TV series in the local db.
 
         Args:
-            series_poster_uri (str): main poster uri
+            poster_uri (str): tv series poster uri
 
         Returns:
             None
@@ -282,8 +384,7 @@ class AddManualDialog(Adw.Window):
             # Copy the season poster
             poster_uri = self._copy_image_to_data(season[1],
                                                   f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}',
-                                                  season[0]
-                                                  )
+                                                  season[0])
 
             episodes = []
             for jdx, episode in enumerate(season[2]):
@@ -293,30 +394,35 @@ class AddManualDialog(Adw.Window):
                                                      f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}',
                                                      episode[0]
                                                      )
+                episode_id = self._increment_manual_id(base_episode_id, jdx)
+                season_number = idx+1
+                watched = False
 
                 episodes.append(EpisodeModel(t=(
-                    self._increment_manual_id(base_episode_id, jdx),    # id
-                    episode[1],                                         # episode number
-                    episode[3],                                         # overview
-                    episode[2],                                         # runtime
-                    idx+1,                                              # season number
-                    show_id,                                            # show id
-                    still_uri,                                          # still uri
-                    episode[0],                                         # title
-                    False                                               # watched
+                    episode_id,     # id
+                    episode[1],     # episode number
+                    episode[3],     # overview
+                    episode[2],     # runtime
+                    season_number,  # season number
+                    show_id,        # show id
+                    still_uri,      # still uri
+                    episode[0],     # title
+                    watched         # watched
                 )))
 
             base_episode_id = self._increment_manual_id(base_episode_id, len(episodes)+1)
+            season_id = self._increment_manual_id(base_season_id, idx)
+            season_number = idx+1
 
             seasons.append(SeasonModel(t=(
-                len(episodes),                                   # episodes number
-                self._increment_manual_id(base_season_id, idx),  # id
-                idx+1,                                           # season number
-                '',                                              # overview
-                poster_uri,                                      # season poster
-                season[0],                                       # title
-                show_id,                                         # show id
-                episodes                                         # season episodes
+                len(episodes),  # episodes number
+                season_id,      # id
+                season_number,  # season number
+                '',             # overview
+                poster_uri,     # season poster
+                season[0],      # title
+                show_id,        # show id
+                episodes        # season episodes
             )))
 
         buffer = self._overview_text.get_buffer()
@@ -325,28 +431,34 @@ class AddManualDialog(Adw.Window):
         overview = buffer.get_text(start_iter, end_iter, False)
 
         serie = SeriesModel(t=(
-            datetime.now(),                                 # add date
-            '',                                             # backgroud
-            self._creator_entry.get_text(),                 # created by
-            self._compute_episode_number(seasons),          # episode number
+            datetime.now(),                                  # add date
+            '',                                              # backgroud
+            self._creator_entry.get_text(),                  # created by
+            self._compute_episode_number(seasons),           # episode number
             ''.join(self._genres_entry.get_text().split()),  # genres
-            show_id,                                        # id
-            self._production_checkbtn.get_active(),         # in production
-            True,                                           # manual
+            show_id,                                         # id
+            self._production_checkbtn.get_active(),          # in production
+            True,                                            # manual
             local.get_language_by_name(self._original_language_comborow.get_selected_item(
-            ).get_string()).iso_name,        # type: ignore # original language
-            self._original_title_entry.get_text(),          # original title
-            overview,                                       # overview
-            series_poster_uri,                              # poster
-            self._calendar.get_date().format('%Y-%m-%d'),   # release date
-            len(seasons),                                   # seasons number
-            self._status_entry.get_text(),                  # status
-            self._tagline_entry.get_text(),                 # tagline
-            self._title_entry.get_text(),                   # title
-            False,                                          # watched
-            seasons,                                        # seasons
+            ).get_string()).iso_name,         # type: ignore # original language
+            self._original_title_entry.get_text(),           # original title
+            overview,                                        # overview
+            series_poster_uri,                               # poster
+            self._calendar.get_date().format('%Y-%m-%d'),    # release date
+            len(seasons),                                    # seasons number
+            self._status_entry.get_text(),                   # status
+            self._tagline_entry.get_text(),                  # tagline
+            self._title_entry.get_text(),                    # title
+            False,                                           # watched
+            seasons                                          # seasons
         ))
-        local.add_series(serie=serie)
+
+        if self.edit_mode:
+            local.delete_series(self._content.id)   # type: ignore
+            local.add_series(serie=serie)
+            self.emit('edit-saved', serie)
+        else:
+            local.add_series(serie=serie)
 
     def _increment_manual_id(self, id: str, amount: int = 1) -> str:
         """
@@ -397,8 +509,8 @@ class AddManualDialog(Adw.Window):
 
         if src_uri.startswith('file'):
             extension = src_uri[src_uri.rindex('.'):]
-            shutil.copy2(src_uri[7:], f'{dest_folder}/{filename}{extension}')
-            return f'file://{dest_folder}/{filename}{extension}'
+            shutil.copy2(src_uri[7:], f'{dest_folder}/{unquote(filename)}{extension}')
+            return f'file://{dest_folder}/{unquote(filename)}{extension}'
         return src_uri
 
     def update_seasons_ui(self) -> None:
@@ -414,8 +526,7 @@ class AddManualDialog(Adw.Window):
 
         # Empty PreferencesGroup
         list_box = self._seasons_group.get_first_child().get_last_child().get_first_child()  # ugly workaround
-        for child in list_box:
-            self._seasons_group.remove(child)
+        list_box.remove_all()
 
         # Fill PreferencesGroup
         for season in self.seasons:

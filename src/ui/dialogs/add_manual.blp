@@ -27,20 +27,32 @@ template $AddManualDialog: Adw.Window {
       show-start-title-buttons: false;
 
       title-widget: Box {
-        orientation: horizontal;
-        valign: center;
+        orientation: vertical;
 
-        styles ["linked"]
-
-        ToggleButton _movies_btn {
-          label: _("Movie");
-
-          toggled => $_on_movies_btn_toggled();
+        Adw.WindowTitle {
+          valign: center;
+          vexpand: true;
+          visible: bind template.edit-mode;
+          title: bind template.title;
         }
 
-        ToggleButton _series_btn {
-          label: _("TV Series");
-          group: _movies_btn;
+        Box {
+          visible: bind template.edit-mode inverted;
+          orientation: horizontal;
+          valign: center;
+
+          styles ["linked"]
+
+          ToggleButton _movies_btn {
+            label: _("Movie");
+
+            toggled => $_on_movies_btn_toggled();
+          }
+
+          ToggleButton _series_btn {
+            label: _("TV Series");
+            group: _movies_btn;
+          }
         }
       };
 
@@ -73,8 +85,9 @@ template $AddManualDialog: Adw.Window {
 
         Label {
           margin-top: 6;
-          label: _("Fill in all required fields marked with <sup>*</sup>"); // TRANSLATORS: don't remove markup
+          label: _("Fill in all required fields");
           use-markup: true;
+          visible: bind template.edit-mode inverted;
 
           styles ["dim-label"]
         }
@@ -97,7 +110,7 @@ template $AddManualDialog: Adw.Window {
               title: _("General");
 
               Adw.EntryRow _title_entry {
-                title: _("Title<sup>*</sup>"); // TRANSLATORS: don't remove markup
+                title: _("Title (required)");
 
                 changed => $_on_title_changed();
               }
@@ -119,7 +132,7 @@ template $AddManualDialog: Adw.Window {
               }
 
               Adw.EntryRow _genres_entry {
-                title: _("Genres (Comma separated)");
+                title: _("Genres (comma separated)");
               }
 
               Adw.SpinRow _runtime_spinrow {
@@ -163,7 +176,7 @@ template $AddManualDialog: Adw.Window {
 
         Adw.PreferencesGroup _seasons_group {
           visible: bind _series_btn.active;
-          title: _("Seasons<sup>*</sup>"); // TRANSLATORS: don't remove markup
+          title: _("Seasons (required)");
           description: _("Use the + button to add seasons");
 
           [header-suffix]

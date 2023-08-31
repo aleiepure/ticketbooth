@@ -9,6 +9,7 @@ from gi.repository import Adw, Gio, GObject, Gtk
 from PIL import Image, ImageStat
 
 from .. import shared  # type: ignore
+from ..dialogs.add_manual_dialog import AddManualDialog
 from ..models.movie_model import MovieModel
 from ..models.series_model import SeriesModel
 from ..providers.local_provider import LocalProvider as local
@@ -317,8 +318,26 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
-        # TODO: implemented
-        pass
+
+        dialog = AddManualDialog(self.get_ancestor(Gtk.Window), True, self.content)
+        dialog.connect('edit-saved', self._on_edit_saved)
+        dialog.present()
+
+    def _on_edit_saved(self, source: Gtk.Widget, content: MovieModel | SeriesModel) -> None:
+        """
+        Callback for "edit-saved" signal.
+        Replaces the navigation stack with an updated top page resulting in a content refresh.
+
+        Args:
+            source (Gtk.Widget): caller widget
+            content (MovieModel or SeriesModel): updated content to show
+
+        Returns:
+            None
+        """
+
+        root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
+        self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(content)])
 
     @Gtk.Template.Callback('_on_delete_btn_clicked')
     def _on_delete_btn_clicked(self, user_data: object | None) -> None:

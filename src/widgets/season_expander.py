@@ -112,7 +112,9 @@ class SeasonExpander(Adw.ExpanderRow):
 
         parent_dialog = self.get_ancestor(dialog.AddManualDialog)
 
-        old_season = parent_dialog.get_season(self.season_title, self.poster_uri, self.episodes)
+        old_season = parent_dialog.get_season(self.season_title,
+                                              self.poster_uri,
+                                              self.episodes)
         parent_dialog.seasons.remove(old_season)
 
         parent_dialog.seasons.append((title, poster_uri, episodes))
