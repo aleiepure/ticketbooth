@@ -8,6 +8,8 @@ from gettext import gettext as _
 import requests
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
+from src.dialogs.add_tmdb_dialog import AddTMDBDialog
+
 from .. import shared  # type: ignore
 from ..providers.local_provider import LocalProvider as local
 
@@ -57,7 +59,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
         Callback for the "map" signal.
         Sets the visibility of the release year, the media type label and the poster to show.
-        Additionally checks if the content is already in db and disables the 'add' button.
+        Additionally calls method in another thread to check if the content is already in db.
 
         Args:
             user_data (object or None): user data passed to the callback
@@ -79,7 +81,17 @@ class SearchResultRow(Gtk.ListBoxRow):
 
         GLib.Thread.new(None, self._check_in_db_thread, None)
 
-    def _check_in_db_thread(self, thread_data):
+    def _check_in_db_thread(self, thread_data: object | None) -> None:
+        """
+        Checks if the content is already in db and disables the 'add' button.
+
+        Args:
+            thread_data (object or None): data passed to the thread
+
+        Returns:
+            None
+        """
+
         if local.get_movie_by_id(self.tmdb_id) or local.get_series_by_id(self.tmdb_id):
             self._add_btn.set_label(_('Already in your whatchlist'))
             self._add_btn.set_icon_name('check-plain')
@@ -137,6 +149,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         self._add_spinner.set_visible(True)
+        self.get_ancestor(AddTMDBDialog).get_transient_for()._win_stack.get_child_by_name('main').show_spinner(True)
         self._add_btn.set_sensitive(False)
         GLib.Thread.new(f'Adding {self.tmdb_id}', self._add_content_to_db_thread, None)
 
@@ -152,6 +165,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
+        self.get_ancestor(AddTMDBDialog).get_transient_for()._win_stack.get_child_by_name('main').show_spinner(False)
         self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,

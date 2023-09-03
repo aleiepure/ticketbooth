@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import locale
 import os
 from gettext import gettext as _
 
@@ -49,7 +50,7 @@ class FirstRunView(Adw.Bin):
     def _on_map(self, user_data: object | None) -> None:
         """
         Callback for "map" signal.
-        Creates the directories, tables in the local db and attempts to download required data if connected to the Internet.
+        Creates the directories and tables in the local db, sets the tmdb results language based on the locale, and attempts to download required data if connected to the Internet.
 
         Args:
             user_data (object or None): user data passed to the callback.
@@ -63,6 +64,7 @@ class FirstRunView(Adw.Bin):
                 os.makedirs(path)
 
         local.create_tables()
+        shared.schema.set_string('tmdb-lang', locale.getdefaultlocale()[0].lower()[:2])  # type: ignore
 
         self._update_ui(need_download=True)
         Gio.NetworkMonitor.get_default().can_reach_async(

@@ -77,6 +77,24 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<key name="offline-mode" type="b">
 			<default>false</default>
 		</key>
+		<key name="update-freq" type="s">
+			<choices>
+				<choice value="day" />
+				<choice value="week" />
+				<choice value="month" />
+				<choice value="never" />
+			</choices>
+			<default>"week"</default>
+			<summary>Frequency to check for new data on TMDB</summary>
+		</key>
+		<key name="last-update" type="s">
+			<default>"1970-01-01"</default>
+			<summary>Last autoupdate date</summary>
+		</key>
+		<key name="exit-remove-cache" type="b">
+			<default>true</default>
+			<summary>Clear cache on exit</summary>
+		</key>
 
 	</schema>
 </schemalist>

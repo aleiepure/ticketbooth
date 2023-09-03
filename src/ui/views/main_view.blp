@@ -7,6 +7,8 @@ using Adw 1;
 
 template $MainView: Adw.Bin {
 
+  map => $_on_map();
+
   ShortcutController {
     scope: global;
 
@@ -58,6 +60,13 @@ template $MainView: Adw.Bin {
             icon-name: "open-menu";
             menu-model: _primary_menu;
             tooltip-text: _("Main Menu");
+          }
+
+          [end]
+          Spinner _spinner {
+            spinning: true;
+            visible: false;
+            tooltip-text: _("Background activities in progress");
           }
         }
 

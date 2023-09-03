@@ -1,19 +1,14 @@
 # Copyright (C) 2023 Alessandro Iepure
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..models.movie_model import MovieModel
-    from ..models.series_model import SeriesModel
 
 from gi.repository import Adw, GLib, GObject, Gtk
 
 import src.providers.local_provider as local
 
 from .. import shared  # type: ignore
+from ..models.movie_model import MovieModel
+from ..models.series_model import SeriesModel
 from ..pages.details_page import DetailsView
 from ..widgets.poster_button import PosterButton
 
@@ -38,6 +33,7 @@ class ContentView(Adw.Bin):
     movie_view = GObject.Property(type=bool, default=True)
 
     _stack = Gtk.Template.Child()
+    _updating_status_lbl = Gtk.Template.Child()
     _flow_box = Gtk.Template.Child()
 
     def __init__(self, movie_view: bool):
@@ -77,6 +73,7 @@ class ContentView(Adw.Bin):
             None
         """
 
+        self._stack.set_visible_child_name('loading')
         if movie_view:
             content = local.LocalProvider.get_all_movies()
         else:

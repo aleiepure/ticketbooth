@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
+import shutil
 import sqlite3
 from typing import List
 
@@ -414,7 +416,7 @@ class LocalProvider:
     @staticmethod
     def delete_movie(id: int) -> int | None:
         """
-        Deletes the movie with the provided id.
+        Deletes the movie with the provided id, removing associated files too.
 
         Args:
             id (int): movie id to delete
@@ -423,10 +425,19 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
+        movie = LocalProvider.get_movie_by_id(id)
+
+        if movie.backdrop_path.startswith('file'):  # type: ignore
+            os.remove(movie.backdrop_path[7:])      # type: ignore
+
+        if movie.poster_path.startswith('file'):    # type: ignore
+            os.remove(movie.poster_path[7:])        # type: ignore
+
         with sqlite3.connect(shared.db) as connection:
             sql = """DELETE FROM movies WHERE id = ?"""
             result = connection.cursor().execute(sql, (id,))
             connection.commit()
+
         return result.lastrowid
 
     @staticmethod
@@ -552,7 +563,7 @@ class LocalProvider:
     @staticmethod
     def delete_series(id: int) -> int | None:
         """
-        Deletes the tv series with the provided id.
+        Deletes the tv series with the provided id, removing associated files too.
 
         Args:
             id (int): tv series id to delete
@@ -560,6 +571,17 @@ class LocalProvider:
         Returns:
             int or None containing the id of the last modified row
         """
+
+        series = LocalProvider.get_series_by_id(id)
+
+        if series.backdrop_path.startswith('file'):   # type: ignore
+            os.remove(series.backdrop_path[7:])       # type: ignore
+
+        if series.poster_path.startswith('file'):     # type: ignore
+            os.remove(series.poster_path[7:])         # type: ignore
+
+        if (shared.series_dir/id).is_dir():
+            shutil.rmtree(shared.series_dir / id)
 
         with sqlite3.connect(shared.db) as connection:
             connection.cursor().execute('PRAGMA foreign_keys = ON;')

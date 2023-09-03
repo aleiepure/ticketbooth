@@ -17,7 +17,7 @@ class TMDBProvider:
         None
 
     Methods:
-        search(query: str, lang: str): Searches the API for the given query
+        search(query: str, lang: str or None): Searches the API for the given query
         get_languages(): Retrieves all available languages usable with the API
         get_movie(id: int, lang: str): Retrieves general information about a movie.
         get_serie(id: int, lang: str): Retrieves general information about a tv series.
@@ -30,17 +30,20 @@ class TMDBProvider:
         super().__init__()
 
     @staticmethod
-    def search(query: str, lang: str = shared.schema.get_string('tmdb-lang')) -> dict:
+    def search(query: str, lang: str | None = None) -> dict:
         """
         Searches the API for the given query.
 
         Args:
             query (str): a query to lookup
-            lang (str): the prefered language for the results (optional)
+            lang (str or None): the prefered language for the results (ISO 639-1 format)
 
         Returns:
             dict containg the API result.
         """
+
+        if not lang:
+            lang = shared.schema.get_string('tmdb-lang')
 
         return tmdb.Search().multi(query=query, language=lang)
 
@@ -59,7 +62,7 @@ class TMDBProvider:
         return tmdb.Configuration().languages()
 
     @staticmethod
-    def get_movie(id: int, lang: str = shared.schema.get_string('tmdb-lang')) -> dict:
+    def get_movie(id: int, lang: str | None = None) -> dict:
         """
         Retrieves general information about the movie with the provided id.
 
@@ -71,10 +74,13 @@ class TMDBProvider:
             dict containg the API result.
         """
 
+        if not lang:
+            lang = shared.schema.get_string('tmdb-lang')
+
         return tmdb.Movies(id).info(language=lang)
 
     @staticmethod
-    def get_serie(id: int, lang: str = shared.schema.get_string('tmdb-lang')) -> dict:
+    def get_serie(id: int, lang: str | None = None) -> dict:
         """
         Retrieves general information about the tv series with the provided id.
 
@@ -86,10 +92,13 @@ class TMDBProvider:
             dict containg the API result.
         """
 
+        if not lang:
+            lang = shared.schema.get_string('tmdb-lang')
+
         return tmdb.TV(id).info(language=lang)
 
     @staticmethod
-    def get_season_episodes(id: int, season: int, lang: str = shared.schema.get_string('tmdb-lang')) -> dict:
+    def get_season_episodes(id: int, season: int, lang: str | None = None) -> dict:
         """
         Retrieves information about the episodes in a season for the specified tv series.
 
@@ -101,5 +110,8 @@ class TMDBProvider:
         Returns:
             dict containg the API result.
         """
+
+        if not lang:
+            lang = shared.schema.get_string('tmdb-lang')
 
         return tmdb.TV_Seasons(id, season).info(language=lang)['episodes']

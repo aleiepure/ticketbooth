@@ -12,6 +12,7 @@ template $TicketboothWindow: Adw.ApplicationWindow {
   height-request: 600;
 
   map => $_on_map();
+  close-request => $_on_close_request();
 
   Adw.ViewStack _win_stack {
     vexpand: true;

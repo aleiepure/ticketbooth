@@ -17,6 +17,39 @@ template $ContentView: Adw.Bin {
     }
 
     Adw.ViewStackPage {
+      name: "updating";
+      child: Adw.StatusPage {
+        child: Box {
+          orientation: vertical;
+          Spinner {
+            spinning: true;
+            height-request: 64;
+          }
+
+          Box {
+            orientation: vertical;
+            margin-start: 12;
+            margin-end: 12;
+
+            Label {
+              label: "Updating your watchlist";
+              wrap: true;
+              halign: center;
+              justify: center;
+              styles ["title-1"]
+            }
+
+            Label _updating_status_lbl {
+              halign: center;
+              justify: center;
+              wrap: true;
+            }
+          }
+        };
+      };
+    }
+
+    Adw.ViewStackPage {
       name: "loading";
       child: Adw.StatusPage {
         child: Box {

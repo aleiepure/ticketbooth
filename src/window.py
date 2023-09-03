@@ -2,7 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw, Gio, Gtk
+import glob
+import os
+from gettext import gettext as _
+
+from gi.repository import Adw, Gio, GLib, Gtk
 
 from . import shared  # type: ignore
 from .dialogs.add_manual_dialog import AddManualDialog
@@ -73,10 +77,20 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddManualDialog(source)
-        # dialog.connect('close-request', lambda data: source._win_stack.get_child_by_name('main').refresh())
         dialog.present()
 
     def _refresh(self, new_state: None, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.refresh action
+
+        Args:
+            new_state (None): stateless action, always None
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+
         source._win_stack.get_child_by_name('main').refresh()
 
     _actions = {
@@ -93,6 +107,39 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         if shared.DEBUG:
             self.add_css_class('devel')
+
+        shared.schema.bind('offline-mode', self.lookup_action('add-tmdb'),
+                           'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        Gio.NetworkMonitor.get_default().connect('network-changed', self._on_network_changed)
+
+    @Gtk.Template.Callback('_on_close_request')
+    def _on_close_request(self, user_data: object | None) -> bool:
+        """
+        Callback for "close-request" signal.
+        Checks for background activities to prevent quiting and corruption, deletes cached data if enabled in settings.
+
+        Args:
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            True to block quiting, Flase to allow it
+        """
+
+        # Background activities
+        if self._win_stack.get_child_by_name('main').is_spinner_visible():
+            dialog = Adw.MessageDialog.new(self, _('Background Activies Running'),
+                                           _('There are some activities running in the background that need to be completed before exiting. A spinning indicator in the headerbar is visible while they are running.'))
+            dialog.add_response('ok', _('Ok'))
+            dialog.show()
+            return True
+
+        # Cache
+        if shared.schema.get_boolean('exit-remove-cache'):
+            files = glob.glob('*.jpg', root_dir=shared.cache_dir)
+            for file in files:
+                os.remove(shared.cache_dir / file)
+
+        return False
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, widget: Gtk.Widget) -> None:
@@ -115,6 +162,21 @@ class TicketboothWindow(Adw.ApplicationWindow):
         self._win_stack.add_named(child=self.first_run_view, name='first-run')
         self._win_stack.set_visible_child_name('first-run')
         self.first_run_view.connect('exit', self._on_first_run_exit)
+
+    def _on_network_changed(self, network_monitor: Gio.NetworkMonitor, network_available: bool) -> None:
+        """
+        Callback for "network-changed" signal.
+        If no network is available, it turns on offline mode.
+
+        Args:
+            network_monitor (Gio.NetworkMonitor): the NetworkMonitor in use
+            network_available (bool): whether or not the network is available
+
+        Returns:
+            None
+        """
+
+        shared.schema.set_boolean('offline-mode', GLib.Variant.new_boolean(not network_available))
 
     def _on_first_run_exit(self, source: Gtk.Widget) -> None:
         """
