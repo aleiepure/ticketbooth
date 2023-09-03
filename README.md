@@ -18,9 +18,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
    <a href="https://api.reuse.software/info/github.com/aleiepure/ticketbooth" title="REUSE compliance">
     <img src="https://api.reuse.software/badge/github.com/aleiepure/ticketbooth" />
   </a>
-  <!--<a href="https://hosted.weblate.org/engage/ticket-booth/">
-    <img src="https://hosted.weblate.org/widget/ticket-booth/ticket-booth/svg-badge.svg" alt="Translation status" />
-  </a-->
+  <a href="https://hosted.weblate.org/engage/ticket-booth/">
+    <img src="https://hosted.weblate.org/widget/ticket-booth/svg-badge.svg" alt="Translation status" />
+  </a>
   <a href="https://stopthemingmy.app" title="Please do not theme this app">
     <img src="https://stopthemingmy.app/badge.svg" />
   </a>
@@ -38,7 +38,7 @@ Ticket Booth does not allow you to watch or download content.
 This app uses the TMDB API but is not endorsed or certified by TMDB.
 
 ## Install
-<a href='https://flathub.org/apps/org.gimp.GIMP'>
+<a href='https://flathub.org/apps/me.iepure.Ticketbooth'>
   <img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/>
 </a> <br>
 
@@ -46,10 +46,10 @@ Builds from the main branch are available as artifacts on the [Actions page](htt
 To build from source see [Building](./CONTRIBUTING.md#building).
 
 ## Contribute
-This project is translated via [Weblate](https://hosted.weblate.org/engage/ticket-booth/).
-<!--<a href="https://hosted.weblate.org/engage/ticket-booth/">
-  <img src="https://hosted.weblate.org/widget/ticket-booth/ticket-booth/horizontal-auto.svg" alt="Translation status" />
-</a>-->
+This project is translated via [Weblate](https://hosted.weblate.org/engage/ticket-booth/).\
+<a href="https://hosted.weblate.org/engage/ticket-booth/">
+  <img src="https://hosted.weblate.org/widget/ticket-booth/horizontal-auto.svg" alt="Translation status" />
+</a>
 See [Contributing](./CONTRIBUTING.md) to learn more.
 
 ## License
