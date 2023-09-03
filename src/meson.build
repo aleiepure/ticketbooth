@@ -21,6 +21,7 @@ blueprints = custom_target('blueprints',
     'ui/dialogs/add_manual.blp',
     'ui/dialogs/add_tmdb.blp',
     'ui/dialogs/edit_season.blp',
+    'ui/dialogs/message_dialogs.blp',
 
     'ui/pages/edit_episode_page.blp',
     'ui/pages/details_page.blp',

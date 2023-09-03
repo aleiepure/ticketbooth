@@ -25,12 +25,6 @@ class PreferencesWindow(Adw.PreferencesWindow):
     _exit_cache_row = Gtk.Template.Child()
     _cache_row = Gtk.Template.Child()
     _data_row = Gtk.Template.Child()
-    _clear_cache_dialog = Gtk.Template.Child()
-    _clear_data_dialog = Gtk.Template.Child()
-    _movies_row = Gtk.Template.Child()
-    _movies_checkbtn = Gtk.Template.Child()
-    _series_row = Gtk.Template.Child()
-    _series_checkbtn = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -163,7 +157,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        self._clear_cache_dialog.choose(None, self._on_cache_message_dialog_choose, None)
+        builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
+        _clear_cache_dialog = builder.get_object('_clear_cache_dialog')
+        _clear_cache_dialog.set_transient_for(self)
+        _clear_cache_dialog.choose(None, self._on_cache_message_dialog_choose, None)
 
     def _on_cache_message_dialog_choose(self,
                                         source: GObject.Object | None,
@@ -205,10 +202,18 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        self._movies_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_movies())))  # type: ignore
-        self._series_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_series())))  # type: ignore
+        builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
+        _clear_data_dialog = builder.get_object('_clear_data_dialog')
+        _movies_row = builder.get_object('_movies_row')
+        _series_row = builder.get_object('_series_row')
+        self._movies_checkbtn = builder.get_object('_movies_checkbtn')
+        self._series_checkbtn = builder.get_object('_series_checkbtn')
 
-        self._clear_data_dialog.choose(None, self._on_data_message_dialog_choose, None)
+        _movies_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_movies())))  # type: ignore
+        _series_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_series())))  # type: ignore
+        _clear_data_dialog.set_transient_for(self)
+
+        _clear_data_dialog.choose(None, self._on_data_message_dialog_choose, None)
 
     def _on_data_message_dialog_choose(self,
                                        source: GObject.Object | None,

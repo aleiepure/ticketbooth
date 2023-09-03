@@ -28,6 +28,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/dialogs/add_manual.ui</file>
     <file preprocess="xml-stripblanks">ui/dialogs/add_tmdb.ui</file>
     <file preprocess="xml-stripblanks">ui/dialogs/edit_season.ui</file>
+    <file preprocess="xml-stripblanks">ui/dialogs/message_dialogs.ui</file>
 
     <!-- Views -->
     <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/gtk/help-overlay.ui</file>

@@ -372,7 +372,7 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def get_all_movies() -> List[MovieModel] | None:
+    def get_all_movies() -> List[MovieModel]:
         """
         Retrieves all movies from the db.
 
@@ -392,7 +392,7 @@ class LocalProvider:
                     movies.append(MovieModel(t=movie))
                 return movies
             else:
-                return None
+                return []
 
     @staticmethod
     def mark_watched_movie(id: int, watched: bool) -> int | None:
@@ -517,7 +517,7 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def get_all_series() -> List[SeriesModel] | None:
+    def get_all_series() -> List[SeriesModel]:
         """
         Retrieves all tv series from the db.
 
@@ -537,7 +537,7 @@ class LocalProvider:
                     series.append(SeriesModel(t=serie))
                 return series
             else:
-                return None
+                return []
 
     @staticmethod
     def mark_watched_series(id: int, watched: bool) -> int | None:
