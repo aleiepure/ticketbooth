@@ -69,3 +69,7 @@ License: GPL-3.0-or-later
 Files: po/ticketbooth.pot
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
+
+Files: *.md
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: GPL-3.0-or-later
