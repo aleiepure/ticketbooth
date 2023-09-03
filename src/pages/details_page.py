@@ -5,7 +5,7 @@
 from datetime import date
 from gettext import gettext as _
 
-from gi.repository import Adw, Gio, GObject, Gtk
+from gi.repository import Adw, Gio, GLib, GObject, Gtk
 from PIL import Image, ImageStat
 
 from .. import shared  # type: ignore
@@ -13,6 +13,7 @@ from ..dialogs.add_manual_dialog import AddManualDialog
 from ..models.movie_model import MovieModel
 from ..models.series_model import SeriesModel
 from ..providers.local_provider import LocalProvider as local
+from ..providers.tmdb_provider import TMDBProvider as tmdb
 from ..widgets.episode_row import EpisodeRow
 
 
@@ -41,6 +42,7 @@ class DetailsView(Adw.NavigationPage):
         'edited': (GObject.SIGNAL_RUN_FIRST, None, ()),
     }
 
+    _view_stack = Gtk.Template.Child()
     _background_picture = Gtk.Template.Child()
     _poster_picture = Gtk.Template.Child()
     _title_lbl = Gtk.Template.Child()
@@ -51,6 +53,7 @@ class DetailsView(Adw.NavigationPage):
     _chip3_lbl = Gtk.Template.Child()
     _watched_btn = Gtk.Template.Child()
     _edit_btn = Gtk.Template.Child()
+    _update_btn = Gtk.Template.Child()
     _description_box = Gtk.Template.Child()
     _overview_lbl = Gtk.Template.Child()
     _creator_box = Gtk.Template.Child()
@@ -59,25 +62,25 @@ class DetailsView(Adw.NavigationPage):
     _seasons_group = Gtk.Template.Child()
     _additional_info_box = Gtk.Template.Child()
     _flow_box = Gtk.Template.Child()
+    _loading_lbl = Gtk.Template.Child()
 
     def __init__(self, content: MovieModel | SeriesModel):
         super().__init__()
         self.content = content
+        self.set_title(self.content.title)
+        self._view_stack.set_visible_child_name('loading')
+        GLib.Thread.new(None, self._populate_data)
 
-    @Gtk.Template.Callback('_on_map')
-    def _on_map(self, user_data: object | None) -> None:
+    def _populate_data(self) -> None:
         """
-        Callback for the "map" signal.
-        Based on the type of self.content, shows the relevant information. Backdrop and poster image, title, tagline, genres, release date, and overview are always showed.
+        Populates the widgets with the available information.
 
         Args:
-            user_data (object or None): additional data passed to the callback
+            None
 
         Returns:
             None
         """
-
-        self.set_title(self.content.title)
 
         # Both movies and tv series
         if self.content.backdrop_path:
@@ -120,6 +123,8 @@ class DetailsView(Adw.NavigationPage):
 
         if self.content.manual:
             self._edit_btn.set_visible(True)
+        else:
+            self._update_btn.set_visible(True)
 
         if self.content.overview:
             self._description_box.set_visible(True)
@@ -149,6 +154,7 @@ class DetailsView(Adw.NavigationPage):
             self._build_seasons_group()
 
         self._build_flow_box()
+        self._view_stack.set_visible_child_name('filled')
 
     def _build_seasons_group(self) -> None:
         """
@@ -162,8 +168,7 @@ class DetailsView(Adw.NavigationPage):
         """
 
         list_box = self._seasons_group.get_first_child().get_last_child().get_first_child()
-        if list_box.get_row_at_index(0):
-            return
+        list_box.remove_all()
 
         for season in self.content.seasons:
             season_row = Adw.ExpanderRow(title=season.title,
@@ -338,6 +343,48 @@ class DetailsView(Adw.NavigationPage):
 
         root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
         self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(content)])
+
+    @Gtk.Template.Callback('_on_update_btn_clicked')
+    def _on_update_btn_clicked(self, user_data: object | None) -> None:
+        """
+        Callback for "clicked" signal.
+        Starts a manual update in another thread.
+
+        Args:
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        GLib.Thread.new(None, self._update_thread)
+
+    def _update_thread(self) -> None:
+        """
+        Fetches updated information and updates the stored copy. Additionally it handles ui updates.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
+        self._view_stack.set_visible_child_name('loading')
+        self._loading_lbl.set_label(_('Updating {title}').format(title=self.content.title))
+
+        if type(self.content) is MovieModel:
+            new_content = MovieModel(tmdb.get_movie(self.content.id))
+            local.update_movie(old=self.content, new=new_content)
+        else:
+            local.delete_series(self.content.id)
+            new_content = SeriesModel(tmdb.get_serie(self.content.id))
+            local.add_series(serie=new_content)
+
+        root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
+        self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(new_content)])
+        self._loading_lbl.set_label(_('Loading Metadata'))
+        self._view_stack.set_visible_child_name('filled')
 
     @Gtk.Template.Callback('_on_delete_btn_clicked')
     def _on_delete_btn_clicked(self, user_data: object | None) -> None:
