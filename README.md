@@ -50,6 +50,7 @@ This project is translated via [Weblate](https://hosted.weblate.org/engage/ticke
 <a href="https://hosted.weblate.org/engage/ticket-booth/">
   <img src="https://hosted.weblate.org/widget/ticket-booth/horizontal-auto.svg" alt="Translation status" />
 </a>
+
 See [Contributing](./CONTRIBUTING.md) to learn more.
 
 ## License
