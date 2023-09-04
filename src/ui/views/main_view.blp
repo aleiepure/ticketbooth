@@ -35,7 +35,7 @@ template $MainView: Adw.Bin {
 
   Adw.NavigationView {
     Adw.NavigationPage {
-      title: _("My watchlist");
+      title: _("My Watchlist");
       child: Adw.ToolbarView {
 
         [top]
@@ -66,7 +66,7 @@ template $MainView: Adw.Bin {
           Spinner _spinner {
             spinning: true;
             visible: false;
-            tooltip-text: _("Background activities in progress");
+            tooltip-text: _("Activities are running in the background");
           }
         }
 
@@ -74,7 +74,7 @@ template $MainView: Adw.Bin {
           orientation: vertical;
 
           Adw.Banner _banner {
-            title: _("You are in offline mode");
+            title: _("Offline Mode Enabled");
             button-label: _("Preferences");
             action-name: "app.preferences";
           }
@@ -108,7 +108,7 @@ menu _primary_menu {
 
   section {
     submenu {
-      label: _("Sorting");
+      label: _("_Sorting");
 
       item {
         label: _("A-Z");
@@ -148,7 +148,7 @@ menu _primary_menu {
     }
 
     item {
-      label: _("Refresh");
+      label: _("_Refresh");
       action: "win.refresh";
     }
   }
@@ -173,7 +173,7 @@ menu _primary_menu {
 
 menu _add_menu {
   item {
-    label: _("From The Movie Database");
+    label: _("From The Movie Database (TMDB)");
     action: "win.add-tmdb";
   }
 

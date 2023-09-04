@@ -32,7 +32,7 @@ template $AddTMDBDialog: Adw.Window {
 
       title-widget: SearchEntry _search_entry {
         activates-default: true;
-        placeholder-text: _("Search The Movie Database");
+        placeholder-text: _("Search The Movie Database…");
         search-delay: 500;
         search-changed => $_on_searchentry_search_changed();
       };
@@ -48,16 +48,16 @@ template $AddTMDBDialog: Adw.Window {
       Adw.ViewStackPage {
         name: "empty";
         child: Adw.StatusPage {
-          title: _("Search for a title");
+          title: _("Search For a Title");
           icon-name: "loupe";
-          description: _("Start typing in the searchbar to see a list of movies and tv-series");
+          description: _("Start typing in the search bar to see a list of matching movies and TV series");
         };
       }
 
       Adw.ViewStackPage {
         name: "no-results";
         child: Adw.StatusPage {
-          title: _("No results found");
+          title: _("No Results Found");
           icon-name: "loupe";
           description: _("Try a different search");
         };

@@ -4,6 +4,7 @@
 
 from datetime import date
 from gettext import gettext as _
+from gettext import pgettext as C_
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 from PIL import Image, ImageStat
@@ -15,6 +16,7 @@ from ..models.series_model import SeriesModel
 from ..providers.local_provider import LocalProvider as local
 from ..providers.tmdb_provider import TMDBProvider as tmdb
 from ..widgets.episode_row import EpisodeRow
+from ..widgets.theme_switcher import ThemeSwitcher
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/pages/details_page.ui')
@@ -43,6 +45,7 @@ class DetailsView(Adw.NavigationPage):
     }
 
     _view_stack = Gtk.Template.Child()
+    _menu_btn = Gtk.Template.Child()
     _background_picture = Gtk.Template.Child()
     _poster_picture = Gtk.Template.Child()
     _title_lbl = Gtk.Template.Child()
@@ -66,6 +69,10 @@ class DetailsView(Adw.NavigationPage):
 
     def __init__(self, content: MovieModel | SeriesModel):
         super().__init__()
+
+        # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
+        self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
+
         self.content = content
         self.set_title(self.content.title)
         self._view_stack.set_visible_child_name('loading')
@@ -118,7 +125,7 @@ class DetailsView(Adw.NavigationPage):
             self._watched_btn.set_label(_('Watched'))
             self._watched_btn.set_icon_name('check-plain')
         else:
-            self._watched_btn.set_label(_('In your watchlist'))
+            self._watched_btn.set_label(_('Mark as Watched'))
             self._watched_btn.set_icon_name('watchlist')
 
         if self.content.manual:
@@ -140,10 +147,12 @@ class DetailsView(Adw.NavigationPage):
         if type(self.content) is SeriesModel:
             if self.content.seasons_number:
                 self._chip2_lbl.set_visible(True)
+                # TRANSLATORS: {num} is the total number of seasons
                 self._chip2_lbl.set_text(_('{num} Seasons').format(num=self.content.seasons_number))
 
             if self.content.episodes_number:
                 self._chip3_lbl.set_visible(True)
+                # TRANSLATORS: {num} is the total number of episodes
                 self._chip3_lbl.set_text(_('{num} Episodes').format(num=self.content.episodes_number))
 
             if self.content.created_by:
@@ -276,8 +285,10 @@ class DetailsView(Adw.NavigationPage):
         h, m = divmod(int(runtime), 60)
 
         if h > 0:
+            # TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
             return _('{h}h {m}min').format(h=h, m=m)
         else:
+            # TRANSLATORS: {m} is the runtime minutes
             return _('{m}min').format(m=m)
 
     def _on_season_check_btn_toggle(self, check_btn: Gtk.CheckButton) -> None:
@@ -308,7 +319,7 @@ class DetailsView(Adw.NavigationPage):
             self._watched_btn.set_label(_('Watched'))
             self._watched_btn.set_icon_name('check-plain')
         else:
-            self._watched_btn.set_label(_('In your watchlist'))
+            self._watched_btn.set_label(_('Mark as Watched'))
             self._watched_btn.set_icon_name('watchlist')
 
     @Gtk.Template.Callback('_on_edit_btn_clicked')
@@ -371,6 +382,7 @@ class DetailsView(Adw.NavigationPage):
         """
 
         self._view_stack.set_visible_child_name('loading')
+        # TRANSLATORS: {title} is the showed content's title
         self._loading_lbl.set_label(_('Updating {title}').format(title=self.content.title))
 
         if type(self.content) is MovieModel:
@@ -383,7 +395,7 @@ class DetailsView(Adw.NavigationPage):
 
         root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
         self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(new_content)])
-        self._loading_lbl.set_label(_('Loading Metadata'))
+        self._loading_lbl.set_label(_('Loading Metadata…'))
         self._view_stack.set_visible_child_name('filled')
 
     @Gtk.Template.Callback('_on_delete_btn_clicked')
@@ -399,12 +411,11 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
-        dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),
-                                       _('Delete {title}?').format(title=self.content.title),
-                                       _('This title will be deleted from your watchlist.')
-                                       )
-        dialog.add_response('cancel', _('_Cancel'))
-        dialog.add_response('delete', _('_Delete'))
+        dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),  # TRANSLATORS: {title} is the content's title
+                                       C_('message dialog heading', 'Delete {title}?').format(title=self.content.title),
+                                       C_('message dialog body', 'This title will be deleted from your watchlist.'))
+        dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
+        dialog.add_response('delete', C_('message dialog action', '_Delete'))
         dialog.set_response_appearance('delete', Adw.ResponseAppearance.DESTRUCTIVE)
         dialog.choose(None, self._on_message_dialog_choose, None)
 

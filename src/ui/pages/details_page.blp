@@ -21,6 +21,13 @@ template $DetailsView: Adw.NavigationPage {
           [top]
           Adw.HeaderBar {
             styles ["flat"]
+
+            [end]
+            MenuButton _menu_btn {
+              icon-name: "open-menu";
+              menu-model: _primary_menu;
+              tooltip-text: _("Main Menu");
+            }
           }
 
           content: ScrolledWindow {
@@ -115,7 +122,7 @@ template $DetailsView: Adw.NavigationPage {
 
                       Button _update_btn {
                         icon-name: "update";
-                        tooltip-text: _("Update metadata");
+                        tooltip-text: _("Update Metadata");
                         valign: center;
                         visible: false;
 
@@ -274,7 +281,7 @@ template $DetailsView: Adw.NavigationPage {
             margin-end: 12;
 
             Label _loading_lbl {
-              label: "Loading Metadata";
+              label: "Loading Content…";
               wrap: true;
               halign: center;
               justify: center;
@@ -292,4 +299,29 @@ template $DetailsView: Adw.NavigationPage {
       };
     }
   };
+}
+
+menu _primary_menu {
+  section {
+    item {
+      custom: "themeswitcher";
+    }
+  }
+
+  section {
+    item {
+      label: _("_Preferences");
+      action: "app.preferences";
+    }
+
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_About Ticket Booth");
+      action: "app.about";
+    }
+  }
 }

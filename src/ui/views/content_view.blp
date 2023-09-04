@@ -10,9 +10,9 @@ template $ContentView: Adw.Bin {
     Adw.ViewStackPage {
       name: "empty";
       child: Adw.StatusPage {
-        icon-name: "plus";
-        title: _("Your watchlist is empty");
-        description: _("Add content with the button in the corner");
+        icon-name: bind template.icon-name;
+        title: _("Your Watchlist Is Empty");
+        description: _("Add content with the + button.");
       };
     }
 
@@ -32,7 +32,7 @@ template $ContentView: Adw.Bin {
             margin-end: 12;
 
             Label {
-              label: "Updating your watchlist";
+              label: "Updating your watchlist…";
               wrap: true;
               halign: center;
               justify: center;
@@ -65,7 +65,7 @@ template $ContentView: Adw.Bin {
             margin-end: 12;
 
             Label _heading_lbl {
-              label: "Loading your watchlist";
+              label: "Loading your watchlist…";
               wrap: true;
               halign: center;
               justify: center;
@@ -95,7 +95,7 @@ template $ContentView: Adw.Bin {
             halign: start;
             margin-start: 12;
             margin-top: 12;
-            label: _("Your watchlist");
+            label: _("Your Watchlist");
             styles ["title-1"]
           }
 

@@ -6,18 +6,18 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.MessageDialog _clear_cache_dialog {
-  heading: _('Clear Cached Data?');
-  body: _('This operation will deleted all stored cache data. It might get downloaded again next time you add content from TMDB.');
+  heading: C_('message dialog heading', 'Clear Cached Data?');
+  body: C_('message dialog body', 'This operation will clear all stored cache data. It might get downloaded again next time you add content from TMDB.');
 
   responses[
-    cache_cancel: _("Cancel"),
-    cache_clear: _("Clear") destructive
+    cache_cancel: C_('message dialog action', "Cancel"),
+    cache_clear: C_('message dialog action', "Clear") destructive
   ]
 }
 
 Adw.MessageDialog _clear_data_dialog {
-  heading: _('Clear Stored Data?');
-  body: _('This operation will permanentlly delete the selected data, loosing all changes. You can always add your content again in the future.');
+  heading: C_('message dialog heading', 'Clear Stored Data?');
+  body: C_('message dialog body', 'This operation will permanentlly delete the selected data, loosing all your changes.');
   extra-child: Adw.PreferencesGroup {
     Adw.ActionRow _movies_row {
       [prefix]
@@ -37,7 +37,7 @@ Adw.MessageDialog _clear_data_dialog {
   };
 
   responses[
-    data_cancel: _("Cancel"),
-    data_clear: _("Clear") destructive
+    data_cancel: C_('message dialog action', "Cancel"),
+    data_clear: C_('message dialog action', "Clear") destructive
   ]
 }

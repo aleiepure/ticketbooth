@@ -89,13 +89,13 @@ class FirstRunView(Adw.Bin):
         """
 
         if need_download:
-            self._heading_lbl.set_label(_('Waiting for network'))
+            self._heading_lbl.set_label(_('Waiting for Network…'))
             self._status_lbl.set_label(
-                _("For a complete experience, a download of 15kB is required. However, if you are not connected to the Internet or don't want to wait, you can skip this step and continue offline without some features."))
+                _("For a complete experience, a download of 15 KB is required. However, if you are not connected to the Internet or don't want to wait, you can skip this step and continue offline without some features."))
             self._offline_btn.set_visible(True)
             self._retry_check_btn.set_visible(True)
         else:
-            self._heading_lbl.set_label(_('Getting things ready'))
+            self._heading_lbl.set_label(_('Getting things ready…'))
             self._status_lbl.set_label(_('Downloading data'))
             self._offline_btn.set_visible(False)
             self._retry_check_btn.set_visible(False)
@@ -191,6 +191,7 @@ class FirstRunView(Adw.Bin):
 
         shared.schema.set_boolean('first-run', False)
         shared.schema.set_boolean('offline-mode', False)
+        shared.schema.set_boolean('onboard-complete', True)
         self.emit('exit')
 
     @Gtk.Template.Callback('_on_offline_btn_clicked')

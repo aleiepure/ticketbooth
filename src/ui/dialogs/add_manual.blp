@@ -83,15 +83,6 @@ template $AddManualDialog: Adw.Window {
         margin-end: 20;
         margin-bottom: 20;
 
-        Label {
-          margin-top: 6;
-          label: _("Fill in all required fields");
-          use-markup: true;
-          visible: bind template.edit-mode inverted;
-
-          styles ["dim-label"]
-        }
-
         Box {
           orientation: horizontal;
           margin-top: 20;

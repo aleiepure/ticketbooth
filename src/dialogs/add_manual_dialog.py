@@ -98,6 +98,8 @@ class AddManualDialog(Adw.Window):
             None
         """
 
+        self._overview_text.remove_css_class('view')
+
         languages = local.get_all_languages()
         languages.insert(0, languages.pop(len(languages)-6))    # move 'no language' to 1st place
         for language in languages:
@@ -268,6 +270,7 @@ class AddManualDialog(Adw.Window):
             None
         """
 
+        # TRANSLATORS: {num} is the season number
         dialog = EditSeasonDialog(self, title=_('Season {num}').format(num=len(self.seasons)+1))
         dialog.connect('edit-saved', self._on_edit_saved)
         dialog.present()

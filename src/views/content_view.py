@@ -31,6 +31,7 @@ class ContentView(Adw.Bin):
     __gtype_name__ = 'ContentView'
 
     movie_view = GObject.Property(type=bool, default=True)
+    icon_name = GObject.Property(type=str, default='movies')
 
     _stack = Gtk.Template.Child()
     _updating_status_lbl = Gtk.Template.Child()
@@ -39,6 +40,7 @@ class ContentView(Adw.Bin):
     def __init__(self, movie_view: bool):
         super().__init__()
         self.movie_view = movie_view
+        self.icon_name = 'movies' if self.movie_view else 'series'
 
         self._stack.set_visible_child_name('loading')
 

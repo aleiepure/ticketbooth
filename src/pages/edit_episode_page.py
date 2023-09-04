@@ -63,6 +63,8 @@ class EditEpisodeNavigationPage(Adw.NavigationPage):
             None
         """
 
+        self._overview_text.remove_css_class('view')
+
         self._title_entry.set_text(self._title)
         self._runtime_spin_row.set_value(self._runtime)
         self._still.set_blank_image(f'resource://{shared.PREFIX}/blank_still.jpg')

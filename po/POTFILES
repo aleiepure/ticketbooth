@@ -13,6 +13,7 @@ src/models/season_model.py
 src/models/series_model.py
 src/pages/details_page.py
 src/pages/edit_episode_page.py
+src/preferences.py
 src/providers/local_provider.py
 src/providers/tmdb_provider.py
 src/ui/about_window.blp

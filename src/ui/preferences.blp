@@ -15,48 +15,63 @@ template $PreferencesWindow: Adw.PreferencesWindow {
     name: "preferences";
     title: _("Preferences");
 
-    Adw.PreferencesGroup {
-      title: _("Offline Mode");
-      description: _("Ticket Booth can work entirelly offline. If you choose to run in this mode, some features that require the Internet and/or access to third party APIs will not be available.");
+    Adw.PreferencesGroup _download_group {
+      title: C_("preferences", "Optional Download");
+      description: C_("preferences", "For a complete experience, a download of 15 KB is required. The initial setup could not retrieve the data automatically and thus offline mode has been activated. It will remain active until the setup is completed.");
 
-      Adw.SwitchRow _offline_switch {
-        title: _("Enable Offline Mode");
+      Adw.ActionRow _download_row {
+        title: C_("preferences", "Complete Setup");
+        activated => $_on_download_activate();
+        activatable: true;
+
+        Image {
+          icon-name: "right";
+        }
       }
     }
 
-    Adw.PreferencesGroup {
-      title: _("The Movie Database (TMDB)");
-      description: _("TMDB provides localized metadata for most content. Ticket Booth will periodically, if enabled, download metadata in your prefered language selectable below. In case it is not available, it will fallback to English US and then to the content's original language. If neither are available, it will result in a blank string. In this case please consider <a href='https://www.themoviedb.org/bible/new_content'>contributing to TMDB</a>.");
+    Adw.PreferencesGroup _offline_group {
+      title: C_("preferences", "Offline Mode");
+      description: C_("preferences", "Ticket Booth can work entirelly offline. If you choose to run in this mode, some features that require the Internet and/or access to third party APIs will not be available.");
+
+      Adw.SwitchRow _offline_switch {
+        title: C_("preferences", "Enable Offline Mode");
+      }
+    }
+
+    Adw.PreferencesGroup _tmdb_group {
+      title: C_("preferences", "The Movie Database (TMDB)");
+      description: C_("preferences", "TMDB provides localized metadata for most content. Ticket Booth will download it in your prefered language, selectable below. In case it is not available, it will fallback to English US and then to the content's original language. If neither are available, it will result in a blank string. Please consider <a href='https://www.themoviedb.org/bible/new_content'>contributing to TMDB</a>. Additionally, an automatic update is performed on a frequency of your choosing.");
 
       Adw.ComboRow _language_comborow {
-        title: _("TMDB Results Language");
+        title: C_("preferences", "TMDB Results Language");
         model: StringList _language_model {};
       }
 
       Adw.ComboRow _update_freq_comborow {
-        title: _("Update Frequency");
-        subtitle: _("Restart Ticket Booth after changing");
+        title: C_("preferences", "Update Frequency");
+        subtitle: C_("preferences", "Restart Ticket Booth after changing");
         model: StringList {
-          strings [
-            _("Never"),
-            _("Daily"),
-            _("Weekly"),
-            _("Monthlly")
+          strings[
+            C_("preferences", "Never"),
+            C_("preferences", "Daily"),
+            C_("preferences", "Weekly"),
+            C_("preferences", "Monthly")
           ]
         };
       }
     }
 
     Adw.PreferencesGroup _housekeeping_group {
-      title: _("Housekeeping");
+      title: C_("preferences", "Housekeeping");
 
       Adw.PreferencesGroup {
         Adw.SwitchRow _exit_cache_row {
-          title: _("Clear Cache on Exit");
+          title: C_("preferences", "Clear Cache on Exit");
         }
 
         Adw.ActionRow _cache_row {
-          title: _("Clear Cached Search Data");
+          title: C_("preferences", "Clear Cached Search Data");
           activated => $_on_clear_cache_activate();
           activatable: true;
 
@@ -66,7 +81,7 @@ template $PreferencesWindow: Adw.PreferencesWindow {
         }
 
         Adw.ActionRow _data_row {
-          title: _("Clear Data");
+          title: C_("preferences", "Clear Data");
           activated => $_on_clear_activate();
           activatable: true;
 

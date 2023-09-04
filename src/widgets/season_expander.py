@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gettext import gettext as _
+from gettext import pgettext as C_
 from typing import List
 
 from gi.repository import Adw, Gio, GObject, Gtk
@@ -134,12 +135,13 @@ class SeasonExpander(Adw.ExpanderRow):
             None
         """
 
+        # TRANSLATORS: {title} is the showed content's title
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.Window),
-                                       _('Delete {title}?').format(title=self.season_title),
-                                       _('This season contains unsaved metadata.')
+                                       C_('message dialog heading', 'Delete {title}?').format(title=self.season_title),
+                                       C_('message dialog body', 'This season contains unsaved metadata.')
                                        )
-        dialog.add_response('cancel', _('_Cancel'))
-        dialog.add_response('delete', _('_Delete'))
+        dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
+        dialog.add_response('delete', C_('message dialog action', '_Delete'))
         dialog.set_response_appearance('delete', Adw.ResponseAppearance.DESTRUCTIVE)
         dialog.choose(None, self._on_message_dialog_choose, None)
 

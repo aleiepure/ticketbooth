@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gettext import gettext as _
+from gettext import pgettext as C_
 
 from gi.repository import Adw, Gio, GObject, Gtk
 
@@ -127,11 +128,11 @@ class EpisodeRow(Adw.PreferencesRow):
 
         if h > 0:
 
-            # TRANSLATORS: content runtime
+            # TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
             return _('{h}h {m}min').format(h=h, m=m)
         else:
 
-            # TRANSLATORS: content runtime
+            # TRANSLATORS: {m} is the runtime minutes
             return _('{m}min').format(m=m)
 
     @Gtk.Template.Callback('_on_edit_btn_clicked')
@@ -205,12 +206,14 @@ class EpisodeRow(Adw.PreferencesRow):
             None
         """
 
+        # TRANSLATORS: {title} is the showed content's title
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.Window),
-                                       _('Delete {title}?').format(title=f'{self.episode_number}.{self.title}'),
-                                       _('All cheanges to this episode will be lost.')
+                                       C_('message dialog heading', 'Delete {title}?').format(
+                                           title=f'{self.episode_number}.{self.title}'),
+                                       C_('message dialog body', 'All cheanges to this episode will be lost.')
                                        )
-        dialog.add_response('cancel', _('_Cancel'))
-        dialog.add_response('delete', _('_Delete'))
+        dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
+        dialog.add_response('delete', C_('message dialog action', '_Delete'))
         dialog.set_response_appearance('delete', Adw.ResponseAppearance.DESTRUCTIVE)
         dialog.choose(None, self._on_message_dialog_choose, None)
 

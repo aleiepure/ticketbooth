@@ -5,6 +5,7 @@
 import glob
 import os
 from gettext import gettext as _
+from gettext import pgettext as C_
 
 from gi.repository import Adw, Gio, GLib, Gtk
 
@@ -110,7 +111,9 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         shared.schema.bind('offline-mode', self.lookup_action('add-tmdb'),
                            'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
-        Gio.NetworkMonitor.get_default().connect('network-changed', self._on_network_changed)
+
+        if shared.schema.get_boolean('onboard-complete'):
+            Gio.NetworkMonitor.get_default().connect('network-changed', self._on_network_changed)
 
     @Gtk.Template.Callback('_on_close_request')
     def _on_close_request(self, user_data: object | None) -> bool:
@@ -127,9 +130,10 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         # Background activities
         if self._win_stack.get_child_by_name('main').is_spinner_visible():
-            dialog = Adw.MessageDialog.new(self, _('Background Activies Running'),
-                                           _('There are some activities running in the background that need to be completed before exiting. A spinning indicator in the headerbar is visible while they are running.'))
-            dialog.add_response('ok', _('Ok'))
+            dialog = Adw.MessageDialog.new(self,
+                                           C_('message dialog heading', 'Background Activies Running'),
+                                           C_('message dialog body', 'Some activities are running in the background and need to be completed before exiting. A spinning indicator in the header bar is visible while they are running.'))
+            dialog.add_response('ok', C_('message dialog action', 'OK'))
             dialog.show()
             return True
 
@@ -165,7 +169,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
     def _on_network_changed(self, network_monitor: Gio.NetworkMonitor, network_available: bool) -> None:
         """
-        Callback for "network-changed" signal.
+        Callback for "network-changed" signal.'message dialog heading'
         If no network is available, it turns on offline mode.
 
         Args:
