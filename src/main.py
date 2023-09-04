@@ -66,7 +66,6 @@ class TicketboothApplication(Adw.Application):
         if not win:
             win = TicketboothWindow(application=self)
         win.present()
-
     def on_about_action(self, widget: Gtk.Widget, user_data: object | None):
         """Callback for the app.about action."""
 
