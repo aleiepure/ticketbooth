@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-03 16:55+0200\n"
-"PO-Revision-Date: 2023-09-04 15:10+0000\n"
+"PO-Revision-Date: 2023-09-05 16:55+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "ticket-booth/ticket-booth/nb_NO/>\n"
@@ -309,7 +309,7 @@ msgstr "Spilletid (minutter)"
 
 #: src/ui/dialogs/add_manual.blp:149
 msgid "Tagline"
-msgstr ""
+msgstr "Slogan"
 
 #: src/ui/dialogs/add_manual.blp:154 src/ui/pages/details_page.blp:180
 msgid "Created by"
