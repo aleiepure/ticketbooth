@@ -1,6 +1,7 @@
 data/me.iepure.Ticketbooth.desktop.in
 data/me.iepure.Ticketbooth.gschema.xml.in
 data/me.iepure.Ticketbooth.metainfo.xml.in
+src/background_queue.py
 src/dialogs/add_manual_dialog.py
 src/dialogs/add_tmdb_dialog.py
 src/dialogs/edit_season_dialog.py
@@ -28,6 +29,8 @@ src/ui/preferences.blp
 src/ui/views/content_view.blp
 src/ui/views/first_run_view.blp
 src/ui/views/main_view.blp
+src/ui/widgets/background_activity_row.blp
+src/ui/widgets/background_indicator.blp
 src/ui/widgets/episode_row.blp
 src/ui/widgets/image_selector.blp
 src/ui/widgets/poster_button.blp
@@ -38,6 +41,8 @@ src/ui/window.blp
 src/views/content_view.py
 src/views/first_run_view.py
 src/views/main_view.py
+src/widgets/background_activity_row.py
+src/widgets/background_indicator.py
 src/widgets/episode_row.py
 src/widgets/image_selector.py
 src/widgets/poster_button.py

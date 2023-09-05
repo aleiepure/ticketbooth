@@ -23,6 +23,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks">ui/widgets/episode_row.ui</file>
     <file preprocess="xml-stripblanks">ui/widgets/image_selector.ui</file>
     <file preprocess="xml-stripblanks">ui/widgets/season_expander.ui</file>
+    <file preprocess="xml-stripblanks">ui/widgets/background_indicator.ui</file>
+    <file preprocess="xml-stripblanks">ui/widgets/background_activity_row.ui</file>
 
     <!-- Dialogs -->
     <file preprocess="xml-stripblanks">ui/dialogs/add_manual.ui</file>

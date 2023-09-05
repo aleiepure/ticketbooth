@@ -7,6 +7,8 @@ from gettext import gettext as _
 from gi.repository import Adw, Gio, GLib, Gtk
 
 from .. import shared  # type: ignore
+from ..background_queue import (ActivityType, BackgroundActivity,
+                                BackgroundQueue)
 from ..models.movie_model import MovieModel
 from ..models.series_model import SeriesModel
 from ..providers.local_provider import LocalProvider as local
@@ -33,9 +35,9 @@ class MainView(Adw.Bin):
     __gtype_name__ = 'MainView'
 
     _tab_stack = Gtk.Template.Child()
-    _spinner = Gtk.Template.Child()
     _menu_btn = Gtk.Template.Child()
     _banner = Gtk.Template.Child()
+    _background_indicator = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -76,7 +78,7 @@ class MainView(Adw.Bin):
 
     def _check_update_content(self) -> None:
         """
-        Checks if a content update is due, triggering it if necessary.
+        Checks if a content update is due, triggering it by adding background activities, if necessary.
 
         Args:
             None
@@ -85,33 +87,32 @@ class MainView(Adw.Bin):
             None
         """
 
-        self._spinner.set_visible(True)
-
         last_check = datetime.fromisoformat(shared.schema.get_string('last-update'))
 
         match shared.schema.get_string('update-freq'):
             case 'day':
                 if last_check + timedelta(days=1) < datetime.now():
-                    GLib.Thread.new(None, self._update_content, None)
+                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
+                                        _('Automatic update'), self._update_content))
             case 'week':
                 if last_check + timedelta(days=7) < datetime.now():
-                    GLib.Thread.new(None, self._update_content, None)
+                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
+                                        _('Automatic update'), self._update_content))
             case 'month':
                 if last_check + timedelta(days=30) < datetime.now():
-                    GLib.Thread.new(None, self._update_content, None)
+                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
+                                        _('Automatic update'), self._update_content))
             case 'never':
-                self._spinner.set_visible(False)
                 return
 
-        self._spinner.set_visible(False)
         shared.schema.set_string('last-update', datetime.now().strftime('%Y-%m-%d'))
 
-    def _update_content(self, user_data: object | None) -> None:
+    def _update_content(self, activity: BackgroundActivity) -> None:
         """
         Performs a content update on content added from TMDB.
 
         Args:
-            user_data (object or None): additional data passed to the callback
+            activity (BackgroundActivity): the calling activity
 
         Returns:
             None
@@ -134,8 +135,8 @@ class MainView(Adw.Bin):
                     new_serie = SeriesModel(tmdb.get_serie(serie.id))
                     local.add_series(serie=new_serie)
 
-        self._spinner.set_visible(False)
         self.refresh()
+        activity.end()
 
     def refresh(self) -> None:
         """
@@ -149,29 +150,3 @@ class MainView(Adw.Bin):
         """
         self._tab_stack.get_child_by_name('movies').refresh_view()
         self._tab_stack.get_child_by_name('series').refresh_view()
-
-    def show_spinner(self, visible: bool) -> None:
-        """
-        Sets the background activities spinner's visibility.
-
-        Args:
-            visible (bool): whether or not to show the spinner
-
-        Returns:
-            None
-        """
-
-        self._spinner.set_visible(visible)
-
-    def is_spinner_visible(self) -> bool:
-        """
-        Returns the spinner's visibility.
-
-        Args:
-            None
-
-        Returns:
-            bool with the visibility
-        """
-
-        return self._spinner.get_visible()

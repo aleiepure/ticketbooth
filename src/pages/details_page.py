@@ -10,6 +10,8 @@ from gi.repository import Adw, Gio, GLib, GObject, Gtk
 from PIL import Image, ImageStat
 
 from .. import shared  # type: ignore
+from ..background_queue import (ActivityType, BackgroundActivity,
+                                BackgroundQueue)
 from ..dialogs.add_manual_dialog import AddManualDialog
 from ..models.movie_model import MovieModel
 from ..models.series_model import SeriesModel
@@ -359,7 +361,7 @@ class DetailsView(Adw.NavigationPage):
     def _on_update_btn_clicked(self, user_data: object | None) -> None:
         """
         Callback for "clicked" signal.
-        Starts a manual update in another thread.
+        Adds a background activity to start a manual update.
 
         Args:
             user_data (object or None): additional data passed to the callback
@@ -367,15 +369,15 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
+        BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS:  {title} is the content's title
+            ActivityType.UPDATE, _('Update {title}').format(title=self.content.title), self._update))
 
-        GLib.Thread.new(None, self._update_thread)
-
-    def _update_thread(self) -> None:
+    def _update(self, activity: BackgroundActivity) -> None:
         """
         Fetches updated information and updates the stored copy. Additionally it handles ui updates.
 
         Args:
-            None
+            activity (BackgroundActivity): the calling activity
 
         Returns:
             None
@@ -397,6 +399,7 @@ class DetailsView(Adw.NavigationPage):
         self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(new_content)])
         self._loading_lbl.set_label(_('Loading Metadata…'))
         self._view_stack.set_visible_child_name('filled')
+        activity.end()
 
     @Gtk.Template.Callback('_on_delete_btn_clicked')
     def _on_delete_btn_clicked(self, user_data: object | None) -> None:
@@ -422,7 +425,7 @@ class DetailsView(Adw.NavigationPage):
     def _on_message_dialog_choose(self, source: GObject.Object | None, result: Gio.AsyncResult, user_data: object | None) -> None:
         """
         Callback for the message dialog.
-        Finishes the async operation and retrieves the user response. If the later is positive, delete the content from the db.
+        Finishes the async operation and retrieves the user response. If the later is positive, adds a background activity to delete the content.
 
         Args:
             source (Gtk.Widget): object that started the async operation
@@ -437,10 +440,25 @@ class DetailsView(Adw.NavigationPage):
         if result == 'cancel':
             return
 
+        self.get_ancestor(Adw.NavigationView).pop()
+        BackgroundQueue.add(BackgroundActivity(ActivityType.REMOVE, _(  # TRANSLATORS: {title} is the content's title
+            'Delete {title}').format(title=self.content.title), self._delete))
+
+    def _delete(self, activity: BackgroundActivity) -> None:
+        """
+        Deletes the content from the db.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
+        """
+
         if type(self.content) is MovieModel:
             local.delete_movie(self.content.id)
         else:
             local.delete_series(self.content.id)
 
-        self.get_ancestor(Adw.NavigationView).pop()
         self.emit('deleted')
+        activity.end()

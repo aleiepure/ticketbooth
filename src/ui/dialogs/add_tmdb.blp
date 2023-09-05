@@ -21,30 +21,19 @@ template $AddTMDBDialog: Adw.Window {
     }
   }
 
-  Box {
-    orientation: vertical;
-    spacing: 12;
-    margin-bottom: 12;
+  Adw.ToolbarView {
 
+    [top]
     Adw.HeaderBar {
-      show-end-title-buttons: false;
-      show-start-title-buttons: false;
-
       title-widget: SearchEntry _search_entry {
         activates-default: true;
         placeholder-text: _("Search The Movie Database…");
         search-delay: 500;
         search-changed => $_on_searchentry_search_changed();
       };
-
-      [start]
-      Button _cancel_btn {
-        label: _("Close");
-        action-name: "window.close";
-      }
     }
 
-    Adw.ViewStack _stack {
+    content: Adw.ViewStack _stack {
       Adw.ViewStackPage {
         name: "empty";
         child: Adw.StatusPage {
@@ -69,7 +58,8 @@ template $AddTMDBDialog: Adw.Window {
           vexpand: true;
 
           ListView _list_view {
-            show-separators: true;
+            styles ["navigation-sidebar"]
+
             orientation: vertical;
             model: NoSelection {
               model: Gio.ListStore _model {};
@@ -89,6 +79,6 @@ template $AddTMDBDialog: Adw.Window {
           }
         };
       }
-    }
+    };
   }
 }

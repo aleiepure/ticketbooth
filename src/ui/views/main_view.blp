@@ -63,10 +63,8 @@ template $MainView: Adw.Bin {
           }
 
           [end]
-          Spinner _spinner {
-            spinning: true;
-            visible: false;
-            tooltip-text: _("Activities are running in the background");
+          $BackgroundIndicator _background_indicator {
+            visible: true;
           }
         }
 

@@ -12,6 +12,8 @@ from urllib.parse import unquote
 from gi.repository import Adw, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
+from ..background_queue import (ActivityType, BackgroundActivity,
+                                BackgroundQueue)
 from ..dialogs.edit_season_dialog import EditSeasonDialog
 from ..models.episode_model import EpisodeModel
 from ..models.language_model import LanguageModel
@@ -297,10 +299,30 @@ class AddManualDialog(Adw.Window):
     def _on_done_btn_clicked(self, user_data: object | None) -> None:
         """
         Callback for the "clicked" signal.
-        Copies the poster image to the data folder, saves the content, and refreshes the main window.
+        Adds a background activity to add/update the content and closes the window.
 
         Args:
             user_data (object or None): user data passed to the callback.
+
+        Returns:
+            None
+        """
+
+        if not self.edit_mode:
+            BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
+                ActivityType.ADD, _('Add {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+        else:
+            BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
+                ActivityType.UPDATE, _('Update {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+
+        self.close()
+
+    def _add_content_to_db(self, activity: BackgroundActivity) -> None:
+        """
+        Copies the poster image to the data folder, saves the content, and refreshes the main window.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
 
         Returns:
             None
@@ -317,7 +339,7 @@ class AddManualDialog(Adw.Window):
             self._save_series(poster_uri)
 
         self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
-        self.close()
+        activity.end()
 
     def _save_movie(self, poster_uri: str) -> None:
         """

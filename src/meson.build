@@ -32,6 +32,8 @@ blueprints = custom_target('blueprints',
     'ui/widgets/episode_row.blp',
     'ui/widgets/image_selector.blp',
     'ui/widgets/season_expander.blp',
+    'ui/widgets/background_indicator.blp',
+    'ui/widgets/background_activity_row.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
@@ -75,6 +77,7 @@ ticketbooth_sources = [
     configuration: conf
   ),
   'preferences.py',
+  'background_queue.py',
 ]
 
 install_data(ticketbooth_sources, install_dir: moduledir)

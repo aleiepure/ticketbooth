@@ -13,6 +13,8 @@ sources = [
   'episode_row.py',
   'image_selector.py',
   'season_expander.py',
+  'background_indicator.py',
+  'background_activity_row.py',
 ]
 
 install_data(sources, install_dir: widgetsdir)

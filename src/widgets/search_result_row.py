@@ -8,9 +8,9 @@ from gettext import gettext as _
 import requests
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
-from src.dialogs.add_tmdb_dialog import AddTMDBDialog
-
 from .. import shared  # type: ignore
+from ..background_queue import (ActivityType, BackgroundActivity,
+                                BackgroundQueue)
 from ..providers.local_provider import LocalProvider as local
 
 
@@ -139,7 +139,7 @@ class SearchResultRow(Gtk.ListBoxRow):
     def _on_add_btn_clicked(self, user_data: object | None) -> None:
         """
         Callback for "clicked" signal.
-        Invokes a thread to insert the content into the local db.
+        Adds a background activity to add content to the local db.
 
         Args:
             user_data (object or None): user data passed to the callback
@@ -149,24 +149,27 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         self._add_spinner.set_visible(True)
-        self.get_ancestor(AddTMDBDialog).get_transient_for()._win_stack.get_child_by_name('main').show_spinner(True)
         self._add_btn.set_sensitive(False)
-        GLib.Thread.new(f'Adding {self.tmdb_id}', self._add_content_to_db_thread, None)
+        BackgroundQueue.add(BackgroundActivity(
+            ActivityType.ADD, f'Add {self.title}', self._add_content_to_db))
 
-    def _add_content_to_db_thread(self, thread_data: object | None) -> None:
+    def _add_content_to_db(self, activity: BackgroundActivity) -> None:
         """
-        Adds the associated title to the corresponding table in the db. Disables the 'add' button when done
+        Adds the associated title to the corresponding table in the db. Disables the 'add' button when done.
 
         Args:
-            thread_data (object or None): data passed to the thread
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
         """
 
         local.add_content(id=self.tmdb_id, media_type=self.media_type)
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
-        self.get_ancestor(AddTMDBDialog).get_transient_for()._win_stack.get_child_by_name('main').show_spinner(False)
         self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
+        activity.end()
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
                            cancelable: Gio.Cancellable | None) -> None:

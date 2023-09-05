@@ -1,0 +1,40 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $BackgroundActivityRow: Adw.Bin {
+  tooltip-text: bind template.title;
+
+  map => $_on_map();
+
+  Box {
+    orientation: horizontal;
+    spacing: 12;
+
+    Image _icon {
+      icon-name: 'check-plain';
+      pixel-size: 24;
+    }
+
+    Box {
+      orientation: vertical;
+      vexpand: true;
+      valign: center;
+      spacing: 6;
+
+      Label {
+        label: bind template.title;
+        halign: start;
+        max-width-chars: 30;
+        ellipsize: end;
+      }
+
+      ProgressBar _progress_bar {
+        hexpand: true;
+      }
+    }
+  }
+}

@@ -18,11 +18,10 @@ template $SearchResultRow: ListBoxRow {
     vexpand: true;
     spacing: 12;
     orientation: horizontal;
-    margin-top: 12;
-    margin-bottom: 12;
+    margin-top: 6;
+    margin-bottom: 6;
 
     Overlay {
-      margin-start: 12;
 
       [overlay]
       Spinner _poster_spinner {
@@ -42,7 +41,6 @@ template $SearchResultRow: ListBoxRow {
 
     Box {
       orientation: vertical;
-      margin-end: 12;
 
       Label _title_lbl {
         halign: start;

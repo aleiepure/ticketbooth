@@ -1,0 +1,68 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Gio 2.0;
+using Adw 1;
+
+template $BackgroundIndicator: Adw.Bin {
+  MenuButton _btn {
+    styles ["flat"]
+
+    tooltip-text: _("Background Activities");
+
+    child: Overlay {
+      [overlay]
+      Spinner _spinner {
+        spinning: true;
+        visible: false;
+      }
+
+      Image _image {
+        icon-name: 'check-plain';
+      }
+    };
+
+    popover: Popover {
+      styles ["menu"]
+
+      child: Adw.ViewStack _stack {
+        Adw.ViewStackPage {
+          name: 'empty';
+          child: Adw.Clamp {
+            child: Adw.StatusPage {
+              styles ["compact"]
+
+              title: _("No Background Activities");
+              icon-name: 'check-plain';
+            };
+          };
+        }
+
+        Adw.ViewStackPage {
+          name: 'filled';
+          child: ScrolledWindow {
+            vexpand: true;
+
+            ListView _list_view {
+              orientation: vertical;
+              model: NoSelection {
+                model: Gio.ListStore _model {};
+              };
+              factory: BuilderListItemFactory {
+                template ListItem  {
+                  child: $BackgroundActivityRow {
+                    title: bind template.item as < $BackgroundActivity > .title;
+                    activity-type: bind template.item as < $BackgroundActivity > .activity-type;
+                    completed: bind template.item as < $BackgroundActivity > .completed;
+                  };
+                }
+              };
+            }
+          };
+        }
+      };
+    };
+  }
+}

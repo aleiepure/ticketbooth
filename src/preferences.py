@@ -11,6 +11,7 @@ from pathlib import Path
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from . import shared  # type: ignore
+from .background_queue import ActivityType, BackgroundActivity, BackgroundQueue
 from .models.language_model import LanguageModel
 from .providers.local_provider import LocalProvider as local
 from .providers.tmdb_provider import TMDBProvider as tmdb
@@ -254,7 +255,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
                                         user_data: object | None) -> None:
         """
         Callback for the message dialog.
-        Finishes the async operation and retrieves the user response. If the later is positive, deletes the stored cached data.
+        Finishes the async operation and retrieves the user response. If the later is positive, adds a background activity to delete the cache.
 
         Args:
             source (Gtk.Widget): object that started the async operation
@@ -269,11 +270,26 @@ class PreferencesWindow(Adw.PreferencesWindow):
         if result == 'cache_cancel':
             return
 
+        BackgroundQueue.add(BackgroundActivity(
+            ActivityType.REMOVE, _('Clear cache'), self._clear_cache))
+
+    def _clear_cache(self, activity: BackgroundActivity) -> None:
+        """
+        Clears the cache.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
+        """
+
         files = glob.glob('*.jpg', root_dir=shared.cache_dir)
         for file in files:
             os.remove(shared.cache_dir / file)
 
         self._update_occupied_space()
+        activity.end()
 
     @Gtk.Template.Callback('_on_clear_activate')
     def _on_clear_btn_clicked(self, user_data: object | None) -> None:
@@ -308,7 +324,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
                                        user_data: object | None) -> None:
         """
         Callback for the message dialog.
-        Finishes the async operation and retrieves the user response. If the later is positive, deletes the selected data.
+        Finishes the async operation and retrieves the user response. If the later is positive, adds background activities to delete the selected data.
 
         Args:
             source (Gtk.Widget): object that started the async operation
@@ -325,16 +341,49 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         # Movies
         if self._movies_checkbtn.get_active():
-            for movie in local.get_all_movies():    # type: ignore
-                local.delete_movie(movie.id)
+            BackgroundQueue.add(BackgroundActivity(
+                ActivityType.REMOVE, _('Delete all movies'), self._clear_movies))
 
         # TV Series
         if self._series_checkbtn.get_active():
-            for serie in local.get_all_series():    # type: ignore
-                local.delete_series(serie.id)
+            BackgroundQueue.add(BackgroundActivity(
+                ActivityType.REMOVE, _('Delete all TV Series'), self._clear_series))
+
+    def _clear_movies(self, activity: BackgroundActivity) -> None:
+        """
+        Clears all movies.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
+        """
+
+        for movie in local.get_all_movies():    # type: ignore
+            local.delete_movie(movie.id)
 
         self._update_occupied_space()
         self.get_transient_for().activate_action('win.refresh', None)
+        activity.end()
+
+    def _clear_series(self, activity: BackgroundActivity) -> None:
+        """
+        Clears all TV series.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
+        """
+
+        for serie in local.get_all_series():    # type: ignore
+            local.delete_series(serie.id)
+
+        self._update_occupied_space()
+        self.get_transient_for().activate_action('win.refresh', None)
+        activity.end()
 
     def _calculate_space(self, directory: Path) -> float:
         """

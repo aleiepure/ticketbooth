@@ -23,6 +23,8 @@ from .preferences import PreferencesWindow
 from .views.content_view import ContentView
 from .views.first_run_view import FirstRunView
 from .views.main_view import MainView
+from .widgets.background_activity_row import BackgroundActivityRow
+from .widgets.background_indicator import BackgroundIndicator
 from .widgets.episode_row import EpisodeRow
 from .widgets.image_selector import ImageSelector
 from .widgets.poster_button import PosterButton
@@ -43,6 +45,8 @@ class TicketboothApplication(Adw.Application):
         ContentView,
         EpisodeRow,
         ImageSelector,
+        BackgroundIndicator,
+        BackgroundActivityRow,
     ]
 
     def __init__(self):

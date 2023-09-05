@@ -10,6 +10,7 @@ from gettext import pgettext as C_
 from gi.repository import Adw, Gio, GLib, Gtk
 
 from . import shared  # type: ignore
+from .background_queue import BackgroundQueue
 from .dialogs.add_manual_dialog import AddManualDialog
 from .dialogs.add_tmdb_dialog import AddTMDBDialog
 from .views.first_run_view import FirstRunView
@@ -94,11 +95,26 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         source._win_stack.get_child_by_name('main').refresh()
 
+    def _update_background_indicator(self, new_state: None, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.update-background-indicator
+
+        Args:
+            new_state (None): stateless action, always None
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+
+        source._win_stack.get_child_by_name('main')._background_indicator.refresh()
+
     _actions = {
         ('view-sorting', None, 's', f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
         ('add-tmdb', _add_tmdb),
         ('add-manual', _add_manual),
         ('refresh', _refresh),
+        ('update-backgroud-indicator', _update_background_indicator)
     }
 
     def __init__(self, **kwargs):
@@ -125,14 +141,14 @@ class TicketboothWindow(Adw.ApplicationWindow):
             user_data (object or None): additional data passed to the callback
 
         Returns:
-            True to block quiting, Flase to allow it
+            True to block quiting, False to allow it
         """
 
         # Background activities
-        if self._win_stack.get_child_by_name('main').is_spinner_visible():
+        if not all(activity.completed for activity in BackgroundQueue.get_queue()):
             dialog = Adw.MessageDialog.new(self,
                                            C_('message dialog heading', 'Background Activies Running'),
-                                           C_('message dialog body', 'Some activities are running in the background and need to be completed before exiting. A spinning indicator in the header bar is visible while they are running.'))
+                                           C_('message dialog body', 'Some activities are running in the background and need to be completed before exiting. Look for the indicator in the header bar to check when they are finished.'))
             dialog.add_response('ok', C_('message dialog action', 'OK'))
             dialog.show()
             return True
