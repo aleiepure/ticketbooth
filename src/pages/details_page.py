@@ -252,7 +252,7 @@ class DetailsView(Adw.NavigationPage):
             if season == data[1]:
                 season_idx = idx
 
-        if all(episode.watched for episode in self.content.seasons[season_idx].episodes):  # type: ignore
+        if all(episode.watched for episode in self.content.seasons[season_idx].episodes):
             btn_content.set_label(_('Watched'))
             btn_content.set_icon_name('check-plain')
         else:
@@ -300,7 +300,7 @@ class DetailsView(Adw.NavigationPage):
                 not all(episode.watched for episode in self.content.seasons[season_idx].episodes))  # type: ignore
 
         # Update season expander
-        if not all(episode.watched for episode in self.content.seasons[season_idx].episodes):  # type: ignore
+        if not all(episode.watched for episode in self.content.seasons[season_idx].episodes):
             btn_content.set_label(_('Watched'))
             btn_content.set_icon_name('check-plain')
         else:
@@ -414,7 +414,7 @@ class DetailsView(Adw.NavigationPage):
 
         self.content.watched = not self.content.watched  # type: ignore
 
-        if self.content.watched:  # type: ignore
+        if self.content.watched:
             self._btn_content.set_label(_('Watched'))
             self._btn_content.set_icon_name('check-plain')
         else:
@@ -466,7 +466,7 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
-        BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS:  {title} is the content's title
+        BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
             ActivityType.UPDATE, _('Update {title}').format(title=self.content.title), self._update))  # type: ignore
 
     def _update(self, activity: BackgroundActivity) -> None:
