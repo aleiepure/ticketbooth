@@ -29,28 +29,33 @@ class LocalProvider:
         create_languages_table(): Creates the table used to store the available languages in a local database
         create_tables(): Convenience method to create all tables with a single call
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
-        add_movie(id: int): Queries the movie and inserts it into the db
-        add_series(id: int): Queries the series and inserts it into the db
-        add_content(id: int, media_type: str): Convenience method to add movies and series without using separate
-            methods
-        get_language_by_code(iso_code: str): Retrieves a language from the db
-        get_movie_by_id(id: int): Retrieves a movie from the db via its id
+        add_movie(id: int, movie: MovieModel): Inserts a movie in the movies table, querying the data from TMDB if only
+            id is provided.
+        add_series(id: int, serie: SeriesModel): Inserts a tv series in the series table, querying the data from TMDB
+            if only id is provided.
+        add_content(id: int, media_type: str): Convenience method to add movies and series from TMDB without using
+            separate methods
+        get_language_by_code(iso_code: str): Retrieves a language from the db via its iso_639_1 code.
+        get_movie_by_id(id: str): Retrieves a movie from the db via its id
         get_all_movies(): Retrieves all movies from the db
-        mark_watched_movie(id: int, status: bool): Sets the watched flag on a movie
-        delete_movie(id: int): Deletes a movie
-        get_all_seasons(show: int): Retrieves all seasons of a show
-        get_season_episodes(show: int, season_number: int): Retrieves the episodes for a season of a show
-        get_series_by_id(id: int): Retrieves a series from the db via its id
+        mark_watched_movie(id: str, status: bool): Sets the watched flag on the movie with the provided id.
+        delete_movie(id: str): Deletes the movie with the provided id, removing associated files too.
+        get_all_seasons(show: str): Retrieves metadata for all seasons of a show.
+        get_season_episodes(show: str, season_number: int): Retrieves the episodes for a season of a show
+        get_series_by_id(id: str): Retrieves the series with the provided id.
         get_all_series(): Retrieves all tv series from the db.
-        mark_watched_series(id: int, watched: bool): Sets the watched flag on all episodes in the series and the series
+        mark_watched_series(id: str, watched: bool): Sets the watched flag on all episodes in the series and the series
             itself.
-        delete_series(id: int): Deletes the tv series with the provided id.
+        delete_series(id: str): Deletes the tv series with the provided id, removing associated files too.
         get_all_languages(): Retrieves all languages from the db.
         get_next_manual_movie(): Calculates the next id for a manually added movie.
         get_next_manual_series(): Calculates the next id for a manually added tv series.
         get_next_manual_season(): Calculates the next id for a manually added season.
         get_next_manual_episode(): Calculates the next id for a manually added episode.
-        get_language_by_name(): Retrieves a language from the db via its name.
+        get_language_by_name(name: str): Retrieves a language from the db via its name.
+        update_movie(old: MovieModel, new: MovieModel): Updates a movie with new data.
+        mark_watched_episode(id: str, watched: bool): Sets the watched flag on the specified episode.
+        get_episode_by_id(id: str): Retrieves an episode from the db via its id.
     """
 
     @staticmethod
@@ -316,7 +321,7 @@ class LocalProvider:
     @staticmethod
     def add_content(id: int, media_type: str) -> int | None:
         """
-        Convenience method to add movies and series without using separate methods.
+        Convenience method to add movies and series from TDMB without using separate methods.
 
         Args:
             id (int): id of the content
@@ -352,12 +357,12 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def get_movie_by_id(id: int) -> MovieModel | None:
+    def get_movie_by_id(id: str) -> MovieModel | None:
         """
         Retrieves a movie from the db via its id.
 
         Args:
-            id (int): id of the movie to look for
+            id (str): id of the movie to look for
 
         Returns:
             MovieModel of the requested movie or None if not found in db
@@ -395,12 +400,12 @@ class LocalProvider:
                 return []
 
     @staticmethod
-    def mark_watched_movie(id: int, watched: bool) -> int | None:
+    def mark_watched_movie(id: str, watched: bool) -> int | None:
         """
         Sets the watched flag on the movie with the provided id.
 
         Args:
-            id (int): movie id to change
+            id (str): movie id to change
             watched (bool): status to set the flag to
 
         Returns:
@@ -414,12 +419,12 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def delete_movie(id: int) -> int | None:
+    def delete_movie(id: str) -> int | None:
         """
         Deletes the movie with the provided id, removing associated files too.
 
         Args:
-            id (int): movie id to delete
+            id (str): movie id to delete
 
         Returns:
             int or None containing the id of the last modified row
@@ -441,12 +446,12 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def get_all_seasons(show: int) -> List[SeasonModel]:
+    def get_all_seasons(show: str) -> List[SeasonModel]:
         """
         Retrieves metadata for all seasons of a show.
 
         Args:
-            show (int): id of the show
+            show (str): id of the show
 
         Returns:
             list of SeasonModel
@@ -468,12 +473,12 @@ class LocalProvider:
             return seasons
 
     @staticmethod
-    def get_season_episodes(show: int, season_num: int) -> List[EpisodeModel]:
+    def get_season_episodes(show: str, season_num: int) -> List[EpisodeModel]:
         """
         Retrieves the episodes for a season of a show.
 
         Args:
-            show (int): id of the show
+            show (str): id of the show
             season_num (int): season number
 
         Returns:
@@ -497,12 +502,12 @@ class LocalProvider:
             return episodes
 
     @staticmethod
-    def get_series_by_id(id: int) -> SeriesModel | None:
+    def get_series_by_id(id: str) -> SeriesModel | None:
         """
         Retrieves the series with the provided id.
 
         Args:
-            id (int): id of the series to retrieve
+            id (str): id of the series to retrieve
 
         Returns:
             SeriesModel for the requested series or None
@@ -540,12 +545,12 @@ class LocalProvider:
                 return []
 
     @staticmethod
-    def mark_watched_series(id: int, watched: bool) -> int | None:
+    def mark_watched_series(id: str, watched: bool) -> int | None:
         """
         Sets the watched flag on all episodes in the series and the series itself.
 
         Args:
-            id (int): tv series id to change
+            id (str): tv series id to change
             watched (bool): status to set the flag to
 
         Returns:
@@ -561,12 +566,12 @@ class LocalProvider:
         return result.lastrowid
 
     @staticmethod
-    def delete_series(id: int) -> int | None:
+    def delete_series(id: str) -> int | None:
         """
         Deletes the tv series with the provided id, removing associated files too.
 
         Args:
-            id (int): tv series id to delete
+            id (str): tv series id to delete
 
         Returns:
             int or None containing the id of the last modified row
@@ -764,7 +769,45 @@ class LocalProvider:
                 new.tagline,
                 new.title,
                 new.watched,
-                new.id,
+                old.id,
             ))
             connection.commit()
         return result.lastrowid
+
+    @staticmethod
+    def mark_watched_episode(id: str, watched: bool) -> int | None:
+        """
+        Sets the watched flag on the specified episode.
+
+        Args:
+            id (str): episode id to change
+            watched (bool): status to set the flag to
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+        with sqlite3.connect(shared.db, check_same_thread=False) as connection:
+            sql = """UPDATE episodes SET watched = ? WHERE id = ?"""
+            result = connection.cursor().execute(sql, (watched, id,))
+            connection.commit()
+        return result.lastrowid
+
+    @staticmethod
+    def get_episode_by_id(id: str) -> EpisodeModel | None:
+        """
+        Retrieves an episode from the db via its id.
+
+        Args:
+            id (str): id of the movie to look for
+
+        Returns:
+            EpisodeModel of the requested episode or None if not found in db
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM episodes WHERE id = ?;"""
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            if result:
+                return EpisodeModel(t=result)
+            else:
+                return None

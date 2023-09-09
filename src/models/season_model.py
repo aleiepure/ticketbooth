@@ -49,6 +49,31 @@ class SeasonModel(GObject.GObject):
     show_id = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
 
+    def __eq__(self, other) -> bool:
+        """
+        Custom comparing fuction, overrides '==' operator.
+
+        Args:
+            other: object to compare to
+
+        Returns:
+            bool result of the operation
+        """
+
+        if type(other) is not SeasonModel:
+            return False
+
+        if (self.episodes_number == other.episodes_number and
+            self.id == other.id and
+            self.number == other.number and
+            self.overview == other.overview and
+            self.poster_path == other.poster_path and
+            self.show_id == other.show_id and
+                self.title == other.title):
+            return True
+        else:
+            return False
+
     def __init__(self, show_id: int = 0, d=None, t=None):
         super().__init__()
 

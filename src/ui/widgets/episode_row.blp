@@ -57,13 +57,13 @@ template $EpisodeRow: Adw.PreferencesRow {
 
     Box {
       visible: bind template.show-controls;
-      CheckButton _check_btn {
-        visible: bind template.editable inverted;
-        halign: end;
-        hexpand: true;
-        label: _("Watched");
 
-        toggled => $_on_check_btn_toggled();
+      Button {
+        visible: bind template.editable inverted;
+        child: Adw.ButtonContent _watched_btn {};
+        valign: center;
+
+        clicked => $_on_watched_btn_clicked();
       }
 
       Box {

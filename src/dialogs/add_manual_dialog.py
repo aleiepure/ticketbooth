@@ -165,7 +165,13 @@ class AddManualDialog(Adw.Window):
             episodes_as_tuple = []
             for episode in season.episodes:
                 episodes_as_tuple.append((
-                    episode.title, episode.number, episode.runtime, episode.overview, episode.still_path
+                    episode.title,
+                    episode.number,
+                    episode.runtime,
+                    episode.overview,
+                    episode.still_path,
+                    episode.watched,
+                    episode.id
                 ))
 
             seasons_as_tuple.append((

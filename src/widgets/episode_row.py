@@ -12,6 +12,7 @@ import src.dialogs.edit_season_dialog as dialog
 from .. import shared  # type: ignore
 from ..models.episode_model import EpisodeModel
 from ..pages.edit_episode_page import EditEpisodeNavigationPage
+from ..providers.local_provider import LocalProvider as local
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/episode_row.ui')
@@ -37,6 +38,7 @@ class EpisodeRow(Adw.PreferencesRow):
 
     __gtype_name__ = 'EpisodeRow'
 
+    id = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
     episode_number = GObject.Property(type=int, default=0)
     runtime = GObject.Property(type=int, default=0)
@@ -44,39 +46,46 @@ class EpisodeRow(Adw.PreferencesRow):
     still_uri = GObject.Property(type=str, default='')
     editable = GObject.Property(type=bool, default=False)
     show_controls = GObject.Property(type=bool, default=True)
+    watched = GObject.Property(type=bool, default=False)
 
     __gsignals__ = {
-        'toggled': (GObject.SIGNAL_RUN_FIRST, None, (bool,)),
+        'watched-clicked': (GObject.SIGNAL_RUN_FIRST, None, ()),
     }
 
     _still_picture = Gtk.Template.Child()
     _runtime_lbl = Gtk.Template.Child()
     _title_lbl = Gtk.Template.Child()
-    _check_btn = Gtk.Template.Child()
+    _watched_btn = Gtk.Template.Child()
 
     def __init__(self,
                  episode: EpisodeModel | None = None,
+                 id: str = '',
                  title: str = '',
                  episode_number: int = 0,
                  runtime: int = 0,
                  overview: str = '',
                  still_uri: str = '',
+                 watched: bool = False,
                  editable: bool = False,
                  show_controls: bool = True):
         super().__init__()
 
         if episode:
+            self.id = episode.id
             self.title = episode.title
             self.episode_number = episode.number
             self.runtime = episode.runtime
             self.overview = episode.overview
             self.still_uri = episode.still_path
+            self.watched = episode.watched
         else:
+            self.id = id
             self.title = title
             self.episode_number = episode_number
             self.runtime = runtime
             self.overview = overview
             self.still_uri = still_uri
+            self.watched = watched
 
         self.editable = editable
         self.show_controls = show_controls
@@ -94,15 +103,25 @@ class EpisodeRow(Adw.PreferencesRow):
             None
         """
 
+        if not self.editable and self.show_controls:
+            self.watched = local.get_episode_by_id(self.id).watched  # type: ignore
+
         self._still_picture.set_file(Gio.File.new_for_uri(self.still_uri))
         self._title_lbl.set_text(f'{self.episode_number}. {self.title}')
         self._runtime_lbl.set_text(self._format_runtime(self.runtime))
 
-    @Gtk.Template.Callback('_on_check_btn_toggled')
-    def _on_check_btn_toggled(self, user_data:  object | None) -> None:
+        if self.watched:
+            self._watched_btn.set_label(_('Watched'))
+            self._watched_btn.set_icon_name('check-plain')
+        else:
+            self._watched_btn.set_label(_('Mark as Watched'))
+            self._watched_btn.set_icon_name('watchlist')
+
+    @Gtk.Template.Callback('_on_watched_btn_clicked')
+    def _on_watched_btn_clicked(self, user_data: object | None) -> None:
         """
-        Callback for "toggle" signal.
-        Emits the "toggled" signal with the new state.
+        Callback for "clicked" signal.
+        Toggles the watched property of the associated episode in the db. The "watched-clicked" signal is emited after this callback is completed.
 
         Args:
             user_data (object or None): additional data passed to the callback
@@ -111,7 +130,17 @@ class EpisodeRow(Adw.PreferencesRow):
             None
         """
 
-        self.emit('toggled', self._check_btn.get_active())
+        local.mark_watched_episode(self.id, not self.watched)
+        self.watched = not self.watched
+
+        if self.watched:
+            self._watched_btn.set_label(_('Watched'))
+            self._watched_btn.set_icon_name('check-plain')
+        else:
+            self._watched_btn.set_label(_('Mark as Watched'))
+            self._watched_btn.set_icon_name('watchlist')
+
+        self.emit('watched-clicked')
 
     def _format_runtime(self, runtime: int) -> str:
         """
@@ -246,3 +275,21 @@ class EpisodeRow(Adw.PreferencesRow):
                                          self.still_uri)
         parent._episodes.remove(old_episode)
         parent.update_episodes_ui()
+
+    def set_watched_btn(self, watched: bool) -> None:
+        """
+        Updates the watched button label and icon.
+
+        Args:
+            watched (bool): status to set
+
+        Returns:
+            None
+        """
+
+        if watched:
+            self._watched_btn.set_label(_('Watched'))
+            self._watched_btn.set_icon_name('check-plain')
+        else:
+            self._watched_btn.set_label(_('Mark as Watched'))
+            self._watched_btn.set_icon_name('watchlist')

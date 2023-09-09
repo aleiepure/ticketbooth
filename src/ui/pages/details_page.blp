@@ -107,9 +107,11 @@ template $DetailsView: Adw.NavigationPage {
                   Box {
                     orientation: horizontal;
 
-                    Button {
-                      child: Adw.ButtonContent _watched_btn {};
+                    Button _watched_btn {
+                      visible: false;
+                      child: Adw.ButtonContent _btn_content {};
                       valign: center;
+                      margin-end: 16;
 
                       styles ["pill", "opaque"]
                       clicked => $_on_watched_btn_clicked();
@@ -118,7 +120,6 @@ template $DetailsView: Adw.NavigationPage {
                     Box {
                       orientation: horizontal;
                       spacing: 6;
-                      margin-start: 16;
 
                       Button _update_btn {
                         icon-name: "update";

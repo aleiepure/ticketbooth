@@ -34,11 +34,11 @@
                 "*"
             ],
             "sources": [
-              {
-                "type": "git",
-                "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
-                "branch": "main"
-              }
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
+                    "branch": "main"
+                }
             ]
         },
         {
