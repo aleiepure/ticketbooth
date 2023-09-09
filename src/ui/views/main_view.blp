@@ -35,60 +35,67 @@ template $MainView: Adw.Bin {
 
   Adw.NavigationView {
     Adw.NavigationPage {
-      title: _("My Watchlist");
-      child: Adw.ToolbarView {
+      title: "Ticket Booth";
+      child: Adw.BreakpointBin {
+        width-request: 400;
+        height-request: 600;
 
-        [top]
-        Adw.HeaderBar {
-          centering-policy: strict;
-
-          [start]
-          MenuButton _add_btn {
-            icon-name: "plus";
-            tooltip-text: _("Add a title to your library");
-            menu-model: _add_menu;
-          }
-
-          [title]
-          Adw.ViewSwitcherTitle _title {
-            stack: _tab_stack;
-            title: "Ticket Booth";
-          }
-
-          [end]
-          MenuButton _menu_btn {
-            icon-name: "open-menu";
-            menu-model: _primary_menu;
-            tooltip-text: _("Main Menu");
-          }
-
-          [end]
-          $BackgroundIndicator _background_indicator {
-            visible: true;
+        Adw.Breakpoint {
+          condition("max-width: 550sp")
+          setters {
+            _header_bar.title-widget: null;
+            _switcher_bar.reveal: true;
           }
         }
 
-        content: Box {
-          orientation: vertical;
+        child: Adw.ToolbarView {
 
-          Adw.Banner _banner {
-            title: _("Offline Mode Enabled");
-            button-label: _("Preferences");
-            action-name: "app.preferences";
+          [top]
+          Adw.HeaderBar _header_bar {
+            title-widget: Adw.ViewSwitcher _title {
+              stack: _tab_stack;
+              policy: wide;
+            };
+
+            [start]
+            MenuButton _add_btn {
+              icon-name: "plus";
+              tooltip-text: _("Add a title to your library");
+              menu-model: _add_menu;
+            }
+
+
+            [end]
+            MenuButton _menu_btn {
+              icon-name: "open-menu";
+              menu-model: _primary_menu;
+              tooltip-text: _("Main Menu");
+            }
+
+            [end]
+            $BackgroundIndicator _background_indicator {
+              visible: true;
+            }
           }
 
-          Gtk.Box {
+          content: Box {
             orientation: vertical;
+
+            Adw.Banner _banner {
+              title: _("Offline Mode Enabled");
+              button-label: _("Preferences");
+              action-name: "app.preferences";
+            }
 
             Adw.ViewStack _tab_stack {
               vexpand: true;
               hexpand: true;
             }
+          };
 
-            Adw.ViewSwitcherBar {
-              stack: _tab_stack;
-              reveal: bind _title.title-visible;
-            }
+          [bottom]
+          Adw.ViewSwitcherBar _switcher_bar {
+            stack: _tab_stack;
           }
         };
       };
