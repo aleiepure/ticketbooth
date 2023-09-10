@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-09 14:41+0200\n"
+"POT-Creation-Date: 2023-09-10 20:55+0200\n"
 "PO-Revision-Date: 2023-07-02 23:02+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -70,33 +70,47 @@ msgstr ""
 msgid "Clear cache on exit"
 msgstr ""
 
-#: data/me.iepure.Ticketbooth.metainfo.xml.in:14
-msgid "No description"
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:15
+msgid "Keep track of your favorite shows"
 msgstr ""
 
-#: src/dialogs/add_manual_dialog.py:86
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:18
+msgid ""
+"Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
+"track of watched titles, and find information about the latest releases."
+msgstr ""
+
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:20
+msgid ""
+"Ticket Booth does not allow you to watch or download content. This app uses "
+"the TMDB API but is not endorsed or certified by TMDB."
+msgstr ""
+
+#: src/dialogs/add_manual_dialog.py:87
 msgid "Edit Movie"
 msgstr ""
 
-#: src/dialogs/add_manual_dialog.py:88
+#: src/dialogs/add_manual_dialog.py:89
 msgid "Edit TV Series"
 msgstr ""
 
 #. TRANSLATORS: {num} is the season number
-#: src/dialogs/add_manual_dialog.py:282
+#: src/dialogs/add_manual_dialog.py:283
 #, python-brace-format
 msgid "Season {num}"
 msgstr ""
 
 #. TRANSLATORS: {title} is the content's title
-#: src/dialogs/add_manual_dialog.py:319
+#: src/dialogs/add_manual_dialog.py:320 src/widgets/search_result_row.py:155
 #, python-brace-format
+msgctxt "Background activity title"
 msgid "Add {title}"
 msgstr ""
 
 #. TRANSLATORS: {title} is the content's title
-#: src/dialogs/add_manual_dialog.py:322 src/pages/details_page.py:470
+#: src/dialogs/add_manual_dialog.py:323
 #, python-brace-format
+msgctxt "Background activity title"
 msgid "Update {title}"
 msgstr ""
 
@@ -174,6 +188,12 @@ msgstr ""
 msgid "{m}min"
 msgstr ""
 
+#. TRANSLATORS: {title} is the content's title
+#: src/pages/details_page.py:470
+#, python-brace-format
+msgid "Update {title}"
+msgstr ""
+
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:485
 #, python-brace-format
@@ -231,6 +251,7 @@ msgid "OK"
 msgstr ""
 
 #: src/preferences.py:274
+msgctxt "Background activity title"
 msgid "Clear cache"
 msgstr ""
 
@@ -241,10 +262,12 @@ msgid "{number} Titles"
 msgstr ""
 
 #: src/preferences.py:345
+msgctxt "Background activity title"
 msgid "Delete all movies"
 msgstr ""
 
 #: src/preferences.py:350
+msgctxt "Background activity title"
 msgid "Delete all TV Series"
 msgstr ""
 
@@ -267,12 +290,12 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:75
+#: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:76
 msgid "Movie"
 msgstr ""
 
-#: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:53
-#: src/widgets/search_result_row.py:77
+#: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:54
+#: src/widgets/search_result_row.py:78
 msgid "TV Series"
 msgstr ""
 
@@ -696,12 +719,13 @@ msgstr ""
 msgid "Downloading data"
 msgstr ""
 
-#: src/views/main_view.py:47
+#: src/views/main_view.py:48
 msgid "Movies"
 msgstr ""
 
-#: src/views/main_view.py:96 src/views/main_view.py:100
-#: src/views/main_view.py:104
+#: src/views/main_view.py:97 src/views/main_view.py:101
+#: src/views/main_view.py:105
+msgctxt "Background activity title"
 msgid "Automatic update"
 msgstr ""
 
@@ -710,7 +734,7 @@ msgctxt "message dialog body"
 msgid "All cheanges to this episode will be lost."
 msgstr ""
 
-#: src/widgets/search_result_row.py:96 src/widgets/search_result_row.py:168
+#: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:169
 msgid "Already in your whatchlist"
 msgstr ""
 
