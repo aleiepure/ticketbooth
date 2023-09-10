@@ -3,19 +3,22 @@
 # This file is distributed under the same license as the ticketbooth package.
 # Automatically generated, 2023.
 #
+# Alessandro Iepure <alessandro.iepure@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-09 14:41+0200\n"
-"PO-Revision-Date: 2023-07-02 23:02+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-09-10 18:55+0000\n"
+"Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -170,7 +173,7 @@ msgstr "{h}h {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:397 src/widgets/episode_row.py:165
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{m}min"
 msgstr "{m}min"
 
