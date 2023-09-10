@@ -3,8 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 from datetime import datetime, timedelta
 from gettext import gettext as _
+from gettext import pgettext as C_
 
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Adw, Gio, Gtk
 
 from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
@@ -93,15 +94,15 @@ class MainView(Adw.Bin):
             case 'day':
                 if last_check + timedelta(days=1) < datetime.now():
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        _('Automatic update'), self._update_content))
+                                        C_('Background activity title', 'Automatic update'), self._update_content))
             case 'week':
                 if last_check + timedelta(days=7) < datetime.now():
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        _('Automatic update'), self._update_content))
+                                        C_('Background activity title', 'Automatic update'), self._update_content))
             case 'month':
                 if last_check + timedelta(days=30) < datetime.now():
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        _('Automatic update'), self._update_content))
+                                        C_('Background activity title', 'Automatic update'), self._update_content))
             case 'never':
                 return
 

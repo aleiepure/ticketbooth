@@ -4,6 +4,7 @@
 
 import glob
 from gettext import gettext as _
+from gettext import pgettext as C_
 
 import requests
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
@@ -151,7 +152,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._add_spinner.set_visible(True)
         self._add_btn.set_sensitive(False)
         BackgroundQueue.add(BackgroundActivity(
-            ActivityType.ADD, f'Add {self.title}', self._add_content_to_db))
+            ActivityType.ADD, C_('Background activity title', 'Add {title}').format(title=self.title), self._add_content_to_db))
 
     def _add_content_to_db(self, activity: BackgroundActivity) -> None:
         """

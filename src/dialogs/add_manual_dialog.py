@@ -6,6 +6,7 @@ import os
 import shutil
 from datetime import date, datetime
 from gettext import gettext as _
+from gettext import pgettext as C_
 from typing import List
 from urllib.parse import unquote
 
@@ -316,10 +317,10 @@ class AddManualDialog(Adw.Window):
 
         if not self.edit_mode:
             BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
-                ActivityType.ADD, _('Add {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+                ActivityType.ADD, C_('Background activity title', 'Add {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
         else:
             BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
-                ActivityType.UPDATE, _('Update {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+                ActivityType.UPDATE, C_('Background activity title', 'Update {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
 
         self.close()
 

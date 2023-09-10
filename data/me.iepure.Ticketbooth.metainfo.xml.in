@@ -3,15 +3,45 @@
 <!--
 Copyright (C) 2023 Alessandro Iepure
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: CC0-1.0
 -->
 
 <component type="desktop-application">
 	<id>@app_id@</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-	<description>
-	  <p>No description</p>
-	</description>
+	<name translatable="no">Dev Toolbox</name>
 	<launchable type="desktop-id">@app_id@.desktop</launchable>
+	<summary>Keep track of your favorite shows</summary>
+	<developer_name translatable="no">Alessandro Iepure</developer_name>
+	<description>
+		<p>Ticket Booth allows you to build your watchlist of movies and TV Shows, keep track of
+			watched titles, and find information about the latest releases.</p>
+		<p> Ticket Booth does not allow you to watch or download content. This app uses the TMDB API
+			but is not endorsed or certified by TMDB.</p>
+	</description>
+	<url type="homepage">https://github.com/aleiepure/ticketbooth</url>
+	<url type="bugtracker">https://github.com/aleiepure/ticketbooth/issues</url>
+	<url type="vcs-browser">https://github.com/aleiepure/ticketbooth</url>
+	<url type="contribute">https://github.com/aleiepure/ticketbooth/blob/main/CONTRIBUTING.md</url>
+	<screenshots>
+		<screenshot type="default">
+			<image>https://raw.githubusercontent.com/aleiepure/ticketbooth/main/data/appstream/1.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/aleiepure/ticketbooth/main/data/appstream/2.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/aleiepure/ticketbooth/main/data/appstream/3.png</image>
+		</screenshot>
+	</screenshots>
+	<translation type="gettext">me.iepure.ticketbooth</translation>
+	<content_rating type="oars-1.1" />
+	<!-- <releases>
+		<release version="1.0" date="2023-09-09">
+			<description>
+				<p>No description</p>
+			</description>
+		</release>
+	</releases> -->
 </component>

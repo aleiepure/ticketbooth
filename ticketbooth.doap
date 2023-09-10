@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (C) 2023 Alessandro Iepure
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:gnome="http://api.gnome.org/doap-extensions#"
+    xmlns="http://usefulinc.com/ns/doap#">
+
+    <name>Ticket Booth</name>
+    <shortdesc xml:lang="en">Keep track of your favorite shows</shortdesc>
+    <description xml:lang="en">
+        Ticket Booth allows you to build your watchlist of movies and TV Shows, keep track of
+        watched titles, and find information about the latest releases. Ticket Booth does not allow
+        you to watch or download content. This app uses the TMDB API but is not endorsed or
+        certified by TMDB.
+    </description>
+
+    <homepage rdf:resource="https://github.com/aleiepure/ticketbooth" />
+    <download-page rdf:resource="https://github.com/aleiepure/ticketbooth" />
+    <bug-database rdf:resource="https://github.com/aleiepure/ticketbooth/issues" />
+
+    <programming-language>Python</programming-language>
+    <platform>GTK 4</platform>
+    <platform>Libadwaita</platform>
+
+    <maintainer>
+        <foaf:Person>
+            <foaf:name>Alessandro Iepure</foaf:name>
+            <foaf:mbox rdf:resource="mailto:alessandro@iepure.me" />
+            <foaf:account>
+                <foaf:OnlineAccount>
+                    <foaf:accountServiceHomepage rdf:resource="https://github.com" />
+                    <foaf:accountName>aleiepure</foaf:accountName>
+                </foaf:OnlineAccount>
+            </foaf:account>
+            <foaf:account>
+                <foaf:OnlineAccount>
+                    <foaf:accountServiceHomepage rdf:resource="https://gitlab.gnome.org" />
+                    <foaf:accountName>aleiepure</foaf:accountName>
+                </foaf:OnlineAccount>
+            </foaf:account>
+        </foaf:Person>
+    </maintainer>
+</Project>

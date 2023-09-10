@@ -45,7 +45,7 @@ class TMDBProvider:
         if not lang:
             lang = shared.schema.get_string('tmdb-lang')
 
-        return tmdb.Search().multi(query=query, language=lang)
+        return tmdb.Search().multi(query=query, language=lang, include_adult=False)
 
     @staticmethod
     def get_languages() -> dict:

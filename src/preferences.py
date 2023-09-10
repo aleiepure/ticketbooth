@@ -271,7 +271,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             return
 
         BackgroundQueue.add(BackgroundActivity(
-            ActivityType.REMOVE, _('Clear cache'), self._clear_cache))
+            ActivityType.REMOVE, C_('Background activity title', 'Clear cache'), self._clear_cache))
 
     def _clear_cache(self, activity: BackgroundActivity) -> None:
         """
@@ -342,12 +342,12 @@ class PreferencesWindow(Adw.PreferencesWindow):
         # Movies
         if self._movies_checkbtn.get_active():
             BackgroundQueue.add(BackgroundActivity(
-                ActivityType.REMOVE, _('Delete all movies'), self._clear_movies))
+                ActivityType.REMOVE, C_('Background activity title', 'Delete all movies'), self._clear_movies))
 
         # TV Series
         if self._series_checkbtn.get_active():
             BackgroundQueue.add(BackgroundActivity(
-                ActivityType.REMOVE, _('Delete all TV Series'), self._clear_series))
+                ActivityType.REMOVE, C_('Background activity title', 'Delete all TV Series'), self._clear_series))
 
     def _clear_movies(self, activity: BackgroundActivity) -> None:
         """
