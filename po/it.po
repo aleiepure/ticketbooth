@@ -110,144 +110,132 @@ msgstr "Stagione"
 msgid "Watched"
 msgstr "Visto"
 
-#: src/pages/details_page.py:149 src/pages/details_page.py:213
-#: src/pages/details_page.py:259 src/pages/details_page.py:307
-#: src/pages/details_page.py:421 src/widgets/episode_row.py:117
-#: src/widgets/episode_row.py:140 src/widgets/episode_row.py:294
 #: src/pages/details_page.py:130 src/pages/details_page.py:324
 msgid "Mark as Watched"
-msgstr ""
+msgstr "Segna come visto"
 
 #. TRANSLATORS: {num} is the total number of seasons
-#: src/pages/details_page.py:161 src/pages/details_page.py:153
+#: src/pages/details_page.py:153
 #, python-brace-format
 msgid "{num} Seasons"
-msgstr ""
+msgstr "{num} stagioni"
 
 #. TRANSLATORS: {num} is the total number of episodes
-#: src/pages/details_page.py:166 src/pages/details_page.py:195
 #: src/pages/details_page.py:158 src/pages/details_page.py:186
 #, python-brace-format
 msgid "{num} Episodes"
-msgstr ""
+msgstr "{num} episodi"
 
-#: src/pages/details_page.py:327 src/ui/dialogs/add_manual.blp:188
-#: src/pages/details_page.py:224
+#: src/pages/details_page.py:224 src/ui/dialogs/add_manual.blp:188
 msgid "Status"
-msgstr ""
+msgstr "Stato"
 
-#: src/pages/details_page.py:335 src/ui/dialogs/add_manual.blp:192
-#: src/pages/details_page.py:232
+#: src/pages/details_page.py:232 src/ui/dialogs/add_manual.blp:192
 msgid "Original Language"
-msgstr ""
+msgstr "Lingua originale"
 
-#: src/pages/details_page.py:343 src/ui/dialogs/add_manual.blp:197
-#: src/pages/details_page.py:240
+#: src/pages/details_page.py:240 src/ui/dialogs/add_manual.blp:197
 msgid "Original Title"
-msgstr ""
+msgstr "Titolo originale"
 
-#: src/pages/details_page.py:353 src/pages/details_page.py:250
+#: src/pages/details_page.py:250
 msgid "Budget"
-msgstr ""
+msgstr "Budget"
 
-#: src/pages/details_page.py:361 src/pages/details_page.py:258
+#: src/pages/details_page.py:258
 msgid "Revenue"
-msgstr ""
+msgstr "Incasso"
 
-#: src/pages/details_page.py:370 src/pages/details_page.py:267
+#: src/pages/details_page.py:267
 msgid "In Production"
-msgstr ""
+msgstr "In produzione"
 
-#: src/pages/details_page.py:373 src/pages/details_page.py:270
+#: src/pages/details_page.py:270
 msgid "Yes"
-msgstr ""
+msgstr "Sì"
 
-#: src/pages/details_page.py:373 src/pages/details_page.py:270
+#: src/pages/details_page.py:270
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
-#: src/pages/details_page.py:394 src/widgets/episode_row.py:161
 #: src/pages/details_page.py:291 src/widgets/episode_row.py:132
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr ""
+msgstr "{h}h {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:397 src/widgets/episode_row.py:165
 #: src/pages/details_page.py:294 src/widgets/episode_row.py:136
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{m}min"
-msgstr ""
+msgstr "{m}min"
 
 #. TRANSLATORS: {title} is the showed content's title
-#: src/pages/details_page.py:485 src/pages/details_page.py:388
+#: src/pages/details_page.py:388
 #, python-brace-format
 msgid "Updating {title}"
-msgstr ""
+msgstr "Aggiornando {title}"
 
-#: src/pages/details_page.py:497 src/pages/details_page.py:400
+#: src/pages/details_page.py:400
 msgid "Loading Metadata…"
-msgstr ""
+msgstr "Caricando i metadati…"
 
 #. TRANSLATORS: {title} is the content's title
-#: src/pages/details_page.py:515 src/widgets/episode_row.py:240
-#: src/widgets/season_expander.py:140 src/pages/details_page.py:418
-#: src/widgets/episode_row.py:211
+#: src/pages/details_page.py:418 src/widgets/episode_row.py:211
+#: src/widgets/season_expander.py:140
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr ""
+msgstr "Eliminare {title}?"
 
-#: src/pages/details_page.py:516 src/pages/details_page.py:419
+#: src/pages/details_page.py:419
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr ""
+msgstr "Questo titolo sarà eliminato dalla tua lista."
 
-#: src/pages/details_page.py:517 src/widgets/episode_row.py:244
-#: src/widgets/season_expander.py:143 src/pages/details_page.py:420
-#: src/widgets/episode_row.py:215
+#: src/pages/details_page.py:420 src/widgets/episode_row.py:215
+#: src/widgets/season_expander.py:143
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annulla"
 
-#: src/pages/details_page.py:518 src/widgets/episode_row.py:245
-#: src/widgets/season_expander.py:144 src/pages/details_page.py:421
-#: src/widgets/episode_row.py:216
+#: src/pages/details_page.py:421 src/widgets/episode_row.py:216
+#: src/widgets/season_expander.py:144
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr ""
+msgstr "_Elimina"
 
 #. TRANSLATORS: {title} is the content's title
-#: src/pages/details_page.py:542 src/pages/details_page.py:445
+#: src/pages/details_page.py:445
 #, python-brace-format
 msgid "Delete {title}"
-msgstr ""
+msgstr "Elimina {title}"
 
 #: src/preferences.py:214
 msgctxt "message dialog heading"
 msgid "No Network"
-msgstr ""
+msgstr "Nessuna connessione"
 
 #: src/preferences.py:215
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
-msgstr ""
+msgstr "Connettiti a Internet per completare la configurazione."
 
 #: src/preferences.py:216 src/window.py:152
 msgctxt "message dialog action"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/preferences.py:274
 msgid "Clear cache"
-msgstr ""
+msgstr "Elimina la cache"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:315 src/preferences.py:316
 #, python-brace-format
 msgid "{number} Titles"
-msgstr ""
+msgstr "{number} titoli"
 
 #: src/preferences.py:345
 msgid "Delete all movies"
