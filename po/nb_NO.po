@@ -3,44 +3,48 @@
 # This file is distributed under the same license as the ticketbooth package.
 # Automatically generated, 2023.
 #
+# Allan Nordhøy <epost@anotheragency.no>, 2023.
+# Alessandro Iepure <alessandro.iepure@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-12 14:30+0200\n"
-"PO-Revision-Date: 2023-09-12 14:30+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: nb\n"
+"PO-Revision-Date: 2023-09-12 15:22+0000\n"
+"Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"ticket-booth/ticket-booth/nb_NO/>\n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
 msgid "@app_name@"
-msgstr ""
+msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr ""
+msgstr "Vindusbredde"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr ""
+msgstr "Vindushøyde"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr ""
+msgstr "Vindu maksimert"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr ""
+msgstr "Aktiv fane"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr ""
+msgstr "Angir hvorvidt programmet kjøres for første gang"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
 msgid "Specifies if the app downloaded the required data"
@@ -48,27 +52,27 @@ msgstr ""
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:51
 msgid "View sorting style"
-msgstr ""
+msgstr "Vis sorteringsstil"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:62
 msgid "App color scheme"
-msgstr ""
+msgstr "Programfargedrakt"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:66
 msgid "Language used by TMDB results"
-msgstr ""
+msgstr "Språk brukt i TMDB-resultater"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:79
 msgid "Frequency to check for new data on TMDB"
-msgstr ""
+msgstr "Frekvens for sjekk av ny data på TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:83
 msgid "Last autoupdate date"
-msgstr ""
+msgstr "Siste autospillingsdato"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:87
 msgid "Clear cache on exit"
-msgstr ""
+msgstr "Tøm hurtiglager ved programslutt"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15
 msgid "Keep track of your favorite shows"
@@ -88,17 +92,17 @@ msgstr ""
 
 #: src/dialogs/add_manual_dialog.py:87
 msgid "Edit Movie"
-msgstr ""
+msgstr "Rediger film"
 
 #: src/dialogs/add_manual_dialog.py:89
 msgid "Edit TV Series"
-msgstr ""
+msgstr "Rediger TV-serie"
 
 #. TRANSLATORS: {num} is the season number
 #: src/dialogs/add_manual_dialog.py:283
 #, python-brace-format
 msgid "Season {num}"
-msgstr ""
+msgstr "Sesong {num}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/dialogs/add_manual_dialog.py:320 src/widgets/search_result_row.py:155
@@ -112,18 +116,18 @@ msgstr ""
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr ""
+msgstr "Oppdaterer {title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
-msgstr ""
+msgstr "Sesong"
 
 #: src/pages/details_page.py:146 src/pages/details_page.py:210
 #: src/pages/details_page.py:256 src/pages/details_page.py:304
 #: src/pages/details_page.py:418 src/widgets/episode_row.py:114
 #: src/widgets/episode_row.py:137 src/widgets/episode_row.py:291
 msgid "Watched"
-msgstr ""
+msgstr "Sett"
 
 #: src/pages/details_page.py:149 src/pages/details_page.py:213
 #: src/pages/details_page.py:259 src/pages/details_page.py:307
@@ -136,73 +140,73 @@ msgstr ""
 #: src/pages/details_page.py:161
 #, python-brace-format
 msgid "{num} Seasons"
-msgstr ""
+msgstr "{num} sesonger"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:166 src/pages/details_page.py:195
 #, python-brace-format
 msgid "{num} Episodes"
-msgstr ""
+msgstr "{num} episoder"
 
 #: src/pages/details_page.py:327 src/ui/dialogs/add_manual.blp:188
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: src/pages/details_page.py:335 src/ui/dialogs/add_manual.blp:192
 msgid "Original Language"
-msgstr ""
+msgstr "Opprinnelig språk"
 
 #: src/pages/details_page.py:343 src/ui/dialogs/add_manual.blp:197
 msgid "Original Title"
-msgstr ""
+msgstr "Originaltittel"
 
 #: src/pages/details_page.py:353
 msgid "Budget"
-msgstr ""
+msgstr "Budsjett"
 
 #: src/pages/details_page.py:361
 msgid "Revenue"
-msgstr ""
+msgstr "Omsetning"
 
 #: src/pages/details_page.py:370
 msgid "In Production"
-msgstr ""
+msgstr "I produksjon"
 
 #: src/pages/details_page.py:373
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: src/pages/details_page.py:373
 msgid "No"
-msgstr ""
+msgstr "Nei"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
 #: src/pages/details_page.py:394 src/widgets/episode_row.py:161
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr ""
+msgstr "{h}t {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:397 src/widgets/episode_row.py:165
 #, python-brace-format
 msgid "{m}min"
-msgstr ""
+msgstr "{m}min"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:470
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Update {title}"
-msgstr ""
+msgstr "Oppdaterer {title}"
 
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:485
 #, python-brace-format
 msgid "Updating {title}"
-msgstr ""
+msgstr "Oppdaterer {title}…"
 
 #: src/pages/details_page.py:497
 msgid "Loading Metadata…"
-msgstr ""
+msgstr "Laster inn metadata…"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:515 src/widgets/episode_row.py:240
@@ -210,30 +214,30 @@ msgstr ""
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr ""
+msgstr "Slett {title}?"
 
 #: src/pages/details_page.py:516
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr ""
+msgstr "Denne tittelen vil bli slettet fra din oppsynsliste."
 
 #: src/pages/details_page.py:517 src/widgets/episode_row.py:244
 #: src/widgets/season_expander.py:143
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Avbryt"
 
 #: src/pages/details_page.py:518 src/widgets/episode_row.py:245
 #: src/widgets/season_expander.py:144
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr ""
+msgstr "_Slett"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:542
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Delete {title}"
-msgstr ""
+msgstr "Slett {title}"
 
 #: src/preferences.py:214
 msgctxt "message dialog heading"
@@ -251,9 +255,10 @@ msgid "OK"
 msgstr ""
 
 #: src/preferences.py:274
+#, fuzzy
 msgctxt "Background activity title"
 msgid "Clear cache"
-msgstr ""
+msgstr "Tøm hurtiglager"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:315 src/preferences.py:316
@@ -288,130 +293,130 @@ msgstr ""
 #. TRANSLATORS: replace with your name (and an optional email or website)
 #: src/ui/about_window.blp:16
 msgid "translator-credits"
-msgstr ""
+msgstr "Allan Nordhøy, <epost@anotheragency.no>"
 
 #: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:76
 msgid "Movie"
-msgstr ""
+msgstr "Film"
 
 #: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:54
 #: src/widgets/search_result_row.py:78
 msgid "TV Series"
-msgstr ""
+msgstr "TV-serier"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:35
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: src/ui/dialogs/add_manual.blp:67 src/ui/dialogs/edit_season.blp:41
 #: src/ui/pages/edit_episode_page.blp:22
 msgid "Save"
-msgstr ""
+msgstr "Lagre"
 
 #: src/ui/dialogs/add_manual.blp:101 src/ui/dialogs/edit_season.blp:69
 #: src/ui/pages/edit_episode_page.blp:58
 msgid "General"
-msgstr ""
+msgstr "Generelt"
 
 #: src/ui/dialogs/add_manual.blp:104 src/ui/dialogs/edit_season.blp:72
 #: src/ui/pages/edit_episode_page.blp:70
 msgid "Title (required)"
-msgstr ""
+msgstr "Tittel (påkrevd)"
 
 #: src/ui/dialogs/add_manual.blp:110
 msgid "Release Date"
-msgstr ""
+msgstr "Utgivelsesdato"
 
 #: src/ui/dialogs/add_manual.blp:126
 msgid "Genres (comma separated)"
-msgstr ""
+msgstr "Sjangre (kommainndelt)"
 
 #: src/ui/dialogs/add_manual.blp:131 src/ui/pages/edit_episode_page.blp:75
 msgid "Runtime (minutes)"
-msgstr ""
+msgstr "Spilletid (minutter)"
 
 #: src/ui/dialogs/add_manual.blp:140
 msgid "Tagline"
-msgstr ""
+msgstr "Slogan"
 
 #: src/ui/dialogs/add_manual.blp:145 src/ui/pages/details_page.blp:188
 msgid "Created by"
-msgstr ""
+msgstr "Opprettet av"
 
 #: src/ui/dialogs/add_manual.blp:153 src/ui/pages/edit_episode_page.blp:87
 msgid "Overview"
-msgstr ""
+msgstr "Oversikt"
 
 #: src/ui/dialogs/add_manual.blp:170
 msgid "Seasons (required)"
-msgstr ""
+msgstr "Sesonger (påkrevd)"
 
 #: src/ui/dialogs/add_manual.blp:171
 msgid "Use the + button to add seasons"
-msgstr ""
+msgstr "Bruk «+»-knappen for å legge til sesonger"
 
 #: src/ui/dialogs/add_manual.blp:176 src/ui/dialogs/edit_season.blp:86
 msgid "Add"
-msgstr ""
+msgstr "Legg til"
 
 #: src/ui/dialogs/add_manual.blp:185 src/ui/pages/details_page.blp:240
 msgid "Additional Information"
-msgstr ""
+msgstr "Ytterligere info"
 
 #: src/ui/dialogs/add_manual.blp:202
 msgid "Budget (US$)"
-msgstr ""
+msgstr "Budsjett {US$)"
 
 #: src/ui/dialogs/add_manual.blp:212
 msgid "Revenue (US$)"
-msgstr ""
+msgstr "Omsetning (US$)"
 
 #: src/ui/dialogs/add_manual.blp:221
 msgid "In production"
-msgstr ""
+msgstr "I produksjon"
 
 #: src/ui/dialogs/add_tmdb.blp:30
 msgid "Search The Movie Database…"
-msgstr ""
+msgstr "Søk i «The Movie Database»…"
 
 #: src/ui/dialogs/add_tmdb.blp:40
 msgid "Search For a Title"
-msgstr ""
+msgstr "Søk etter tittel"
 
 #: src/ui/dialogs/add_tmdb.blp:42
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
-msgstr ""
+msgstr "Skriv i søkefeltet for å vise en liste over filmer og TV-serier"
 
 #: src/ui/dialogs/add_tmdb.blp:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Resultatløst"
 
 #: src/ui/dialogs/add_tmdb.blp:51
 msgid "Try a different search"
-msgstr ""
+msgstr "Prøv å søke etter noe annet"
 
 #: src/ui/dialogs/edit_season.blp:24
 msgid "Edit Season"
-msgstr ""
+msgstr "Rediger sesong"
 
 #: src/ui/dialogs/edit_season.blp:80
 msgid "Episodes (required)"
-msgstr ""
+msgstr "Episoder (påkrevd)"
 
 #: src/ui/dialogs/edit_season.blp:81
 msgid "Use the + button to add episodes"
-msgstr ""
+msgstr "Bruk «+»-knappen for å legge til episoder"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Generelt"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Vis snarveier"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
@@ -421,76 +426,76 @@ msgstr ""
 #: src/ui/gtk/help-overlay.blp:28
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Avslutt"
 
 #: src/ui/gtk/help-overlay.blp:34
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr ""
+msgstr "Bibliotekshåndtering"
 
 #: src/ui/gtk/help-overlay.blp:37
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr ""
+msgstr "Legg til tittel fra TMDB"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr ""
+msgstr "Legg til tittel manuelt"
 
 #: src/ui/gtk/help-overlay.blp:46
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr ""
+msgstr "Gjenoppfrisk bibliotek"
 
 #: src/ui/pages/details_page.blp:29 src/ui/views/main_view.blp:72
 msgid "Main Menu"
-msgstr ""
+msgstr "Hovedmeny"
 
 #: src/ui/pages/details_page.blp:126
 msgid "Update Metadata"
-msgstr ""
+msgstr "Oppdater metadata"
 
 #: src/ui/pages/details_page.blp:136 src/ui/widgets/episode_row.blp:88
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Delete"
-msgstr ""
+msgstr "Slett"
 
 #: src/ui/pages/details_page.blp:166
 msgid "Description"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: src/ui/pages/details_page.blp:215
 msgid "Seasons"
-msgstr ""
+msgstr "Sesonger"
 
 #: src/ui/pages/details_page.blp:314 src/ui/views/main_view.blp:163
 msgid "_Preferences"
-msgstr ""
+msgstr "_Innstillinger"
 
 #: src/ui/pages/details_page.blp:319 src/ui/views/main_view.blp:168
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Tastatursnarveier"
 
 #: src/ui/pages/details_page.blp:324 src/ui/views/main_view.blp:173
 msgid "_About Ticket Booth"
-msgstr ""
+msgstr "_Om Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:12
 msgid "Edit Episode"
-msgstr ""
+msgstr "Rediger episode"
 
 #: src/ui/pages/edit_episode_page.blp:61
 msgid "Episode Number (required)"
-msgstr ""
+msgstr "Episodenummer (påkrevd)"
 
 #: src/ui/preferences.blp:16 src/ui/views/main_view.blp:86
 msgid "Preferences"
-msgstr ""
+msgstr "Innstillinger"
 
 #: src/ui/preferences.blp:19
 msgctxt "preferences"
@@ -513,7 +518,7 @@ msgstr ""
 #: src/ui/preferences.blp:34
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr ""
+msgstr "Frakoblet modus"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
@@ -526,12 +531,12 @@ msgstr ""
 #: src/ui/preferences.blp:38
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr ""
+msgstr "Skru på frakoblet modus"
 
 #: src/ui/preferences.blp:43
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr ""
+msgstr "The Movie Database (TMDB)"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
@@ -553,7 +558,7 @@ msgstr ""
 #: src/ui/preferences.blp:52
 msgctxt "preferences"
 msgid "Update Frequency"
-msgstr ""
+msgstr "Oppdateringsfrekvens"
 
 #: src/ui/preferences.blp:53
 msgctxt "preferences"
@@ -563,22 +568,22 @@ msgstr ""
 #: src/ui/preferences.blp:56
 msgctxt "preferences"
 msgid "Never"
-msgstr ""
+msgstr "Aldri"
 
 #: src/ui/preferences.blp:57
 msgctxt "preferences"
 msgid "Daily"
-msgstr ""
+msgstr "Daglig"
 
 #: src/ui/preferences.blp:58
 msgctxt "preferences"
 msgid "Weekly"
-msgstr ""
+msgstr "Ukentlig"
 
 #: src/ui/preferences.blp:59
 msgctxt "preferences"
 msgid "Monthly"
-msgstr ""
+msgstr "Måndelig"
 
 #: src/ui/preferences.blp:66
 msgctxt "preferences"
@@ -588,7 +593,7 @@ msgstr ""
 #: src/ui/preferences.blp:70
 msgctxt "preferences"
 msgid "Clear Cache on Exit"
-msgstr ""
+msgstr "Tøm hurtiglager ved programslutt"
 
 #: src/ui/preferences.blp:74
 msgctxt "preferences"
@@ -598,11 +603,11 @@ msgstr ""
 #: src/ui/preferences.blp:84
 msgctxt "preferences"
 msgid "Clear Data"
-msgstr ""
+msgstr "Tøm data"
 
 #: src/ui/views/content_view.blp:14
 msgid "Your Watchlist Is Empty"
-msgstr ""
+msgstr "Oppsynslisten din er tom"
 
 #: src/ui/views/content_view.blp:15
 msgid "Add content with the + button."
@@ -610,19 +615,19 @@ msgstr ""
 
 #: src/ui/views/content_view.blp:98
 msgid "Your Watchlist"
-msgstr ""
+msgstr "Din oppsynsliste"
 
 #: src/ui/views/first_run_view.blp:56
 msgid "Use Offline Mode"
-msgstr ""
+msgstr "Bruk frakoblet modus"
 
 #: src/ui/views/first_run_view.blp:62
 msgid "Try again on next run"
-msgstr ""
+msgstr "Prøv igjen ved neste kjøring"
 
 #: src/ui/views/main_view.blp:63
 msgid "Add a title to your library"
-msgstr ""
+msgstr "Legg til en tittel i biblioteket ditt"
 
 #: src/ui/views/main_view.blp:85
 msgid "Offline Mode Enabled"
@@ -630,35 +635,35 @@ msgstr ""
 
 #: src/ui/views/main_view.blp:116
 msgid "_Sorting"
-msgstr ""
+msgstr "Sortering"
 
 #: src/ui/views/main_view.blp:119
 msgid "A-Z"
-msgstr ""
+msgstr "A-Å"
 
 #: src/ui/views/main_view.blp:125
 msgid "Z-A"
-msgstr ""
+msgstr "Å-A"
 
 #: src/ui/views/main_view.blp:131
 msgid "Date added (newest first)"
-msgstr ""
+msgstr "Dato tillagt (nyeste først)"
 
 #: src/ui/views/main_view.blp:137
 msgid "Date added (oldest first)"
-msgstr ""
+msgstr "Dato tillagt (eldste først)"
 
 #: src/ui/views/main_view.blp:143
 msgid "Release date (newest first)"
-msgstr ""
+msgstr "Utgivelsesdato (nyeste først)"
 
 #: src/ui/views/main_view.blp:149
 msgid "Release date (oldest first)"
-msgstr ""
+msgstr "Utgivelsesdato (eldste først)"
 
 #: src/ui/views/main_view.blp:156
 msgid "_Refresh"
-msgstr ""
+msgstr "Gjenoppfrisk"
 
 #: src/ui/views/main_view.blp:181
 msgid "From The Movie Database (TMDB)"
@@ -666,11 +671,12 @@ msgstr ""
 
 #: src/ui/views/main_view.blp:186
 msgid "Manually"
-msgstr ""
+msgstr "Manuelt"
 
 #: src/ui/widgets/background_indicator.blp:13
+#, fuzzy
 msgid "Background Activities"
-msgstr ""
+msgstr "Bakgrunnsaktiviteter"
 
 #: src/ui/widgets/background_indicator.blp:37
 msgid "No Background Activities"
@@ -678,31 +684,31 @@ msgstr ""
 
 #: src/ui/widgets/image_selector.blp:26
 msgid "Edit poster"
-msgstr ""
+msgstr "Rediger plakat"
 
 #: src/ui/widgets/image_selector.blp:44
 msgid "Delete poster"
-msgstr ""
+msgstr "Slett plakat"
 
 #: src/ui/widgets/search_result_row.blp:90
 msgid "Add to watchlist"
-msgstr ""
+msgstr "Legg til på oppsynsliste"
 
 #: src/ui/widgets/theme_switcher.blp:29
 msgid "Follow system style"
-msgstr ""
+msgstr "Følg systemstil"
 
 #: src/ui/widgets/theme_switcher.blp:43
 msgid "Light style"
-msgstr ""
+msgstr "Lys stil"
 
 #: src/ui/widgets/theme_switcher.blp:57
 msgid "Dark style"
-msgstr ""
+msgstr "Mørk stil"
 
 #: src/views/first_run_view.py:92
 msgid "Waiting for Network…"
-msgstr ""
+msgstr "Venter på nettverk…"
 
 #: src/views/first_run_view.py:94
 msgid ""
@@ -713,15 +719,15 @@ msgstr ""
 
 #: src/views/first_run_view.py:98
 msgid "Getting things ready…"
-msgstr ""
+msgstr "Klargjør…"
 
 #: src/views/first_run_view.py:99
 msgid "Downloading data"
-msgstr ""
+msgstr "Laster ned data"
 
 #: src/views/main_view.py:48
 msgid "Movies"
-msgstr ""
+msgstr "Filmer"
 
 #: src/views/main_view.py:97 src/views/main_view.py:101
 #: src/views/main_view.py:105
@@ -732,26 +738,29 @@ msgstr ""
 #: src/widgets/episode_row.py:242
 msgctxt "message dialog body"
 msgid "All cheanges to this episode will be lost."
-msgstr ""
+msgstr "Alle endringer av denne episoden vil gå tapt."
 
 #: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:169
 msgid "Already in your whatchlist"
-msgstr ""
+msgstr "Allerede i din oppsynsliste"
 
 #: src/widgets/season_expander.py:141
 msgctxt "message dialog body"
 msgid "This season contains unsaved metadata."
-msgstr ""
+msgstr "Denne sesongen inneholder ulagret metadata."
 
 #: src/window.py:150
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
-msgstr ""
+msgstr "Kjørende bakgrunnsaktiviteter"
 
 #: src/window.py:151
+#, fuzzy
 msgctxt "message dialog body"
 msgid ""
 "Some activities are running in the background and need to be completed "
 "before exiting. Look for the indicator in the header bar to check when they "
 "are finished."
 msgstr ""
+"Noen aktiviteter som kjører i bakgrunnen må ferdigstilles før programslutt. "
+"En indikator i tittelfeltet snurrer til det er utført."
