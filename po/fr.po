@@ -4,13 +4,14 @@
 # Automatically generated, 2023.
 #
 # "J. Lavoie" <j.lavoie@net-c.ca>, 2023.
+# Alessandro Iepure <alessandro.iepure@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-12 14:30+0200\n"
-"PO-Revision-Date: 2023-09-12 12:46+0000\n"
-"Last-Translator: \"J. Lavoie\" <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2023-09-12 15:22+0000\n"
+"Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/fr/>\n"
 "Language: fr\n"
@@ -112,10 +113,10 @@ msgstr "Ajouter {title}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/dialogs/add_manual_dialog.py:323
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr ""
+msgstr "Mettre à jour {title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
@@ -213,9 +214,10 @@ msgstr "Chargement des métadonnées…"
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr "Supprimer {title} ?"
+msgstr "Supprimer {title} ?"
 
 #: src/pages/details_page.py:516
+#, fuzzy
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
 msgstr "Ce titre sera supprimé de votre liste « À regarder »."
