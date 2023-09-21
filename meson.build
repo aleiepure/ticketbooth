@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 project('ticketbooth',
-          version: '0.1.0',
+          version: '1.0',
     meson_version: '>= 0.62.0',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )
@@ -32,7 +32,7 @@ else
   name_suffix = ''
   app_id = 'me.iepure.Ticketbooth'
   prefix = '/me/iepure/Ticketbooth'
-  version_number = meson.version()
+  version_number = meson.project_version()
 endif
 
 

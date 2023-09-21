@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 14:30+0200\n"
+"POT-Creation-Date: 2023-09-21 15:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,6 +84,10 @@ msgstr ""
 msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
+msgstr ""
+
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:43
+msgid "First release"
 msgstr ""
 
 #: src/dialogs/add_manual_dialog.py:87

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 14:30+0200\n"
+"POT-Creation-Date: 2023-09-21 15:38+0200\n"
 "PO-Revision-Date: 2023-09-12 16:11+0000\n"
 "Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/ticket-booth/"
@@ -92,6 +92,10 @@ msgid ""
 msgstr ""
 "Ticket Booth non permette di vedere o scaricare contenuto. Questa app usa "
 "l'API di TMDB ma non è approvata né certificata da TMDB."
+
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:43
+msgid "First release"
+msgstr "Prima versione"
 
 #: src/dialogs/add_manual_dialog.py:87
 msgid "Edit Movie"
@@ -566,10 +570,9 @@ msgstr ""
 "Ticket Booth scaricherà i dati nella lingua preferita, selezionabile sotto. "
 "Qualora essa non fosse disponibile, saranno scaricati in Inglese US oppure "
 "nella lingua originale del contenuto. Se nessuna fosse disponibile, il "
-"risultato sarà una stringa vuota. Per favore considera di <a "
-"href='https://www.themoviedb.org/bible/new_content'>contribuire a TMDB</a>. "
-"In aggiunta, un aggiornamento automatico è eseguito con una frequenza "
-"selezionabile."
+"risultato sarà una stringa vuota. Per favore considera di <a href='https://"
+"www.themoviedb.org/bible/new_content'>contribuire a TMDB</a>. In aggiunta, "
+"un aggiornamento automatico è eseguito con una frequenza selezionabile."
 
 #: src/ui/preferences.blp:47
 msgctxt "preferences"

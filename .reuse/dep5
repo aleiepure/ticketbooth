@@ -27,6 +27,7 @@ Files: data/icons/symbolic/series-symbolic.svg
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
 
+# Images
 Files: data/blank_poster.jpg
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
@@ -34,6 +35,10 @@ License: GPL-3.0-or-later
 Files: data/blank_still.jpg
 Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
 License: GPL-3.0-or-later
+
+Files: data/appstream/*
+Copyright: 2023 Alessandro Iepure <alessandro@iepure.me>
+License: CC0-1.0
 
 # Manifests
 Files: me.iepure.Ticketbooth.Devel.json

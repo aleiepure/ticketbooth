@@ -34,14 +34,17 @@ SPDX-License-Identifier: CC0-1.0
 		<screenshot>
 			<image>https://raw.githubusercontent.com/aleiepure/ticketbooth/main/data/appstream/3.png</image>
 		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/aleiepure/ticketbooth/main/data/appstream/4.png</image>
+		</screenshot>
 	</screenshots>
 	<translation type="gettext">me.iepure.ticketbooth</translation>
 	<content_rating type="oars-1.1" />
-	<!-- <releases>
-		<release version="1.0" date="2023-09-09">
+	<releases>
+		<release version="1.0" date="2023-09-21">
 			<description>
-				<p>No description</p>
+				<p>First release</p>
 			</description>
 		</release>
-	</releases> -->
+	</releases>
 </component>
