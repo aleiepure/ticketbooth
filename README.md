@@ -12,7 +12,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <a href="https://github.com/aleiepure/ticketbooth/actions/workflows/build-x86.yaml" title="Build Flatpak status">
     <img src="https://github.com/aleiepure/ticketbooth/actions/workflows/build-x86.yaml/badge.svg"/>
   </a>
-  <a href="https://github.com/aleiepure/devtoolbox/blob/main/LICENSES/GPL-3.0-or-later.txt" title="GPL-3 License">
+  <a href="https://github.com/aleiepure/ticketbooth/blob/main/LICENSES/GPL-3.0-or-later.txt" title="GPL-3 License">
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg">
   </a>
    <a href="https://api.reuse.software/info/github.com/aleiepure/ticketbooth" title="REUSE compliance">
@@ -42,7 +42,7 @@ This app uses the TMDB API but is not endorsed or certified by TMDB.
   <img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/>
 </a> <br>
 
-Builds from the main branch are available as artifacts on the [Actions page](https://github.com/aleiepure/devtoolbox/actions).\
+Builds from the main branch are available as artifacts on the [Actions page](https://github.com/aleiepure/ticketbooth/actions).\
 To build from source see [Building](./CONTRIBUTING.md#building).
 
 ## Contribute

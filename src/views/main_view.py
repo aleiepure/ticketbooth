@@ -55,8 +55,10 @@ class MainView(Adw.Bin):
                                              'series'
                                              )
 
-        shared.schema.bind('win-tab', self._tab_stack, 'visible-child-name', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('offline-mode', self._banner, 'revealed', Gio.SettingsBindFlags.GET)
+        shared.schema.bind('win-tab', self._tab_stack,
+                           'visible-child-name', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('offline-mode', self._banner,
+                           'revealed', Gio.SettingsBindFlags.GET)
 
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
@@ -88,7 +90,8 @@ class MainView(Adw.Bin):
             None
         """
 
-        last_check = datetime.fromisoformat(shared.schema.get_string('last-update'))
+        last_check = datetime.fromisoformat(
+            shared.schema.get_string('last-update'))
 
         match shared.schema.get_string('update-freq'):
             case 'day':
@@ -106,7 +109,8 @@ class MainView(Adw.Bin):
             case 'never':
                 return
 
-        shared.schema.set_string('last-update', datetime.now().strftime('%Y-%m-%d'))
+        shared.schema.set_string(
+            'last-update', datetime.now().strftime('%Y-%m-%d'))
 
     def _update_content(self, activity: BackgroundActivity) -> None:
         """
@@ -149,5 +153,8 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
-        self._tab_stack.get_child_by_name('movies').refresh_view()
-        self._tab_stack.get_child_by_name('series').refresh_view()
+
+        if self._tab_stack.get_visible_child_name() == 'movies':
+            self._tab_stack.get_child_by_name('movies').refresh_view()
+        else:
+            self._tab_stack.get_child_by_name('series').refresh_view()

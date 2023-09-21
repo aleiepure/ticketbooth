@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC0-1.0
 	<id>@app_id@</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-	<name translatable="no">Dev Toolbox</name>
+	<name translatable="no">Ticket Booth</name>
 	<launchable type="desktop-id">@app_id@.desktop</launchable>
 	<summary>Keep track of your favorite shows</summary>
 	<developer_name translatable="no">Alessandro Iepure</developer_name>
