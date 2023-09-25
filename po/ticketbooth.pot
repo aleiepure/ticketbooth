@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-21 15:38+0200\n"
+"POT-Creation-Date: 2023-09-25 14:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,13 @@ msgid ""
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
 
-#: data/me.iepure.Ticketbooth.metainfo.xml.in:43
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:46
+msgid ""
+"Fixes issue that prevented the addition of movies with large budgets and "
+"revenues."
+msgstr ""
+
+#: data/me.iepure.Ticketbooth.metainfo.xml.in:51
 msgid "First release"
 msgstr ""
 
@@ -727,8 +733,8 @@ msgstr ""
 msgid "Movies"
 msgstr ""
 
-#: src/views/main_view.py:97 src/views/main_view.py:101
-#: src/views/main_view.py:105
+#: src/views/main_view.py:100 src/views/main_view.py:104
+#: src/views/main_view.py:108
 msgctxt "Background activity title"
 msgid "Automatic update"
 msgstr ""

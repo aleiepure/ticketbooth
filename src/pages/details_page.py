@@ -102,8 +102,10 @@ class DetailsView(Adw.NavigationPage):
         if self.content.backdrop_path:  # type: ignore
 
             if not Adw.StyleManager.get_default().get_high_contrast():
-                self._background_picture.set_file(Gio.File.new_for_uri(self.content.backdrop_path))  # type: ignore
-                with Image.open(self.content.backdrop_path[7:]) as image:  # type: ignore
+                self._background_picture.set_file(Gio.File.new_for_uri(
+                    self.content.backdrop_path))  # type: ignore
+                # type: ignore
+                with Image.open(self.content.backdrop_path[7:]) as image:
                     stat = ImageStat.Stat(image.convert('L'))
 
                     luminance = [
@@ -114,7 +116,8 @@ class DetailsView(Adw.NavigationPage):
                                                      if Adw.StyleManager.get_default().get_dark()
                                                      else luminance[1])
 
-        self._poster_picture.set_file(Gio.File.new_for_uri(self.content.poster_path))  # type: ignore
+        self._poster_picture.set_file(Gio.File.new_for_uri(
+            self.content.poster_path))  # type: ignore
 
         self._title_lbl.set_text(self.content.title)  # type: ignore
 
@@ -124,11 +127,13 @@ class DetailsView(Adw.NavigationPage):
 
         if self.content.genres:  # type: ignore
             self._genres_lbl.set_visible(True)
-            self._genres_lbl.set_label(', '.join(self.content.genres))  # type: ignore
+            self._genres_lbl.set_label(
+                ', '.join(self.content.genres))  # type: ignore
 
         if self.content.release_date:  # type: ignore
             self._chip1_lbl.set_visible(True)
-            self._chip1_lbl.set_text(date.fromisoformat(self.content.release_date).strftime('%d %B %Y'))  # type: ignore
+            self._chip1_lbl.set_text(date.fromisoformat(
+                self.content.release_date).strftime('%d %B %Y'))  # type: ignore
 
         if self.content.manual:  # type: ignore
             self._edit_btn.set_visible(True)
@@ -151,19 +156,22 @@ class DetailsView(Adw.NavigationPage):
 
             if self.content.runtime:
                 self._chip2_lbl.set_visible(True)
-                self._chip2_lbl.set_text(self._format_runtime(self.content.runtime))
+                self._chip2_lbl.set_text(
+                    self._format_runtime(self.content.runtime))
 
         # TV series specific
         if type(self.content) is SeriesModel:
             if self.content.seasons_number:
                 self._chip2_lbl.set_visible(True)
                 # TRANSLATORS: {num} is the total number of seasons
-                self._chip2_lbl.set_text(_('{num} Seasons').format(num=self.content.seasons_number))
+                self._chip2_lbl.set_text(_('{num} Seasons').format(
+                    num=self.content.seasons_number))
 
             if self.content.episodes_number:
                 self._chip3_lbl.set_visible(True)
                 # TRANSLATORS: {num} is the total number of episodes
-                self._chip3_lbl.set_text(_('{num} Episodes').format(num=self.content.episodes_number))
+                self._chip3_lbl.set_text(_('{num} Episodes').format(
+                    num=self.content.episodes_number))
 
             if self.content.created_by:
                 self._creator_box.set_visible(True)
@@ -219,14 +227,16 @@ class DetailsView(Adw.NavigationPage):
             tmp = []
             for episode in season.episodes:
                 episode_row = EpisodeRow(episode)
-                episode_row.connect('watched-clicked', self._on_episode_watch_clicked, (btn_content, season))
+                episode_row.connect(
+                    'watched-clicked', self._on_episode_watch_clicked, (btn_content, season))
                 season_row.add_row(episode_row)
                 tmp.append(episode_row)
 
             self._seasons_group.add(season_row)
             self._episode_rows.append((season, tmp))
 
-            button.connect('clicked', self._on_season_watched_clicked, (btn_content, season, self._episode_rows))
+            button.connect('clicked', self._on_season_watched_clicked,
+                           (btn_content, season, self._episode_rows))
 
     def _on_episode_watch_clicked(self,
                                   source: Gtk.Widget,
@@ -290,7 +300,8 @@ class DetailsView(Adw.NavigationPage):
                 episode_rows = item[1]
 
         # Make changes in db
-        for episode in self.content.seasons[season_idx].episodes:  # type: ignore
+        # type: ignore
+        for episode in self.content.seasons[season_idx].episodes:
             local.mark_watched_episode(episode.id, not all(
                 episode.watched for episode in self.content.seasons[season_idx].episodes))  # type: ignore
 
@@ -335,7 +346,8 @@ class DetailsView(Adw.NavigationPage):
             label = Gtk.Label(label=_('Original Language'))
             label.add_css_class('heading')
             box.append(label)
-            box.append(Gtk.Label(label=self.content.original_language.name))  # type: ignore
+            # type: ignore
+            box.append(Gtk.Label(label=self.content.original_language.name))
             self._flow_box.append(box)
 
         if self.content.original_title:  # type: ignore
@@ -343,25 +355,30 @@ class DetailsView(Adw.NavigationPage):
             label = Gtk.Label(label=_('Original Title'))
             label.add_css_class('heading')
             box.append(label)
-            box.append(Gtk.Label(label=self.content.original_title))  # type: ignore
+            # type: ignore
+            box.append(Gtk.Label(label=self.content.original_title))
             self._flow_box.append(box)
 
         # Movie specific
         if type(self.content) is MovieModel:
             if self.content.budget:
-                box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                box = Gtk.Box(
+                    orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                 label = Gtk.Label(label=_('Budget'))
                 label.add_css_class('heading')
                 box.append(label)
-                box.append(Gtk.Label(label=f'US$ {self.content.budget}'))
+                box.append(Gtk.Label(label='US$ {budget:0.0f}'.format(
+                    budget=self.content.budget)))
                 self._flow_box.append(box)
 
             if self.content.revenue:
-                box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                box = Gtk.Box(
+                    orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                 label = Gtk.Label(label=_('Revenue'))
                 label.add_css_class('heading')
                 box.append(label)
-                box.append(Gtk.Label(label=f'US$ {self.content.revenue}'))
+                box.append(Gtk.Label(label='US$ {revenue:0.0f}'.format(
+                    revenue=self.content.revenue)))
                 self._flow_box.append(box)
 
         # TV series specific
@@ -370,7 +387,8 @@ class DetailsView(Adw.NavigationPage):
             label = Gtk.Label(label=_('In Production'))
             label.add_css_class('heading')
             box.append(label)
-            box.append(Gtk.Label(label=_('Yes') if self.content.in_production else _('No')))
+            box.append(Gtk.Label(label=_('Yes')
+                       if self.content.in_production else _('No')))
             self._flow_box.append(box)
 
         if self._flow_box.get_child_at_index(0) is None:
@@ -434,7 +452,8 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
-        dialog = AddManualDialog(self.get_ancestor(Gtk.Window), True, self.content)
+        dialog = AddManualDialog(self.get_ancestor(
+            Gtk.Window), True, self.content)
         dialog.connect('edit-saved', self._on_edit_saved)
         dialog.present()
 
@@ -451,8 +470,10 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
-        root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
-        self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(content)])
+        root_page = self.get_ancestor(
+            Adw.NavigationView).get_previous_page(self)
+        self.get_ancestor(Adw.NavigationView).replace(
+            [root_page, DetailsView(content)])
 
     @Gtk.Template.Callback('_on_update_btn_clicked')
     def _on_update_btn_clicked(self, user_data: object | None) -> None:
@@ -482,18 +503,22 @@ class DetailsView(Adw.NavigationPage):
 
         self._view_stack.set_visible_child_name('loading')
         # TRANSLATORS: {title} is the showed content's title
-        self._loading_lbl.set_label(_('Updating {title}').format(title=self.content.title))  # type: ignore
+        self._loading_lbl.set_label(_('Updating {title}').format(
+            title=self.content.title))  # type: ignore
 
         if type(self.content) is MovieModel:
             new_content = MovieModel(tmdb.get_movie(self.content.id))
             local.update_movie(old=self.content, new=new_content)
         else:
             local.delete_series(self.content.id)  # type: ignore
-            new_content = SeriesModel(tmdb.get_serie(self.content.id))  # type: ignore
+            new_content = SeriesModel(tmdb.get_serie(
+                self.content.id))  # type: ignore
             local.add_series(serie=new_content)
 
-        root_page = self.get_ancestor(Adw.NavigationView).get_previous_page(self)
-        self.get_ancestor(Adw.NavigationView).replace([root_page, DetailsView(new_content)])
+        root_page = self.get_ancestor(
+            Adw.NavigationView).get_previous_page(self)
+        self.get_ancestor(Adw.NavigationView).replace(
+            [root_page, DetailsView(new_content)])
         self._loading_lbl.set_label(_('Loading Metadata…'))
         self._view_stack.set_visible_child_name('filled')
         activity.end()
@@ -512,11 +537,13 @@ class DetailsView(Adw.NavigationPage):
         """
 
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),  # TRANSLATORS: {title} is the content's title
-                                       C_('message dialog heading', 'Delete {title}?').format(title=self.content.title),
+                                       C_('message dialog heading', 'Delete {title}?').format(
+                                           title=self.content.title),
                                        C_('message dialog body', 'This title will be deleted from your watchlist.'))
         dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
         dialog.add_response('delete', C_('message dialog action', '_Delete'))
-        dialog.set_response_appearance('delete', Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.set_response_appearance(
+            'delete', Adw.ResponseAppearance.DESTRUCTIVE)
         dialog.choose(None, self._on_message_dialog_choose, None)
 
     def _on_message_dialog_choose(self, source: GObject.Object | None, result: Gio.AsyncResult, user_data: object | None) -> None:

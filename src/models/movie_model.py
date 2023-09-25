@@ -24,7 +24,7 @@ class MovieModel(GObject.GObject):
     Properties:
         add_date (str): date of addition to the db (ISO format)
         backdrop_path (str): path where the background image is stored
-        budget (int): movie budget
+        budget (float): movie budget
         genres (List[str]): list of genres
         id (str): movie id
         manual (bool): if movie is added manually
@@ -33,7 +33,7 @@ class MovieModel(GObject.GObject):
         overview (str): movie overview, usually the main plot
         poster_path (str): path where the backgroud poster is stored
         release_date (str): release date in YYYY-MM-DD format
-        revenue (int): movie revenue
+        revenue (float): movie revenue
         runtime (int): movie runtime in minutes
         tagline (str): movie tagline
         status (str): movie status, usually released or planned
@@ -51,7 +51,7 @@ class MovieModel(GObject.GObject):
 
     add_date = GObject.Property(type=str, default='')
     backdrop_path = GObject.Property(type=str, default='')
-    budget = GObject.Property(type=int, default=0)
+    budget = GObject.Property(type=float, default=0)
     genres = GObject.Property(type=GLib.strv_get_type())
     id = GObject.Property(type=str, default='')
     manual = GObject.Property(type=bool, default=False)
@@ -60,7 +60,7 @@ class MovieModel(GObject.GObject):
     overview = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
     release_date = GObject.Property(type=str, default='')
-    revenue = GObject.Property(type=int, default=0)
+    revenue = GObject.Property(type=float, default=0)
     runtime = GObject.Property(type=int, default=0)
     status = GObject.Property(type=str, default='')
     tagline = GObject.Property(type=str, default='')
@@ -72,12 +72,14 @@ class MovieModel(GObject.GObject):
 
         if d is not None:
             self.add_date = datetime.now()
-            self.backdrop_path = self._download_background(path=d['backdrop_path'])
+            self.backdrop_path = self._download_background(
+                path=d['backdrop_path'])
             self.budget = d['budget']
             self.genres = self._parse_genres(api_dict=d['genres'])
             self.id = d['id']
             self.manual = False
-            self.original_language = local.LocalProvider.get_language_by_code(d['original_language'])  # type: ignore
+            self.original_language = local.LocalProvider.get_language_by_code(
+                d['original_language'])  # type: ignore
             self.original_title = d['original_title']
             self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path = self._download_poster(path=d['poster_path'])
@@ -95,7 +97,8 @@ class MovieModel(GObject.GObject):
             self.genres = self._parse_genres(db_str=t[3])  # type: ignore
             self.id = t[4]  # type: ignore
             self.manual = t[5]  # type:ignore
-            self.original_language = local.LocalProvider.get_language_by_code(t[6])  # type: ignore
+            self.original_language = local.LocalProvider.get_language_by_code(
+                t[6])  # type: ignore
             self.original_title = t[7]  # type: ignore
             self.overview = t[8]  # type: ignore
             self.poster_path = t[9]  # type: ignore
