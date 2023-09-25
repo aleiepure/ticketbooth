@@ -4,13 +4,14 @@
 # Automatically generated, 2023.
 #
 # Alessandro Iepure <alessandro.iepure@gmail.com>, 2023.
+# albanobattistella <albano_battistella@hotmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-25 14:00+0200\n"
-"PO-Revision-Date: 2023-09-12 16:11+0000\n"
-"Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
+"PO-Revision-Date: 2023-09-26 01:52+0000\n"
+"Last-Translator: albanobattistella <albano_battistella@hotmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/it/>\n"
 "Language: it\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.1-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -98,6 +99,8 @@ msgid ""
 "Fixes issue that prevented the addition of movies with large budgets and "
 "revenues."
 msgstr ""
+"Risolto il problema che impediva l'aggiunta di film con budget e ricavi "
+"elevati."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:51
 msgid "First release"
