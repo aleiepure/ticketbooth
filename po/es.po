@@ -153,18 +153,18 @@ msgstr "Marcar como visto"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:168
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] "{num} temporadas"
+msgstr[0] "{num} temporada"
 msgstr[1] "{num} temporadas"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:176 src/pages/details_page.py:208
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] "{num} episodios"
+msgstr[0] "{num} episodio"
 msgstr[1] "{num} episodios"
 
 #: src/pages/details_page.py:346 src/ui/dialogs/add_manual.blp:188
@@ -316,14 +316,12 @@ msgid "translator-credits"
 msgstr "Óscar Fernández Díaz <oscfdezdz@tuta.io>"
 
 #: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:76
-#, fuzzy
 msgctxt "Category"
 msgid "Movie"
 msgstr "Película"
 
 #: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:56
 #: src/widgets/search_result_row.py:78
-#, fuzzy
 msgctxt "Category"
 msgid "TV Series"
 msgstr "Series de TV"
@@ -770,7 +768,6 @@ msgid "Downloading data"
 msgstr "Descargando datos"
 
 #: src/views/main_view.py:50
-#, fuzzy
 msgctxt "Category"
 msgid "Movies"
 msgstr "Películas"
@@ -787,10 +784,8 @@ msgid "All changes to this episode will be lost."
 msgstr "Todos los cambios de este episodio se perderán."
 
 #: src/widgets/search_result_row.py:97
-#: src/widgets/search_result_row.py:170
-#, fuzzy
 msgid "Already in your watchlist"
-msgstr "Ya está en su lista"
+msgstr "Ya está en su lista de seguimiento"
 
 #: src/widgets/season_expander.py:141
 msgctxt "message dialog body"
@@ -812,3 +807,23 @@ msgstr ""
 "Algunas actividades se ejecutan en segundo plano y deben completarse antes "
 "de salir. Busque el indicador en la barra de cabecera para comprobar cuándo "
 "han terminado."
+
+#: src/ui/preferences.blp:36
+msgctxt "preferences"
+msgid ""
+"Ticket Booth can work entirelly offline. If you choose to run in this mode, "
+"some features that require the Internet and/or access to third party APIs "
+"will not be available."
+msgstr ""
+"Ticket Booth puede funcionar completamente sin conexión. Si elige funcionar "
+"en este modo, algunas funciones que requieren Internet y/o acceso a API de "
+"terceros no estarán disponibles."
+
+#: src/widgets/episode_row.py:242
+msgctxt "message dialog body"
+msgid "All cheanges to this episode will be lost."
+msgstr "Todos los cambios de este episodio se perderán."
+
+#: src/widgets/search_result_row.py:170
+msgid "Already in your whatchlist"
+msgstr "Ya está en su lista"
