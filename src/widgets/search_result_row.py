@@ -167,7 +167,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         local.add_content(id=self.tmdb_id, media_type=self.media_type)
-        self._add_btn.set_label(_('Already in your whatchlist'))
+        self._add_btn.set_label(_('Already in your watchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
         self.get_ancestor(Adw.Window).get_transient_for(

@@ -16,7 +16,7 @@ from ..widgets.poster_button import PosterButton
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/content_view.ui')
 class ContentView(Adw.Bin):
     """
-    This class rappresents the movies view of the app.
+    This class represents the movies view of the app.
 
     Properties:
         None

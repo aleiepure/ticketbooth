@@ -11,7 +11,7 @@ from ..background_queue import BackgroundQueue
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/background_indicator.ui')
 class BackgroundIndicator(Adw.Bin):
     """
-    This class rappresents the indicator for background activities.
+    This class represents the indicator for background activities.
 
     Properties:
         queue (Gio.ListStore): the queue

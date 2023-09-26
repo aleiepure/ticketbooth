@@ -792,7 +792,7 @@ msgid "Already in your watchlist"
 msgstr "Già nella tua lista"
 
 #: src/widgets/search_result_row.py:170
-msgid "Already in your whatchlist"
+msgid "Already in your watchlist"
 msgstr "Già nella tua lista"
 
 #: src/widgets/season_expander.py:141

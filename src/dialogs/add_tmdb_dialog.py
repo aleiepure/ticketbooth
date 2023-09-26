@@ -12,7 +12,7 @@ from ..providers.tmdb_provider import TMDBProvider
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/add_tmdb.ui')
 class AddTMDBDialog(Adw.Window):
     """
-    This class rappresents the window used to search for movies and tv-series on TMDB.
+    This class represents the window used to search for movies and tv-series on TMDB.
 
     Properties:
         None

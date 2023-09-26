@@ -15,7 +15,7 @@ from .. import shared  # type: ignore
 
 class EpisodeModel(GObject.GObject):
     """
-    This class rappresents an episode object stored in the db.
+    This class represents an episode object stored in the db.
 
     Properties:
         id (str): episode id
@@ -26,7 +26,7 @@ class EpisodeModel(GObject.GObject):
         show_id (int): id of the show the episode belongs to
         still_path (str): uri of the episode still
         title (str): episode title
-        watched (bool): wheater the episode has been watched or not
+        watched (bool): whether the episode has been watched or not
 
     Methods:
         None

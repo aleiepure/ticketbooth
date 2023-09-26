@@ -18,7 +18,7 @@ from ..widgets.episode_row import EpisodeRow
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/season_expander.ui')
 class SeasonExpander(Adw.ExpanderRow):
     """
-    This class rappresents a season in the manual add window.
+    This class represents a season in the manual add window.
 
     Properties:
         season_title (str): season title

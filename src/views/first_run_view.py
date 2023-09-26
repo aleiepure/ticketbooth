@@ -17,7 +17,7 @@ from ..providers.tmdb_provider import TMDBProvider as tmdb
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/first_run_view.ui')
 class FirstRunView(Adw.Bin):
     """
-    This class rappresents the initial setup the app needs to offer full fuctionality.
+    This class represents the initial setup the app needs to offer full fuctionality.
 
     Properties:
         None

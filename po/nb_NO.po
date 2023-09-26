@@ -767,7 +767,7 @@ msgid "Already in your watchlist"
 msgstr "Allerede i din oppsynsliste"
 
 #: src/widgets/search_result_row.py:170
-msgid "Already in your whatchlist"
+msgid "Already in your watchlist"
 msgstr "Allerede i din oppsynsliste"
 
 #: src/widgets/season_expander.py:141

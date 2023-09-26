@@ -21,7 +21,7 @@ from ..widgets.theme_switcher import ThemeSwitcher
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/main_view.ui')
 class MainView(Adw.Bin):
     """
-    This class rappresents the main view of the app.
+    This class represents the main view of the app.
 
     Properties:
         None
