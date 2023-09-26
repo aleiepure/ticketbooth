@@ -94,7 +94,7 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
 
         if local.get_movie_by_id(self.tmdb_id) or local.get_series_by_id(self.tmdb_id):
-            self._add_btn.set_label(_('Already in your whatchlist'))
+            self._add_btn.set_label(_('Already in your watchlist'))
             self._add_btn.set_icon_name('check-plain')
             self._add_btn.set_sensitive(False)
 
@@ -112,7 +112,8 @@ class SearchResultRow(Gtk.ListBoxRow):
             None or a Gio.File containing an image
         """
         if self.poster_path:
-            Gio.Task.new(self, None, self._on_get_poster_done, None).run_in_thread(self._get_poster_thread)
+            Gio.Task.new(self, None, self._on_get_poster_done,
+                         None).run_in_thread(self._get_poster_thread)
         else:
             self._poster_spinner.set_visible(False)
             return Gio.File.new_for_uri(f'resource://{shared.PREFIX}/blank_poster.jpg')
@@ -169,7 +170,8 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._add_btn.set_label(_('Already in your whatchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
-        self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
+        self.get_ancestor(Adw.Window).get_transient_for(
+        ).activate_action('win.refresh', None)
         activity.end()
 
     def _get_poster_thread(self, task: Gio.Task, source_object: GObject.Object, task_data: object | None,
@@ -203,7 +205,8 @@ class SearchResultRow(Gtk.ListBoxRow):
             Gio.File containing the poster
         """
 
-        files = glob.glob(f'{self.poster_path[1:-4]}.jpg', root_dir=shared.cache_dir)
+        files = glob.glob(
+            f'{self.poster_path[1:-4]}.jpg', root_dir=shared.cache_dir)
         if files:
             return Gio.File.new_for_path(f'{shared.cache_dir}/{files[0]}')
         else:

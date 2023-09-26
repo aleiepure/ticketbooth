@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from gettext import gettext as _
 from gettext import pgettext as C_
 
-from gi.repository import Adw, Gio, Gtk
+from gi.repository import Adw, Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
@@ -40,6 +40,8 @@ class MainView(Adw.Bin):
     _banner = Gtk.Template.Child()
     _background_indicator = Gtk.Template.Child()
 
+    _needs_refresh = ''
+
     def __init__(self):
         super().__init__()
 
@@ -60,8 +62,29 @@ class MainView(Adw.Bin):
         shared.schema.bind('offline-mode', self._banner,
                            'revealed', Gio.SettingsBindFlags.GET)
 
+        self._tab_stack.connect(
+            'notify::visible-child-name', self._check_needs_refresh)
+
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
+
+    def _check_needs_refresh(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
+        """
+        Checks if the tab switched to is pending a refresh and does it if needed.
+
+        Args:
+            pspec (GObject.ParamSpec): pspec of the changed property
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+        if self._tab_stack.get_visible_child_name() == 'movies' and self._needs_refresh == 'movies':
+            self._tab_stack.get_child_by_name('movies').refresh_view()
+            self._needs_refresh = ''
+        elif self._tab_stack.get_visible_child_name() == 'series' and self._needs_refresh == 'series':
+            self._tab_stack.get_child_by_name('series').refresh_view()
+            self._needs_refresh = ''
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -156,5 +179,7 @@ class MainView(Adw.Bin):
 
         if self._tab_stack.get_visible_child_name() == 'movies':
             self._tab_stack.get_child_by_name('movies').refresh_view()
+            self._needs_refresh = 'series'
         else:
             self._tab_stack.get_child_by_name('series').refresh_view()
+            self._needs_refresh = 'movies'

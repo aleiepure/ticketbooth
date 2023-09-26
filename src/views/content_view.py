@@ -44,7 +44,7 @@ class ContentView(Adw.Bin):
 
         self._stack.set_visible_child_name('loading')
 
-        GLib.Thread.new(None, self._load_content, movie_view)
+        self._load_content(self.movie_view)
 
         self._set_sorting_function()
         shared.schema.connect('changed::view-sorting', self._on_sort_changed)
@@ -110,10 +110,9 @@ class ContentView(Adw.Bin):
 
         self._stack.set_visible_child_name('loading')
 
-        while self._flow_box.get_child_at_index(0):
-            self._flow_box.remove(self._flow_box.get_child_at_index(0))
+        self._flow_box.remove_all()
 
-        GLib.Thread.new(None, self._load_content, self.movie_view)
+        self._load_content(self.movie_view)
 
     def _on_clicked(self, source: Gtk.Widget, content: MovieModel | SeriesModel) -> None:
         """
@@ -157,21 +156,25 @@ class ContentView(Adw.Bin):
             case 'added-date-new':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
                     (child1.get_child().content.add_date < child2.get_child().content.add_date) -
-                    (child1.get_child().content.add_date > child2.get_child().content.add_date)
+                    (child1.get_child().content.add_date >
+                     child2.get_child().content.add_date)
                 ), None)
             case 'added-date-old':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
                     (child1.get_child().content.add_date > child2.get_child().content.add_date) -
-                    (child1.get_child().content.add_date < child2.get_child().content.add_date)
+                    (child1.get_child().content.add_date <
+                     child2.get_child().content.add_date)
                 ), None)
             case 'released-date-new':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
                     (child1.get_child().content.release_date < child2.get_child().content.release_date) -
-                    (child1.get_child().content.release_date > child2.get_child().content.release_date)
+                    (child1.get_child().content.release_date >
+                     child2.get_child().content.release_date)
                 ), None)
             case 'released-date-old':
                 self._flow_box.set_sort_func(lambda child1, child2, user_data: (
                     (child1.get_child().content.release_date > child2.get_child().content.release_date) -
-                    (child1.get_child().content.release_date < child2.get_child().content.release_date)
+                    (child1.get_child().content.release_date <
+                     child2.get_child().content.release_date)
                 ), None)
         self._flow_box.invalidate_sort()
