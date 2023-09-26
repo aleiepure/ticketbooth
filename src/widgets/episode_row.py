@@ -239,7 +239,7 @@ class EpisodeRow(Adw.PreferencesRow):
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.Window),
                                        C_('message dialog heading', 'Delete {title}?').format(
                                            title=f'{self.episode_number}.{self.title}'),
-                                       C_('message dialog body', 'All cheanges to this episode will be lost.')
+                                       C_('message dialog body', 'All changes to this episode will be lost.')
                                        )
         dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
         dialog.add_response('delete', C_('message dialog action', '_Delete'))
