@@ -47,13 +47,13 @@ class MainView(Adw.Bin):
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',
-                                             _('Movies'),
+                                             C_('Category', 'Movies'),
                                              'movies'
                                              )
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=False),
                                              'series',
-                                             _('TV Series'),
+                                             C_('Category', 'TV Series'),
                                              'series'
                                              )
 

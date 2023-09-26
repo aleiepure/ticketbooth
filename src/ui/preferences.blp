@@ -20,6 +20,7 @@ template $PreferencesWindow: Adw.PreferencesWindow {
       description: C_("preferences", "For a complete experience, a download of 15 KB is required. The initial setup could not retrieve the data automatically and thus offline mode has been activated. It will remain active until the setup is completed.");
 
       Adw.ActionRow _download_row {
+        // TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
         title: C_("preferences", "Complete Setup");
         activated => $_on_download_activate();
         activatable: true;

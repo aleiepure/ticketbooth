@@ -4,6 +4,7 @@
 
 from datetime import date
 from gettext import gettext as _
+from gettext import ngettext
 from gettext import pgettext as C_
 from typing import List, Tuple
 
@@ -164,14 +165,18 @@ class DetailsView(Adw.NavigationPage):
             if self.content.seasons_number:
                 self._chip2_lbl.set_visible(True)
                 # TRANSLATORS: {num} is the total number of seasons
-                self._chip2_lbl.set_text(_('{num} Seasons').format(
-                    num=self.content.seasons_number))
+                self._chip2_lbl.set_text(ngettext('{num} Season'.format(num=self.content.seasons_number),
+                                                  '{num} Seasons'.format(
+                                                      num=self.content.seasons_number),
+                                         self.content.seasons_number))
 
             if self.content.episodes_number:
                 self._chip3_lbl.set_visible(True)
                 # TRANSLATORS: {num} is the total number of episodes
-                self._chip3_lbl.set_text(_('{num} Episodes').format(
-                    num=self.content.episodes_number))
+                self._chip3_lbl.set_text(ngettext('{num} Episode'.format(num=self.content.episodes_number),
+                                                  '{num} Episodes'.format(
+                                                      num=self.content.episodes_number),
+                                                  self.content.episodes_number))
 
             if self.content.created_by:
                 self._creator_box.set_visible(True)
@@ -200,7 +205,10 @@ class DetailsView(Adw.NavigationPage):
         self._episode_rows = []
         for season in self.content.seasons:  # type: ignore
             season_row = Adw.ExpanderRow(title=season.title,
-                                         subtitle=_('{num} Episodes').format(num=season.episodes_number))
+                                         subtitle=ngettext('{num} Episode'.format(num=season.episodes_number),
+                                                           '{num} Episodes'.format(
+                                                               num=season.episodes_number),
+                                                           season.episodes_number))
 
             poster = Gtk.Picture(height_request=112,
                                  width_request=75,

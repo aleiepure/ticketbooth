@@ -73,9 +73,9 @@ class SearchResultRow(Gtk.ListBoxRow):
             self.year_visible = True
 
         if self.media_type == 'movie':
-            self._media_type_lbl.set_label(_('Movie'))
+            self._media_type_lbl.set_label(C_('Category', 'Movie'))
         else:
-            self._media_type_lbl.set_label(_('TV Series'))
+            self._media_type_lbl.set_label(C_('Category', 'TV Series'))
 
         self._poster_spinner.set_visible(True)
         self._poster_picture.set_file(self._get_poster_file())

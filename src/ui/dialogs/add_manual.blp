@@ -44,13 +44,13 @@ template $AddManualDialog: Adw.Window {
           styles ["linked"]
 
           ToggleButton _movies_btn {
-            label: _("Movie");
+            label: C_("Category", "Movie");
 
             toggled => $_on_movies_btn_toggled();
           }
 
           ToggleButton _series_btn {
-            label: _("TV Series");
+            label: C_("Category", "TV Series");
             group: _movies_btn;
           }
         }
