@@ -15,7 +15,7 @@ from ..widgets.episode_row import EpisodeRow
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/edit_season.ui')
 class EditSeasonDialog(Adw.Window):
     """
-    This class rappresents the window to edit a season.
+    This class represents the window to edit a season.
 
     Properties:
         None

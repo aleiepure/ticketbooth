@@ -9,7 +9,7 @@ from gi.repository import GObject
 
 class SearchResultModel(GObject.GObject):
     """
-    This class rappresents the object returned from the TMDB search endpoint.
+    This class represents the object returned from the TMDB search endpoint.
 
     Properties:
         title (str): content's title

@@ -28,7 +28,7 @@ from ..widgets.season_expander import SeasonExpander
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/dialogs/add_manual.ui')
 class AddManualDialog(Adw.Window):
     """
-    This class rappresents the window to manually add content to the db.
+    This class represents the window to manually add content to the db.
 
     Properties:
         edit_mode (bool): whether or not the window is in add/edit mode
@@ -157,7 +157,7 @@ class AddManualDialog(Adw.Window):
             seasons_as_model(List[SeasonModel]): a list of SeasonModels
 
         Returns:
-            a list of tuples rappresenting the same data
+            a list of tuples representing the same data
         """
 
         seasons_as_tuple = []
@@ -576,7 +576,7 @@ class AddManualDialog(Adw.Window):
         Args:
             title (str): a title
             uri (str): an uri
-            episodes (List[tuple]): a list of tuples rappresenting episodes
+            episodes (List[tuple]): a list of tuples representing episodes
 
         Returns:
             tuple matching the passed data

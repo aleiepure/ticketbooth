@@ -554,7 +554,7 @@ msgstr "Modo sin conexión"
 #: src/ui/preferences.blp:36
 msgctxt "preferences"
 msgid ""
-"Ticket Booth can work entirelly offline. If you choose to run in this mode, "
+"Ticket Booth can work entirely offline. If you choose to run in this mode, "
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
@@ -783,16 +783,13 @@ msgstr "Actualización automática"
 
 #: src/widgets/episode_row.py:242
 msgctxt "message dialog body"
-msgid "All cheanges to this episode will be lost."
+msgid "All changes to this episode will be lost."
 msgstr "Todos los cambios de este episodio se perderán."
 
 #: src/widgets/search_result_row.py:97
+#: src/widgets/search_result_row.py:170
 #, fuzzy
 msgid "Already in your watchlist"
-msgstr "Ya está en su lista"
-
-#: src/widgets/search_result_row.py:170
-msgid "Already in your whatchlist"
 msgstr "Ya está en su lista"
 
 #: src/widgets/season_expander.py:141

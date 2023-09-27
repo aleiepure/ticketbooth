@@ -19,7 +19,7 @@ from ..models.episode_model import EpisodeModel
 
 class SeasonModel(GObject.GObject):
     """
-    This class rappresents a season object stored in the db.
+    This class represents a season object stored in the db.
 
     Properties:
         episodes (List[EpisodeModel]): list of episodes in self

@@ -9,7 +9,7 @@ from gi.repository import GObject
 
 class LanguageModel(GObject.GObject):
     """
-    This class rappresents a language object stored in the db.
+    This class represents a language object stored in the db.
 
     Properties:
         iso_name (str): ISO_639_1 code

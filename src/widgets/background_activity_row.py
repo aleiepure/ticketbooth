@@ -10,7 +10,7 @@ from .. import shared  # type: ignore
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/background_activity_row.ui')
 class BackgroundActivityRow(Adw.Bin):
     """
-    This class rappresents a row in the BackgroundIndicator popover.
+    This class represents a row in the BackgroundIndicator popover.
 
     Properties:
         title (str): a title

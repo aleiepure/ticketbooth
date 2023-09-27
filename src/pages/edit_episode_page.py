@@ -11,7 +11,7 @@ from ..models.episode_model import EpisodeModel
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/pages/edit_episode_page.ui')
 class EditEpisodeNavigationPage(Adw.NavigationPage):
     """
-    This class rappresents the 'edit episode' NavigationPane.
+    This class represents the 'edit episode' NavigationPane.
 
     Properties:
         None

@@ -20,7 +20,7 @@ from ..models.season_model import SeasonModel
 
 class SeriesModel(GObject.GObject):
     """
-    This class rappresents a series object stored in the db.
+    This class represents a series object stored in the db.
 
     Properties:
         add_date (str): date of addition to the db (ISO format)
@@ -29,7 +29,7 @@ class SeriesModel(GObject.GObject):
         episodes_number (int): number of total episodes
         genres (List[str]): list of genres
         id (str): series id
-        in_production (bool): wheater the series is still in production
+        in_production (bool): whether the series is still in production
         manual (bool): if the series is added manually
         original_language (LanguageModel): LanguageModel of the original language
         original_title (str): series title in original language
@@ -41,7 +41,7 @@ class SeriesModel(GObject.GObject):
         status (str): series status
         tagline (str): series tagline
         title (str): series title
-        watched (bool): wheater the series has been whatched completelly or not
+        watched (bool): whether the series has been watched completely or not
 
     Methods:
         None

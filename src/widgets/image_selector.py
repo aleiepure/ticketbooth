@@ -10,7 +10,7 @@ from .. import shared  # type: ignore
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/image_selector.ui')
 class ImageSelector(Adw.Bin):
     """
-    This class rappresents the image selector and previewer with options to open a file and, if one is already opened,
+    This class represents the image selector and previewer with options to open a file and, if one is already opened,
     to delete the selection.
 
     Properties:

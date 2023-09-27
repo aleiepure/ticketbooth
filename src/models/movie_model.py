@@ -19,7 +19,7 @@ from ..models.language_model import LanguageModel
 
 class MovieModel(GObject.GObject):
     """
-    This class rappresents a movie object stored in the db.
+    This class represents a movie object stored in the db.
 
     Properties:
         add_date (str): date of addition to the db (ISO format)
