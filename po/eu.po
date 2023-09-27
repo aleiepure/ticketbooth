@@ -753,8 +753,7 @@ msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
 msgstr ""
 
-#: src/widgets/search_result_row.py:97
-#: src/widgets/search_result_row.py:170
+#: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:170
 msgid "Already in your watchlist"
 msgstr ""
 

@@ -761,8 +761,7 @@ msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
 msgstr "Alle endringer av denne episoden vil gå tapt."
 
-#: src/widgets/search_result_row.py:97
-#: src/widgets/search_result_row.py:170
+#: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:170
 #, fuzzy
 msgid "Already in your watchlist"
 msgstr "Allerede i din oppsynsliste"

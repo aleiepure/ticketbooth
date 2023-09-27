@@ -783,7 +783,7 @@ msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
 msgstr "Todos los cambios de este episodio se perderán."
 
-#: src/widgets/search_result_row.py:97
+#: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:170
 msgid "Already in your watchlist"
 msgstr "Ya está en su lista de seguimiento"
 
@@ -808,22 +808,19 @@ msgstr ""
 "de salir. Busque el indicador en la barra de cabecera para comprobar cuándo "
 "han terminado."
 
-#: src/ui/preferences.blp:36
-msgctxt "preferences"
-msgid ""
-"Ticket Booth can work entirelly offline. If you choose to run in this mode, "
-"some features that require the Internet and/or access to third party APIs "
-"will not be available."
-msgstr ""
-"Ticket Booth puede funcionar completamente sin conexión. Si elige funcionar "
-"en este modo, algunas funciones que requieren Internet y/o acceso a API de "
-"terceros no estarán disponibles."
+#~ msgctxt "preferences"
+#~ msgid ""
+#~ "Ticket Booth can work entirelly offline. If you choose to run in this "
+#~ "mode, some features that require the Internet and/or access to third "
+#~ "party APIs will not be available."
+#~ msgstr ""
+#~ "Ticket Booth puede funcionar completamente sin conexión. Si elige "
+#~ "funcionar en este modo, algunas funciones que requieren Internet y/o "
+#~ "acceso a API de terceros no estarán disponibles."
 
-#: src/widgets/episode_row.py:242
-msgctxt "message dialog body"
-msgid "All cheanges to this episode will be lost."
-msgstr "Todos los cambios de este episodio se perderán."
+#~ msgctxt "message dialog body"
+#~ msgid "All cheanges to this episode will be lost."
+#~ msgstr "Todos los cambios de este episodio se perderán."
 
-#: src/widgets/search_result_row.py:170
-msgid "Already in your whatchlist"
-msgstr "Ya está en su lista"
+#~ msgid "Already in your whatchlist"
+#~ msgstr "Ya está en su lista"
