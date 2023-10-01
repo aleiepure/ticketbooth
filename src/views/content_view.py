@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import logging
+
 from gi.repository import Adw, GLib, GObject, Gtk
 
 import src.providers.local_provider as local
@@ -16,7 +18,7 @@ from ..widgets.poster_button import PosterButton
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/views/content_view.ui')
 class ContentView(Adw.Bin):
     """
-    This class represents the movies view of the app.
+    This class represents the content grid view.
 
     Properties:
         None
@@ -75,7 +77,7 @@ class ContentView(Adw.Bin):
             None
         """
 
-        self._stack.set_visible_child_name('loading')
+        # self._stack.set_visible_child_name('loading')
         if movie_view:
             content = local.LocalProvider.get_all_movies()
         else:
@@ -84,8 +86,12 @@ class ContentView(Adw.Bin):
         if not content:
             self._stack.set_visible_child_name('empty')
             return
+        else:
+            self._stack.set_visible_child_name('filled')
 
         for item in content:
+            logging.debug(
+                f'Created poster button for [{"movie" if self.movie_view else "TV series"}] {item.title}')
             btn = PosterButton(content=item)
             btn.connect('clicked', self._on_clicked)
             self._flow_box.insert(btn, -1)
@@ -95,7 +101,7 @@ class ContentView(Adw.Bin):
             self._flow_box.get_child_at_index(idx).set_focusable(False)
             idx += 1
 
-        self._stack.set_visible_child_name('filled')
+        # self._stack.set_visible_child_name('filled')
 
     def refresh_view(self) -> None:
         """
@@ -108,7 +114,7 @@ class ContentView(Adw.Bin):
             None
         """
 
-        self._stack.set_visible_child_name('loading')
+        # self._stack.set_visible_child_name('loading')
 
         self._flow_box.remove_all()
 
@@ -127,6 +133,8 @@ class ContentView(Adw.Bin):
             None
         """
 
+        logging.info(
+            f'Clicked on [{"movie" if self.movie_view else "TV series"}] {content.title}')
         page = DetailsView(content)
         page.connect('deleted', lambda *args: self.refresh_view())
         self.get_ancestor(Adw.NavigationView).push(page)

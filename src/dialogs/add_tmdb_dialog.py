@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import logging
+
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
@@ -47,6 +49,8 @@ class AddTMDBDialog(Adw.Window):
             None
         """
 
+        logging.info(f'Search query: "{self._search_entry.get_text()}"')
+
         if self._model.get_property('n-items') > 0:
             self._model.remove_all()
 
@@ -57,10 +61,14 @@ class AddTMDBDialog(Adw.Window):
         response = TMDBProvider().search(query=self._search_entry.get_text())
         if not response['results']:
             self._stack.set_visible_child_name('no-results')
+            logging.info('No results for query')
             return
 
         for result in response['results']:
             if result['media_type'] in ['movie', 'tv']:
-                self._model.append(SearchResultModel(result))
+                search_result = SearchResultModel(result)
+                logging.info(
+                    f'Found [{"movie" if search_result.media_type == "movie" else "TV series"}] {search_result.title}, {search_result.year}')
+                self._model.append(search_result)
 
         self._stack.set_visible_child_name('results')

@@ -1,11 +1,12 @@
 # Copyright (C) 2023 Alessandro Iepure
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
+import logging
 from datetime import datetime, timedelta
 from gettext import gettext as _
 from gettext import pgettext as C_
 
-from gi.repository import Adw, Gio, GObject, Gtk
+from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
@@ -81,9 +82,11 @@ class MainView(Adw.Bin):
         """
         if self._tab_stack.get_visible_child_name() == 'movies' and self._needs_refresh == 'movies':
             self._tab_stack.get_child_by_name('movies').refresh_view()
+            logging.info('Refreshed movies tab')
             self._needs_refresh = ''
         elif self._tab_stack.get_visible_child_name() == 'series' and self._needs_refresh == 'series':
             self._tab_stack.get_child_by_name('series').refresh_view()
+            logging.info('Refreshed TV Series tab')
             self._needs_refresh = ''
 
     @Gtk.Template.Callback('_on_map')
@@ -115,18 +118,26 @@ class MainView(Adw.Bin):
 
         last_check = datetime.fromisoformat(
             shared.schema.get_string('last-update'))
+        frequency = shared.schema.get_string('update-freq')
 
-        match shared.schema.get_string('update-freq'):
+        logging.debug(
+            f'Last update done on {last_check}, frequency {frequency}')
+
+        run = True
+        match frequency:
             case 'day':
                 if last_check + timedelta(days=1) < datetime.now():
+                    logging.info('Starting automatic update...')
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
                                         C_('Background activity title', 'Automatic update'), self._update_content))
             case 'week':
                 if last_check + timedelta(days=7) < datetime.now():
+                    logging.info('Starting automatic update...')
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
                                         C_('Background activity title', 'Automatic update'), self._update_content))
             case 'month':
                 if last_check + timedelta(days=30) < datetime.now():
+                    logging.info('Starting automatic update...')
                     BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
                                         C_('Background activity title', 'Automatic update'), self._update_content))
             case 'never':
@@ -164,6 +175,7 @@ class MainView(Adw.Bin):
                     local.add_series(serie=new_serie)
 
         self.refresh()
+        logging.info('Automatic update done')
         activity.end()
 
     def refresh(self) -> None:
@@ -179,7 +191,9 @@ class MainView(Adw.Bin):
 
         if self._tab_stack.get_visible_child_name() == 'movies':
             self._tab_stack.get_child_by_name('movies').refresh_view()
+            logging.info('Refreshed movies tab')
             self._needs_refresh = 'series'
         else:
             self._tab_stack.get_child_by_name('series').refresh_view()
+            logging.info('Refreshed TV series tab')
             self._needs_refresh = 'movies'

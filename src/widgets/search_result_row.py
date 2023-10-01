@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import logging
 from gettext import gettext as _
 from gettext import pgettext as C_
 
@@ -68,6 +69,9 @@ class SearchResultRow(Gtk.ListBoxRow):
         Returns:
             None
         """
+
+        logging.debug(
+            f'Result row for [{"movie" if self.media_type == "movie" else "TV series"}] {self.title}, {self.year} ({self.poster_path})')
 
         if self.year:
             self.year_visible = True
@@ -150,6 +154,9 @@ class SearchResultRow(Gtk.ListBoxRow):
             None
         """
 
+        logging.info(
+            f'Clicked result for [{"movie" if self.media_type == "movie" else "TV series"}] {self.title}, {self.year}')
+
         self._add_spinner.set_visible(True)
         self._add_btn.set_sensitive(False)
         BackgroundQueue.add(BackgroundActivity(
@@ -208,6 +215,8 @@ class SearchResultRow(Gtk.ListBoxRow):
         files = glob.glob(
             f'{self.poster_path[1:-4]}.jpg', root_dir=shared.cache_dir)
         if files:
+            logging.debug(
+                f'{self.poster_path}, cache hit: {shared.cache_dir}/{files[0]}')
             return Gio.File.new_for_path(f'{shared.cache_dir}/{files[0]}')
         else:
             url = f'https://image.tmdb.org/t/p/w500{self.poster_path}'
@@ -215,6 +224,8 @@ class SearchResultRow(Gtk.ListBoxRow):
             if r.status_code == 200:
                 with open(f'{shared.cache_dir}{self.poster_path}', 'wb') as f:
                     f.write(r.content)
+            logging.debug(
+                f'{self.poster_path}, downloaded to {shared.cache_dir}{self.poster_path}')
             return Gio.File.new_for_path(f'{shared.cache_dir}{self.poster_path}')
 
     def _get_poster_file_finish(self, result: Gio.AsyncResult, caller: GObject.Object) -> int | Gio.File:

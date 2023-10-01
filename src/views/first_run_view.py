@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import locale
+import logging
 import os
 from gettext import gettext as _
 
@@ -59,12 +60,19 @@ class FirstRunView(Adw.Bin):
             None
         """
 
+        logging.info('First run setup in progress...')
+
         for path in [shared.background_dir, shared.poster_dir, shared.series_dir]:
             if not os.path.exists(path):
                 os.makedirs(path)
+                logging.info(f'[setup] Created folder {path}')
 
         local.create_tables()
-        shared.schema.set_string('tmdb-lang', locale.getdefaultlocale()[0].lower()[:2])  # type: ignore
+        logging.info('[setup] Created db tables')
+
+        language = locale.getdefaultlocale()[0].lower()[:2]  # type: ignore
+        shared.schema.set_string('tmdb-lang', language)
+        logging.info(f'[Setup] Set TMDB language to {language}')
 
         self._update_ui(need_download=True)
         Gio.NetworkMonitor.get_default().can_reach_async(
@@ -73,6 +81,7 @@ class FirstRunView(Adw.Bin):
             self._on_first_reach_done,
             None
         )
+        logging.info('[Setup] Checking network connection...')
 
     def _update_ui(self, need_download: bool) -> None:
         """
@@ -121,10 +130,14 @@ class FirstRunView(Adw.Bin):
             network = None
 
         if network:
+            logging.info('[Setup] Network present, staring download')
             self._download_languages()
         else:
-            self._has_network = False                        # Network presence flag
-            GLib.Thread.new(None, self._loop_check_network)  # Continue checking in a separate thread
+            self._has_network = False
+            logging.error(
+                '[Setup] Network not present, retrying in 10 seconds')
+            # Continue checking in a separate thread
+            GLib.Thread.new(None, self._loop_check_network)
 
     def _loop_check_network(self) -> None:
         """
@@ -140,7 +153,7 @@ class FirstRunView(Adw.Bin):
         """
 
         while not (self._cancellable.is_cancelled() or self._has_network):
-            GLib.usleep(1000000)
+            GLib.usleep(10000000)
             Gio.NetworkMonitor.get_default().can_reach_async(
                 Gio.NetworkAddress.parse_uri('https://api.themoviedb.org', 80),
                 self._cancellable,
@@ -149,6 +162,7 @@ class FirstRunView(Adw.Bin):
             )
 
         if self._has_network:
+            logging.info('[Setup] Network present, staring download')
             self._download_languages()
 
         GLib.Thread.exit()
@@ -171,6 +185,8 @@ class FirstRunView(Adw.Bin):
             self._has_network = Gio.NetworkMonitor.get_default().can_reach_finish(result)
         except GLib.Error:
             self._has_network = False
+            logging.error(
+                '[Setup] Network not present, retrying in 10 seconds')
 
     def _download_languages(self) -> None:
         """
@@ -192,6 +208,7 @@ class FirstRunView(Adw.Bin):
         shared.schema.set_boolean('first-run', False)
         shared.schema.set_boolean('offline-mode', False)
         shared.schema.set_boolean('onboard-complete', True)
+        logging.info('[Setup] First setup complete')
         self.emit('exit')
 
     @Gtk.Template.Callback('_on_offline_btn_clicked')
@@ -211,7 +228,10 @@ class FirstRunView(Adw.Bin):
         self._cancellable.cancel()
 
         shared.schema.set_boolean('offline-mode', True)
+        logging.info('[Setup] Offline mode enabled')
         if not self._retry_check_btn.get_active():
             shared.schema.set_boolean('first-run', False)
+            logging.info('[Setup] First setup partially complete')
 
+        logging.info('[Setup] Setup not completed, retrying on next run')
         self.emit('exit')

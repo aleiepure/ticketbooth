@@ -7,6 +7,8 @@ from typing import Callable
 
 from gi.repository import Gio, GLib, GObject
 
+from . import shared  # type: ignore
+
 
 class ActivityType(Enum):
     """
@@ -60,7 +62,11 @@ class BackgroundActivity(GObject.GObject):
             None
         """
 
-        GLib.Thread.new(self.title, self.callback, self)
+        try:
+            GLib.Thread.try_new(self.title, self.callback, self)
+        except GLib.Error as err:
+            shared.logging.error(err)
+            raise err
 
     def end(self) -> None:
         """

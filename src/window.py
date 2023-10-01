@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import logging
 import os
 from gettext import gettext as _
 from gettext import pgettext as C_
@@ -49,6 +50,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         self.set_state(new_state)
+        logging.debug(f'Sort: {new_state}')
         shared.schema.set_string('view-sorting', str(new_state)[1:-1])
 
     def _add_tmdb(self, new_state: None, source: Gtk.Widget) -> None:
@@ -64,6 +66,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddTMDBDialog(source)
+        logging.info('Add from TMDB dialog open')
         dialog.present()
 
     def _add_manual(self, new_state: None, source: Gtk.Widget) -> None:
@@ -79,6 +82,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         dialog = AddManualDialog(source)
+        logging.info('Add manual dialog open')
         dialog.present()
 
     def _refresh(self, new_state: None, source: Gtk.Widget) -> None:
@@ -93,6 +97,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
+        logging.info('Refresh requested')
         source._win_stack.get_child_by_name('main').refresh()
 
     def _update_background_indicator(self, new_state: None, source: Gtk.Widget) -> None:
@@ -107,10 +112,12 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
-        source._win_stack.get_child_by_name('main')._background_indicator.refresh()
+        source._win_stack.get_child_by_name(
+            'main')._background_indicator.refresh()
 
     _actions = {
-        ('view-sorting', None, 's', f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
+        ('view-sorting', None, 's',
+         f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
         ('add-tmdb', _add_tmdb),
         ('add-manual', _add_manual),
         ('refresh', _refresh),
@@ -129,7 +136,8 @@ class TicketboothWindow(Adw.ApplicationWindow):
                            'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
         if shared.schema.get_boolean('onboard-complete'):
-            Gio.NetworkMonitor.get_default().connect('network-changed', self._on_network_changed)
+            Gio.NetworkMonitor.get_default().connect(
+                'network-changed', self._on_network_changed)
 
     @Gtk.Template.Callback('_on_close_request')
     def _on_close_request(self, user_data: object | None) -> bool:
@@ -144,13 +152,17 @@ class TicketboothWindow(Adw.ApplicationWindow):
             True to block quiting, False to allow it
         """
 
+        logging.info('Close requested')
+
         # Background activities
         if not all(activity.completed for activity in BackgroundQueue.get_queue()):
             dialog = Adw.MessageDialog.new(self,
-                                           C_('message dialog heading', 'Background Activies Running'),
+                                           C_('message dialog heading',
+                                              'Background Activies Running'),
                                            C_('message dialog body', 'Some activities are running in the background and need to be completed before exiting. Look for the indicator in the header bar to check when they are finished.'))
             dialog.add_response('ok', C_('message dialog action', 'OK'))
             dialog.show()
+            logging.error('Close inhibited, running activities in background')
             return True
 
         # Cache
@@ -158,7 +170,9 @@ class TicketboothWindow(Adw.ApplicationWindow):
             files = glob.glob('*.jpg', root_dir=shared.cache_dir)
             for file in files:
                 os.remove(shared.cache_dir / file)
+            logging.info('Cache deleted')
 
+        logging.info('Closing')
         return False
 
     @Gtk.Template.Callback('_on_map')
@@ -173,11 +187,15 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
-        if not shared.schema.get_boolean('first-run'):
+        is_first_run = shared.schema.get_boolean('first-run')
+        logging.info(f'is first run: {is_first_run}')
+
+        if not is_first_run:
             self._win_stack.add_named(child=MainView(), name='main')
             self._win_stack.set_visible_child_name('main')
             return
 
+        logging.info('Start first run setup')
         self.first_run_view = FirstRunView()
         self._win_stack.add_named(child=self.first_run_view, name='first-run')
         self._win_stack.set_visible_child_name('first-run')
@@ -185,7 +203,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
     def _on_network_changed(self, network_monitor: Gio.NetworkMonitor, network_available: bool) -> None:
         """
-        Callback for "network-changed" signal.'message dialog heading'
+        Callback for "network-changed" signal.
         If no network is available, it turns on offline mode.
 
         Args:
@@ -196,7 +214,11 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
-        shared.schema.set_boolean('offline-mode', GLib.Variant.new_boolean(not network_available))
+        logging.warning(f'Network changed, current status {network_available}')
+        logging.warning(f'Offline mode: {not network_available}')
+
+        shared.schema.set_boolean(
+            'offline-mode', GLib.Variant.new_boolean(not network_available))
 
     def _on_first_run_exit(self, source: Gtk.Widget) -> None:
         """
@@ -209,6 +231,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
+        logging.info('First setup done')
         self._win_stack.add_named(child=MainView(), name='main')
         self._win_stack.set_visible_child_name('main')
 
@@ -223,6 +246,9 @@ class TicketboothWindow(Adw.ApplicationWindow):
             None
         """
 
-        shared.schema.bind('win-width', self, 'default-width', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('win-height', self, 'default-height', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('win-maximized', self, 'maximized', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('win-width', self, 'default-width',
+                           Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('win-height', self, 'default-height',
+                           Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('win-maximized', self, 'maximized',
+                           Gio.SettingsBindFlags.DEFAULT)

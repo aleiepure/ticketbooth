@@ -4,16 +4,14 @@
 
 from gi.repository import Gdk, Gio, GLib
 from pathlib import Path
+import logging
+from .logging.session_file_handler import SessionFileHandler
+import faulthandler
 
 APP_ID = '@app_id@'
 VERSION = '@version@'
 PREFIX = '@prefix@'
 APP_NAME = '@app_name@'
-
-if '@debug@' == 'True':
-    DEBUG = True
-else:
-    DEBUG = False
 
 schema = Gio.Settings.new(APP_ID)
 
@@ -25,3 +23,23 @@ background_dir = data_dir / 'background'
 series_dir = data_dir / 'series'
 
 db = data_dir / 'data.db'
+
+faulthandler.enable(file=open(data_dir/'logs'/'crash.log',"w"))
+
+if '@debug@' == 'True':
+    DEBUG = True
+    # TODO: change back to DEBUG
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        filename=data_dir / 'logs' / 'ticketbooth.log')
+else:
+    DEBUG = False
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        filename=data_dir / 'logs' / 'ticketbooth.log')
+
+handler = SessionFileHandler(filename=data_dir / 'logs' / 'ticketbooth.log')
+handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logging.getLogger().addHandler(handler)
+
+log_files = None

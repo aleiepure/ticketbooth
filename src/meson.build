@@ -65,6 +65,7 @@ subdir('providers')
 subdir('models')
 subdir('views')
 subdir('pages')
+subdir('logging')
 
 # Install sources
 ticketbooth_sources = [

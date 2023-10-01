@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import logging
 import os
 import shutil
 import sqlite3
@@ -71,6 +72,7 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
+            logging.debug('[db] Create movie table')
             sql = """CREATE TABLE IF NOT EXISTS movies (
                         add_date TEXT,
                         backdrop_path TEXT,
@@ -107,6 +109,7 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
+            logging.debug('[db] Create series, seasons, and episodes tables')
             series_sql = """CREATE TABLE IF NOT EXISTS series (
                             add_date TEXT,
                             backdrop_path TEXT,
@@ -169,6 +172,7 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
+            logging.debug('[db] Create languages table')
             sql = """CREATE TABLE IF NOT EXISTS languages (
                         iso_639_1 TEXT PRIMARY KEY,
                         name TEXT NOT NULL
@@ -208,6 +212,7 @@ class LocalProvider:
             sql = 'INSERT INTO languages VALUES (?,?);'
             result = connection.cursor().execute(sql, (language.iso_name, language.name))
             connection.commit()
+            logging.debug(f'[db] Add {language.name}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -248,6 +253,8 @@ class LocalProvider:
                 movie.watched,
             ))
             connection.commit()
+            logging.debug(
+                f'[db] Add {movie.title}, {movie.release_date}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -316,6 +323,8 @@ class LocalProvider:
                     ))
 
             connection.commit()
+            logging.debug(
+                f'[db] Add {serie.title}, {serie.release_date}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -352,8 +361,12 @@ class LocalProvider:
             sql = """SELECT * FROM languages WHERE iso_639_1 = ?"""
             result = connection.cursor().execute(sql, (iso_code,)).fetchone()
             if result:
-                return LanguageModel(t=result)
+                language = LanguageModel(t=result)
+                logging.debug(
+                    f'[db] Get language by code {iso_code}: {language.name}')
+                return language
             else:
+                logging.error(f'[db] Get language by code {iso_code}: {None}')
                 return None
 
     @staticmethod
@@ -372,8 +385,12 @@ class LocalProvider:
             sql = """SELECT * FROM movies WHERE id = ?;"""
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
-                return MovieModel(t=result)
+                movie = MovieModel(t=result)
+                logging.debug(
+                    f'[db] Get movie id {id}: {movie.title}, {movie.release_date}')
+                return movie
             else:
+                logging.error(f'[db] Get movie id {id}: None')
                 return None
 
     @staticmethod
@@ -392,11 +409,13 @@ class LocalProvider:
             sql = """SELECT * FROM movies;"""
             result = connection.cursor().execute(sql).fetchall()
             if result:
+                logging.debug(f'[db] Get all movies: {result}')
                 movies = []
                 for movie in result:
                     movies.append(MovieModel(t=movie))
                 return movies
             else:
+                logging.debug(f'[db] Get all movies: {[]}')
                 return []
 
     @staticmethod
@@ -416,6 +435,8 @@ class LocalProvider:
             sql = """UPDATE movies SET watched = ? WHERE id = ?"""
             result = connection.cursor().execute(sql, (watched, id,))
             connection.commit()
+            logging.debug(
+                f'[db] Mark movie {id} watched {watched}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -430,18 +451,22 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
+        logging.debug(f'[db] Movie {id}, delete requested')
         movie = LocalProvider.get_movie_by_id(id)
 
         if movie.backdrop_path.startswith('file'):  # type: ignore
             os.remove(movie.backdrop_path[7:])      # type: ignore
+            logging.debug(f'[db] Movie {id}, deleted backdrop')
 
         if movie.poster_path.startswith('file'):    # type: ignore
             os.remove(movie.poster_path[7:])        # type: ignore
+            logging.debug(f'[db] Movie {id}, deleted poster')
 
         with sqlite3.connect(shared.db) as connection:
             sql = """DELETE FROM movies WHERE id = ?"""
             result = connection.cursor().execute(sql, (id,))
             connection.commit()
+            logging.debug(f'[db] Movie {id}, deleted: {result.lastrowid}')
 
         return result.lastrowid
 
@@ -467,8 +492,11 @@ class LocalProvider:
 
             results = connection.cursor().execute(sql, (show,)).fetchall()
             if results:
+                logging.debug(f'[db] Get all seasons: {results}')
                 for result in results:
                     seasons.append(SeasonModel(t=result))
+            else:
+                logging.debug(f'[db] Get all seasons: {[]}')
 
             return seasons
 
@@ -496,8 +524,13 @@ class LocalProvider:
 
             results = connection.cursor().execute(sql, (show, season_num,)).fetchall()
             if results:
+                logging.debug(
+                    f'[db] Get show {show} season {season_num}: {results}')
                 for result in results:
                     episodes.append(EpisodeModel(t=result))
+            else:
+                logging.debug(
+                    f'[db] Get show {show} season {season_num}: {[]}')
 
             return episodes
 
@@ -517,8 +550,12 @@ class LocalProvider:
             sql = 'SELECT * FROM series WHERE id=?;'
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
-                return SeriesModel(t=result)
+                serie = SeriesModel(t=result)
+                logging.debug(
+                    f'[db] Get tv serie id {id}: {serie.title}')
+                return serie
             else:
+                logging.error(f'[db] Get tv serie id {id}: None')
                 return None
 
     @staticmethod
@@ -537,11 +574,13 @@ class LocalProvider:
             sql = """SELECT * FROM series;"""
             result = connection.cursor().execute(sql).fetchall()
             if result:
+                logging.debug(f'[db] Get all tv series: {result}')
                 series = []
                 for serie in result:
                     series.append(SeriesModel(t=serie))
                 return series
             else:
+                logging.debug(f'[db] Get all tv series: {[]}')
                 return []
 
     @staticmethod
@@ -563,6 +602,8 @@ class LocalProvider:
             sql = 'UPDATE series SET watched = ? WHERE id = ?;'
             result = connection.cursor().execute(sql, (watched, id,))
             connection.commit()
+            logging.debug(
+                f'[db] Mark tv serie {id} watched {watched}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -577,16 +618,21 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
+        logging.debug(f'[db] TV series {id}, delete requested')
         series = LocalProvider.get_series_by_id(id)
 
         if series.backdrop_path.startswith('file'):   # type: ignore
             os.remove(series.backdrop_path[7:])       # type: ignore
+            logging.debug(f'[db] TV series {id}, deleted backdrop')
 
         if series.poster_path.startswith('file'):     # type: ignore
             os.remove(series.poster_path[7:])         # type: ignore
+            logging.debug(f'[db] TV series {id}, deleted poster')
 
         if (shared.series_dir/id).is_dir():
             shutil.rmtree(shared.series_dir / id)
+            logging.debug(
+                f'[db] TV series {id}, deleted folder {shared.series_dir / id}')
 
         with sqlite3.connect(shared.db) as connection:
             connection.cursor().execute('PRAGMA foreign_keys = ON;')
@@ -594,6 +640,8 @@ class LocalProvider:
             sql = """DELETE FROM series WHERE id = ?"""
             result = connection.cursor().execute(sql, (id,))
             connection.commit()
+            logging.debug(f'[db] TV series {id}, deleted: {result.lastrowid}')
+
         return result.lastrowid
 
     @staticmethod
@@ -613,6 +661,7 @@ class LocalProvider:
             languages = []
             for language in result:
                 languages.append(LanguageModel(t=language))
+            logging.debug(f'[db] Get all languages: {result}')
             return languages
 
     @staticmethod
@@ -715,8 +764,12 @@ class LocalProvider:
             sql = 'SELECT * FROM languages WHERE name = ?;'
             result = connection.cursor().execute(sql, (name,)).fetchone()
             if result:
-                return LanguageModel(t=result)
+                language = LanguageModel(t=result)
+                logging.debug(
+                    f'[db] Get language by name {name}: {language.iso_name}')
+                return language
             else:
+                logging.error(f'[db] Get language by name {name}: {None}')
                 return None
 
     @staticmethod
@@ -772,6 +825,7 @@ class LocalProvider:
                 old.id,
             ))
             connection.commit()
+            logging.debug(f'[db] Update movie {old.id}: {(new.add_date, new.backdrop_path, new.budget, ",".join(new.genres), new.manual, new.original_language.iso_name, new.original_title, new.overview, new.poster_path, new.release_date, new.revenue, new.runtime, new.status, new.tagline, new.title, new.watched, old.id)}')
         return result.lastrowid
 
     @staticmethod
@@ -790,6 +844,8 @@ class LocalProvider:
             sql = """UPDATE episodes SET watched = ? WHERE id = ?"""
             result = connection.cursor().execute(sql, (watched, id,))
             connection.commit()
+            logging.debug(
+                f'[db] Mark episode {id} watched {watched}: {result.lastrowid}')
         return result.lastrowid
 
     @staticmethod
@@ -808,6 +864,9 @@ class LocalProvider:
             sql = """SELECT * FROM episodes WHERE id = ?;"""
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
-                return EpisodeModel(t=result)
+                episode = EpisodeModel(t=result)
+                logging.debug(f'[db] Get episode id {id}: {episode.name}')
+                return episode
             else:
+                logging.error(f'[db] Get episode id {id}: None')
                 return None
