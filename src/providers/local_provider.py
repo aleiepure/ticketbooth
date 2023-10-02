@@ -865,7 +865,7 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
                 episode = EpisodeModel(t=result)
-                logging.debug(f'[db] Get episode id {id}: {episode.name}')
+                logging.debug(f'[db] Get episode id {id}: {episode.title}')
                 return episode
             else:
                 logging.error(f'[db] Get episode id {id}: None')

@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import glob
+import logging
 import os
 from gettext import gettext as _
 from gettext import pgettext as C_
@@ -35,16 +36,27 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
     def __init__(self):
         super().__init__()
-        self.language_change_handler = self._language_comborow.connect('notify::selected', self._on_language_changed)
-        self._update_freq_comborow.connect('notify::selected', self._on_freq_changed)
+        self.language_change_handler = self._language_comborow.connect(
+            'notify::selected', self._on_language_changed)
+        self._update_freq_comborow.connect(
+            'notify::selected', self._on_freq_changed)
 
-        shared.schema.bind('onboard-complete', self._offline_group, 'sensitive', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('onboard-complete', self._download_group, 'visible', Gio.SettingsBindFlags.INVERT_BOOLEAN)
-        # shared.schema.bind('onboard-complete', self._language_comborow, 'visible', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('onboard-complete', self._tmdb_group, 'sensitive', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('onboard-complete', self._offline_group,
+                           'sensitive', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('onboard-complete', self._download_group,
+                           'visible', Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        shared.schema.bind('onboard-complete', self._tmdb_group,
+                           'sensitive', Gio.SettingsBindFlags.DEFAULT)
 
-        shared.schema.bind('offline-mode', self._offline_switch, 'active', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('exit-remove-cache', self._exit_cache_row, 'active', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('offline-mode', self._offline_switch,
+                           'active', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('exit-remove-cache', self._exit_cache_row,
+                           'active', Gio.SettingsBindFlags.DEFAULT)
+
+        self._offline_switch.connect('notify::active', lambda pspec, user_data: logging.debug(
+            f'Toggled offline mode: {self._offline_switch.get_active()}'))
+        self._exit_cache_row.connect('notify::active', lambda pspec, user_data: logging.debug(
+            f'Toggled clear cache on exit: {self._offline_switch.get_active()}'))
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -84,7 +96,8 @@ class PreferencesWindow(Adw.PreferencesWindow):
         for language in languages:
             self._language_model.append(language.name)
 
-        self._language_comborow.set_selected(self._get_selected_language_index(shared.schema.get_string('tmdb-lang')))
+        self._language_comborow.set_selected(
+            self._get_selected_language_index(shared.schema.get_string('tmdb-lang')))
         self._language_comborow.handler_unblock(self.language_change_handler)
 
     def _on_language_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
@@ -100,8 +113,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        language = self._get_selected_language(self._language_comborow.get_selected_item().get_string())
+        language = self._get_selected_language(
+            self._language_comborow.get_selected_item().get_string())
         shared.schema.set_string('tmdb-lang', language)
+        logging.debug(f'Changed TMDB language to {language}')
 
     def _on_freq_changed(self, pspec, user_data: object | None) -> None:
         """
@@ -120,12 +135,16 @@ class PreferencesWindow(Adw.PreferencesWindow):
         match freq:
             case 0:
                 shared.schema.set_string('update-freq', 'never')
+                logging.debug(f'Changed update frequency to never')
             case 1:
                 shared.schema.set_string('update-freq', 'day')
+                logging.debug(f'Changed update frequency to day')
             case 2:
                 shared.schema.set_string('update-freq', 'week')
+                logging.debug(f'Changed update frequency to week')
             case 3:
                 shared.schema.set_string('update-freq', 'month')
+                logging.debug(f'Changed update frequency to month')
 
     def _get_selected_language_index(self, iso_name: str) -> int:
         """
@@ -171,6 +190,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
+        logging.info('Attempting first setup completetion')
         Gio.NetworkMonitor.get_default().can_reach_async(
             Gio.NetworkAddress.parse_uri('https://api.themoviedb.org', 80),
             None,
@@ -199,6 +219,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             network = None
 
         if network:
+            logging.error('Network ok, start download')
             languages = tmdb.get_languages()
             for lang in languages:
                 local.add_language(LanguageModel(lang))
@@ -208,10 +229,13 @@ class PreferencesWindow(Adw.PreferencesWindow):
             shared.schema.set_boolean('onboard-complete', True)
 
             self._setup_languages()
-            Gio.NetworkMonitor.get_default().connect('network-changed', self._on_network_changed)
+            Gio.NetworkMonitor.get_default().connect(
+                'network-changed', self._on_network_changed)
         else:
+            logging.error('No network, aborting first setup completion')
             dialog = Adw.MessageDialog.new(self,
-                                           C_('message dialog heading', 'No Network'),
+                                           C_('message dialog heading',
+                                              'No Network'),
                                            C_('message dialog body', 'Connect to the Internet to complete the setup.'))
             dialog.add_response('ok', C_('message dialog action', 'OK'))
             dialog.present()
@@ -229,7 +253,8 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        shared.schema.set_boolean('offline-mode', GLib.Variant.new_boolean(not network_available))
+        shared.schema.set_boolean(
+            'offline-mode', GLib.Variant.new_boolean(not network_available))
 
     @Gtk.Template.Callback('_on_clear_cache_activate')
     def _on_clear_cache_activate(self, user_data: object | None) -> None:
@@ -244,10 +269,13 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
+        logging.debug('Show cache clear dialog')
+        builder = Gtk.Builder.new_from_resource(
+            shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
         _clear_cache_dialog = builder.get_object('_clear_cache_dialog')
         _clear_cache_dialog.set_transient_for(self)
-        _clear_cache_dialog.choose(None, self._on_cache_message_dialog_choose, None)
+        _clear_cache_dialog.choose(
+            None, self._on_cache_message_dialog_choose, None)
 
     def _on_cache_message_dialog_choose(self,
                                         source: GObject.Object | None,
@@ -268,10 +296,16 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         result = Adw.MessageDialog.choose_finish(source, result)
         if result == 'cache_cancel':
+            logging.debug('Cache clear dialog: cancel, aborting')
             return
 
-        BackgroundQueue.add(BackgroundActivity(
-            ActivityType.REMOVE, C_('Background activity title', 'Clear cache'), self._clear_cache))
+        logging.debug('Cache clear dialog: sel, aborting')
+        BackgroundQueue.add(
+            activity=BackgroundActivity(
+                activity_type=ActivityType.REMOVE,
+                title=C_('Background activity title', 'Clear cache'),
+                task_function=self._clear_cache),
+            on_done=self._on_cache_clear_done)
 
     def _clear_cache(self, activity: BackgroundActivity) -> None:
         """
@@ -284,10 +318,17 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
+        logging.info('Deleting cache')
         files = glob.glob('*.jpg', root_dir=shared.cache_dir)
         for file in files:
             os.remove(shared.cache_dir / file)
+            logging.debug(f'Deleted {shared.cache_dir / file}')
 
+    def _on_cache_clear_done(self,
+                             source: GObject.Object,
+                             result: Gio.AsyncResult,
+                             cancellable: Gio.Cancellable,
+                             activity: BackgroundActivity):
         self._update_occupied_space()
         activity.end()
 
@@ -304,7 +345,9 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
-        builder = Gtk.Builder.new_from_resource(shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
+        logging.debug('Show data clear dialog')
+        builder = Gtk.Builder.new_from_resource(
+            shared.PREFIX + '/ui/dialogs/message_dialogs.ui')
         _clear_data_dialog = builder.get_object('_clear_data_dialog')
         _movies_row = builder.get_object('_movies_row')
         _series_row = builder.get_object('_series_row')
@@ -312,11 +355,14 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self._series_checkbtn = builder.get_object('_series_checkbtn')
 
         # TRANSLATORS: {number} is the number of titles
-        _movies_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_movies())))
-        _series_row.set_subtitle(_('{number} Titles').format(number=len(local.get_all_series())))
+        _movies_row.set_subtitle(_('{number} Titles').format(
+            number=len(local.get_all_movies())))
+        _series_row.set_subtitle(_('{number} Titles').format(
+            number=len(local.get_all_series())))
 
         _clear_data_dialog.set_transient_for(self)
-        _clear_data_dialog.choose(None, self._on_data_message_dialog_choose, None)
+        _clear_data_dialog.choose(
+            None, self._on_data_message_dialog_choose, None)
 
     def _on_data_message_dialog_choose(self,
                                        source: GObject.Object | None,
@@ -328,7 +374,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         Args:
             source (Gtk.Widget): object that started the async operation
-            result (Gio.AsyncResult): a Gio.AsyncResult
+            result (Gio.AsyncResult): a Gio.AsyncResultresult = Adw.MessageDialog.choose_finish(source, result)
+        if result == 'data_cancel':
+            return
+
             user_data (object or None): additional data passed to the callback
 
         Returns:
@@ -337,17 +386,29 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         result = Adw.MessageDialog.choose_finish(source, result)
         if result == 'data_cancel':
+            logging.debug('Data clear dialog: cancel, aborting')
             return
 
         # Movies
         if self._movies_checkbtn.get_active():
-            BackgroundQueue.add(BackgroundActivity(
-                ActivityType.REMOVE, C_('Background activity title', 'Delete all movies'), self._clear_movies))
+            logging.debug('Data clear dialog: movies selected')
+            BackgroundQueue.add(
+                activity=BackgroundActivity(
+                    activity_type=ActivityType.REMOVE,
+                    title=C_('Background activity title', 'Delete all movies'),
+                    task_function=self._clear_movies),
+                on_done=self._on_data_clear_done)
 
         # TV Series
         if self._series_checkbtn.get_active():
-            BackgroundQueue.add(BackgroundActivity(
-                ActivityType.REMOVE, C_('Background activity title', 'Delete all TV Series'), self._clear_series))
+            logging.debug('Data clear dialog: tv series selected')
+            BackgroundQueue.add(
+                activity=BackgroundActivity(
+                    activity_type=ActivityType.REMOVE,
+                    title=C_('Background activity title',
+                             'Delete all TV Series'),
+                    task_function=self._clear_series),
+                on_done=self._on_data_clear_done)
 
     def _clear_movies(self, activity: BackgroundActivity) -> None:
         """
@@ -360,8 +421,17 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
+        logging.info('Deleting all movies')
         for movie in local.get_all_movies():    # type: ignore
             local.delete_movie(movie.id)
+            logging.debug(f'Deleted ({movie.id}) {movie.title}')
+
+    def _on_data_clear_done(self,
+                            source: GObject.Object,
+                            result: Gio.AsyncResult,
+                            cancellable: Gio.Cancellable,
+                            activity: BackgroundActivity):
+        """Callback to complete async activity"""
 
         self._update_occupied_space()
         self.get_transient_for().activate_action('win.refresh', None)
@@ -378,12 +448,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
             None
         """
 
+        logging.info('Deleting all TV series')
         for serie in local.get_all_series():    # type: ignore
             local.delete_series(serie.id)
-
-        self._update_occupied_space()
-        self.get_transient_for().activate_action('win.refresh', None)
-        activity.end()
+            logging.debug(f'Deleted ({serie.id}) {serie.title}')
 
     def _calculate_space(self, directory: Path) -> float:
         """
@@ -416,5 +484,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             _('Ticket Booth is currently using {total_space:.2f} MB. Use the options below to free some space.').format(total_space=cache_space+data_space))
 
         # TRANSLATORS: {space:.2f} is the occupied space
-        self._cache_row.set_subtitle(_('{space:.2f} MB occupied').format(space=cache_space))
-        self._data_row.set_subtitle(_('{space:.2f} MB occupied').format(space=data_space))
+        self._cache_row.set_subtitle(
+            _('{space:.2f} MB occupied').format(space=cache_space))
+        self._data_row.set_subtitle(
+            _('{space:.2f} MB occupied').format(space=data_space))

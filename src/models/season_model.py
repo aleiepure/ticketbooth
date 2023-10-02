@@ -86,7 +86,8 @@ class SeasonModel(GObject.GObject):
             self.title = d['name']
             self.show_id = show_id
 
-            self.episodes = self._parse_episodes(tmdb.TMDBProvider.get_season_episodes(show_id, self.number))
+            self.episodes = self._parse_episodes(
+                tmdb.TMDBProvider.get_season_episodes(show_id, self.number))
         else:
             self.episodes_number = t[0]  # type: ignore
             self.id = t[1]  # type: ignore
@@ -99,7 +100,8 @@ class SeasonModel(GObject.GObject):
             if len(t) == 8:  # type: ignore
                 self.episodes = t[7]    # type: ignore
             else:
-                self.episodes = local.LocalProvider.get_season_episodes(self.show_id, self.number)  # type: ignore
+                self.episodes = local.LocalProvider.get_season_episodes(
+                    self.show_id, self.number)  # type: ignore
 
     def _download_poster(self, show_id: int, path: str) -> str:
         """
@@ -118,18 +120,22 @@ class SeasonModel(GObject.GObject):
         if not os.path.exists(f'{shared.series_dir}/{show_id}/{self.number}'):
             os.makedirs(f'{shared.series_dir}/{show_id}/{self.number}')
 
-        files = glob.glob(f'{path[1:-4]}.jpg', root_dir=f'{shared.series_dir}/{show_id}/{self.number}')
+        files = glob.glob(
+            f'{path[1:-4]}.jpg', root_dir=f'{shared.series_dir}/{show_id}/{self.number}')
         if files:
             return f'file://{shared.series_dir}/{show_id}/{self.number}/{files[0]}'
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
-        r = requests.get(url)
-        if r.status_code == 200:
-            with open(f'{shared.series_dir}/{show_id}/{self.number}{path}', 'wb') as f:
-                f.write(r.content)
-            return f'file://{shared.series_dir}/{show_id}/{self.number}{path}'
-
-        return f'resource://{shared.PREFIX}/blank_poster.jpg'
+        try:
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f'{shared.series_dir}/{show_id}/{self.number}{path}', 'wb') as f:
+                    f.write(r.content)
+                return f'file://{shared.series_dir}/{show_id}/{self.number}{path}'
+            else:
+                return f'resource://{shared.PREFIX}/blank_poster.jpg'
+        except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
+            return f'resource://{shared.PREFIX}/blank_poster.jpg'
 
     def _parse_episodes(self, episodes: dict) -> List[EpisodeModel]:
         """

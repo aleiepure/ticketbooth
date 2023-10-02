@@ -63,6 +63,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks" alias="watchlist-symbolic.svg">../data/icons/symbolic/watchlist-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="right-symbolic.svg">../data/icons/symbolic/right-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="update-symbolic.svg">../data/icons/symbolic/update-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="warning-symbolic.svg">../data/icons/symbolic/warning-symbolic.svg</file>
   </gresource>
 
 </gresources>

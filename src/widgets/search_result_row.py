@@ -83,10 +83,9 @@ class SearchResultRow(Gtk.ListBoxRow):
 
         self._poster_spinner.set_visible(True)
         self._poster_picture.set_file(self._get_poster_file())
+        self._check_in_db()
 
-        GLib.Thread.new(None, self._check_in_db_thread, None)
-
-    def _check_in_db_thread(self, thread_data: object | None) -> None:
+    def _check_in_db(self) -> None:
         """
         Checks if the content is already in db and disables the 'add' button.
 
@@ -159,8 +158,13 @@ class SearchResultRow(Gtk.ListBoxRow):
 
         self._add_spinner.set_visible(True)
         self._add_btn.set_sensitive(False)
-        BackgroundQueue.add(BackgroundActivity(
-            ActivityType.ADD, C_('Background activity title', 'Add {title}').format(title=self.title), self._add_content_to_db))
+        BackgroundQueue.add(
+            activity=BackgroundActivity(
+                activity_type=ActivityType.ADD,
+                title=C_('Background activity title',
+                         'Add {title}').format(title=self.title),
+                task_function=self._add_content_to_db),
+            on_done=self._on_add_done)
 
     def _add_content_to_db(self, activity: BackgroundActivity) -> None:
         """
@@ -172,8 +176,19 @@ class SearchResultRow(Gtk.ListBoxRow):
         Returns:
             None
         """
+        try:
+            local.add_content(id=self.tmdb_id, media_type=self.media_type)
+        except ConnectionError:
+            activity.set_error(True)
 
-        local.add_content(id=self.tmdb_id, media_type=self.media_type)
+    def _on_add_done(self,
+                     source: GObject.Object,
+                     result: Gio.AsyncResult,
+                     cancellable: Gio.Cancellable,
+                     activity: BackgroundActivity):
+        """Callback to complete async activity"""
+
+        activity.activity_finish(result, self)
         self._add_btn.set_label(_('Already in your watchlist'))
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)

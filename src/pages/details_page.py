@@ -2,13 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import logging
 from datetime import date
 from gettext import gettext as _
 from gettext import ngettext
 from gettext import pgettext as C_
 from typing import List, Tuple
 
-from gi.repository import Adw, Gio, GLib, GObject, Gtk
+from gi.repository import Adw, Gio, GObject, Gtk
 from PIL import Image, ImageStat
 
 from .. import shared  # type: ignore
@@ -83,10 +84,12 @@ class DetailsView(Adw.NavigationPage):
             self.content = local.get_movie_by_id(content.id)
         else:
             self.content = local.get_series_by_id(content.id)
+        logging.info(
+            f'Loading info [{"movie" if type(content) is MovieModel else "TV Serie"}] {self.content.title}')
 
         self.set_title(self.content.title)  # type: ignore
         self._view_stack.set_visible_child_name('loading')
-        GLib.Thread.new(None, self._populate_data)
+        self._populate_data()
 
     def _populate_data(self) -> None:
         """
@@ -460,6 +463,9 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
+        logging.info(
+            f'Editing [{"movie" if type(self.content) is MovieModel else "TV Serie"}] {self.content.title}')
+
         dialog = AddManualDialog(self.get_ancestor(
             Gtk.Window), True, self.content)
         dialog.connect('edit-saved', self._on_edit_saved)
@@ -495,8 +501,20 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
-        BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
-            ActivityType.UPDATE, _('Update {title}').format(title=self.content.title), self._update))  # type: ignore
+
+        self._view_stack.set_visible_child_name('loading')
+
+        # TRANSLATORS: {title} is the showed content's title
+        self._loading_lbl.set_label(_('Updating {title}').format(
+            title=self.content.title))  # type: ignore
+
+        BackgroundQueue.add(
+            activity=BackgroundActivity(
+                activity_type=ActivityType.UPDATE,
+                # TRANSLATORS: {title} is the content's title
+                title=_('Update {title}').format(title=self.content.title),
+                task_function=self._update),
+            on_done=self._on_update_done)
 
     def _update(self, activity: BackgroundActivity) -> None:
         """
@@ -509,24 +527,26 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
-        self._view_stack.set_visible_child_name('loading')
-        # TRANSLATORS: {title} is the showed content's title
-        self._loading_lbl.set_label(_('Updating {title}').format(
-            title=self.content.title))  # type: ignore
-
         if type(self.content) is MovieModel:
-            new_content = MovieModel(tmdb.get_movie(self.content.id))
-            local.update_movie(old=self.content, new=new_content)
+            self.new_content = MovieModel(tmdb.get_movie(self.content.id))
+            local.update_movie(old=self.content, new=self.new_content)
         else:
             local.delete_series(self.content.id)  # type: ignore
-            new_content = SeriesModel(tmdb.get_serie(
+            self.new_content = SeriesModel(tmdb.get_serie(
                 self.content.id))  # type: ignore
-            local.add_series(serie=new_content)
+            local.add_series(serie=self.new_content)
+
+    def _on_update_done(self,
+                        source: GObject.Object,
+                        result: Gio.AsyncResult,
+                        cancellable: Gio.Cancellable,
+                        activity: BackgroundActivity):
+        """Callback to complete async activity"""
 
         root_page = self.get_ancestor(
             Adw.NavigationView).get_previous_page(self)
         self.get_ancestor(Adw.NavigationView).replace(
-            [root_page, DetailsView(new_content)])
+            [root_page, DetailsView(self.new_content)])
         self._loading_lbl.set_label(_('Loading Metadata…'))
         self._view_stack.set_visible_child_name('filled')
         activity.end()
@@ -544,6 +564,7 @@ class DetailsView(Adw.NavigationPage):
             None
         """
 
+        logging.debug('Show delete dialog')
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),  # TRANSLATORS: {title} is the content's title
                                        C_('message dialog heading', 'Delete {title}?').format(
                                            title=self.content.title),
@@ -570,11 +591,18 @@ class DetailsView(Adw.NavigationPage):
 
         result = Adw.MessageDialog.choose_finish(source, result)
         if result == 'cancel':
+            logging.debug('Delete dialog: cancel, aborting')
             return
 
         self.get_ancestor(Adw.NavigationView).pop()
-        BackgroundQueue.add(BackgroundActivity(ActivityType.REMOVE, _(  # TRANSLATORS: {title} is the content's title
-            'Delete {title}').format(title=self.content.title), self._delete))  # type: ignore
+        logging.debug(f'Delete dialog: confim, delete {self.content.title}')
+        BackgroundQueue.add(
+            activity=BackgroundActivity(
+                activity_type=ActivityType.REMOVE,
+                # TRANSLATORS: {title} is the content's title
+                title=_('Delete {title}').format(title=self.content.title),
+                task_function=self._delete),
+            on_done=self._on_delete_done)
 
     def _delete(self, activity: BackgroundActivity) -> None:
         """
@@ -591,6 +619,13 @@ class DetailsView(Adw.NavigationPage):
             local.delete_movie(self.content.id)
         else:
             local.delete_series(self.content.id)  # type: ignore
+
+    def _on_delete_done(self,
+                        source: GObject.Object,
+                        result: Gio.AsyncResult,
+                        cancellable: Gio.Cancellable,
+                        activity: BackgroundActivity):
+        """Callback to complete async activity"""
 
         self.emit('deleted')
         activity.end()

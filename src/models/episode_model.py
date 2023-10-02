@@ -86,21 +86,27 @@ class EpisodeModel(GObject.GObject):
             return f'resource://{shared.PREFIX}/blank_still.jpg'
 
         if not os.path.exists(f'{shared.series_dir}/{self.show_id}/{self.season_number}'):
-            os.makedirs(f'{shared.series_dir}/{self.show_id}/{self.season_number}')
+            os.makedirs(
+                f'{shared.series_dir}/{self.show_id}/{self.season_number}')
 
-        files = glob.glob(f'{path[1:-4]}.jpg', root_dir=f'{shared.series_dir}/{self.show_id}/{self.season_number}')
+        files = glob.glob(
+            f'{path[1:-4]}.jpg', root_dir=f'{shared.series_dir}/{self.show_id}/{self.season_number}')
         if files:
             return f'file://{shared.series_dir}/{self.show_id}/{self.season_number}/{files[0]}'
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
-        r = requests.get(url)
-        if r.status_code == 200:
-            with open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'wb') as f:
-                f.write(r.content)
+        try:
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'wb') as f:
+                    f.write(r.content)
 
-            with Image.open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}') as img:
-                img = img.resize((500, 281))
-                img.save(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'JPEG')
-            return f'file://{shared.series_dir}/{self.show_id}/{self.season_number}{path}'
-
-        return f'resource://{shared.PREFIX}/blank_still.jpg'
+                with Image.open(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}') as img:
+                    img = img.resize((500, 281))
+                    img.save(
+                        f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}', 'JPEG')
+                return f'file://{shared.series_dir}/{self.show_id}/{self.season_number}{path}'
+            else:
+                return f'resource://{shared.PREFIX}/blank_still.jpg'
+        except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
+            return f'resource://{shared.PREFIX}/blank_still.jpg'

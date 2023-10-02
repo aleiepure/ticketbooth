@@ -21,6 +21,14 @@
     border-radius: 6px;
 }
 
+.progress_complete progress {
+	background-color: @success_color;
+}
+
+.progress_error progress {
+    background-color: @error_color;
+}
+
 /* Theme Switcher
  * Modified from https://gitlab.gnome.org/tijder/blueprintgtk
  * Original header below

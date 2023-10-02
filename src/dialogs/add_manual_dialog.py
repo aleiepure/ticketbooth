@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import logging
 import os
 import shutil
 from datetime import date, datetime
@@ -10,7 +11,7 @@ from gettext import pgettext as C_
 from typing import List
 from urllib.parse import unquote
 
-from gi.repository import Adw, GLib, GObject, Gtk
+from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
@@ -83,10 +84,13 @@ class AddManualDialog(Adw.Window):
         self.edit_mode = edit_mode
         self._content = content
 
+        logging.info(f'Edit mode: {self.edit_mode}')
         if edit_mode and type(self._content) is MovieModel:
             self.set_title(_('Edit Movie'))
+            logging.debug(f'Editing [Movie] {self._content.title}')
         elif edit_mode and type(self._content) is SeriesModel:
             self.set_title(_('Edit TV Series'))
+            logging.debug(f'Editing [TV Series] {self._content.title}')
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -104,11 +108,13 @@ class AddManualDialog(Adw.Window):
         self._overview_text.remove_css_class('view')
 
         languages = local.get_all_languages()
-        languages.insert(0, languages.pop(len(languages)-6))    # move 'no language' to 1st place
+        # move 'no language' to 1st place
+        languages.insert(0, languages.pop(len(languages)-6))
         for language in languages:
             self._language_model.append(language.name)
 
-        self._poster.set_blank_image(f'resource://{shared.PREFIX}/blank_poster.jpg')
+        self._poster.set_blank_image(
+            f'resource://{shared.PREFIX}/blank_poster.jpg')
 
         if not self._content:
             if shared.schema.get_string('win-tab') == 'movies':
@@ -116,14 +122,16 @@ class AddManualDialog(Adw.Window):
             else:
                 self._series_btn.set_active(True)
 
-            self._release_date_menu_btn.set_label(self._calendar.get_date().format('%x'))
+            self._release_date_menu_btn.set_label(
+                self._calendar.get_date().format('%x'))
             return
 
         # Both Movies and TV Series
         self._poster.set_image(self._content.poster_path)
         self._title_entry.set_text(self._content.title)
         self._title_entry.grab_focus()
-        self._release_date_menu_btn.set_label(date.fromisoformat(self._content.release_date).strftime('%x'))
+        self._release_date_menu_btn.set_label(
+            date.fromisoformat(self._content.release_date).strftime('%x'))
         self._calendar.select_day(GLib.DateTime.new_from_iso8601(
             datetime.fromisoformat(self._content.release_date).isoformat()+'Z'))
         self._genres_entry.set_text(', '.join(self._content.genres))
@@ -264,7 +272,8 @@ class AddManualDialog(Adw.Window):
             None
         """
 
-        self._release_date_menu_btn.set_label(self._calendar.get_date().format('%x'))
+        self._release_date_menu_btn.set_label(
+            self._calendar.get_date().format('%x'))
 
     @Gtk.Template.Callback('_on_season_add_btn_clicked')
     def _on_season_add_btn_clicked(self, user_data: object | None) -> None:
@@ -280,7 +289,9 @@ class AddManualDialog(Adw.Window):
         """
 
         # TRANSLATORS: {num} is the season number
-        dialog = EditSeasonDialog(self, title=_('Season {num}').format(num=len(self.seasons)+1))
+        logging.debug('Edit season dialog open')
+        dialog = EditSeasonDialog(self, title=_(
+            'Season {num}').format(num=len(self.seasons)+1))
         dialog.connect('edit-saved', self._on_edit_saved)
         dialog.present()
 
@@ -299,6 +310,7 @@ class AddManualDialog(Adw.Window):
             None
         """
 
+        logging.info(f'Updated {title}, {poster_uri}, {episodes}')
         self.seasons.append((title, poster_uri, episodes))
         self.update_seasons_ui()
 
@@ -316,11 +328,17 @@ class AddManualDialog(Adw.Window):
         """
 
         if not self.edit_mode:
-            BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
-                ActivityType.ADD, C_('Background activity title', 'Add {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+            BackgroundQueue.add(
+                activity=BackgroundActivity(  # TRANSLATORS: {title} is the content's title
+                    activity_type=ActivityType.ADD,
+                    title=C_('Background activity title', 'Add {title}').format(title=self._title_entry.get_text()), task_function=self._add_content_to_db),
+                on_done=self._on_add_done)
         else:
-            BackgroundQueue.add(BackgroundActivity(  # TRANSLATORS: {title} is the content's title
-                ActivityType.UPDATE, C_('Background activity title', 'Update {title}').format(title=self._title_entry.get_text()), self._add_content_to_db))
+            BackgroundQueue.add(
+                activity=BackgroundActivity(  # TRANSLATORS: {title} is the content's title
+                    activity_type=ActivityType.UPDATE,
+                    title=C_('Background activity title', 'Update {title}').format(title=self._title_entry.get_text()), task_function=self._add_content_to_db),
+                on_done=self._on_add_done)
 
         self.close()
 
@@ -345,7 +363,15 @@ class AddManualDialog(Adw.Window):
         else:
             self._save_series(poster_uri)
 
-        self.get_ancestor(Adw.Window).get_transient_for().activate_action('win.refresh', None)
+    def _on_add_done(self,
+                     source: GObject.Object,
+                     result: Gio.AsyncResult,
+                     cancellable: Gio.Cancellable,
+                     activity: BackgroundActivity):
+        """Callback to complete async activity"""
+
+        self.get_ancestor(Adw.Window).get_transient_for(
+        ).activate_action('win.refresh', None)
         activity.end()
 
     def _save_movie(self, poster_uri: str) -> None:
@@ -365,24 +391,24 @@ class AddManualDialog(Adw.Window):
         overview = buffer.get_text(start_iter, end_iter, False)
 
         movie = MovieModel(t=(
-            datetime.now(),                                                             # add date
-            '',                                                                         # background
-            int(self._budget_spinrow.get_value()),                                      # budget
-            ''.join(self._genres_entry.get_text().split()),                             # genres
-            local.get_next_manual_movie() if not self.edit_mode else self._content.id,  # id        # type: ignore
-            True,                                                                       # manual
+            datetime.now(),  # add date
+            '',  # background
+            int(self._budget_spinrow.get_value()),  # budget
+            ''.join(self._genres_entry.get_text().split()),  # genres
+            local.get_next_manual_movie() if not self.edit_mode else self._content.id,  # id
+            True,   # manual
             local.get_language_by_name(self._original_language_comborow.get_selected_item(
-            ).get_string()).iso_name,                                    # type: ignore # original language
-            self._original_title_entry.get_text(),                                      # original title
-            overview,                                                                   # overview
-            poster_uri,                                                                 # poster
-            self._calendar.get_date().format('%Y-%m-%d'),                               # release date
-            int(self._revenue_spinrow.get_value()),                                     # revenue
-            int(self._runtime_spinrow.get_value()),                                     # runtime
-            self._status_entry.get_text(),                                              # status
-            self._tagline_entry.get_text(),                                             # tagline
-            self._title_entry.get_text(),                                               # title
-            False if not self.edit_mode else self._content.watched       # type: ignore # watched
+            ).get_string()).iso_name,  # original language
+            self._original_title_entry.get_text(),  # original title
+            overview,   # overview
+            poster_uri,  # poster
+            self._calendar.get_date().format('%Y-%m-%d'),   # release date
+            int(self._revenue_spinrow.get_value()),  # revenue
+            int(self._runtime_spinrow.get_value()),  # runtime
+            self._status_entry.get_text(),  # status
+            self._tagline_entry.get_text(),  # tagline
+            self._title_entry.get_text(),   # title
+            False if not self.edit_mode else self._content.watched  # watched
         ))
 
         if not self.edit_mode:
@@ -411,7 +437,8 @@ class AddManualDialog(Adw.Window):
 
             # Create folder to store the images, if needed
             if not os.path.exists(f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}'):
-                os.makedirs(f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}')
+                os.makedirs(
+                    f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}')
 
             # Copy the season poster
             poster_uri = self._copy_image_to_data(season[1],
@@ -442,7 +469,8 @@ class AddManualDialog(Adw.Window):
                     watched         # watched
                 )))
 
-            base_episode_id = self._increment_manual_id(base_episode_id, len(episodes)+1)
+            base_episode_id = self._increment_manual_id(
+                base_episode_id, len(episodes)+1)
             season_id = self._increment_manual_id(base_season_id, idx)
             season_number = idx+1
 
@@ -541,7 +569,8 @@ class AddManualDialog(Adw.Window):
 
         if src_uri.startswith('file'):
             extension = src_uri[src_uri.rindex('.'):]
-            shutil.copy2(src_uri[7:], f'{dest_folder}/{unquote(filename)}{extension}')
+            shutil.copy2(
+                src_uri[7:], f'{dest_folder}/{unquote(filename)}{extension}')
             return f'file://{dest_folder}/{unquote(filename)}{extension}'
         return src_uri
 
@@ -557,12 +586,14 @@ class AddManualDialog(Adw.Window):
         """
 
         # Empty PreferencesGroup
-        list_box = self._seasons_group.get_first_child().get_last_child().get_first_child()  # ugly workaround
+        list_box = self._seasons_group.get_first_child(
+        ).get_last_child().get_first_child()  # ugly workaround
         list_box.remove_all()
 
         # Fill PreferencesGroup
         for season in self.seasons:
-            self._seasons_group.add(SeasonExpander(season_title=season[0], poster_uri=season[1], episodes=season[2]))
+            self._seasons_group.add(SeasonExpander(
+                season_title=season[0], poster_uri=season[1], episodes=season[2]))
 
         self._enable_save_btn()
 

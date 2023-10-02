@@ -29,6 +29,7 @@ class BackgroundActivityRow(Adw.Bin):
     title = GObject.Property(type=str, default='')
     activity_type = GObject.Property(type=str, default='')
     completed = GObject.Property(type=bool, default=False)
+    has_error = GObject.Property(type=bool, default=False)
 
     _icon = Gtk.Template.Child()
     _progress_bar = Gtk.Template.Child()
@@ -61,7 +62,12 @@ class BackgroundActivityRow(Adw.Bin):
                     self._icon.set_from_icon_name('update')
             GObject.timeout_add(500, self._on_timeout, None)
         else:
-            self._icon.set_from_icon_name('check-plain')
+            if self.has_error:
+                self._progress_bar.add_css_class('progress_error')
+                self._icon.set_from_icon_name('warning')
+            else:
+                self._progress_bar.add_css_class('progress_complete')
+                self._icon.set_from_icon_name('check-plain')
             self._progress_bar.set_fraction(1)
 
     def _on_timeout(self, user_data: object | None) -> bool:
@@ -99,4 +105,5 @@ class BackgroundActivityRow(Adw.Bin):
         self._progress_bar.set_fraction(1)
 
         if self.get_ancestor(Adw.ApplicationWindow):
-            self.get_ancestor(Adw.ApplicationWindow).activate_action('win.update-backgroud-indicator')
+            self.get_ancestor(Adw.ApplicationWindow).activate_action(
+                'win.update-backgroud-indicator')

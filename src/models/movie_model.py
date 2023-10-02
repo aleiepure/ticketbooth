@@ -154,22 +154,25 @@ class MovieModel(GObject.GObject):
             return f'file://{shared.background_dir}/{files[0]}'
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
-        r = requests.get(url)
-        if r.status_code == 200:
-            with open(f'{shared.background_dir}{path}', 'wb') as f:
-                f.write(r.content)
+        try:
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f'{shared.background_dir}{path}', 'wb') as f:
+                    f.write(r.content)
 
-            with Image.open(f'{shared.background_dir}{path}') as image:
-                image = (
-                    image.convert('RGB')
-                    .filter(ImageFilter.GaussianBlur(20))
-                )
+                with Image.open(f'{shared.background_dir}{path}') as image:
+                    image = (
+                        image.convert('RGB')
+                        .filter(ImageFilter.GaussianBlur(20))
+                    )
 
-                image.save(f'{shared.background_dir}{path}', 'JPEG')
+                    image.save(f'{shared.background_dir}{path}', 'JPEG')
 
-            return f'file://{shared.background_dir}{path}'
-
-        return ''
+                return f'file://{shared.background_dir}{path}'
+            else:
+                return ''
+        except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
+            return ''
 
     def _download_poster(self, path: str) -> str:
         """
@@ -190,10 +193,13 @@ class MovieModel(GObject.GObject):
             return f'file://{shared.poster_dir}/{files[0]}'
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
-        r = requests.get(url)
-        if r.status_code == 200:
-            with open(f'{shared.poster_dir}{path}', 'wb') as f:
-                f.write(r.content)
-            return f'file://{shared.poster_dir}{path}'
-
-        return f'resource://{shared.PREFIX}/blank_poster.jpg'
+        try:
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f'{shared.poster_dir}{path}', 'wb') as f:
+                    f.write(r.content)
+                return f'file://{shared.poster_dir}{path}'
+            else:
+                return f'resource://{shared.PREFIX}/blank_poster.jpg'
+        except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
+            return f'resource://{shared.PREFIX}/blank_poster.jpg'

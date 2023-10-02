@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from gettext import gettext as _
 from gettext import pgettext as C_
 
-from gi.repository import Adw, Gio, GLib, GObject, Gtk
+from gi.repository import Adw, Gio, GObject, Gtk
 
 from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
@@ -128,18 +128,33 @@ class MainView(Adw.Bin):
             case 'day':
                 if last_check + timedelta(days=1) < datetime.now():
                     logging.info('Starting automatic update...')
-                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        C_('Background activity title', 'Automatic update'), self._update_content))
+                    BackgroundQueue.add(
+                        activity=BackgroundActivity(
+                            activity_type=ActivityType.UPDATE,
+                            title=C_('Background activity title',
+                                     'Automatic update'),
+                            task_function=self._update_content),
+                        on_done=self._on_update_done)
             case 'week':
                 if last_check + timedelta(days=7) < datetime.now():
                     logging.info('Starting automatic update...')
-                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        C_('Background activity title', 'Automatic update'), self._update_content))
+                    BackgroundQueue.add(
+                        activity=BackgroundActivity(
+                            activity_type=ActivityType.UPDATE,
+                            title=C_('Background activity title',
+                                     'Automatic update'),
+                            task_function=self._update_content),
+                        on_done=self._on_update_done)
             case 'month':
                 if last_check + timedelta(days=30) < datetime.now():
                     logging.info('Starting automatic update...')
-                    BackgroundQueue.add(BackgroundActivity(ActivityType.UPDATE,
-                                        C_('Background activity title', 'Automatic update'), self._update_content))
+                    BackgroundQueue.add(
+                        activity=BackgroundActivity(
+                            activity_type=ActivityType.UPDATE,
+                            title=C_('Background activity title',
+                                     'Automatic update'),
+                            task_function=self._update_content),
+                        on_done=self._on_update_done)
             case 'never':
                 return
 
@@ -173,6 +188,13 @@ class MainView(Adw.Bin):
                     local.delete_series(serie.id)
                     new_serie = SeriesModel(tmdb.get_serie(serie.id))
                     local.add_series(serie=new_serie)
+
+    def _on_update_done(self,
+                        source: GObject.Object,
+                        result: Gio.AsyncResult,
+                        cancellable: Gio.Cancellable,
+                        activity: BackgroundActivity):
+        """Callback to complete async activity"""
 
         self.refresh()
         logging.info('Automatic update done')
