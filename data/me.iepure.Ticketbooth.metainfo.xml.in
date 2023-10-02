@@ -41,8 +41,13 @@ SPDX-License-Identifier: CC0-1.0
 	<translation type="gettext">me.iepure.ticketbooth</translation>
 	<content_rating type="oars-1.1" />
 	<releases>
+		<release version="1.0.3" date="2023-10-02">
+			<description translatable="no">
+				<p>Stability improvements: fixed high peaks utilization and crashing. </p>
+			</description>
+		</release>
 		<release version="1.0.2" date="2023-09-27">
-			<description>
+			<description translatable="no">
 				<p>What's Changed</p>
 				<ul>
 					<li>Stability improvements</li>
@@ -52,12 +57,12 @@ SPDX-License-Identifier: CC0-1.0
 			</description>
 		</release>
 		<release version="1.0.1" date="2023-09-25">
-			<description>
+			<description translatable="no">
 				<p>Fixes issue that prevented the addition of movies with large budgets and revenues.</p>
 			</description>
 		</release>
 		<release version="1.0" date="2023-09-21">
-			<description>
+			<description translatable="no">
 				<p>First release</p>
 			</description>
 		</release>

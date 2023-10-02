@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-26 19:19+0200\n"
+"POT-Creation-Date: 2023-10-02 19:11+0200\n"
 "PO-Revision-Date: 2023-09-12 15:22+0000\n"
 "Last-Translator: Alessandro Iepure <alessandro.iepure@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/ticket-"
@@ -90,39 +90,26 @@ msgid ""
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
 
-#: data/me.iepure.Ticketbooth.metainfo.xml.in:46
-msgid ""
-"Fixes issue that prevented the addition of movies with large budgets and "
-"revenues."
-msgstr ""
-
-#: data/me.iepure.Ticketbooth.metainfo.xml.in:51
-msgid "First release"
-msgstr ""
-
-#: src/dialogs/add_manual_dialog.py:87
+#: src/dialogs/add_manual_dialog.py:89
 msgid "Edit Movie"
 msgstr "Rediger film"
 
-#: src/dialogs/add_manual_dialog.py:89
+#: src/dialogs/add_manual_dialog.py:92
 msgid "Edit TV Series"
 msgstr "Rediger TV-serie"
 
-#. TRANSLATORS: {num} is the season number
-#: src/dialogs/add_manual_dialog.py:283
+#: src/dialogs/add_manual_dialog.py:294
 #, python-brace-format
 msgid "Season {num}"
 msgstr "Sesong {num}"
 
-#. TRANSLATORS: {title} is the content's title
-#: src/dialogs/add_manual_dialog.py:320 src/widgets/search_result_row.py:156
+#: src/dialogs/add_manual_dialog.py:334 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
 msgstr ""
 
-#. TRANSLATORS: {title} is the content's title
-#: src/dialogs/add_manual_dialog.py:323
+#: src/dialogs/add_manual_dialog.py:340
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
@@ -132,22 +119,22 @@ msgstr "Oppdaterer {title}"
 msgid "Season"
 msgstr "Sesong"
 
-#: src/pages/details_page.py:152 src/pages/details_page.py:226
-#: src/pages/details_page.py:274 src/pages/details_page.py:323
-#: src/pages/details_page.py:444 src/widgets/episode_row.py:114
+#: src/pages/details_page.py:155 src/pages/details_page.py:229
+#: src/pages/details_page.py:277 src/pages/details_page.py:326
+#: src/pages/details_page.py:447 src/widgets/episode_row.py:114
 #: src/widgets/episode_row.py:137 src/widgets/episode_row.py:291
 msgid "Watched"
 msgstr "Sett"
 
-#: src/pages/details_page.py:155 src/pages/details_page.py:229
-#: src/pages/details_page.py:277 src/pages/details_page.py:326
-#: src/pages/details_page.py:447 src/widgets/episode_row.py:117
+#: src/pages/details_page.py:158 src/pages/details_page.py:232
+#: src/pages/details_page.py:280 src/pages/details_page.py:329
+#: src/pages/details_page.py:450 src/widgets/episode_row.py:117
 #: src/widgets/episode_row.py:140 src/widgets/episode_row.py:294
 msgid "Mark as Watched"
 msgstr ""
 
 #. TRANSLATORS: {num} is the total number of seasons
-#: src/pages/details_page.py:168
+#: src/pages/details_page.py:171
 #, fuzzy, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
@@ -155,151 +142,150 @@ msgstr[0] "{num} sesonger"
 msgstr[1] "{num} sesonger"
 
 #. TRANSLATORS: {num} is the total number of episodes
-#: src/pages/details_page.py:176 src/pages/details_page.py:208
+#: src/pages/details_page.py:179 src/pages/details_page.py:211
 #, fuzzy, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
 msgstr[0] "{num} episoder"
 msgstr[1] "{num} episoder"
 
-#: src/pages/details_page.py:346 src/ui/dialogs/add_manual.blp:188
+#: src/pages/details_page.py:349 src/ui/dialogs/add_manual.blp:188
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/details_page.py:354 src/ui/dialogs/add_manual.blp:192
+#: src/pages/details_page.py:357 src/ui/dialogs/add_manual.blp:192
 msgid "Original Language"
 msgstr "Opprinnelig språk"
 
-#: src/pages/details_page.py:363 src/ui/dialogs/add_manual.blp:197
+#: src/pages/details_page.py:366 src/ui/dialogs/add_manual.blp:197
 msgid "Original Title"
 msgstr "Originaltittel"
 
-#: src/pages/details_page.py:375
+#: src/pages/details_page.py:378
 msgid "Budget"
 msgstr "Budsjett"
 
-#: src/pages/details_page.py:385
+#: src/pages/details_page.py:388
 msgid "Revenue"
 msgstr "Omsetning"
 
-#: src/pages/details_page.py:395
+#: src/pages/details_page.py:398
 msgid "In Production"
 msgstr "I produksjon"
 
-#: src/pages/details_page.py:398
+#: src/pages/details_page.py:401
 msgid "Yes"
 msgstr "Ja"
 
-#: src/pages/details_page.py:399
+#: src/pages/details_page.py:402
 msgid "No"
 msgstr "Nei"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
-#: src/pages/details_page.py:420 src/widgets/episode_row.py:161
+#: src/pages/details_page.py:423 src/widgets/episode_row.py:161
 #, python-brace-format
 msgid "{h}h {m}min"
 msgstr "{h}t {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
-#: src/pages/details_page.py:423 src/widgets/episode_row.py:165
+#: src/pages/details_page.py:426 src/widgets/episode_row.py:165
 #, python-brace-format
 msgid "{m}min"
 msgstr "{m}min"
 
-#. TRANSLATORS: {title} is the content's title
-#: src/pages/details_page.py:499
-#, fuzzy, python-brace-format
-msgid "Update {title}"
-msgstr "Oppdaterer {title}"
-
 #. TRANSLATORS: {title} is the showed content's title
-#: src/pages/details_page.py:514
+#: src/pages/details_page.py:508
 #, python-brace-format
 msgid "Updating {title}"
 msgstr "Oppdaterer {title}…"
 
-#: src/pages/details_page.py:530
+#. TRANSLATORS: {title} is the content's title
+#: src/pages/details_page.py:515
+#, fuzzy, python-brace-format
+msgid "Update {title}"
+msgstr "Oppdaterer {title}"
+
+#: src/pages/details_page.py:550
 msgid "Loading Metadata…"
 msgstr "Laster inn metadata…"
 
 #. TRANSLATORS: {title} is the content's title
-#: src/pages/details_page.py:548 src/widgets/episode_row.py:240
+#: src/pages/details_page.py:569 src/widgets/episode_row.py:240
 #: src/widgets/season_expander.py:140
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
 msgstr "Slett {title}?"
 
-#: src/pages/details_page.py:550
+#: src/pages/details_page.py:571
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
 msgstr "Denne tittelen vil bli slettet fra din oppsynsliste."
 
-#: src/pages/details_page.py:551 src/widgets/episode_row.py:244
+#: src/pages/details_page.py:572 src/widgets/episode_row.py:244
 #: src/widgets/season_expander.py:143
 msgctxt "message dialog action"
 msgid "_Cancel"
 msgstr "_Avbryt"
 
-#: src/pages/details_page.py:552 src/widgets/episode_row.py:245
+#: src/pages/details_page.py:573 src/widgets/episode_row.py:245
 #: src/widgets/season_expander.py:144
 msgctxt "message dialog action"
 msgid "_Delete"
 msgstr "_Slett"
 
 #. TRANSLATORS: {title} is the content's title
-#: src/pages/details_page.py:577
+#: src/pages/details_page.py:603
 #, fuzzy, python-brace-format
 msgid "Delete {title}"
 msgstr "Slett {title}"
 
-#: src/preferences.py:214
+#: src/preferences.py:238
 msgctxt "message dialog heading"
 msgid "No Network"
 msgstr ""
 
-#: src/preferences.py:215
+#: src/preferences.py:239
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
 msgstr ""
 
-#: src/preferences.py:216 src/window.py:152
+#: src/preferences.py:240 src/window.py:163
 msgctxt "message dialog action"
 msgid "OK"
 msgstr ""
 
-#: src/preferences.py:274
+#: src/preferences.py:306
 #, fuzzy
 msgctxt "Background activity title"
 msgid "Clear cache"
 msgstr "Tøm hurtiglager"
 
 #. TRANSLATORS: {number} is the number of titles
-#: src/preferences.py:315 src/preferences.py:316
+#: src/preferences.py:358 src/preferences.py:360
 #, python-brace-format
 msgid "{number} Titles"
 msgstr ""
 
-#: src/preferences.py:345
+#: src/preferences.py:398
 msgctxt "Background activity title"
 msgid "Delete all movies"
 msgstr ""
 
-#: src/preferences.py:350
+#: src/preferences.py:409
 msgctxt "Background activity title"
 msgid "Delete all TV Series"
 msgstr ""
 
 #. TRANSLATORS: {total_space:.2f} is the total occupied space
-#: src/preferences.py:416
+#: src/preferences.py:484
 #, python-brace-format
 msgid ""
 "Ticket Booth is currently using {total_space:.2f} MB. Use the options below "
 "to free some space."
 msgstr ""
 
-#. TRANSLATORS: {space:.2f} is the occupied space
-#: src/preferences.py:419 src/preferences.py:420
+#: src/preferences.py:488 src/preferences.py:490
 #, python-brace-format
 msgid "{space:.2f} MB occupied"
 msgstr ""
@@ -309,14 +295,14 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Allan Nordhøy, <epost@anotheragency.no>"
 
-#: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:76
+#: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:80
 #, fuzzy
 msgctxt "Category"
 msgid "Movie"
 msgstr "Film"
 
-#: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:56
-#: src/widgets/search_result_row.py:78
+#: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:57
+#: src/widgets/search_result_row.py:82
 #, fuzzy
 msgctxt "Category"
 msgid "TV Series"
@@ -725,33 +711,33 @@ msgstr "Lys stil"
 msgid "Dark style"
 msgstr "Mørk stil"
 
-#: src/views/first_run_view.py:92
+#: src/views/first_run_view.py:101
 msgid "Waiting for Network…"
 msgstr "Venter på nettverk…"
 
-#: src/views/first_run_view.py:94
+#: src/views/first_run_view.py:103
 msgid ""
 "For a complete experience, a download of 15 KB is required. However, if you "
 "are not connected to the Internet or don't want to wait, you can skip this "
 "step and continue offline without some features."
 msgstr ""
 
-#: src/views/first_run_view.py:98
+#: src/views/first_run_view.py:107
 msgid "Getting things ready…"
 msgstr "Klargjør…"
 
-#: src/views/first_run_view.py:99
+#: src/views/first_run_view.py:108
 msgid "Downloading data"
 msgstr "Laster ned data"
 
-#: src/views/main_view.py:50
+#: src/views/main_view.py:51
 #, fuzzy
 msgctxt "Category"
 msgid "Movies"
 msgstr "Filmer"
 
-#: src/views/main_view.py:123 src/views/main_view.py:127
-#: src/views/main_view.py:131
+#: src/views/main_view.py:135 src/views/main_view.py:145
+#: src/views/main_view.py:155
 msgctxt "Background activity title"
 msgid "Automatic update"
 msgstr ""
@@ -761,7 +747,7 @@ msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
 msgstr "Alle endringer av denne episoden vil gå tapt."
 
-#: src/widgets/search_result_row.py:97 src/widgets/search_result_row.py:170
+#: src/widgets/search_result_row.py:100 src/widgets/search_result_row.py:192
 #, fuzzy
 msgid "Already in your watchlist"
 msgstr "Allerede i din oppsynsliste"
@@ -771,12 +757,12 @@ msgctxt "message dialog body"
 msgid "This season contains unsaved metadata."
 msgstr "Denne sesongen inneholder ulagret metadata."
 
-#: src/window.py:150
+#: src/window.py:161
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
 msgstr "Kjørende bakgrunnsaktiviteter"
 
-#: src/window.py:151
+#: src/window.py:162
 #, fuzzy
 msgctxt "message dialog body"
 msgid ""

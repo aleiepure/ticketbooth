@@ -46,7 +46,7 @@ Builds from the main branch are available as artifacts on the [Actions page](htt
 To build from source see [Building](./CONTRIBUTING.md#building).
 
 ## Contribute
-This project is translated via [Weblate](https://hosted.weblate.org/engage/ticket-booth/).\
+This project is translated ~~via [Weblate](https://hosted.weblate.org/engage/ticket-booth/).~~ temporally via `.po` files. \
 <a href="https://hosted.weblate.org/engage/ticket-booth/">
   <img src="https://hosted.weblate.org/widget/ticket-booth/horizontal-auto.svg" alt="Translation status" />
 </a>
