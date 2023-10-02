@@ -7,6 +7,7 @@ from pathlib import Path
 import logging
 from .logging.session_file_handler import SessionFileHandler
 import faulthandler
+import os
 
 APP_ID = '@app_id@'
 VERSION = '@version@'
@@ -24,6 +25,8 @@ series_dir = data_dir / 'series'
 
 db = data_dir / 'data.db'
 
+if not os.path.exists(data_dir/'logs'):
+    os.makedirs(data_dir/'logs')
 faulthandler.enable(file=open(data_dir/'logs'/'crash.log',"w"))
 
 if '@debug@' == 'True':
