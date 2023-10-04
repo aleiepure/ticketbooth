@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: 2023-09-26 01:52+0000\n"
+"PO-Revision-Date: 2023-10-05 17:11+0000\n"
 "Last-Translator: rene-coty <irenee.thirion@e.email>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/fr/>\n"
@@ -142,18 +142,18 @@ msgstr "Marquer comme regardé"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:171
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] "{num} saisons"
+msgstr[0] "{num} saison"
 msgstr[1] "{num} saisons"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:179 src/pages/details_page.py:211
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] "{num} épisodes"
+msgstr[0] "{num} épisode"
 msgstr[1] "{num} épisodes"
 
 #: src/pages/details_page.py:349 src/ui/dialogs/add_manual.blp:188
@@ -304,17 +304,15 @@ msgid "translator-credits"
 msgstr "Irénée Thirion"
 
 #: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:80
-#, fuzzy
 msgctxt "Category"
 msgid "Movie"
 msgstr "Film"
 
 #: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:57
 #: src/widgets/search_result_row.py:82
-#, fuzzy
 msgctxt "Category"
 msgid "TV Series"
-msgstr "Séries télé"
+msgstr "Séries TV"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:35
 msgid "Cancel"
@@ -759,7 +757,6 @@ msgid "Downloading data"
 msgstr "Téléchargement des données"
 
 #: src/views/main_view.py:51
-#, fuzzy
 msgctxt "Category"
 msgid "Movies"
 msgstr "Films"
@@ -776,7 +773,6 @@ msgid "All changes to this episode will be lost."
 msgstr "Tous les changements appliqués à cet épisode seront perdus."
 
 #: src/widgets/search_result_row.py:100 src/widgets/search_result_row.py:192
-#, fuzzy
 msgid "Already in your watchlist"
 msgstr "Déjà dans votre liste de visionnage"
 
