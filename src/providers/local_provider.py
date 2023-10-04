@@ -801,8 +801,7 @@ class LocalProvider:
                          runtime = ?,
                          status = ?,
                          tagline = ?,
-                         title = ?,
-                         watched = ?
+                         title = ?
                      WHERE id = ?;
                   """
             result = connection.cursor().execute(sql, (
@@ -821,7 +820,6 @@ class LocalProvider:
                 new.status,
                 new.tagline,
                 new.title,
-                new.watched,
                 old.id,
             ))
             connection.commit()
