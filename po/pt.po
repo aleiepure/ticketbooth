@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-10-09 01:59+0000\n"
+"Last-Translator: Juliano Dorigão <jdorigao@gmail.com>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -23,86 +25,91 @@ msgstr ""
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr ""
+msgstr "Largura da janela"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr ""
+msgstr "Altura da janela"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr ""
+msgstr "Janela maximizada"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr ""
+msgstr "Guia ativa"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr ""
+msgstr "Especifica se o aplicativo é executado pela primeira vez"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
 msgid "Specifies if the app downloaded the required data"
-msgstr ""
+msgstr "Especifica se o aplicativo baixou os dados necessários"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:51
 msgid "View sorting style"
-msgstr ""
+msgstr "Ver estilo de classificação"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:62
 msgid "App color scheme"
-msgstr ""
+msgstr "Esquema de cores do aplicativo"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:66
 msgid "Language used by TMDB results"
-msgstr ""
+msgstr "Linguagem usada pelos resultados do TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:79
 msgid "Frequency to check for new data on TMDB"
-msgstr ""
+msgstr "Frequência para verificar novos dados no TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:83
 msgid "Last autoupdate date"
-msgstr ""
+msgstr "Data da última atualização automática"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:87
 msgid "Clear cache on exit"
-msgstr ""
+msgstr "Limpar cache ao sair"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15
 msgid "Keep track of your favorite shows"
-msgstr ""
+msgstr "Acompanhe seus programas favoritos"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:18
 msgid ""
 "Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
 "track of watched titles, and find information about the latest releases."
 msgstr ""
+"O Ticket Booth permite que você crie sua lista de filmes e programas de TV, "
+"acompanhe os títulos assistidos e encontre informações sobre os últimos "
+"lançamentos."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:20
 msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
+"O Ticket Booth não permite que você assista ou baixe conteúdo. Este "
+"aplicativo usa a API TMDB, mas não é endossado ou certificado pelo TMDB."
 
 #: src/dialogs/add_manual_dialog.py:89
 msgid "Edit Movie"
-msgstr ""
+msgstr "Editar filme"
 
 #: src/dialogs/add_manual_dialog.py:92
 msgid "Edit TV Series"
-msgstr ""
+msgstr "Editar série de TV"
 
 #: src/dialogs/add_manual_dialog.py:294
 #, python-brace-format
 msgid "Season {num}"
-msgstr ""
+msgstr "Temporada {num}"
 
 #: src/dialogs/add_manual_dialog.py:334 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
-msgstr ""
+msgstr "Adicionar {title}"
 
 #: src/dialogs/add_manual_dialog.py:340
 #, python-brace-format
