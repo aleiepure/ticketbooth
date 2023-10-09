@@ -531,9 +531,28 @@ class DetailsView(Adw.NavigationPage):
             self.new_content = MovieModel(tmdb.get_movie(self.content.id))
             local.update_movie(old=self.content, new=self.new_content)
         else:
+
+            # Save episodes statuses before delete
+            wathced_episodes = []
+            for season in self.content.seasons:  # type: ignore
+                for episode in season.episodes:
+                    if episode.watched:
+                        wathced_episodes.append(episode.id)
+
             local.delete_series(self.content.id)  # type: ignore
-            self.new_content = SeriesModel(tmdb.get_serie(
-                self.content.id))  # type: ignore
+
+            self.new_content = SeriesModel(
+                tmdb.get_serie(self.content.id))  # type: ignore
+
+            # Restore episodes statuses if they match before addition
+            for idx, season in enumerate(self.new_content.seasons):
+                for jdx, episode in enumerate(season.episodes):
+                    try:
+                        wathced_episodes.index(episode.id)
+                        self.new_content.seasons[idx].episodes[jdx].watched = True
+                    except ValueError:
+                        self.new_content.seasons[idx].episodes[jdx].watched = False
+
             local.add_series(serie=self.new_content)
 
     def _on_update_done(self,

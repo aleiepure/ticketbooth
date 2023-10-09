@@ -823,7 +823,7 @@ class LocalProvider:
                 old.id,
             ))
             connection.commit()
-            logging.debug(f'[db] Update movie {old.id}: {(new.add_date, new.backdrop_path, new.budget, ",".join(new.genres), new.manual, new.original_language.iso_name, new.original_title, new.overview, new.poster_path, new.release_date, new.revenue, new.runtime, new.status, new.tagline, new.title, new.watched, old.id)}')
+            logging.debug(f'[db] Update movie {old.id}: {(new.add_date, new.backdrop_path, new.budget, ",".join(new.genres), new.manual, new.original_language.iso_name, new.original_title, new.overview, new.poster_path, new.release_date, new.revenue, new.runtime, new.status, new.tagline, new.title, old.id)}')
         return result.lastrowid
 
     @staticmethod
