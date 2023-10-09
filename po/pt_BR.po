@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: 2023-10-09 13:22+0000\n"
+"PO-Revision-Date: 2023-10-09 18:30+0000\n"
 "Last-Translator: Juliano Dorigão <jdorigao@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "ticket-booth/ticket-booth/pt_BR/>\n"
@@ -370,142 +370,144 @@ msgstr "Informações adicionais"
 
 #: src/ui/dialogs/add_manual.blp:202
 msgid "Budget (US$)"
-msgstr ""
+msgstr "Orçamento (US$)"
 
 #: src/ui/dialogs/add_manual.blp:212
 msgid "Revenue (US$)"
-msgstr ""
+msgstr "Receita (US$)"
 
 #: src/ui/dialogs/add_manual.blp:221
 msgid "In production"
-msgstr ""
+msgstr "Em produção"
 
 #: src/ui/dialogs/add_tmdb.blp:30
 msgid "Search The Movie Database…"
-msgstr ""
+msgstr "Buscar no banco de dados de filmes…"
 
 #: src/ui/dialogs/add_tmdb.blp:40
 msgid "Search For a Title"
-msgstr ""
+msgstr "Pesquisar por Título"
 
 #: src/ui/dialogs/add_tmdb.blp:42
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
 msgstr ""
+"Comece a digitar na barra de pesquisa para ver uma lista de filmes e séries "
+"de TV correspondentes"
 
 #: src/ui/dialogs/add_tmdb.blp:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Nenhum resultado encontrado"
 
 #: src/ui/dialogs/add_tmdb.blp:51
 msgid "Try a different search"
-msgstr ""
+msgstr "Tente uma pesquisa diferente"
 
 #: src/ui/dialogs/edit_season.blp:24
 msgid "Edit Season"
-msgstr ""
+msgstr "Editar temporada"
 
 #: src/ui/dialogs/edit_season.blp:80
 msgid "Episodes (required)"
-msgstr ""
+msgstr "Episódios (obrigatório)"
 
 #: src/ui/dialogs/edit_season.blp:81
 msgid "Use the + button to add episodes"
-msgstr ""
+msgstr "Use o botão + para adicionar episódios"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Mostrar atalhos"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
 msgid "Show Preferences"
-msgstr ""
+msgstr "Mostrar preferências"
 
 #: src/ui/gtk/help-overlay.blp:28
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: src/ui/gtk/help-overlay.blp:34
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr ""
+msgstr "Gestão de biblioteca"
 
 #: src/ui/gtk/help-overlay.blp:37
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr ""
+msgstr "Adicionar título do TMDB"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr ""
+msgstr "Adicionar título manualmente"
 
 #: src/ui/gtk/help-overlay.blp:46
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr ""
+msgstr "Atualizar biblioteca"
 
 #: src/ui/pages/details_page.blp:29 src/ui/views/main_view.blp:71
 msgid "Main Menu"
-msgstr ""
+msgstr "Menu principal"
 
 #: src/ui/pages/details_page.blp:126
 msgid "Update Metadata"
-msgstr ""
+msgstr "Atualizar metadados"
 
 #: src/ui/pages/details_page.blp:136 src/ui/widgets/episode_row.blp:88
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: src/ui/pages/details_page.blp:166
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: src/ui/pages/details_page.blp:215
 msgid "Seasons"
-msgstr ""
+msgstr "Temporadas"
 
 #: src/ui/pages/details_page.blp:314 src/ui/views/main_view.blp:162
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferências"
 
 #: src/ui/pages/details_page.blp:319 src/ui/views/main_view.blp:167
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Atalhos do teclado"
 
 #: src/ui/pages/details_page.blp:324 src/ui/views/main_view.blp:172
 msgid "_About Ticket Booth"
-msgstr ""
+msgstr "_Sobre Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:12
 msgid "Edit Episode"
-msgstr ""
+msgstr "Editar episódio"
 
 #: src/ui/pages/edit_episode_page.blp:61
 msgid "Episode Number (required)"
-msgstr ""
+msgstr "Número do episódio (obrigatório)"
 
 #: src/ui/preferences.blp:16 src/ui/views/main_view.blp:85
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: src/ui/preferences.blp:19
 msgctxt "preferences"
 msgid "Optional Download"
-msgstr ""
+msgstr "Baixar opcional"
 
 #: src/ui/preferences.blp:20
 msgctxt "preferences"
@@ -514,17 +516,21 @@ msgid ""
 "setup could not retrieve the data automatically and thus offline mode has "
 "been activated. It will remain active until the setup is completed."
 msgstr ""
+"Para uma experiência completa é necessário um download de 15 KB. A "
+"configuração inicial não conseguiu recuperar os dados automaticamente e, "
+"portanto, o modo offline foi ativado. Ele permanecerá ativo até que a "
+"configuração seja concluída."
 
 #. TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
 #: src/ui/preferences.blp:24
 msgctxt "preferences"
 msgid "Complete Setup"
-msgstr ""
+msgstr "Configuração completa"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr ""
+msgstr "Modo offline"
 
 #: src/ui/preferences.blp:36
 msgctxt "preferences"
@@ -533,16 +539,19 @@ msgid ""
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
+"O Ticket Booth pode funcionar totalmente offline. Se você optar por executar "
+"neste modo, alguns recursos que exigem Internet e/ou acesso a APIs de "
+"terceiros não estarão disponíveis."
 
 #: src/ui/preferences.blp:39
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr ""
+msgstr "Ativar modo offline"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr ""
+msgstr "O banco de dados de filmes (TMDB)"
 
 #: src/ui/preferences.blp:45
 msgctxt "preferences"
@@ -555,165 +564,172 @@ msgid ""
 "to TMDB</a>. Additionally, an automatic update is performed on a frequency "
 "of your choosing."
 msgstr ""
+"O TMDB fornece metadados localizados para a maioria dos conteúdos. O Ticket "
+"Booth fará o download no idioma de sua preferência, selecionável abaixo. "
+"Caso não esteja disponível, será usado o inglês dos EUA e depois o idioma "
+"original do conteúdo. Se nenhum estiver disponível, resultará em uma linha "
+"em branco. Por favor, considere <a href='https://www.themoviedb.org/bible/"
+"new_content'>contribuir para o TMDB</a>. Além disso, uma atualização "
+"automática é realizada na frequência de sua escolha."
 
 #: src/ui/preferences.blp:48
 msgctxt "preferences"
 msgid "TMDB Results Language"
-msgstr ""
+msgstr "Idioma dos resultados TMDB"
 
 #: src/ui/preferences.blp:53
 msgctxt "preferences"
 msgid "Update Frequency"
-msgstr ""
+msgstr "Frequência de atualização"
 
 #: src/ui/preferences.blp:54
 msgctxt "preferences"
 msgid "Restart Ticket Booth after changing"
-msgstr ""
+msgstr "Reinicie Ticket Booth após alterar"
 
 #: src/ui/preferences.blp:57
 msgctxt "preferences"
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: src/ui/preferences.blp:58
 msgctxt "preferences"
 msgid "Daily"
-msgstr ""
+msgstr "Diário"
 
 #: src/ui/preferences.blp:59
 msgctxt "preferences"
 msgid "Weekly"
-msgstr ""
+msgstr "Semanalmente"
 
 #: src/ui/preferences.blp:60
 msgctxt "preferences"
 msgid "Monthly"
-msgstr ""
+msgstr "Mensal"
 
 #: src/ui/preferences.blp:67
 msgctxt "preferences"
 msgid "Housekeeping"
-msgstr ""
+msgstr "Serviço de limpeza"
 
 #: src/ui/preferences.blp:71
 msgctxt "preferences"
 msgid "Clear Cache on Exit"
-msgstr ""
+msgstr "Limpar cache ao sair"
 
 #: src/ui/preferences.blp:75
 msgctxt "preferences"
 msgid "Clear Cached Search Data"
-msgstr ""
+msgstr "Limpar dados de pesquisa em cache"
 
 #: src/ui/preferences.blp:85
 msgctxt "preferences"
 msgid "Clear Data"
-msgstr ""
+msgstr "Apagar os dados"
 
 #: src/ui/views/content_view.blp:14
 msgid "Your Watchlist Is Empty"
-msgstr ""
+msgstr "Sua lista está vazia"
 
 #: src/ui/views/content_view.blp:15
 msgid "Add content with the + button."
-msgstr ""
+msgstr "Adicione conteúdo com o botão +."
 
 #: src/ui/views/content_view.blp:98
 msgid "Your Watchlist"
-msgstr ""
+msgstr "Sua lista"
 
 #: src/ui/views/first_run_view.blp:56
 msgid "Use Offline Mode"
-msgstr ""
+msgstr "Usar o modo offline"
 
 #: src/ui/views/first_run_view.blp:62
 msgid "Try again on next run"
-msgstr ""
+msgstr "Tente novamente na próxima execução"
 
 #: src/ui/views/main_view.blp:63
 msgid "Add a title to your library"
-msgstr ""
+msgstr "Adicione um título à sua biblioteca"
 
 #: src/ui/views/main_view.blp:84
 msgid "Offline Mode Enabled"
-msgstr ""
+msgstr "Modo offline ativado"
 
 #: src/ui/views/main_view.blp:115
 msgid "_Sorting"
-msgstr ""
+msgstr "_Ordenação"
 
 #: src/ui/views/main_view.blp:118
 msgid "A-Z"
-msgstr ""
+msgstr "A-Z"
 
 #: src/ui/views/main_view.blp:124
 msgid "Z-A"
-msgstr ""
+msgstr "Z-A"
 
 #: src/ui/views/main_view.blp:130
 msgid "Date added (newest first)"
-msgstr ""
+msgstr "Data adicionada (mais recente primeiro)"
 
 #: src/ui/views/main_view.blp:136
 msgid "Date added (oldest first)"
-msgstr ""
+msgstr "Data adicionada (o mais antigo primeiro)"
 
 #: src/ui/views/main_view.blp:142
 msgid "Release date (newest first)"
-msgstr ""
+msgstr "Data de lançamento (mais recente primeiro)"
 
 #: src/ui/views/main_view.blp:148
 msgid "Release date (oldest first)"
-msgstr ""
+msgstr "Data de lançamento (mais antigo primeiro)"
 
 #: src/ui/views/main_view.blp:155
 msgid "_Refresh"
-msgstr ""
+msgstr "_Atualizar"
 
 #: src/ui/views/main_view.blp:180
 msgid "From The Movie Database (TMDB)"
-msgstr ""
+msgstr "Do banco de dados de filmes (TMDB)"
 
 #: src/ui/views/main_view.blp:185
 msgid "Manually"
-msgstr ""
+msgstr "Manualmente"
 
 #: src/ui/widgets/background_indicator.blp:13
 msgid "Background Activities"
-msgstr ""
+msgstr "Atividades em segundo plano"
 
 #: src/ui/widgets/background_indicator.blp:37
 msgid "No Background Activities"
-msgstr ""
+msgstr "Sem atividades em segundo plano"
 
 #: src/ui/widgets/image_selector.blp:26
 msgid "Edit poster"
-msgstr ""
+msgstr "Editar pôster"
 
 #: src/ui/widgets/image_selector.blp:44
 msgid "Delete poster"
-msgstr ""
+msgstr "Excluir pôster"
 
 #: src/ui/widgets/search_result_row.blp:90
 msgid "Add to watchlist"
-msgstr ""
+msgstr "Adicionar à lista"
 
 #: src/ui/widgets/theme_switcher.blp:29
 msgid "Follow system style"
-msgstr ""
+msgstr "Seguir o estilo do sistema"
 
 #: src/ui/widgets/theme_switcher.blp:43
 msgid "Light style"
-msgstr ""
+msgstr "Estilo claro"
 
 #: src/ui/widgets/theme_switcher.blp:57
 msgid "Dark style"
-msgstr ""
+msgstr "Estilo escuro"
 
 #: src/views/first_run_view.py:101
 msgid "Waiting for Network…"
-msgstr ""
+msgstr "Aguardando rede…"
 
 #: src/views/first_run_view.py:103
 msgid ""
@@ -721,44 +737,47 @@ msgid ""
 "are not connected to the Internet or don't want to wait, you can skip this "
 "step and continue offline without some features."
 msgstr ""
+"Para uma experiência completa é necessário um download de 15 KB. Porém, se "
+"você não estiver conectado à Internet ou não quiser esperar, você pode pular "
+"esta etapa e continuar offline sem alguns recursos."
 
 #: src/views/first_run_view.py:107
 msgid "Getting things ready…"
-msgstr ""
+msgstr "Preparando…"
 
 #: src/views/first_run_view.py:108
 msgid "Downloading data"
-msgstr ""
+msgstr "Baixando dados"
 
 #: src/views/main_view.py:51
 msgctxt "Category"
 msgid "Movies"
-msgstr ""
+msgstr "Filmes"
 
 #: src/views/main_view.py:135 src/views/main_view.py:145
 #: src/views/main_view.py:155
 msgctxt "Background activity title"
 msgid "Automatic update"
-msgstr ""
+msgstr "Atualização automática"
 
 #: src/widgets/episode_row.py:242
 msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
-msgstr ""
+msgstr "Todas as alterações neste episódio serão perdidas."
 
 #: src/widgets/search_result_row.py:100 src/widgets/search_result_row.py:192
 msgid "Already in your watchlist"
-msgstr ""
+msgstr "Já está na sua lista"
 
 #: src/widgets/season_expander.py:141
 msgctxt "message dialog body"
 msgid "This season contains unsaved metadata."
-msgstr ""
+msgstr "Esta temporada contém metadados não salvos."
 
 #: src/window.py:161
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
-msgstr ""
+msgstr "Atividades em segundo plano em execução"
 
 #: src/window.py:162
 msgctxt "message dialog body"
@@ -767,3 +786,6 @@ msgid ""
 "before exiting. Look for the indicator in the header bar to check when they "
 "are finished."
 msgstr ""
+"Algumas atividades estão sendo executadas em segundo plano e precisam ser "
+"concluídas antes de sair. Procure o indicador na barra de cabeçalho para "
+"verificar quando terminar."
