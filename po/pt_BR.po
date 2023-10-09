@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: 2023-10-09 01:59+0000\n"
+"PO-Revision-Date: 2023-10-09 13:22+0000\n"
 "Last-Translator: Juliano Dorigão <jdorigao@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "ticket-booth/ticket-booth/pt_BR/>\n"
@@ -57,7 +57,7 @@ msgstr "Esquema de cores do aplicativo"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:66
 msgid "Language used by TMDB results"
-msgstr "Linguagem usada pelos resultados do TMDB"
+msgstr "Idioma usado pelos resultados do TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:79
 msgid "Frequency to check for new data on TMDB"
