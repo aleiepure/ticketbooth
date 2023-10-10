@@ -115,9 +115,61 @@ class TicketboothWindow(Adw.ApplicationWindow):
         source._win_stack.get_child_by_name(
             'main')._background_indicator.refresh()
 
+    def _unwatched_first_changed(self, new_state: GLib.Variant, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.unwatched-first action
+
+        Args:
+            new_state (bool): new selected state
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+
+        logging.debug(f'Sort unwatched first: {new_state.get_boolean()}')
+        shared.schema.set_boolean('unwatched-first', new_state.get_boolean())
+        self.set_state(new_state)
+
+    def _separate_watched_changed(self, new_state: GLib.Variant, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.separate-watched action
+
+        Args:
+            new_state (bool): new selected state
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+
+        logging.debug(f'Separate watched: {new_state.get_boolean()}')
+        shared.schema.set_boolean('separate-watched', new_state.get_boolean())
+        self.set_state(new_state)
+
+    def _hide_watched_changed(self, new_state: GLib.Variant, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.hide-watched action
+
+        Args:
+            new_state (bool): new selected state
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+
+        logging.debug(f'Hide watched: {new_state.get_boolean()}')
+        shared.schema.set_boolean('hide-watched', new_state.get_boolean())
+        self.set_state(new_state)
+
     _actions = {
         ('view-sorting', None, 's',
          f"'{shared.schema.get_string('view-sorting')}'", _sort_on_changed),
+        ('separate-watched', None, None, 'true' if shared.schema.get_boolean(
+            'separate-watched') else 'false', _separate_watched_changed),
+        ('hide-watched', None, None, 'true' if shared.schema.get_boolean('hide-watched')
+         else 'false', _hide_watched_changed),
         ('add-tmdb', _add_tmdb),
         ('add-manual', _add_manual),
         ('refresh', _refresh),
@@ -133,6 +185,8 @@ class TicketboothWindow(Adw.ApplicationWindow):
             self.add_css_class('devel')
 
         shared.schema.bind('offline-mode', self.lookup_action('add-tmdb'),
+                           'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        shared.schema.bind('separate-watched', self.lookup_action('hide-watched'),
                            'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
         if shared.schema.get_boolean('onboard-complete'):

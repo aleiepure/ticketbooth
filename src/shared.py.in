@@ -31,7 +31,6 @@ faulthandler.enable(file=open(data_dir/'logs'/'crash.log',"w"))
 
 if '@debug@' == 'True':
     DEBUG = True
-    # TODO: change back to DEBUG
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         filename=data_dir / 'logs' / 'ticketbooth.log')

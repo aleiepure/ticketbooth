@@ -114,40 +114,54 @@ menu _primary_menu {
     submenu {
       label: _("_Sorting");
 
-      item {
-        label: _("A-Z");
-        action: "win.view-sorting";
-        target: "az";
+      section {
+        item {
+          label: _("A-Z");
+          action: "win.view-sorting";
+          target: "az";
+        }
+
+        item {
+          label: _("Z-A");
+          action: "win.view-sorting";
+          target: "za";
+        }
+
+        item {
+          label: _("Date added (newest first)");
+          action: "win.view-sorting";
+          target: "added-date-new";
+        }
+
+        item {
+          label: _("Date added (oldest first)");
+          action: "win.view-sorting";
+          target: "added-date-old";
+        }
+
+        item {
+          label: _("Release date (newest first)");
+          action: "win.view-sorting";
+          target: "released-date-new";
+        }
+
+        item {
+          label: _("Release date (oldest first)");
+          action: "win.view-sorting";
+          target: "released-date-old";
+        }
       }
 
-      item {
-        label: _("Z-A");
-        action: "win.view-sorting";
-        target: "za";
-      }
+      section {
+        item {
+          label: _("Separate watched from unwatched");
+          action: 'win.separate-watched';
+        }
 
-      item {
-        label: _("Date added (newest first)");
-        action: "win.view-sorting";
-        target: "added-date-new";
-      }
-
-      item {
-        label: _("Date added (oldest first)");
-        action: "win.view-sorting";
-        target: "added-date-old";
-      }
-
-      item {
-        label: _("Release date (newest first)");
-        action: "win.view-sorting";
-        target: "released-date-new";
-      }
-
-      item {
-        label: _("Release date (oldest first)");
-        action: "win.view-sorting";
-        target: "released-date-old";
+        item {
+          label: _("Hide watched");
+          action: 'win.hide-watched';
+        }
       }
     }
 

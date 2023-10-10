@@ -32,12 +32,14 @@ class PosterButton(Gtk.Box):
     _picture = Gtk.Template.Child()
     _spinner = Gtk.Template.Child()
     _year_lbl = Gtk.Template.Child()
+    _watched_lbl = Gtk.Template.Child()
 
     # Properties
     title = GObject.Property(type=str, default='')
     year = GObject.Property(type=str, default='')
     tmdb_id = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
+    watched = GObject.Property(type=bool, default=False)
     content = GObject.Property(type=object, default=None)
 
     __gsignals__ = {
@@ -50,6 +52,7 @@ class PosterButton(Gtk.Box):
         self.year = content.release_date[0:4]
         self.tmdb_id = content.id
         self.poster_path = content.poster_path
+        self.watched = content.watched
         self.content = content
 
     @Gtk.Template.Callback('_on_map')
@@ -69,6 +72,8 @@ class PosterButton(Gtk.Box):
         self._spinner.set_visible(False)
         if not self.year:
             self._year_lbl.set_visible(False)
+        if self.watched:
+            self._watched_lbl.set_visible(True)
 
     @Gtk.Template.Callback('_on_poster_btn_clicked')
     def _on_poster_btn_clicked(self, user_data: object | None) -> None:

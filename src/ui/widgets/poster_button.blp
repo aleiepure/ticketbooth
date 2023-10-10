@@ -63,10 +63,22 @@ template $PosterButton: Box {
             wrap: true;
           }
 
-          Label _year_lbl {
-            label: bind template.year;
-            halign: start;
-            styles ["caption", "chip"]
+          Box {
+            orientation: horizontal;
+            spacing: 6;
+
+            Label _year_lbl {
+              label: bind template.year;
+              halign: start;
+              styles ["caption", "chip"]
+            }
+
+            Label _watched_lbl {
+              halign: start;
+              visible: false;
+              label: _("Watched");
+              styles ["caption", "chip"]
+            }
           }
         }
       }

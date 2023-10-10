@@ -88,22 +88,73 @@ template $ContentView: Adw.Bin {
       child: ScrolledWindow {
         Box {
           orientation: vertical;
-          spacing: 12;
-          halign: start;
 
-          Label {
+          Box _full_box {
+            visible: false;
+            orientation: vertical;
+            spacing: 12;
             halign: start;
-            margin-start: 12;
-            margin-top: 12;
-            label: _("Your Watchlist");
-            styles ["title-1"]
+
+            Label {
+              halign: start;
+              margin-start: 12;
+              margin-top: 12;
+              label: _("Your Watchlist");
+              styles ["title-1"]
+            }
+
+            FlowBox _flow_box {
+              orientation: horizontal;
+              min-children-per-line: 2;
+              max-children-per-line: 11;
+              selection-mode: none;
+            }
           }
 
-          FlowBox _flow_box {
-            orientation: horizontal;
-            min-children-per-line: 2;
-            max-children-per-line: 11;
-            selection-mode: none;
+          Box _separated_box {
+            visible: false;
+            orientation: vertical;
+            spacing: 12;
+            halign: start;
+
+            Box _unwatched_box {
+              orientation: vertical;
+
+              Label {
+                halign: start;
+                margin-start: 12;
+                margin-top: 12;
+                label: _("Unwatched");
+                styles ["title-1"]
+              }
+
+              FlowBox _unwatched_flow_box {
+                orientation: horizontal;
+                min-children-per-line: 2;
+                max-children-per-line: 11;
+                selection-mode: none;
+              }
+            }
+
+            Box _watched_box {
+              orientation: vertical;
+
+              Label {
+                halign: start;
+                margin-start: 12;
+                margin-top: 12;
+                label: _("Watched");
+                styles ["title-1"]
+              }
+
+              FlowBox _watched_flow_box {
+                orientation: horizontal;
+                min-children-per-line: 2;
+                max-children-per-line: 11;
+                selection-mode: none;
+              }
+            }
+
           }
         }
       };

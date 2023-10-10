@@ -586,7 +586,7 @@ class LocalProvider:
     @staticmethod
     def mark_watched_series(id: str, watched: bool) -> int | None:
         """
-        Sets the watched flag on all episodes in the series and the series itself.
+        Sets the watched flag on the specified series.
 
         Args:
             id (str): tv series id to change
@@ -597,8 +597,6 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE episodes SET watched = ? WHERE show_id = ?"""
-            connection.cursor().execute(sql, (watched, id,))
             sql = 'UPDATE series SET watched = ? WHERE id = ?;'
             result = connection.cursor().execute(sql, (watched, id,))
             connection.commit()

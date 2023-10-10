@@ -4,7 +4,7 @@
 
 import logging
 
-from gi.repository import Adw, GLib, GObject, Gtk
+from gi.repository import Adw, GObject, Gtk
 
 import src.providers.local_provider as local
 
@@ -38,6 +38,12 @@ class ContentView(Adw.Bin):
     _stack = Gtk.Template.Child()
     _updating_status_lbl = Gtk.Template.Child()
     _flow_box = Gtk.Template.Child()
+    _full_box = Gtk.Template.Child()
+    _separated_box = Gtk.Template.Child()
+    _unwatched_box = Gtk.Template.Child()
+    _unwatched_flow_box = Gtk.Template.Child()
+    _watched_box = Gtk.Template.Child()
+    _watched_flow_box = Gtk.Template.Child()
 
     def __init__(self, movie_view: bool):
         super().__init__()
@@ -49,7 +55,13 @@ class ContentView(Adw.Bin):
         self._load_content(self.movie_view)
 
         self._set_sorting_function()
+        self._set_filter_function()
+
         shared.schema.connect('changed::view-sorting', self._on_sort_changed)
+        shared.schema.connect('changed::separate-watched',
+                              self._on_separate_watched_changed)
+        shared.schema.connect('changed::hide-watched',
+                              self._on_hide_watched_changed)
 
     def _on_sort_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
         """
@@ -65,6 +77,36 @@ class ContentView(Adw.Bin):
         """
 
         self._set_sorting_function()
+
+    def _on_separate_watched_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
+        """
+        Callback for the "changed" signal.
+
+
+        Args:
+            pspec (GObject.ParamSpec): pspec of the changed property
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        self.refresh_view()
+
+    def _on_hide_watched_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
+        """
+        Callback for the "changed" signal.
+
+
+        Args:
+            pspec (GObject.ParamSpec): pspec of the changed property
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        self._set_filter_function()
 
     def _load_content(self, movie_view: bool) -> None:
         """
@@ -94,12 +136,42 @@ class ContentView(Adw.Bin):
                 f'Created poster button for [{"movie" if self.movie_view else "TV series"}] {item.title}')
             btn = PosterButton(content=item)
             btn.connect('clicked', self._on_clicked)
-            self._flow_box.insert(btn, -1)
+            if shared.schema.get_boolean('separate-watched'):
+                if item.watched:
+                    self._watched_flow_box.insert(btn, -1)
+                else:
+                    self._unwatched_flow_box.insert(btn, -1)
+            else:
+                self._flow_box.insert(btn, -1)
 
         idx = 0
         while self._flow_box.get_child_at_index(idx):
             self._flow_box.get_child_at_index(idx).set_focusable(False)
             idx += 1
+
+        idx = 0
+        while self._watched_flow_box.get_child_at_index(idx):
+            self._watched_flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
+        idx = 0
+        while self._watched_flow_box.get_child_at_index(idx):
+            self._watched_flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
+        self._full_box.set_visible(False)
+        self._separated_box.set_visible(False)
+        self._unwatched_box.set_visible(False)
+        self._watched_box.set_visible(False)
+
+        if shared.schema.get_boolean('separate-watched'):
+            self._separated_box.set_visible(True)
+            if self._watched_flow_box.get_child_at_index(0) is not None:
+                self._watched_box.set_visible(True)
+            if self._unwatched_flow_box.get_child_at_index(0) is not None:
+                self._unwatched_box.set_visible(True)
+        else:
+            self._full_box.set_visible(True)
 
         # self._stack.set_visible_child_name('filled')
 
@@ -117,6 +189,8 @@ class ContentView(Adw.Bin):
         # self._stack.set_visible_child_name('loading')
 
         self._flow_box.remove_all()
+        self._watched_flow_box.remove_all()
+        self._unwatched_flow_box.remove_all()
 
         self._load_content(self.movie_view)
 
@@ -186,3 +260,21 @@ class ContentView(Adw.Bin):
                      child2.get_child().content.release_date)
                 ), None)
         self._flow_box.invalidate_sort()
+
+    def _set_filter_function(self) -> None:
+        """
+        Based on the current setting, sets the filter function of the FlowBox.
+
+        Args:
+            None
+
+        Returns;
+            None
+        """
+
+        if shared.schema.get_boolean('hide-watched'):
+            self._flow_box.set_filter_func(lambda child, user_data: (
+                not child.get_child().content.watched), None)
+        else:
+            self._flow_box.set_filter_func(lambda child, user_data: True, None)
+        self._flow_box.invalidate_filter()

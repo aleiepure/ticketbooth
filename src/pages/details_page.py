@@ -280,6 +280,11 @@ class DetailsView(Adw.NavigationPage):
             btn_content.set_label(_('Mark as Watched'))
             btn_content.set_icon_name('watchlist')
 
+        # Update season status
+        local.mark_watched_series(self.content.id, all(
+            episode.watched for season in self.content.seasons for episode in season.episodes))  # type: ignore
+        self.activate_action('win.refresh', None)
+
     def _on_season_watched_clicked(self,
                                    source: Gtk.Widget,
                                    data: Tuple[Adw.ButtonContent, SeasonModel, List[Tuple[SeasonModel, List[EpisodeRow]]]]) -> None:
@@ -328,6 +333,11 @@ class DetailsView(Adw.NavigationPage):
         else:
             btn_content.set_label(_('Mark as Watched'))
             btn_content.set_icon_name('watchlist')
+
+        # Update season status
+        local.mark_watched_series(self.content.id, not all(  # type: ignore
+            episode.watched for season in self.content.seasons for episode in season.episodes))  # type: ignore
+        self.activate_action('win.refresh', None)
 
     def _build_flow_box(self) -> None:
         """
@@ -449,6 +459,8 @@ class DetailsView(Adw.NavigationPage):
         else:
             self._btn_content.set_label(_('Mark as Watched'))
             self._btn_content.set_icon_name('watchlist')
+
+        self.activate_action('win.refresh', None)
 
     @Gtk.Template.Callback('_on_edit_btn_clicked')
     def _on_edit_btn_clicked(self, user_data: object | None) -> None:
