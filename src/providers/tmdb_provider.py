@@ -24,7 +24,10 @@ class TMDBProvider:
         get_season_episodes(id: int, series:int, lang: str): Retrieves information about the episodes in a season.
     """
 
-    tmdb.API_KEY = os.environ.get('TMDB_KEY')
+    if shared.schema.get_boolean('use-own-tmdb-key'):
+        tmdb.API_KEY = shared.schema.get_string('own-tmdb-key')
+    else:
+        tmdb.API_KEY = os.environ.get('TMDB_KEY')
 
     def __init__(self):
         super().__init__()
@@ -89,7 +92,7 @@ class TMDBProvider:
             lang (str): the prefered language for the results (optional)
 
         Returns:
-            dict containg the API result.
+            dict containg the API result
         """
 
         if not lang:
@@ -115,3 +118,45 @@ class TMDBProvider:
             lang = shared.schema.get_string('tmdb-lang')
 
         return tmdb.TV_Seasons(id, season).info(language=lang)['episodes']
+
+    @staticmethod
+    def set_key(key: str) -> None:
+        """
+        Sets the API in use.
+
+        Args:
+            key (str): key to use
+
+        Returns:
+            None
+        """
+
+        tmdb.API_KEY = key
+
+    @staticmethod
+    def get_key() -> str:
+        """
+        Gets the API in use.
+
+        Args:
+            None
+
+        Returns:
+            str with the key in use
+        """
+
+        return tmdb.API_KEY
+
+    @staticmethod
+    def get_builtin_key() -> str:
+        """
+        Gets the builtin API key.
+
+        Args:
+            None
+
+        Returns:
+            str with the builtin key
+        """
+
+        return os.environ.get('TMDB_KEY')  # type: ignore

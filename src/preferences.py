@@ -9,7 +9,9 @@ from gettext import gettext as _
 from gettext import pgettext as C_
 from pathlib import Path
 
+import tmdbsimple
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
+from requests import HTTPError
 
 from . import shared  # type: ignore
 from .background_queue import ActivityType, BackgroundActivity, BackgroundQueue
@@ -29,8 +31,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
     _offline_group = Gtk.Template.Child()
     _offline_switch = Gtk.Template.Child()
     _tmdb_group = Gtk.Template.Child()
+    _use_own_key_switch = Gtk.Template.Child()
+    _own_key_entryrow = Gtk.Template.Child()
     _housekeeping_group = Gtk.Template.Child()
-    _exit_cache_row = Gtk.Template.Child()
+    _exit_cache_switch = Gtk.Template.Child()
     _cache_row = Gtk.Template.Child()
     _data_row = Gtk.Template.Child()
 
@@ -50,13 +54,17 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         shared.schema.bind('offline-mode', self._offline_switch,
                            'active', Gio.SettingsBindFlags.DEFAULT)
-        shared.schema.bind('exit-remove-cache', self._exit_cache_row,
+        shared.schema.bind('use-own-tmdb-key', self._use_own_key_switch,
+                           'active', Gio.SettingsBindFlags.DEFAULT)
+        shared.schema.bind('exit-remove-cache', self._exit_cache_switch,
                            'active', Gio.SettingsBindFlags.DEFAULT)
 
         self._offline_switch.connect('notify::active', lambda pspec, user_data: logging.debug(
             f'Toggled offline mode: {self._offline_switch.get_active()}'))
-        self._exit_cache_row.connect('notify::active', lambda pspec, user_data: logging.debug(
-            f'Toggled clear cache on exit: {self._offline_switch.get_active()}'))
+        self._use_own_key_switch.connect(
+            'notify::active', self._on_use_own_key_switch_activated)
+        self._exit_cache_switch.connect('notify::active', lambda pspec, user_data: logging.debug(
+            f'Toggled clear cache on exit: {self._exit_cache_switch.get_active()}'))
 
     @Gtk.Template.Callback('_on_map')
     def _on_map(self, user_data: object | None) -> None:
@@ -85,7 +93,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
             case 'month':
                 self._update_freq_comborow.set_selected(3)
 
-        # Update check
+        self._own_key_entryrow.set_text(
+            shared.schema.get_string('own-tmdb-key'))
+
+        # Update occupied space
         self._update_occupied_space()
 
     def _setup_languages(self):
@@ -488,3 +499,60 @@ class PreferencesWindow(Adw.PreferencesWindow):
             _('{space:.2f} MB occupied').format(space=cache_space))
         self._data_row.set_subtitle(
             _('{space:.2f} MB occupied').format(space=data_space))
+
+    @Gtk.Template.Callback('_on_own_key_changed')
+    def _on_own_key_changed(self, user_data: object | None) -> None:
+        """
+        Callback for 'changed' signal.
+        Removes all CSS classes.
+
+        Args:
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        self._own_key_entryrow.remove_css_class('error')
+        self._own_key_entryrow.remove_css_class('success')
+
+    @Gtk.Template.Callback('_on_check_own_key_button_clicked')
+    def _on_check_own_key_button_clicked(self, user_data: object | None) -> None:
+        """
+        Callback for 'clicked' signal.
+        Temporarelly changes the API key in use with the one provided and checks if it is valid.
+
+        Args:
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        tmdb.set_key(self._own_key_entryrow.get_text())
+        try:
+            tmdb.get_movie(575264)
+            shared.schema.set_string(
+                'own-tmdb-key', self._own_key_entryrow.get_text())
+            self._own_key_entryrow.add_css_class('success')
+        except (tmdbsimple.base.APIKeyError, HTTPError):
+            self._own_key_entryrow.add_css_class('error')
+            tmdb.set_key(tmdb.get_builtin_key())
+
+    def _on_use_own_key_switch_activated(self, pspec, user_data: object | None) -> None:
+        """
+        Callback for 'notify::active' signal.
+        Sets the API key is use based on the state of the property.
+
+        Args:
+            pspec (GObject.ParamSpec): pspec of the changed property
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+
+        if self._use_own_key_switch.get_active():
+            tmdb.set_key(self._own_key_entryrow.get_text())
+        else:
+            tmdb.set_key(tmdb.get_builtin_key())

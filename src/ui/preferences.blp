@@ -61,13 +61,33 @@ template $PreferencesWindow: Adw.PreferencesWindow {
           ]
         };
       }
+
+      Adw.SwitchRow _use_own_key_switch {
+        title: C_("preferences", "Use Your API Key");
+        subtitle: C_("preferences", "Register yours <a href='https://www.themoviedb.org/settings/api'>here</a>");
+      }
+
+      Adw.EntryRow _own_key_entryrow {
+        title: C_("preferences", "Your API key");
+        visible: bind _use_own_key_switch.active;
+
+        [suffix]
+        Button _check_own_key_button {
+          label: C_('preferences', 'Save Key');
+          valign: center;
+
+          clicked => $_on_check_own_key_button_clicked();
+        }
+
+        changed => $_on_own_key_changed();
+      }
     }
 
     Adw.PreferencesGroup _housekeeping_group {
       title: C_("preferences", "Housekeeping");
 
       Adw.PreferencesGroup {
-        Adw.SwitchRow _exit_cache_row {
+        Adw.SwitchRow _exit_cache_switch {
           title: C_("preferences", "Clear Cache on Exit");
         }
 

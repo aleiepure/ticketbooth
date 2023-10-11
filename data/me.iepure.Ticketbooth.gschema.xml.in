@@ -96,6 +96,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<default>true</default>
 			<summary>Clear cache on exit</summary>
 		</key>
+		<key name="use-own-tmdb-key" type="b">
+			<default>false</default>
+			<summary>Use the user's TMDB key</summary>
+		</key>
+		<key name="own-tmdb-key" type="s">
+			<default>''</default>
+			<summary>User's TMDB key</summary>
+		</key>
 
 	</schema>
 </schemalist>
