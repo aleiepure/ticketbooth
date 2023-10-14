@@ -412,6 +412,16 @@ class DetailsView(Adw.NavigationPage):
                        if self.content.in_production else _('No')))
             self._flow_box.append(box)
 
+        if self.content.id and self.content.manual == False:
+            box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+            label = Gtk.Label(label=_('TMDB ID'))
+            label.add_css_class('heading')
+            box.append(label)
+            url_str = '<a href="https://www.themoviedb.org/{category}/{id}" title="TMDB Webpage"> {id} </a>' \
+                .format(category = ("tv") if type(self.content) is SeriesModel else ("movie"), id = self.content.id)
+            box.append(Gtk.Label(label=url_str, use_markup = True))
+            self._flow_box.append(box)
+
         if self._flow_box.get_child_at_index(0) is None:
             self._additional_info_box.set_visible(False)
 
