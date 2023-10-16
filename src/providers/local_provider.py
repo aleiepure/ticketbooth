@@ -824,6 +824,50 @@ class LocalProvider:
         return result.lastrowid
     
     @staticmethod
+    def update_series(old: SeriesModel, new: SeriesModel) -> int | None:
+        """
+        Updates a series with new data.
+
+        Args:
+            old: movie to be updated
+            new: new movie data
+
+        Returns:
+            int or None containing the id of the last modified row
+        """
+        # Save episodes statuses before delete
+        watched_episodes = []
+        for season in old.seasons:  # type: ignore
+            for episode in season.episodes:
+                if episode.watched:
+                    watched_episodes.append(episode.id)
+
+        #remove series but not the posters, therefore not calling remove_series()
+        # TODO Handle if the poster changes, the same problem in update_movie
+        with sqlite3.connect(shared.db) as connection:
+            connection.cursor().execute('PRAGMA foreign_keys = ON;')
+
+            sql = """DELETE FROM series WHERE id = ?"""
+            result = connection.cursor().execute(sql, (old.id,))
+            connection.commit()
+            logging.debug(f'[db] TV series {id}, deleted: {result.lastrowid}')
+
+
+        # Restore episodes statuses if they match before addition
+        for idx, season in enumerate(new.seasons):
+            for jdx, episode in enumerate(season.episodes):
+                try:
+                    watched_episodes.index(episode.id)
+                    new.seasons[idx].episodes[jdx].watched = True
+                except ValueError:
+                    new.seasons[idx].episodes[jdx].watched = False
+
+        LocalProvider.add_series(serie=new)
+
+        return result.lastrowid
+
+
+    @staticmethod
     def mark_watched_episode(id: str, watched: bool) -> int | None:
         """
         Sets the watched flag on the specified episode.
