@@ -45,19 +45,6 @@ class MainView(Adw.Bin):
 
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
-=======
-        self.app = window.app
-        local.update_series_table()
-        # logging.info('Starting automatic update...')
-        # BackgroundQueue.add(
-        #     activity=BackgroundActivity(
-        #         activity_type=ActivityType.UPDATE,
-        #         title=C_('Background activity title',
-        #                     'Automatic update'),
-        #         task_function=self._update_content),
-        #     on_done=self._on_update_done)
->>>>>>> 89b5f6d (Keep more flags in update_series)
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',
@@ -130,7 +117,6 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
-        local.update_series_table()
 
         last_check = datetime.fromisoformat(
             shared.schema.get_string('last-update'))
