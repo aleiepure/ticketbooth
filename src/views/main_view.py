@@ -65,6 +65,8 @@ class MainView(Adw.Bin):
 
         self._tab_stack.connect(
             'notify::visible-child-name', self._check_needs_refresh)
+        
+        
 
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
@@ -115,11 +117,22 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
+        local.update_series_table()
 
         last_check = datetime.fromisoformat(
             shared.schema.get_string('last-update'))
         frequency = shared.schema.get_string('update-freq')
 
+        if last_check + timedelta(seconds=20) < datetime.now():
+            logging.info('Starting automatic watchlist update...')
+            BackgroundQueue.add(
+                activity=BackgroundActivity(
+                    activity_type=ActivityType.UPDATE,
+                    title=C_('Background activity title',
+                                'Automatic update of watchlist'),
+                    task_function=self._update_watchlist),
+                on_done=self._on_watchlist_done)
+                
         logging.debug(
             f'Last update done on {last_check}, frequency {frequency}')
 
@@ -157,6 +170,8 @@ class MainView(Adw.Bin):
                         on_done=self._on_update_done)
             case 'never':
                 return
+
+
 
         shared.schema.set_string(
             'last-update', datetime.now().strftime('%Y-%m-%d'))
@@ -199,6 +214,46 @@ class MainView(Adw.Bin):
         logging.info('Automatic update done')
         activity.end()
 
+    def _update_watchlist(self, activity: BackgroundActivity) -> None:
+        """
+        Performs a content update on the watchlist.
+
+        Args:
+            activity (BackgroundActivity): the calling activity
+
+        Returns:
+            None
+        """
+        series = local.get_all_watchlist()
+        if series:
+            for serie in series:    # type: ignore
+                print(serie.title)
+                local.delete_series(serie.id)
+                new_serie = SeriesModel(tmdb.get_serie(serie.id))
+                
+                #check for several conditions
+                # 1. last episode released is newer than last saved in db -> move series into new release came out and make notification
+                if datetime.strptime(serie.last_episode_aired_date, '%Y-%m-%d') < datetime.strptime(new_serie.last_episode_aired_date, '%Y-%m-%d'):
+                    print("heyo")
+                else:
+                    print("hiyo")
+                # 2. Next air date is set to soon (to be defined, maybe 6 days) -> move series into new releases soon and add next air date to details page
+                # 3. Series went from in production to not in production -> inform user that series went out of production maybe add website for more info
+                
+                local.add_series(serie=new_serie)
+
+    def _on_watchlist_done(self,
+                        source: GObject.Object,
+                        result: Gio.AsyncResult,
+                        cancellable: Gio.Cancellable,
+                        activity: BackgroundActivity):
+        """Callback to complete async activity"""
+
+        self.refresh()
+        logging.info('Automatic watchlist update done')
+        activity.end()
+
+
     def refresh(self) -> None:
         """
         Refreshes the visible window.
@@ -209,7 +264,7 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
-
+        
         if self._tab_stack.get_visible_child_name() == 'movies':
             self._tab_stack.get_child_by_name('movies').refresh_view()
             logging.info('Refreshed movies tab')

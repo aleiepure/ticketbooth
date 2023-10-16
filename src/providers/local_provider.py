@@ -8,6 +8,7 @@ import shutil
 import sqlite3
 from typing import List
 
+
 from .. import shared  # type: ignore
 from ..models.episode_model import EpisodeModel
 from ..models.language_model import LanguageModel
@@ -28,6 +29,7 @@ class LocalProvider:
         create_movies_table(): Creates the table used to store movie details in a local database
         create_series_table(): Creates the table used to store tv series details in a local database
         create_languages_table(): Creates the table used to store the available languages in a local database
+        create_series_watchlist_table(): Creates the table used to store which series need to be checked for new realses on startup.
         create_tables(): Convenience method to create all tables with a single call
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
         add_movie(id: int, movie: MovieModel): Inserts a movie in the movies table, querying the data from TMDB if only
@@ -57,6 +59,9 @@ class LocalProvider:
         update_movie(old: MovieModel, new: MovieModel): Updates a movie with new data.
         mark_watched_episode(id: str, watched: bool): Sets the watched flag on the specified episode.
         get_episode_by_id(id: str): Retrieves an episode from the db via its id.
+        add_series_to_watchlist(id: int): Add series to watchlist table
+        remove_series_from_watchlist(id: str): Remove series from watchlist
+        get_watchlist_status(id: int)
     """
 
     @staticmethod
@@ -118,7 +123,10 @@ class LocalProvider:
                             genres TEXT,
                             id TEXT PRIMARY KEY,
                             in_production BOOLEAN,
+                            last_episode_aired_date TEXT,
                             manual BOOLEAN,
+                            next_air_date TEXT,
+                            new_release BOOLEAN,
                             original_language TEXT,
                             original_title TEXT,
                             overview TEXT,
@@ -129,6 +137,7 @@ class LocalProvider:
                             tagline TEXT,
                             title TEXT,
                             watched BOOLEAN,
+                            watchlist BOOLEAN,
                             FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
                         );"""
             seasons_sql = """CREATE TABLE IF NOT EXISTS seasons (
@@ -159,6 +168,45 @@ class LocalProvider:
             connection.commit()
 
     @staticmethod
+    def update_series_table() -> None:
+        """
+        Update the series table to add new data needed for notifications
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        
+        
+        with sqlite3.connect(shared.db) as connection:
+            
+            sql = """pragma table_info(series)"""
+            result = connection.cursor().execute(sql).fetchall()
+            
+            if not any(item[1] == "last_episode_aired_date" for item in result):
+                sql = """ALTER TABLE series
+                            ADD last_episode_aired_date TEXT AFTER in_production;"""
+                connection.cursor().execute(sql)
+
+            if not any(item[1] == "new_release" for item in result):
+                sql = """ALTER TABLE series
+                            ADD new_release TEXT AFTER manual;"""
+                connection.cursor().execute(sql)
+
+            if not any(item[1] == "next_air_date" for item in result):
+                sql = """ALTER TABLE series
+                            ADD next_air_date TEXT AFTER next_air_date;"""
+                connection.cursor().execute(sql)
+
+            if not any(item[1] == "watchlist" for item in result):
+                sql = """ALTER TABLE series
+                            ADD watchlist TEXT AFTER watched;"""
+                connection.cursor().execute(sql)
+        
+
+
+    @staticmethod
     def create_languages_table() -> None:
         """
         Creates the table used to store the available languages in a local database.
@@ -179,7 +227,7 @@ class LocalProvider:
                      );"""
             connection.cursor().execute(sql)
             connection.commit()
-
+ 
     @staticmethod
     def create_tables() -> None:
         """
@@ -274,7 +322,7 @@ class LocalProvider:
             serie = SeriesModel(tmdb.get_serie(id))
 
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
                 serie.add_date,
                 serie.backdrop_path,
@@ -283,7 +331,10 @@ class LocalProvider:
                 ','.join(serie.genres),
                 serie.id,
                 serie.in_production,
+                serie.last_episode_aired_date,
                 serie.manual,
+                serie.new_release,
+                serie.next_air_date,
                 serie.original_language.iso_name,  # type: ignore
                 serie.original_title,
                 serie.overview,
@@ -294,6 +345,7 @@ class LocalProvider:
                 serie.tagline,
                 serie.title,
                 serie.watched,
+                serie.watchlist,
             ))
 
             for season in serie.seasons:
@@ -581,6 +633,31 @@ class LocalProvider:
                 return series
             else:
                 logging.debug(f'[db] Get all tv series: {[]}')
+                return []
+
+    @staticmethod
+    def get_all_watchlist() -> List[SeriesModel]:
+        """
+        Retrieves all tv series from the watchlist.
+
+        Args:
+            None
+
+        Returns:
+            List of SeriesModel or None
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM series WHERE watchlist = true;"""
+            result = connection.cursor().execute(sql).fetchall()
+            if result:
+                logging.debug(f'[db] Get all tv series in watchlist: {result}')
+                series = []
+                for serie in result:
+                    series.append(SeriesModel(t=serie))
+                return series
+            else:
+                logging.debug(f'[db] Get all tv series in watchlist: {[]}')
                 return []
 
     @staticmethod
@@ -909,3 +986,64 @@ class LocalProvider:
             else:
                 logging.error(f'[db] Get episode id {id}: None')
                 return None
+
+    # add_series_to_watchlist(id: int, serie: SeriesModel): Add series to watchlist table
+    @staticmethod
+    def add_series_to_watchlist(id: int) ->  None:
+        """
+        Adds a series from the watchlist via its id.
+
+        Args:
+            id (str): id of the movie to look for
+
+        Returns:
+            EpisodeModel of the requested episode or None if not found in db
+        """
+        logging.debug(f'[db] TV series {id}, add to watchlist')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET watchlist = true where id = ?;"""
+            connection.cursor().execute(sql, (id,))
+            connection.commit()
+
+            
+          
+
+    @staticmethod
+    def remove_series_from_watchlist(id: int) -> None:
+        """
+        Removes a series from the watchlist via its id.
+
+        Args:
+            id (str): id of the series to look for
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        logging.debug(f'[db] TV series {id}, delete from watchlist')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET watchlist = false where id = ?;"""
+            connection.cursor().execute(sql, (id,))
+            connection.commit()
+
+    @staticmethod
+    def get_watchlist_status(id: int) -> bool:
+        """
+        Returns watchlist status from the series with given id.
+
+        Args:
+            id (str): id of the series to look for
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        logging.debug(f'[db] TV series {id}, delete from watchlist')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """Select watchlist FROM series Where id = ?;"""
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            return result[0]
+        

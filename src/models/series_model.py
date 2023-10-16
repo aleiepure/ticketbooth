@@ -30,7 +30,10 @@ class SeriesModel(GObject.GObject):
         genres (List[str]): list of genres
         id (str): series id
         in_production (bool): whether the series is still in production
+        last_air_date (str): the date of the last aired episode
         manual (bool): if the series is added manually
+        new_release (bool): whether the has seen a new release since the last check
+        next_air_date (str) : used to notify user on upcoming releases
         original_language (LanguageModel): LanguageModel of the original language
         original_title (str): series title in original language
         overview (str): series overview
@@ -42,6 +45,7 @@ class SeriesModel(GObject.GObject):
         tagline (str): series tagline
         title (str): series title
         watched (bool): whether the series has been watched completely or not
+        watchlist (bool): whether the series should be checked for new releases
 
     Methods:
         None
@@ -59,7 +63,10 @@ class SeriesModel(GObject.GObject):
     genres = GObject.Property(type=GLib.strv_get_type())
     id = GObject.Property(type=str, default='')
     in_production = GObject.Property(type=bool, default=True)
+    last_air_date = GObject.Property(type=str, default='')
     manual = GObject.Property(type=bool, default=False)
+    new_release = GObject.Property(type=bool, default=False)
+    next_air_date = release_date = GObject.Property(type=str, default='')
     original_language = GObject.Property(type=LanguageModel)
     original_title = GObject.Property(type=str, default='')
     overview = GObject.Property(type=str, default='')
@@ -71,10 +78,11 @@ class SeriesModel(GObject.GObject):
     tagline = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
     watched = GObject.Property(type=bool, default=False)
+    watchlist = GObject.Property(type=bool, default=False)
 
     def __init__(self, d=None, t=None):
         super().__init__()
-
+        
         if d is not None:
             self.add_date = datetime.now()
             self.backdrop_path = self._download_background(d['backdrop_path'])
@@ -83,7 +91,14 @@ class SeriesModel(GObject.GObject):
             self.genres = self._parse_genres(api_dict=d['genres'])
             self.id = d['id']
             self.in_production = d['in_production']
+            self.last_air_date = d['last_air_date']
             self.manual = False
+            self.new_release = False
+            next_episode_to_air = d['next_episode_to_air']
+            if next_episode_to_air == None: 
+                self.next_air_date = "" 
+            else: 
+                self.next_air_date = d['next_episode_to_air']['air_date']
             self.original_language = local.LocalProvider.get_language_by_code(
                 d['original_language'])  # type: ignore
             self.original_title = d['original_name']
@@ -96,29 +111,34 @@ class SeriesModel(GObject.GObject):
             self.tagline = d['tagline']
             self.title = d['name']
             self.watched = False
+            self.watchlist = False
         else:
-            self.add_date = t[0]  # type: ignore
-            self.backdrop_path = t[1]  # type: ignore
-            self.created_by = self._parse_creators(db_str=t[2])  # type: ignore
-            self.episodes_number = t[3]  # type: ignore
-            self.genres = self._parse_genres(db_str=t[4])  # type: ignore
-            self.id = t[5]  # type: ignore
-            self.in_production = t[6]  # type: ignore
-            self.manual = t[7]  # type: ignore
+            self.add_date = t["add_date"]  # type: ignore
+            self.backdrop_path = t["backdrop_path"]  # type: ignore
+            self.created_by = self._parse_creators(db_str=t["created_by"])  # type: ignore
+            self.episodes_number = t["episodes_number"]  # type: ignore
+            self.genres = self._parse_genres(db_str=t["genres"])  # type: ignore
+            self.id = t["id"]  # type: ignore
+            self.in_production = t["in_production"]  # type: ignore
+            self.last_air_date = t["last_air_date"]
+            self.manual = t["manual"]  # type: ignore
+            self.new_release = t["new_release"]
+            self.next_air_date = t["next_air_date"]
             self.original_language = local.LocalProvider.get_language_by_code(
-                t[8])  # type: ignore
-            self.original_title = t[9]  # type: ignore
-            self.overview = t[10]  # type: ignore
-            self.poster_path = t[11]  # type: ignore
-            self.release_date = t[12]  # type: ignore
-            self.seasons_number = t[13]  # type: ignore
-            self.status = t[14]  # type: ignore
-            self.tagline = t[15]  # type: ignore
-            self.title = t[16]  # type: ignore
-            self.watched = t[17]  # type: ignore
+                t["original_language"])  # type: ignore
+            self.original_title = t["original_title"]  # type: ignore
+            self.overview = t["overview"]  # type: ignore
+            self.poster_path = t["poster_path"]  # type: ignore
+            self.release_date = t["release_date"]  # type: ignore
+            self.seasons_number = t["seasons_number"]  # type: ignore
+            self.status = t["status"]  # type: ignore
+            self.tagline = t["tagline"]  # type: ignore
+            self.title = t["title"]  # type: ignore
+            self.watched = t["watched"]  # type: ignore
+            self.watchlist = t["watchlist"]
 
-            if len(t) == 19:  # type: ignore
-                self.seasons = t[18]  # type: ignore
+            if self.seasons_number == 0:  # type: ignore
+                self.seasons = []  # type: ignore
             else:
                 self.seasons = local.LocalProvider.get_all_seasons(
                     self.id)  # type: ignore

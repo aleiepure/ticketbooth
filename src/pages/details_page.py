@@ -64,6 +64,7 @@ class DetailsView(Adw.NavigationPage):
     _btn_content = Gtk.Template.Child()
     _edit_btn = Gtk.Template.Child()
     _update_btn = Gtk.Template.Child()
+    _watchlist_btn = Gtk.Template.Child()
     _description_box = Gtk.Template.Child()
     _overview_lbl = Gtk.Template.Child()
     _creator_box = Gtk.Template.Child()
@@ -143,6 +144,11 @@ class DetailsView(Adw.NavigationPage):
             self._edit_btn.set_visible(True)
         else:
             self._update_btn.set_visible(True)
+            
+        if not self.content.manual and self.content.in_production:
+            self._watchlist_btn.set_visible(True)
+            if local.get_watchlist_status(self.content.id) == True:
+                self._watchlist_btn.set_active(True)
 
         if self.content.overview:  # type: ignore
             self._description_box.set_visible(True)
@@ -537,6 +543,26 @@ class DetailsView(Adw.NavigationPage):
                 title=_('Update {title}').format(title=self.content.title),
                 task_function=self._update),
             on_done=self._on_update_done)
+
+    @Gtk.Template.Callback('_watchlist_btn_toggled')
+    def _watchlist_btn_toggled(self, user_data: object | None) -> None:
+        """
+        Callback for "clicked" signal.
+        Adds a background activity to start a manual update.
+
+        Args:
+            user_data (object or None): additional data passed to the callback
+
+        Returns:
+            None
+        """
+        if self._watchlist_btn.get_active():
+            local.add_series_to_watchlist(self.content.id)
+            return
+        else:
+            local.remove_series_from_watchlist(self.content.id)
+            return
+
 
     def _update(self, activity: BackgroundActivity) -> None:
         """

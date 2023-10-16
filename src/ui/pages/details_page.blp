@@ -149,6 +149,15 @@ template $DetailsView: Adw.NavigationPage {
                         styles ["circular"]
                         clicked => $_on_delete_btn_clicked();
                       }
+
+                      CheckButton _watchlist_btn {
+                        label: _("Notify on new releases");
+                        tooltip-text: _("Notify on new releases");
+                        valign: center;
+                        visible: false;
+
+                        toggled => $_watchlist_btn_toggled();
+                      }
                     }
                   }
 
