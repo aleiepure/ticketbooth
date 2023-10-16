@@ -552,9 +552,11 @@ class DetailsView(Adw.NavigationPage):
         if type(self.content) is MovieModel:
             self.new_content = MovieModel(tmdb.get_movie(self.content.id))
             local.update_movie(old=self.content, new=self.new_content)
+            self.new_content = local.get_movie_by_id(self.content.id)
         else:
             self.new_content = SeriesModel(tmdb.get_serie(self.content.id))
             local.update_series(old=self.content, new=self.new_content)
+            self.new_content = local.get_series_by_id(self.content.id)
             
 
     def _on_update_done(self,
