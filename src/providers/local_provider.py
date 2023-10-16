@@ -862,6 +862,8 @@ class LocalProvider:
                 except ValueError:
                     new.seasons[idx].episodes[jdx].watched = False
 
+        new.add_date = old.add_date
+        
         LocalProvider.add_series(serie=new)
 
         return result.lastrowid
