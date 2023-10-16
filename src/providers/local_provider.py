@@ -785,7 +785,7 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """UPDATE movies
-                     SET add_date = ?,
+                     SET 
                          backdrop_path = ?,
                          budget = ?,
                          genres = ?,
@@ -803,7 +803,6 @@ class LocalProvider:
                      WHERE id = ?;
                   """
             result = connection.cursor().execute(sql, (
-                new.add_date,
                 new.backdrop_path,
                 new.budget,
                 ','.join(new.genres),
@@ -821,9 +820,9 @@ class LocalProvider:
                 old.id,
             ))
             connection.commit()
-            logging.debug(f'[db] Update movie {old.id}: {(new.add_date, new.backdrop_path, new.budget, ",".join(new.genres), new.manual, new.original_language.iso_name, new.original_title, new.overview, new.poster_path, new.release_date, new.revenue, new.runtime, new.status, new.tagline, new.title, old.id)}')
+            logging.debug(f'[db] Update movie {old.id}: {(new.backdrop_path, new.budget, ",".join(new.genres), new.manual, new.original_language.iso_name, new.original_title, new.overview, new.poster_path, new.release_date, new.revenue, new.runtime, new.status, new.tagline, new.title, old.id)}')
         return result.lastrowid
-
+    
     @staticmethod
     def mark_watched_episode(id: str, watched: bool) -> int | None:
         """
