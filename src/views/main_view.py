@@ -45,6 +45,19 @@ class MainView(Adw.Bin):
 
     def __init__(self):
         super().__init__()
+<<<<<<< HEAD
+=======
+        self.app = window.app
+        local.update_series_table()
+        # logging.info('Starting automatic update...')
+        # BackgroundQueue.add(
+        #     activity=BackgroundActivity(
+        #         activity_type=ActivityType.UPDATE,
+        #         title=C_('Background activity title',
+        #                     'Automatic update'),
+        #         task_function=self._update_content),
+        #     on_done=self._on_update_done)
+>>>>>>> 89b5f6d (Keep more flags in update_series)
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',
@@ -225,24 +238,104 @@ class MainView(Adw.Bin):
             None
         """
         series = local.get_all_watchlist()
-        if series:
-            for serie in series:    # type: ignore
-                print(serie.title)
-                local.delete_series(serie.id)
-                new_serie = SeriesModel(tmdb.get_serie(serie.id))
-                
-                #check for several conditions
-                # 1. last episode released is newer than last saved in db -> move series into new release came out and make notification
-                if datetime.strptime(serie.last_episode_aired_date, '%Y-%m-%d') < datetime.strptime(new_serie.last_episode_aired_date, '%Y-%m-%d'):
-                    print("heyo")
-                else:
-                    print("hiyo")
-                # 2. Next air date is set to soon (to be defined, maybe 6 days) -> move series into new releases soon and add next air date to details page
-                # 3. Series went from in production to not in production -> inform user that series went out of production maybe add website for more info
-                
-                local.add_series(serie=new_serie)
 
-    def _on_watchlist_done(self,
+        new_release = []
+        soon_release = []
+        out_of_production = []
+
+        for serie in series:
+            
+            last_air_date = datetime.strptime(serie.last_air_date, '%Y-%m-%d')
+
+            # Get the latest info for the series from TMDB
+            new_serie = SeriesModel(tmdb.get_serie(serie.id))
+            new_last_air_date = datetime.strptime(new_serie.last_air_date, '%Y-%m-%d')
+            if new_serie.next_air_date != '':
+                new_next_air_date = datetime.strptime(new_serie.next_air_date, '%Y-%m-%d')
+            else:
+                new_next_air_date = datetime.today() + timedelta(days = 10) # create bogus next air date if it does not exist
+                
+            # Check if the latest release is newer than the last saved in the database -> new release has come out.
+            if last_air_date < new_last_air_date:
+                # Set the new release status and add the series to the new releases list
+                local.set_new_release_status(serie.id, True)
+                new_release.append(new_serie)
+                new_release_span = new_last_air_date - datetime.now() #we only save one, since we do not use it if more than one series has a new release
+            
+            # Check if the next air date is set to soon (6 days in the future)
+            if datetime.now() + timedelta(days=6) > new_next_air_date:
+                local.set_soon_release_status(serie.id, True)
+                # if we also detect a considerable amount of time bewteen epsidoe notify user that the series has new releases coming soon.
+                # 3 weeks are chosen to include the new streaming release model of two chunks a month apart but not spam the user for weekly or bi-weekly releases
+                if new_next_air_date - timedelta(days=20) > last_air_date:
+                    soon_release.append(new_serie)
+                    soon_release_span =  datetime.now() - new_last_air_date
+            
+            # Check if the series went from in production to not in production
+            if serie.in_production == 1 and new_serie.in_production == 0:
+                out_of_production.append(new_serie)
+
+            local.update_series(serie, new_serie)
+
+        if new_release:
+            if len(new_release) == 1:
+                title = "New release for " + new_release[0].title
+                action= "-" # TODO probably set it to open the details page
+                body = f"A new episode was released {new_release_span} days ago"
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+            else:
+                title = "New release for " + len(new_release) + " series on your watchlist"
+                action= "-" # TODO set to main view with category new releases on top
+                body = f"Click to see all new releases"
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+
+        if soon_release:
+            if len(soon_release) == 1:
+                title = "New release for " + soon_release[0].title
+                action= "-" # TODO probably set it to open the details page
+                body = f"A new episode will release in {soon_release_span.days} days"
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+            else:
+                title = len(new_release) + " series on your watchlist will have a new episode soon"
+                action= "-" # TODO  do not know
+                body = f"Click to see all new releases"
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+
+        if out_of_production:
+            if len(out_of_production) == 1:
+                title =  f"{out_of_production[0].title} has gone out of production"
+                action= "-" # TODO probably set it to open the details page
+                body = f"We hope {out_of_production[0].title} has come to an satisfiying ending." # TODO tone okay?
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+            if len(out_of_production) == 1:
+                title =  f"{len(out_of_production)} series of your watchlist have gone out of production"
+                action= "-" # TODO probably just open main_view on series
+                string = ", ".join(out.title for out in out_of_production)
+                body = f"The series are {string}" #if somebody is unfortunate enough to have more than 5 series cancelled then this will probably overflow
+                notification = Gio.Notification.new(title)
+                notification.set_default_action(action) 
+                notification.set_body(body)
+                self.app.send_notification(None, notification)
+            
+        self.refresh()
+
+
+    def _on_notification_list_done(self,
                         source: GObject.Object,
                         result: Gio.AsyncResult,
                         cancellable: Gio.Cancellable,

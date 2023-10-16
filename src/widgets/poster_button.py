@@ -70,6 +70,13 @@ class PosterButton(Gtk.Box):
 
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
+
+        if type(self.content) is SeriesModel:
+            if self.new_release:
+                self._new_release_badge.set_visible(True)
+            elif self.soon_release:
+                self._soon_release_badge.set_visible(True)
+            
         if not self.year:
             self._year_lbl.set_visible(False)
         if self.watched:

@@ -31,6 +31,7 @@ class LocalProvider:
         create_languages_table(): Creates the table used to store the available languages in a local database
         create_series_watchlist_table(): Creates the table used to store which series need to be checked for new realses on startup.
         create_tables(): Convenience method to create all tables with a single call
+        update_series_table(): Checks for missing and adds new columns to the database
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
         add_movie(id: int, movie: MovieModel): Inserts a movie in the movies table, querying the data from TMDB if only
             id is provided.
@@ -123,7 +124,7 @@ class LocalProvider:
                             genres TEXT,
                             id TEXT PRIMARY KEY,
                             in_production BOOLEAN,
-                            last_episode_aired_date TEXT,
+                            last_air_date TEXT,
                             manual BOOLEAN,
                             next_air_date TEXT,
                             new_release BOOLEAN,
@@ -178,30 +179,28 @@ class LocalProvider:
             None
         """
         
-        
         with sqlite3.connect(shared.db) as connection:
             
             sql = """pragma table_info(series)"""
             result = connection.cursor().execute(sql).fetchall()
-            
-            if not any(item[1] == "last_episode_aired_date" for item in result):
+            if not any(item[1] == "last_air_date" for item in result):
                 sql = """ALTER TABLE series
-                            ADD last_episode_aired_date TEXT AFTER in_production;"""
+                            ADD last_air_date TEXT;"""
                 connection.cursor().execute(sql)
 
             if not any(item[1] == "new_release" for item in result):
                 sql = """ALTER TABLE series
-                            ADD new_release TEXT AFTER manual;"""
+                            ADD new_release TEXT;"""
                 connection.cursor().execute(sql)
 
             if not any(item[1] == "next_air_date" for item in result):
                 sql = """ALTER TABLE series
-                            ADD next_air_date TEXT AFTER next_air_date;"""
+                            ADD next_air_date TEXT;"""
                 connection.cursor().execute(sql)
 
             if not any(item[1] == "watchlist" for item in result):
                 sql = """ALTER TABLE series
-                            ADD watchlist TEXT AFTER watched;"""
+                            ADD watchlist TEXT;"""
                 connection.cursor().execute(sql)
         
 
@@ -331,7 +330,7 @@ class LocalProvider:
                 ','.join(serie.genres),
                 serie.id,
                 serie.in_production,
-                serie.last_episode_aired_date,
+                serie.last_air_date,
                 serie.manual,
                 serie.new_release,
                 serie.next_air_date,
@@ -599,6 +598,7 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
+            connection.row_factory = sqlite3.Row
             sql = 'SELECT * FROM series WHERE id=?;'
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
@@ -621,9 +621,10 @@ class LocalProvider:
         Returns:
             List of SeriesModel or None
         """
-
+        LocalProvider.update_series_table()
         with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM series;"""
+            connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql).fetchall()
             if result:
                 logging.debug(f'[db] Get all tv series: {result}')
@@ -649,6 +650,7 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM series WHERE watchlist = true;"""
+            connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql).fetchall()
             if result:
                 logging.debug(f'[db] Get all tv series in watchlist: {result}')
@@ -939,6 +941,11 @@ class LocalProvider:
                 except ValueError:
                     new.seasons[idx].episodes[jdx].watched = False
 
+        new.add_date = old.add_date
+        new.activate_notification = old.activate_notification
+        new.watched = old.watched
+        new.soon_release = old.soon_release
+        new.new_release = old.new_release
         LocalProvider.add_series(serie=new)
 
         return result.lastrowid
@@ -987,7 +994,6 @@ class LocalProvider:
                 logging.error(f'[db] Get episode id {id}: None')
                 return None
 
-    # add_series_to_watchlist(id: int, serie: SeriesModel): Add series to watchlist table
     @staticmethod
     def add_series_to_watchlist(id: int) ->  None:
         """
