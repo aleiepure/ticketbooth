@@ -45,7 +45,7 @@ class SeriesModel(GObject.GObject):
         tagline (str): series tagline
         title (str): series title
         watched (bool): whether the series has been watched completely or not
-        watchlist (bool): whether the series should be checked for new releases
+        activate_notification (bool): whether the series should be checked for new releases
 
     Methods:
         None
@@ -55,7 +55,7 @@ class SeriesModel(GObject.GObject):
     """
 
     __gtype_name__ = 'SeriesModel'
-
+    activate_notification = GObject.Property(type=bool, default=False)
     add_date = GObject.Property(type=str, default='')
     backdrop_path = GObject.Property(type=str, default='')
     created_by = GObject.Property(type=GLib.strv_get_type())
@@ -78,12 +78,12 @@ class SeriesModel(GObject.GObject):
     tagline = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
     watched = GObject.Property(type=bool, default=False)
-    watchlist = GObject.Property(type=bool, default=False)
 
     def __init__(self, d=None, t=None):
         super().__init__()
         
         if d is not None:
+            self.activate_notification = False
             self.add_date = datetime.now()
             self.backdrop_path = self._download_background(d['backdrop_path'])
             self.created_by = self._parse_creators(api_dict=d['created_by'])
@@ -111,8 +111,8 @@ class SeriesModel(GObject.GObject):
             self.tagline = d['tagline']
             self.title = d['name']
             self.watched = False
-            self.watchlist = False
         else:
+            self.activate_notification = t["activate_notification"]
             self.add_date = t["add_date"]  # type: ignore
             self.backdrop_path = t["backdrop_path"]  # type: ignore
             self.created_by = self._parse_creators(db_str=t["created_by"])  # type: ignore
@@ -135,7 +135,6 @@ class SeriesModel(GObject.GObject):
             self.tagline = t["tagline"]  # type: ignore
             self.title = t["title"]  # type: ignore
             self.watched = t["watched"]  # type: ignore
-            self.watchlist = t["watchlist"]
 
             if self.seasons_number == 0:  # type: ignore
                 self.seasons = []  # type: ignore

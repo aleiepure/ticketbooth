@@ -64,7 +64,7 @@ class DetailsView(Adw.NavigationPage):
     _btn_content = Gtk.Template.Child()
     _edit_btn = Gtk.Template.Child()
     _update_btn = Gtk.Template.Child()
-    _watchlist_btn = Gtk.Template.Child()
+    _activate_notification_btn = Gtk.Template.Child()
     _description_box = Gtk.Template.Child()
     _overview_lbl = Gtk.Template.Child()
     _creator_box = Gtk.Template.Child()
@@ -146,9 +146,8 @@ class DetailsView(Adw.NavigationPage):
             self._update_btn.set_visible(True)
             
         if not self.content.manual and self.content.in_production:
-            self._watchlist_btn.set_visible(True)
-            if local.get_watchlist_status(self.content.id) == True:
-                self._watchlist_btn.set_active(True)
+            self._activate_notification_btn.set_visible(True)
+            self._activate_notification_btn.set_active(local.get_notification_list_status(self.content.id))
 
         if self.content.overview:  # type: ignore
             self._description_box.set_visible(True)
@@ -162,7 +161,7 @@ class DetailsView(Adw.NavigationPage):
                 self._btn_content.set_icon_name('check-plain')
             else:
                 self._btn_content.set_label(_('Mark as Watched'))
-                self._btn_content.set_icon_name('watchlist')
+                self._btn_content.set_icon_name('activate_notification')
 
             if self.content.runtime:
                 self._chip2_lbl.set_visible(True)
@@ -236,7 +235,7 @@ class DetailsView(Adw.NavigationPage):
                 btn_content.set_icon_name('check-plain')
             else:
                 btn_content.set_label(_('Mark as Watched'))
-                btn_content.set_icon_name('watchlist')
+                btn_content.set_icon_name('activate_notification')
 
             button.set_child(btn_content)
             season_row.add_suffix(button)
@@ -284,7 +283,7 @@ class DetailsView(Adw.NavigationPage):
             btn_content.set_icon_name('check-plain')
         else:
             btn_content.set_label(_('Mark as Watched'))
-            btn_content.set_icon_name('watchlist')
+            btn_content.set_icon_name('activate_notification')
 
         # Update season status
         local.mark_watched_series(self.content.id, all(
@@ -338,7 +337,7 @@ class DetailsView(Adw.NavigationPage):
             btn_content.set_icon_name('check-plain')
         else:
             btn_content.set_label(_('Mark as Watched'))
-            btn_content.set_icon_name('watchlist')
+            btn_content.set_icon_name('activate_notification')
 
         # Update season status
         local.mark_watched_series(self.content.id, not all(  # type: ignore
@@ -474,7 +473,7 @@ class DetailsView(Adw.NavigationPage):
             self._btn_content.set_icon_name('check-plain')
         else:
             self._btn_content.set_label(_('Mark as Watched'))
-            self._btn_content.set_icon_name('watchlist')
+            self._btn_content.set_icon_name('activate_notification')
 
         self.activate_action('win.refresh', None)
 
@@ -544,8 +543,8 @@ class DetailsView(Adw.NavigationPage):
                 task_function=self._update),
             on_done=self._on_update_done)
 
-    @Gtk.Template.Callback('_watchlist_btn_toggled')
-    def _watchlist_btn_toggled(self, user_data: object | None) -> None:
+    @Gtk.Template.Callback('_activate_notification_btn_toggled')
+    def _activate_notification_btn_toggled(self, user_data: object | None) -> None:
         """
         Callback for "clicked" signal.
         Adds a background activity to start a manual update.
@@ -556,11 +555,11 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
-        if self._watchlist_btn.get_active():
-            local.add_series_to_watchlist(self.content.id)
+        if self._activate_notification_btn.get_active():
+            local.add_series_to_notification_list(self.content.id)
             return
         else:
-            local.remove_series_from_watchlist(self.content.id)
+            local.remove_series_from_notification_list(self.content.id)
             return
 
 
@@ -617,7 +616,7 @@ class DetailsView(Adw.NavigationPage):
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),  # TRANSLATORS: {title} is the content's title
                                        C_('message dialog heading', 'Delete {title}?').format(
                                            title=self.content.title),
-                                       C_('message dialog body', 'This title will be deleted from your watchlist.'))
+                                       C_('message dialog body', 'This title will be deleted from your notification list.'))
         dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
         dialog.add_response('delete', C_('message dialog action', '_Delete'))
         dialog.set_response_appearance(

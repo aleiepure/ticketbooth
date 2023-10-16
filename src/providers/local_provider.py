@@ -29,7 +29,6 @@ class LocalProvider:
         create_movies_table(): Creates the table used to store movie details in a local database
         create_series_table(): Creates the table used to store tv series details in a local database
         create_languages_table(): Creates the table used to store the available languages in a local database
-        create_series_watchlist_table(): Creates the table used to store which series need to be checked for new realses on startup.
         create_tables(): Convenience method to create all tables with a single call
         update_series_table(): Checks for missing and adds new columns to the database
         add_language(language: LanguageModel): Inserts the provided LanguageModel in the languages table
@@ -60,9 +59,9 @@ class LocalProvider:
         update_movie(old: MovieModel, new: MovieModel): Updates a movie with new data.
         mark_watched_episode(id: str, watched: bool): Sets the watched flag on the specified episode.
         get_episode_by_id(id: str): Retrieves an episode from the db via its id.
-        add_series_to_watchlist(id: int): Add series to watchlist table
-        remove_series_from_watchlist(id: str): Remove series from watchlist
-        get_watchlist_status(id: int)
+        add_series_to_notification_list(id: int): Add series to notification_list table
+        remove_series_from_notification_list(id: str): Remove series from notification_list
+        get_notification_list_status(id: int)
     """
 
     @staticmethod
@@ -138,7 +137,7 @@ class LocalProvider:
                             tagline TEXT,
                             title TEXT,
                             watched BOOLEAN,
-                            watchlist BOOLEAN,
+                            activate_notification BOOLEAN,
                             FOREIGN KEY (original_language) REFERENCES languages (iso_639_1)
                         );"""
             seasons_sql = """CREATE TABLE IF NOT EXISTS seasons (
@@ -193,14 +192,19 @@ class LocalProvider:
                             ADD new_release TEXT;"""
                 connection.cursor().execute(sql)
 
+            if  any(item[1] == "watchlist" for item in result):
+                sql = """ALTER TABLE series
+                            DROP watchlist;"""
+                connection.cursor().execute(sql)
+
             if not any(item[1] == "next_air_date" for item in result):
                 sql = """ALTER TABLE series
                             ADD next_air_date TEXT;"""
                 connection.cursor().execute(sql)
 
-            if not any(item[1] == "watchlist" for item in result):
+            if not any(item[1] == "activate_notification" for item in result):
                 sql = """ALTER TABLE series
-                            ADD watchlist TEXT;"""
+                            ADD activate_notification TEXT;"""
                 connection.cursor().execute(sql)
         
 
@@ -344,7 +348,7 @@ class LocalProvider:
                 serie.tagline,
                 serie.title,
                 serie.watched,
-                serie.watchlist,
+                serie.activate_notification,
             ))
 
             for season in serie.seasons:
@@ -637,9 +641,9 @@ class LocalProvider:
                 return []
 
     @staticmethod
-    def get_all_watchlist() -> List[SeriesModel]:
+    def get_all_notification_list() -> List[SeriesModel]:
         """
-        Retrieves all tv series from the watchlist.
+        Retrieves all tv series from the notification_list.
 
         Args:
             None
@@ -649,17 +653,17 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """SELECT * FROM series WHERE watchlist = true;"""
+            sql = """SELECT * FROM series WHERE activate_notification = true;"""
             connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql).fetchall()
             if result:
-                logging.debug(f'[db] Get all tv series in watchlist: {result}')
+                logging.debug(f'[db] Get all tv series in notification_list: {result}')
                 series = []
                 for serie in result:
                     series.append(SeriesModel(t=serie))
                 return series
             else:
-                logging.debug(f'[db] Get all tv series in watchlist: {[]}')
+                logging.debug(f'[db] Get all tv series in notification_list: {[]}')
                 return []
 
     @staticmethod
@@ -995,9 +999,9 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def add_series_to_watchlist(id: int) ->  None:
+    def add_series_to_notification_list(id: int) ->  None:
         """
-        Adds a series from the watchlist via its id.
+        Adds a series from the notification list via its id.
 
         Args:
             id (str): id of the movie to look for
@@ -1005,10 +1009,10 @@ class LocalProvider:
         Returns:
             EpisodeModel of the requested episode or None if not found in db
         """
-        logging.debug(f'[db] TV series {id}, add to watchlist')
+        logging.debug(f'[db] TV series {id}, add to notification list')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET watchlist = true where id = ?;"""
+            sql = """UPDATE series SET activate_notification = true where id = ?;"""
             connection.cursor().execute(sql, (id,))
             connection.commit()
 
@@ -1016,9 +1020,9 @@ class LocalProvider:
           
 
     @staticmethod
-    def remove_series_from_watchlist(id: int) -> None:
+    def remove_series_from_notification_list(id: int) -> None:
         """
-        Removes a series from the watchlist via its id.
+        Removes a series from the notification list via its id.
 
         Args:
             id (str): id of the series to look for
@@ -1027,17 +1031,17 @@ class LocalProvider:
             Success int or None if not found in db
         """
 
-        logging.debug(f'[db] TV series {id}, delete from watchlist')
+        logging.debug(f'[db] TV series {id}, delete from notification list')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET watchlist = false where id = ?;"""
+            sql = """UPDATE series SET activate_notification = false where id = ?;"""
             connection.cursor().execute(sql, (id,))
             connection.commit()
 
     @staticmethod
-    def get_watchlist_status(id: int) -> bool:
+    def get_notification_list_status(id: int) -> bool:
         """
-        Returns watchlist status from the series with given id.
+        Returns activate_notification status from the series with given id.
 
         Args:
             id (str): id of the series to look for
@@ -1046,10 +1050,10 @@ class LocalProvider:
             Success int or None if not found in db
         """
 
-        logging.debug(f'[db] TV series {id}, delete from watchlist')
+        logging.debug(f'[db] TV series {id}, delete from notification_list')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """Select watchlist FROM series Where id = ?;"""
+            sql = """Select activate_notification FROM series Where id = ?;"""
             result = connection.cursor().execute(sql, (id,)).fetchone()
             return result[0]
         

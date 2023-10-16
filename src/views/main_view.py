@@ -45,7 +45,7 @@ class MainView(Adw.Bin):
 
     def __init__(self):
         super().__init__()
-
+        local.update_series_table()
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',
                                              C_('Category', 'Movies'),
@@ -123,14 +123,14 @@ class MainView(Adw.Bin):
         frequency = shared.schema.get_string('update-freq')
 
         if last_check + timedelta(seconds=20) < datetime.now():
-            logging.info('Starting automatic watchlist update...')
+            logging.info('Starting automatic notification list update...')
             BackgroundQueue.add(
                 activity=BackgroundActivity(
                     activity_type=ActivityType.UPDATE,
                     title=C_('Background activity title',
-                                'Automatic update of watchlist'),
-                    task_function=self._update_watchlist),
-                on_done=self._on_watchlist_done)
+                                'Automatic update of notification'),
+                    task_function=self._update_notification_list),
+                on_done=self._on_notification_list_done)
                 
         logging.debug(
             f'Last update done on {last_check}, frequency {frequency}')
@@ -213,9 +213,9 @@ class MainView(Adw.Bin):
         logging.info('Automatic update done')
         activity.end()
 
-    def _update_watchlist(self, activity: BackgroundActivity) -> None:
+    def _update_notification_list(self, activity: BackgroundActivity) -> None:
         """
-        Performs a content update on the watchlist.
+        Performs a content update on the notification list.
 
         Args:
             activity (BackgroundActivity): the calling activity
@@ -329,7 +329,7 @@ class MainView(Adw.Bin):
         """Callback to complete async activity"""
 
         self.refresh()
-        logging.info('Automatic watchlist update done')
+        logging.info('Automatic notification list update done')
         activity.end()
 
 
