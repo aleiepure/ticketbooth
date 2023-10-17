@@ -180,7 +180,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
         self.add_action_entries(self._actions, self)
         self._restore_state()
-
+        self.app = kwargs.get("application")
         if shared.DEBUG:
             self.add_css_class('devel')
 
@@ -245,7 +245,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         logging.info(f'is first run: {is_first_run}')
 
         if not is_first_run:
-            self._win_stack.add_named(child=MainView(), name='main')
+            self._win_stack.add_named(child=MainView(self), name='main')
             self._win_stack.set_visible_child_name('main')
             return
 
@@ -286,7 +286,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         logging.info('First setup done')
-        self._win_stack.add_named(child=MainView(), name='main')
+        self._win_stack.add_named(child=MainView(self), name='main')
         self._win_stack.set_visible_child_name('main')
 
     def _restore_state(self) -> None:
