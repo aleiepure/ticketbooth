@@ -59,11 +59,12 @@ class LocalProvider:
         update_movie(old: MovieModel, new: MovieModel): Updates a movie with new data.
         mark_watched_episode(id: str, watched: bool): Sets the watched flag on the specified episode.
         get_episode_by_id(id: str): Retrieves an episode from the db via its id.
-        add_series_to_notification_list(id: int): Add series to notification_list table
-        remove_series_from_notification_list(id: str): Remove series from notification_list
+        set_notification_list_status(id: int, value: bool):  Sets the activate_notification field of the given series to value
         get_notification_list_status(id: int): Returns if the series given by the id is on the notification list
-        set_new_release_status(id: int, value: bool): sets the new_release field of the given series to value
-        set_soon_release_status(id: int, value: bool): sets the soon_release field of the given series to value
+        set_new_release_status(id: int, value: bool): Sets the new_release field of the given series to value
+        get_new_release_status(id: int): Returns if the series given by the id has had a new release
+        set_soon_release_status(id: int, value: bool): Sets the soon_release field of the given series to value
+        get_soon_release_status(id: int): Returns if the series given by the id has a new release soon
     """
 
     @staticmethod
@@ -1008,44 +1009,24 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def add_series_to_notification_list(id: int) ->  None:
+    def set_notification_list_status(id: int, value: bool) ->  None:
         """
-        Adds a series from the notification list via its id.
+        Sets notification_list status of the series with the id to value.
 
         Args:
             id (str): id of the movie to look for
+            value (bool): the value to set
 
         Returns:
             None
         """
-        logging.debug(f'[db] TV series {id}, add to notification list')
+        logging.debug(f'[db] TV series {id}, set activation_notification field to {value}')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET activate_notification = true where id = ?;"""
-            connection.cursor().execute(sql, (id,))
+            sql = """UPDATE series SET activate_notification = ? WHERE id = ?"""
+            result = connection.cursor().execute(sql, (value, id,)).fetchone()
             connection.commit()
 
-            
-          
-
-    @staticmethod
-    def remove_series_from_notification_list(id: int) -> None:
-        """
-        Removes a series from the notification list via its id.
-
-        Args:
-            id (str): id of the series to look for
-
-        Returns:
-            None
-        """
-
-        logging.debug(f'[db] TV series {id}, remove from notification list')
-
-        with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET activate_notification = false where id = ?;"""
-            connection.cursor().execute(sql, (id,))
-            connection.commit()
 
     @staticmethod
     def get_notification_list_status(id: int) -> bool:
@@ -1059,17 +1040,37 @@ class LocalProvider:
             Bool with the status
         """
 
-        logging.debug(f'[db] TV series {id}, delete from notification_list')
+        logging.debug(f'[db] TV series {id}, get notification_list status')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """Select activate_notification FROM series Where id = ?;"""
+            sql = """SELECT activate_notification FROM series WHERE id = ?;"""
             result = connection.cursor().execute(sql, (id,)).fetchone()
             return result[0]
 
     @staticmethod
     def set_new_release_status(id: int, value: bool) -> None:
         """
-        Returns activate_notification status from the series with given id.
+        Sets new_release status of the series with the id to value.
+
+        Args:
+            id (str): id of the series to look for
+            value (bool): the value to set
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        logging.debug(f'[db] TV series {id}, set new_release field to {value}')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET new_release = ? WHERE id = ?"""
+            result = connection.cursor().execute(sql, (value, id,)).fetchone()
+            connection.commit()
+
+    @staticmethod
+    def get_new_release_status(id: int) -> None:
+        """
+        Returns new_release status from the series with given id.
 
         Args:
             id (str): id of the series to look for
@@ -1078,10 +1079,51 @@ class LocalProvider:
             Success int or None if not found in db
         """
 
-        logging.debug(f'[db] TV series {id}, set new release field to {value}')
+        logging.debug(f'[db] TV series {id}, get new_release status')
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET watched = ? WHERE id = ?"""
+            sql = """SELECT new_release FROM series WHERE id = ?;"""
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            return result[0]
+
+    @staticmethod
+    def set_soon_release_status(id: int, value: bool) -> None:
+        """
+        Sets soon_release status of the series with the id to value.
+
+        Args:
+            id (str): id of the series to look for
+            value (bool): the value to set
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        logging.debug(f'[db] TV series {id}, set soon_release field to {value}')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET soon_release = ? WHERE id = ?"""
             result = connection.cursor().execute(sql, (value, id,)).fetchone()
             connection.commit()
+
+
+
+    @staticmethod
+    def get_soon_release_status(id: int, value: bool) -> None:
+        """
+        Returns soon_release status from the series with given id.
+
+        Args:
+            id (str): id of the series to look for
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        logging.debug(f'[db] TV series {id}, get soon_release status')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT soon_release FROM series WHERE id = ?;"""
+            result = connection.cursor().execute(sql, (id,)).fetchone()
+            return result[0]               
         
