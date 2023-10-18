@@ -334,8 +334,33 @@ class LocalProvider:
             serie = SeriesModel(tmdb.get_serie(id))
 
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = """INSERT INTO series (
+                activate_notification,
+                add_date,
+                backdrop_path,
+                created_by,
+                episodes_number,
+                genres,
+                id,
+                in_production,
+                last_air_date,
+                manual,
+                next_air_date,
+                new_release,
+                original_language,
+                original_title,
+                overview,
+                poster_path,
+                release_date,
+                seasons_number,
+                soon_release,
+                status,
+                tagline,
+                title,
+                watched
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
+                serie.activate_notification,
                 serie.add_date,
                 serie.backdrop_path,
                 ','.join(serie.created_by),
@@ -345,8 +370,8 @@ class LocalProvider:
                 serie.in_production,
                 serie.last_air_date,
                 serie.manual,
-                serie.new_release,
                 serie.next_air_date,
+                serie.new_release,
                 serie.original_language.iso_name,  # type: ignore
                 serie.original_title,
                 serie.overview,
@@ -358,7 +383,6 @@ class LocalProvider:
                 serie.tagline,
                 serie.title,
                 serie.watched,
-                serie.activate_notification,
             ))
 
             for season in serie.seasons:
