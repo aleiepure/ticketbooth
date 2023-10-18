@@ -60,6 +60,7 @@ class DetailsView(Adw.NavigationPage):
     _chip1_lbl = Gtk.Template.Child()
     _chip2_lbl = Gtk.Template.Child()
     _chip3_lbl = Gtk.Template.Child()
+    _chip4_lbl = Gtk.Template.Child()
     _watched_btn = Gtk.Template.Child()
     _btn_content = Gtk.Template.Child()
     _edit_btn = Gtk.Template.Child()
@@ -138,7 +139,11 @@ class DetailsView(Adw.NavigationPage):
         if self.content.release_date:  # type: ignore
             self._chip1_lbl.set_visible(True)
             self._chip1_lbl.set_text(date.fromisoformat(
-                self.content.release_date).strftime('%d %B %Y'))  # type: ignore
+                self.content.release_date).strftime('%d %b. %Y'))  # type: ignore
+
+        if self.content.next_air_date != '':  # type: ignore
+            self._chip4_lbl.set_visible(True)
+            self._chip4_lbl.set_text(date.fromisoformat(self.content.next_air_date).strftime('%d %b. %Y'))  # type: ignore        
 
         if self.content.manual:  # type: ignore
             self._edit_btn.set_visible(True)
