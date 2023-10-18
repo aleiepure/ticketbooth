@@ -547,20 +547,15 @@ class DetailsView(Adw.NavigationPage):
     def _activate_notification_btn_toggled(self, user_data: object | None) -> None:
         """
         Callback for "clicked" signal.
-        Adds a background activity to start a manual update.
-
+        Adds the series to the notification list
         Args:
             user_data (object or None): additional data passed to the callback
 
         Returns:
             None
         """
-        if self._activate_notification_btn.get_active():
-            local.add_series_to_notification_list(self.content.id)
-            return
-        else:
-            local.remove_series_from_notification_list(self.content.id)
-            return
+        
+        local.set_notification_list_status(self.content.id, self._activate_notification_btn.get_active())
 
 
     def _update(self, activity: BackgroundActivity) -> None:
