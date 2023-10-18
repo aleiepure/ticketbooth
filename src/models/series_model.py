@@ -74,6 +74,7 @@ class SeriesModel(GObject.GObject):
     release_date = GObject.Property(type=str, default='')
     seasons_number = GObject.Property(type=int, default=0)
     seasons = GObject.Property(type=object)
+    soon_release = GObject.Property(type=bool, default = False)
     status = GObject.Property(type=str, default='')
     tagline = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
@@ -98,7 +99,7 @@ class SeriesModel(GObject.GObject):
             if next_episode_to_air == None: 
                 self.next_air_date = "" 
             else: 
-                self.next_air_date = d['next_episode_to_air']['air_date']
+                self.next_air_date = next_episode_to_air['air_date']
             self.original_language = local.LocalProvider.get_language_by_code(
                 d['original_language'])  # type: ignore
             self.original_title = d['original_name']
@@ -107,6 +108,7 @@ class SeriesModel(GObject.GObject):
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']
             self.seasons = self._parse_seasons(d['seasons'])
+            self.soon_release = False
             self.status = d['status']
             self.tagline = d['tagline']
             self.title = d['name']
@@ -131,6 +133,7 @@ class SeriesModel(GObject.GObject):
             self.poster_path = t["poster_path"]  # type: ignore
             self.release_date = t["release_date"]  # type: ignore
             self.seasons_number = t["seasons_number"]  # type: ignore
+            self.soon_release = t["soon_release"]  # type: ignore
             self.status = t["status"]  # type: ignore
             self.tagline = t["tagline"]  # type: ignore
             self.title = t["title"]  # type: ignore

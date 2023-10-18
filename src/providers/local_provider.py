@@ -63,6 +63,7 @@ class LocalProvider:
         remove_series_from_notification_list(id: str): Remove series from notification_list
         get_notification_list_status(id: int): Returns if the series given by the id is on the notification list
         set_new_release_status(id: int, value: bool): sets the new_release field of the given series to value
+        set_soon_release_status(id: int, value: bool): sets the soon_release field of the given series to value
     """
 
     @staticmethod
@@ -134,6 +135,7 @@ class LocalProvider:
                             poster_path TEXT,
                             release_date TEXT,
                             seasons_number INT,
+                            soon_release BOOLEAN,
                             status TEXT,
                             tagline TEXT,
                             title TEXT,
@@ -201,6 +203,11 @@ class LocalProvider:
             if not any(item[1] == "next_air_date" for item in result):
                 sql = """ALTER TABLE series
                             ADD next_air_date TEXT;"""
+                connection.cursor().execute(sql)
+            
+            if not any(item[1] == "soon_release" for item in result):
+                sql = """ALTER TABLE series
+                            ADD soon_release BOOLEAN;"""
                 connection.cursor().execute(sql)
 
             if not any(item[1] == "activate_notification" for item in result):
@@ -326,7 +333,7 @@ class LocalProvider:
             serie = SeriesModel(tmdb.get_serie(id))
 
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = 'INSERT INTO series VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             result = connection.cursor().execute(sql, (
                 serie.add_date,
                 serie.backdrop_path,
@@ -345,6 +352,7 @@ class LocalProvider:
                 serie.poster_path,
                 serie.release_date,
                 serie.seasons_number,
+                serie.soon_release,
                 serie.status,
                 serie.tagline,
                 serie.title,
