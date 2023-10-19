@@ -57,7 +57,7 @@ class PosterButton(Gtk.Box):
         self.tmdb_id = content.id
         self.poster_path = content.poster_path
         self.watched = content.watched
-        if self.content == SeriesModel:
+        if type(content) is SeriesModel:
             self.new_release = content.new_release
             self.soon_release = content.soon_release
         self.content = content
@@ -77,11 +77,13 @@ class PosterButton(Gtk.Box):
 
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
+        print(self.title)
 
         if type(self.content) is SeriesModel:
             if self.new_release:
                 self._new_release_badge.set_visible(True)
             elif self.soon_release:
+                print(self.title)
                 self._soon_release_badge.set_visible(True)
             
         if not self.year:

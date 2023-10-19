@@ -687,7 +687,7 @@ class LocalProvider:
         """
 
         with sqlite3.connect(shared.db) as connection:
-            sql = """SELECT * FROM series WHERE activate_notification = true;"""
+            sql = """SELECT * FROM series WHERE activate_notification = 1;"""
             connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql).fetchall()
             if result:

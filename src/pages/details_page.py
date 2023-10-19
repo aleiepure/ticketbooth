@@ -66,6 +66,7 @@ class DetailsView(Adw.NavigationPage):
     _edit_btn = Gtk.Template.Child()
     _update_btn = Gtk.Template.Child()
     _activate_notification_btn = Gtk.Template.Child()
+    _notification_icon = Gtk.Template.Child()
     _description_box = Gtk.Template.Child()
     _overview_lbl = Gtk.Template.Child()
     _creator_box = Gtk.Template.Child()
@@ -141,7 +142,7 @@ class DetailsView(Adw.NavigationPage):
             self._chip1_lbl.set_text(date.fromisoformat(
                 self.content.release_date).strftime('%d %b. %Y'))  # type: ignore
 
-        if self.content.next_air_date != '':  # type: ignore
+        if self.content.next_air_date:  # type: ignore
             self._chip4_lbl.set_visible(True)
             self._chip4_lbl.set_text(date.fromisoformat(self.content.next_air_date).strftime('%d %b. %Y'))  # type: ignore        
 
@@ -151,6 +152,7 @@ class DetailsView(Adw.NavigationPage):
             self._update_btn.set_visible(True)
             
         if not self.content.manual and self.content.in_production:
+            self._notification_icon.set_visible(True)
             self._activate_notification_btn.set_visible(True)
             self._activate_notification_btn.set_active(local.get_notification_list_status(self.content.id))
 
@@ -240,7 +242,7 @@ class DetailsView(Adw.NavigationPage):
                 btn_content.set_icon_name('check-plain')
             else:
                 btn_content.set_label(_('Mark as Watched'))
-                btn_content.set_icon_name('activate_notification')
+                btn_content.set_icon_name('watchlist-symbolic')
 
             button.set_child(btn_content)
             season_row.add_suffix(button)
@@ -561,6 +563,13 @@ class DetailsView(Adw.NavigationPage):
         """
         
         local.set_notification_list_status(self.content.id, self._activate_notification_btn.get_active())
+
+        # TODO Trigger if a soon_release should be set
+
+        #if we remove the series from the notification_list then remove the new/soon_release flags
+        if not self._activate_notification_btn.get_active():
+            local.set_new_release_status(self.content.id, False)
+            local.set_soon_release_status(self.content.id, False)
 
 
     def _update(self, activity: BackgroundActivity) -> None:
