@@ -40,6 +40,54 @@ template $PosterButton: Box {
             valign: center;
           }
 
+          [overlay]
+          Box _new_release_badge {
+            margin-top: 2;
+            orientation: vertical;
+            visible: false;
+            Overlay {
+              halign: end;
+              valign: start;
+
+              Image{
+                icon-name: "star-large-symbolic";
+                icon-size: large;
+              }
+            }
+          }
+        
+          [overlay]
+          Box _soon_release_badge {
+            margin-top: 4;
+            orientation: vertical;
+            visible: false;
+            Overlay {
+              halign: end;
+              valign: start;
+
+              Image{
+                icon-name: "hourglass-symbolic";
+                icon-size: large;
+              }
+            }
+          }
+
+          [overlay]
+          Box _watched_badge {
+            margin-top: 4;
+            orientation: vertical;
+            visible: false;
+            Overlay {
+              halign: end;
+              valign: start;
+
+              Image{
+                icon-name: "check-round-outline-symbolic";
+                icon-size: large;
+              }
+            }
+          }
+
           Picture _picture {
             width-request: 150;
             height-request: 225;
@@ -70,6 +118,7 @@ template $PosterButton: Box {
             Label _year_lbl {
               label: bind template.year;
               halign: start;
+              visible: false;
               styles ["caption", "chip"]
             }
 
