@@ -6,6 +6,7 @@ import logging
 import os
 import shutil
 import sqlite3
+import time
 from typing import List
 
 
@@ -182,40 +183,97 @@ class LocalProvider:
             None
         """
         
+
         with sqlite3.connect(shared.db) as connection:
             
+
             sql = """pragma table_info(series)"""
             result = connection.cursor().execute(sql).fetchall()
             if not any(item[1] == "last_air_date" for item in result):
                 sql = """ALTER TABLE series
-                            ADD last_air_date TEXT;"""
+                            ADD last_air_date TEXT
+                            DEFAULT '';"""
                 connection.cursor().execute(sql)
+                connection.commit()
 
             if not any(item[1] == "new_release" for item in result):
                 sql = """ALTER TABLE series
-                            ADD new_release TEXT;"""
+                            ADD new_release BOOLEAN
+                            DEFAULT (0);"""
                 connection.cursor().execute(sql)
-
-            if  any(item[1] == "watchlist" for item in result):
-                sql = """ALTER TABLE series
-                            DROP watchlist;"""
-                connection.cursor().execute(sql)
+                connection.commit()
 
             if not any(item[1] == "next_air_date" for item in result):
                 sql = """ALTER TABLE series
-                            ADD next_air_date TEXT;"""
+                            ADD next_air_date TEXT
+                            DEFAULT '';"""
                 connection.cursor().execute(sql)
+                connection.commit()
             
             if not any(item[1] == "soon_release" for item in result):
                 sql = """ALTER TABLE series
-                            ADD soon_release BOOLEAN;"""
+                            ADD soon_release BOOLEAN
+                            DEFAULT (0);"""
                 connection.cursor().execute(sql)
+                connection.commit()
 
             if not any(item[1] == "activate_notification" for item in result):
                 sql = """ALTER TABLE series
-                            ADD activate_notification TEXT;"""
+                            ADD activate_notification BOOLEAN
+                            DEFAULT (0);"""
                 connection.cursor().execute(sql)
-        
+                connection.commit()
+
+            connection.cursor().close()
+            sql = """SELECT * FROM series;"""
+            connection.row_factory = sqlite3.Row
+            result = connection.cursor().execute(sql)
+            connection.cursor().close()
+
+            for entry in result:
+                new_backdrop, new_poster = '', ''
+                backdrop = entry["backdrop_path"].replace(".Devel",'')
+                poster = entry["poster_path"].replace(".Devel",'')
+                index = backdrop.find("/data")
+                if index > 0:
+                    new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
+                    new_poster = poster[:index] + ".Devel" + poster[index:]
+                # old_serie = SeriesModel(t=entry)
+                # old_serie.poster_path = new_poster
+                # old_serie.backdrop_path = new_backdrop
+                # LocalProvider.update_series(old_serie, SeriesModel(tmdb.get_serie(entry["id"])))
+                # time.sleep(10)
+                sql = """UPDATE series SET backdrop_path = ?, poster_path = ? WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (
+                    new_backdrop,
+                    new_poster,
+                    entry["id"],))
+                connection.commit()
+
+            sql = """SELECT * FROM movies;"""
+            result = connection.cursor().execute(sql)
+            connection.cursor().close()
+            for entry in result:
+                new_backdrop, new_poster = '', ''
+                backdrop = entry["backdrop_path"].replace(".Devel",'')
+                poster = entry["poster_path"].replace(".Devel",'')
+                index = backdrop.find("/data")
+                if index > 0:
+                    new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
+                    new_poster = poster[:index] + ".Devel" + poster[index:]
+                # old_movie = MovieModel(entry)
+                # old_movie.poster_path = new_poster
+                # old_movie.backdrop_path = new_backdrop
+                # LocalProvider.update_movie(old_movie, MovieModelModel(tmdb.get_movie(entry[id])))
+                sql = """UPDATE movies SET backdrop_path = ?, poster_path = ? WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (
+                    new_backdrop,
+                    new_poster,
+                    entry["id"],))
+                connection.commit()
+
+
+
 
 
     @staticmethod
@@ -412,6 +470,7 @@ class LocalProvider:
                     ))
 
             connection.commit()
+            connection.cursor().close()
             logging.debug(
                 f'[db] Add {serie.title}, {serie.release_date}: {result.lastrowid}')
         return result.lastrowid
@@ -713,6 +772,12 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
+        #if all episodes are watched soon/new_release flags
+        if watched:
+            LocalProvider.set_new_release_status(id, False)
+            LocalProvider.set_soon_release_status(id, False)
+
+
         with sqlite3.connect(shared.db) as connection:
             sql = 'UPDATE series SET watched = ? WHERE id = ?;'
             result = connection.cursor().execute(sql, (watched, id,))
@@ -946,8 +1011,8 @@ class LocalProvider:
         Updates a series with new data.
 
         Args:
-            old: movie to be updated
-            new: new movie data
+            old: series to be updated
+            new: new series data
 
         Returns:
             int or None containing the id of the last modified row
@@ -967,6 +1032,7 @@ class LocalProvider:
             sql = """DELETE FROM series WHERE id = ?"""
             result = connection.cursor().execute(sql, (old.id,))
             connection.commit()
+            connection.cursor().close()
             logging.debug(f'[db] TV series {id}, deleted: {result.lastrowid}')
 
 
@@ -1150,4 +1216,4 @@ class LocalProvider:
             sql = """SELECT soon_release FROM series WHERE id = ?;"""
             result = connection.cursor().execute(sql, (id,)).fetchone()
             return result[0]               
-        
+
