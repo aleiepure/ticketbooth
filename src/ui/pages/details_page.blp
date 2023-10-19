@@ -155,14 +155,22 @@ template $DetailsView: Adw.NavigationPage {
                         styles ["circular"]
                         clicked => $_on_delete_btn_clicked();
                       }
+                      Box{
+                        Image _notification_icon {
+                          icon-name: "preferences-system-notifications-symbolic";
+                          margin-end: 3;
+                          visible: false;
+                          icon-size: normal;
+                        }
+                        CheckButton _activate_notification_btn {
+                          
+                          label: _("");
+                          tooltip-text: _("Notify on new releases");
+                          valign: center;
+                          visible: false;
 
-                      CheckButton _activate_notification_btn {
-                        label: _("Notify on new releases");
-                        tooltip-text: _("Notify on new releases");
-                        valign: center;
-                        visible: false;
-
-                        toggled => $_activate_notification_btn_toggled();
+                          toggled => $_activate_notification_btn_toggled();
+                        }
                       }
                     }
                   }

@@ -52,6 +52,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   <gresource prefix="@prefix@/icons/scalable/actions">
     <file preprocess="xml-stripblanks" alias="series-symbolic.svg">../data/icons/symbolic/series-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="check-round-outline-symbolic.svg">../data/icons/symbolic/check-round-outline-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="movies-symbolic.svg">../data/icons/symbolic/movies-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="view-grid-symbolic.svg">../data/icons/symbolic/view-grid-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="view-list-symbolic.svg">../data/icons/symbolic/view-list-symbolic.svg</file>
@@ -61,6 +62,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
     <file preprocess="xml-stripblanks" alias="user-trash-symbolic.svg">../data/icons/symbolic/user-trash-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="check-plain-symbolic.svg">../data/icons/symbolic/check-plain-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="watchlist-symbolic.svg">../data/icons/symbolic/watchlist-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="star-large-symbolic.svg">../data/icons/symbolic/star-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="hourglass-symbolic.svg">../data/icons/symbolic/hourglass-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="right-symbolic.svg">../data/icons/symbolic/right-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="update-symbolic.svg">../data/icons/symbolic/update-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="warning-symbolic.svg">../data/icons/symbolic/warning-symbolic.svg</file>

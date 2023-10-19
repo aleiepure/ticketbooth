@@ -166,7 +166,7 @@ class DetailsView(Adw.NavigationPage):
                 self._btn_content.set_icon_name('check-plain')
             else:
                 self._btn_content.set_label(_('Mark as Watched'))
-                self._btn_content.set_icon_name('activate_notification')
+                self._btn_content.set_icon_name('watchlist')
 
             if self.content.runtime:
                 self._chip2_lbl.set_visible(True)
@@ -288,7 +288,7 @@ class DetailsView(Adw.NavigationPage):
             btn_content.set_icon_name('check-plain')
         else:
             btn_content.set_label(_('Mark as Watched'))
-            btn_content.set_icon_name('activate_notification')
+            btn_content.set_icon_name('watchlist')
 
         # Update season status
         local.mark_watched_series(self.content.id, all(
@@ -342,7 +342,7 @@ class DetailsView(Adw.NavigationPage):
             btn_content.set_icon_name('check-plain')
         else:
             btn_content.set_label(_('Mark as Watched'))
-            btn_content.set_icon_name('activate_notification')
+            btn_content.set_icon_name('watchlist')
 
         # Update season status
         local.mark_watched_series(self.content.id, not all(  # type: ignore
@@ -478,7 +478,7 @@ class DetailsView(Adw.NavigationPage):
             self._btn_content.set_icon_name('check-plain')
         else:
             self._btn_content.set_label(_('Mark as Watched'))
-            self._btn_content.set_icon_name('activate_notification')
+            self._btn_content.set_icon_name('watchlist')
 
         self.activate_action('win.refresh', None)
 
