@@ -45,6 +45,8 @@ template $PosterButton: Box {
             margin-top: 2;
             orientation: vertical;
             visible: false;
+            tooltip-text:_("The series has a new release");
+
             Overlay {
               halign: end;
               valign: start;
@@ -61,6 +63,7 @@ template $PosterButton: Box {
             margin-top: 4;
             orientation: vertical;
             visible: false;
+            tooltip-text:_("The series has a release soon");
             Overlay {
               halign: end;
               valign: start;
@@ -77,6 +80,7 @@ template $PosterButton: Box {
             margin-top: 4;
             orientation: vertical;
             visible: false;
+            tooltip-text:_("The series is marked as watched");
             Overlay {
               halign: end;
               valign: start;
@@ -118,7 +122,12 @@ template $PosterButton: Box {
             Label _year_lbl {
               label: bind template.year;
               halign: start;
-              visible: false;
+              styles ["caption", "chip"]
+            }
+
+            Label _status_lbl {
+              label: bind template.status;
+              halign: start;
               styles ["caption", "chip"]
             }
 
