@@ -140,21 +140,13 @@ class DetailsView(Adw.NavigationPage):
         if self.content.release_date:  # type: ignore
             self._chip1_lbl.set_visible(True)
             self._chip1_lbl.set_text(date.fromisoformat(
-                self.content.release_date).strftime('%d %b. %Y'))  # type: ignore
-
-        if self.content.next_air_date:  # type: ignore
-            self._chip4_lbl.set_visible(True)
-            self._chip4_lbl.set_text(date.fromisoformat(self.content.next_air_date).strftime('%d %b. %Y'))  # type: ignore        
+                self.content.release_date).strftime('%d %b. %Y'))  # type: ignore        
 
         if self.content.manual:  # type: ignore
             self._edit_btn.set_visible(True)
         else:
             self._update_btn.set_visible(True)
             
-        if not self.content.manual and self.content.in_production:
-            self._notification_icon.set_visible(True)
-            self._activate_notification_btn.set_visible(True)
-            self._activate_notification_btn.set_active(local.get_notification_list_status(self.content.id))
 
         if self.content.overview:  # type: ignore
             self._description_box.set_visible(True)
@@ -193,6 +185,14 @@ class DetailsView(Adw.NavigationPage):
                                                       num=self.content.episodes_number),
                                                   self.content.episodes_number))
 
+            if self.content.next_air_date:  # type: ignore
+                self._chip4_lbl.set_visible(True)
+                self._chip4_lbl.set_text(date.fromisoformat(self.content.next_air_date).strftime('%d %b. %Y'))  # type: ignore
+
+            if not self.content.manual and self.content.in_production:
+                self._notification_icon.set_visible(True)
+                self._activate_notification_btn.set_visible(True)
+                self._activate_notification_btn.set_active(local.get_notification_list_status(self.content.id))
             if self.content.created_by:
                 self._creator_box.set_visible(True)
                 self._creator_lbl.set_text(', '.join(self.content.created_by))
