@@ -185,9 +185,8 @@ class MainView(Adw.Bin):
         if series:
             for serie in series:    # type: ignore
                 if not serie.manual:
-                    local.delete_series(serie.id)
                     new_serie = SeriesModel(tmdb.get_serie(serie.id))
-                    local.add_series(serie=new_serie)
+                    local.update_series(old=serie,serie=new_serie)
 
     def _on_update_done(self,
                         source: GObject.Object,
