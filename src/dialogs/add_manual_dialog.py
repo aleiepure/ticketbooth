@@ -490,28 +490,33 @@ class AddManualDialog(Adw.Window):
         end_iter = buffer.get_end_iter()
         overview = buffer.get_text(start_iter, end_iter, False)
 
-        serie = SeriesModel(t=(
-            datetime.now(),                                  # add date
-            '',                                              # backgroud
-            self._creator_entry.get_text(),                  # created by
-            self._compute_episode_number(seasons),           # episode number
-            ''.join(self._genres_entry.get_text().split()),  # genres
-            show_id,                                         # id
-            self._production_checkbtn.get_active(),          # in production
-            True,                                            # manual
-            local.get_language_by_name(self._original_language_comborow.get_selected_item(
-            ).get_string()).iso_name,         # type: ignore # original language
-            self._original_title_entry.get_text(),           # original title
-            overview,                                        # overview
-            series_poster_uri,                               # poster
-            self._calendar.get_date().format('%Y-%m-%d'),    # release date
-            len(seasons),                                    # seasons number
-            self._status_entry.get_text(),                   # status
-            self._tagline_entry.get_text(),                  # tagline
-            self._title_entry.get_text(),                    # title
-            False,                                           # watched
-            seasons                                          # seasons
-        ))
+        serie = SeriesModel(t={
+            "activate_notification": False,                                   # activate notification        
+            "add_date": datetime.now(),                                       # add date
+            "backdrop_path":'',                                                # backgroud
+            "created_by": self._creator_entry.get_text(),                     # created by
+            "episodes_number": self._compute_episode_number(seasons),         # episode number
+            "genres": ''.join(self._genres_entry.get_text().split()),         # genres
+            "id": show_id,                                                    # id
+            "in_production": self._production_checkbtn.get_active(),          # in production
+            "last_air_date": '',                                              # last air date
+            "manual": True,                                                   # manual
+            "new_release": False,                                             # new release flag
+            "next_air_date": '',                                              # next air date           
+            "original_language": local.get_language_by_name(self._original_language_comborow.get_selected_item(
+            ).get_string()).iso_name,         # type: ignore                  # original language
+            "original_title": self._original_title_entry.get_text(),          # original title
+            "overview": overview,                                             # overview
+            "poster_path": series_poster_uri,                                 # poster
+            "release_date": self._calendar.get_date().format('%Y-%m-%d'),     # release date
+            "seasons_number": len(seasons),                                   # seasons number
+            "soon_release" :False,                                            # soon_release flag      
+            "status": self._status_entry.get_text(),                          # status
+            "tagline": self._tagline_entry.get_text(),                        # tagline
+            "title": self._title_entry.get_text(),                            # title
+            "watched": False,                                                 # watched
+            "seasons": seasons                                                # seasons
+    })
 
         if self.edit_mode:
             local.delete_series(self._content.id)   # type: ignore
