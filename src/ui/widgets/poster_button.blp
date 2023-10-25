@@ -42,7 +42,8 @@ template $PosterButton: Box {
 
           [overlay]
           Box _new_release_badge {
-            margin-top: 2;
+            margin-top: 6;
+            margin-end: 6;
             orientation: vertical;
             visible: false;
             tooltip-text:_("The series has a new release");
@@ -54,13 +55,15 @@ template $PosterButton: Box {
               Image{
                 icon-name: "star-large-symbolic";
                 icon-size: large;
+                
               }
             }
           }
         
           [overlay]
           Box _soon_release_badge {
-            margin-top: 4;
+            margin-top: 6;
+            margin-end: 6;
             orientation: vertical;
             visible: false;
             tooltip-text:_("The series has a release soon");
@@ -77,10 +80,12 @@ template $PosterButton: Box {
 
           [overlay]
           Box _watched_badge {
-            margin-top: 4;
+            margin-top: 6;
+            margin-end: 6;
             orientation: vertical;
             visible: false;
-            tooltip-text:_("The series is marked as watched");
+            tooltip-text:_("This title is marked as watched");
+
             Overlay {
               halign: end;
               valign: start;
@@ -88,6 +93,7 @@ template $PosterButton: Box {
               Image{
                 icon-name: "check-round-outline-symbolic";
                 icon-size: large;
+
               }
             }
           }

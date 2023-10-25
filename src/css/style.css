@@ -17,6 +17,12 @@
     border-radius: 12px;
 }
 
+.light{
+    color:@light_2; 
+}
+.dark{
+    color:@dark_3;
+}
 .still {
     border-radius: 6px;
 }

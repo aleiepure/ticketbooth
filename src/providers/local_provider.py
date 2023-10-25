@@ -772,7 +772,7 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
-        #if all episodes are watched soon/new_release flags
+        #if all episodes are watched remove soon/new_release flags
         if watched:
             LocalProvider.set_new_release_status(id, False)
             LocalProvider.set_soon_release_status(id, False)
