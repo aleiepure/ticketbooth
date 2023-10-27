@@ -6,10 +6,11 @@ import glob
 import re
 from datetime import datetime
 from typing import List
+from pathlib import Path
 
 import requests
 from gi.repository import GLib, GObject
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageStat
 
 import src.providers.local_provider as local
 
@@ -25,6 +26,7 @@ class MovieModel(GObject.GObject):
         add_date (str): date of addition to the db (ISO format)
         backdrop_path (str): path where the background image is stored
         budget (float): movie budget
+        color (bool): color of the poster badges, False being dark
         genres (List[str]): list of genres
         id (str): movie id
         manual (bool): if movie is added manually
@@ -52,6 +54,7 @@ class MovieModel(GObject.GObject):
     add_date = GObject.Property(type=str, default='')
     backdrop_path = GObject.Property(type=str, default='')
     budget = GObject.Property(type=float, default=0)
+    color = GObject.Property(type=bool, default=False)
     genres = GObject.Property(type=GLib.strv_get_type())
     id = GObject.Property(type=str, default='')
     manual = GObject.Property(type=bool, default=False)
@@ -82,7 +85,7 @@ class MovieModel(GObject.GObject):
                 d['original_language'])  # type: ignore
             self.original_title = d['original_title']
             self.overview = re.sub(r'\s{2}', ' ', d['overview'])
-            self.poster_path = self._download_poster(path=d['poster_path'])
+            self.poster_path,self.color = self._download_poster(path=d['poster_path'], color = False)
             self.release_date = d['release_date']
             self.revenue = d['revenue']
             self.runtime = d['runtime']
@@ -175,7 +178,7 @@ class MovieModel(GObject.GObject):
         except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
             return ''
 
-    def _download_poster(self, path: str) -> str:
+    def _download_poster(self, path: str, color: bool) -> (str,bool):
         """
         Returns the uri of the poster image on the local filesystem, downloading if necessary.
 
@@ -187,11 +190,12 @@ class MovieModel(GObject.GObject):
         """
 
         if not path:
-            return f'resource://{shared.PREFIX}/blank_poster.jpg'
+            return (f'resource://{shared.PREFIX}/blank_poster.jpg', False)
 
         files = glob.glob(f'{path[1:-4]}.jpg', root_dir=shared.poster_dir)
         if files:
-            return f'file://{shared.poster_dir}/{files[0]}'
+            color = self._compute_badge_color(Path(f'{files[0]}'))
+            return (f'file://{shared.poster_dir}/{files[0]}',color)
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
         try:
@@ -199,8 +203,20 @@ class MovieModel(GObject.GObject):
             if r.status_code == 200:
                 with open(f'{shared.poster_dir}{path}', 'wb') as f:
                     f.write(r.content)
-                return f'file://{shared.poster_dir}{path}'
+                color = self._compute_badge_color(Path(f'{path}'))
+                return (f'file://{shared.poster_dir}{path}', color)
             else:
                 return f'resource://{shared.PREFIX}/blank_poster.jpg'
         except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
             return f'resource://{shared.PREFIX}/blank_poster.jpg'
+
+    def _compute_badge_color(self, path: str) -> bool:
+        color_light = False
+        im = Image.open(Path(f'{shared.poster_dir}/{path}'))
+        box = (im.size[0]-175, 0, im.size[0], 175)
+        region = im.crop(box)
+        median = ImageStat.Stat(region).median
+        if sum(median) < 3 * 128:
+            color_light = True
+
+        return color_light

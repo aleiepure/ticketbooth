@@ -8,6 +8,8 @@ import shutil
 import sqlite3
 import time
 from typing import List
+from pathlib import Path
+from PIL import Image, ImageStat
 
 
 from .. import shared  # type: ignore
@@ -86,6 +88,7 @@ class LocalProvider:
                         add_date TEXT,
                         backdrop_path TEXT,
                         budget INTEGER,
+                        color BOOLEAN,
                         genres TEXT,
                         id TEXT PRIMARY KEY,
                         manual BOOLEAN,
@@ -122,6 +125,7 @@ class LocalProvider:
             series_sql = """CREATE TABLE IF NOT EXISTS series (
                             add_date TEXT,
                             backdrop_path TEXT,
+                            color BOOLEAN,
                             created_by TEXT,
                             episodes_number INT,
                             genres TEXT,
@@ -196,6 +200,14 @@ class LocalProvider:
                 connection.cursor().execute(sql)
                 connection.commit()
 
+            if not any(item[1] == "color" for item in result):
+                sql = """ALTER TABLE series
+                            ADD color BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
+
             if not any(item[1] == "new_release" for item in result):
                 sql = """ALTER TABLE series
                             ADD new_release BOOLEAN
@@ -238,19 +250,35 @@ class LocalProvider:
                 if index > 0:
                     new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
                     new_poster = poster[:index] + ".Devel" + poster[index:]
-                # old_serie = SeriesModel(t=entry)
-                # old_serie.poster_path = new_poster
-                # old_serie.backdrop_path = new_backdrop
-                # LocalProvider.update_series(old_serie, SeriesModel(tmdb.get_serie(entry["id"])))
-                # time.sleep(10)
-                sql = """UPDATE series SET backdrop_path = ?, poster_path = ? WHERE id = ?;"""
+                    color = LocalProvider.compute_badge_color(Path(new_poster[7:]))
+                else:
+                    color = False
+                sql = """UPDATE series SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
                     new_backdrop,
                     new_poster,
-                    entry["id"],))
+                    entry["id"],
+                    color,))
+                connection.commit()
+
+
+
+    def update_movies_table() -> None:
+
+        with sqlite3.connect(shared.db) as connection:
+            
+            sql = """pragma table_info(movies)"""
+            result = connection.cursor().execute(sql).fetchall()
+
+            if not any(item[1] == "color" for item in result):
+                sql = """ALTER TABLE movies
+                            ADD color BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
                 connection.commit()
 
             sql = """SELECT * FROM movies;"""
+            connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql)
             connection.cursor().close()
             for entry in result:
@@ -261,20 +289,27 @@ class LocalProvider:
                 if index > 0:
                     new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
                     new_poster = poster[:index] + ".Devel" + poster[index:]
-                # old_movie = MovieModel(entry)
-                # old_movie.poster_path = new_poster
-                # old_movie.backdrop_path = new_backdrop
-                # LocalProvider.update_movie(old_movie, MovieModelModel(tmdb.get_movie(entry[id])))
-                sql = """UPDATE movies SET backdrop_path = ?, poster_path = ? WHERE id = ?;"""
+                    color = LocalProvider.compute_badge_color(Path(new_poster[7:]))
+                else:
+                    color = False
+                sql = """UPDATE movies SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
                     new_backdrop,
                     new_poster,
-                    entry["id"],))
+                    entry["id"],
+                    color,))
                 connection.commit()
 
-
-
-
+    @staticmethod
+    def compute_badge_color(poster_path) -> bool:
+        im = Image.open(poster_path)
+        box = (im.size[0]-175, 0, im.size[0], 175)
+        region = im.crop(box)
+        median = ImageStat.Stat(region).median
+        if sum(median) < 3 * 128:
+            return True
+        else:
+            return False
 
     @staticmethod
     def create_languages_table() -> None:
@@ -374,6 +409,7 @@ class LocalProvider:
                 movie.add_date,
                 movie.backdrop_path,
                 movie.budget,
+                movie.color,
                 ','.join(movie.genres),
                 movie.id,
                 movie.manual,
@@ -415,6 +451,7 @@ class LocalProvider:
                 activate_notification,
                 add_date,
                 backdrop_path,
+                color,
                 created_by,
                 episodes_number,
                 genres,
@@ -435,11 +472,12 @@ class LocalProvider:
                 tagline,
                 title,
                 watched
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
                 serie.activate_notification,
                 serie.add_date,
                 serie.backdrop_path,
+                serie.color,
                 ','.join(serie.created_by),
                 serie.episodes_number,
                 ','.join(serie.genres),
@@ -991,6 +1029,7 @@ class LocalProvider:
                      SET 
                          backdrop_path = ?,
                          budget = ?,
+                         color = ?,
                          genres = ?,
                          manual = ?,
                          original_language = ?,
@@ -1008,6 +1047,7 @@ class LocalProvider:
             result = connection.cursor().execute(sql, (
                 new.backdrop_path,
                 new.budget,
+                new.color,
                 ','.join(new.genres),
                 new.manual,
                 new.original_language.iso_name,  # type: ignore

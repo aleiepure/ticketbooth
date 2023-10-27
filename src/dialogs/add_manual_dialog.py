@@ -10,6 +10,8 @@ from gettext import gettext as _
 from gettext import pgettext as C_
 from typing import List
 from urllib.parse import unquote
+from PIL import Image, ImageStat
+from pathlib import Path
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
@@ -352,16 +354,16 @@ class AddManualDialog(Adw.Window):
         Returns:
             None
         """
-
-        poster_uri = self._copy_image_to_data(self._poster.get_uri(),
+        
+       
+        poster_uri, color = self._copy_image_to_data(self._poster.get_uri(),
                                               shared.poster_dir,
                                               self._title_entry.get_text()
                                               ) if not self.edit_mode else self._content.poster_path  # type: ignore
-
         if self._movies_btn.get_active():
-            self._save_movie(poster_uri)
+            self._save_movie(poster_uri, color)
         else:
-            self._save_series(poster_uri)
+            self._save_series(poster_uri, color)
 
     def _on_add_done(self,
                      source: GObject.Object,
@@ -374,7 +376,7 @@ class AddManualDialog(Adw.Window):
         ).activate_action('win.refresh', None)
         activity.end()
 
-    def _save_movie(self, poster_uri: str) -> None:
+    def _save_movie(self, poster_uri: str, color: bool) -> None:
         """
         Creates a MovieModel with the provided data and saves or updates the movie in the local db.
 
@@ -418,7 +420,7 @@ class AddManualDialog(Adw.Window):
             local.update_movie(old=self._content, new=movie)
             self.emit('edit-saved', movie)
 
-    def _save_series(self, series_poster_uri: str) -> None:
+    def _save_series(self, series_poster_uri: str, color: bool) -> None:
         """
         Creates a SeriesModel with associated SeasonModels/EpisodeModels with the provided data and saves or updates the TV series in the local db.
 
@@ -442,7 +444,7 @@ class AddManualDialog(Adw.Window):
                     f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}')
 
             # Copy the season poster
-            poster_uri = self._copy_image_to_data(season[1],
+            poster_uri, _ = self._copy_image_to_data(season[1],
                                                   f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}',
                                                   season[0])
 
@@ -450,7 +452,7 @@ class AddManualDialog(Adw.Window):
             for jdx, episode in enumerate(season[2]):
 
                 # Copy the episode still
-                still_uri = self._copy_image_to_data(episode[4],
+                still_uri, _ = self._copy_image_to_data(episode[4],
                                                      f'{shared.series_dir}/{show_id}/{self._increment_manual_id(base_season_id, idx)}',
                                                      episode[0]
                                                      )
@@ -494,7 +496,8 @@ class AddManualDialog(Adw.Window):
         serie = SeriesModel(t={
             "activate_notification": False,                                   # activate notification        
             "add_date": datetime.now(),                                       # add date
-            "backdrop_path":'',                                                # backgroud
+            "backdrop_path":'',                                               # backgroud
+            "color": color,                                       # color
             "created_by": self._creator_entry.get_text(),                     # created by
             "episodes_number": self._compute_episode_number(seasons),         # episode number
             "genres": ''.join(self._genres_entry.get_text().split()),         # genres
@@ -541,6 +544,17 @@ class AddManualDialog(Adw.Window):
         tmp = id.split('-')
         return f'M-{int(tmp[1]) + amount}'
 
+    def _compute_badge_color(self, poster_path) -> bool:
+
+        im = Image.open(poster_path)
+        box = (im.size[0]-175, 0, im.size[0], 175)
+        region = im.crop(box)
+        median = ImageStat.Stat(region).median
+        if sum(median) < 3 * 128:
+            return True
+        else:
+            return False
+
     def _compute_episode_number(self, seasons: List[SeasonModel]) -> int:
         """
         Counts the total number of episodes of a tv series.
@@ -558,7 +572,7 @@ class AddManualDialog(Adw.Window):
                 num += 1
         return num
 
-    def _copy_image_to_data(self, src_uri: str, dest_folder: str, filename: str) -> str:
+    def _copy_image_to_data(self, src_uri: str, dest_folder: str, filename: str) -> (str,bool):
         """
         Copies src_uri to dest_folder as filename. If src_uri is a resource (empty poster/still) the operation is not
         carried out.
@@ -572,13 +586,14 @@ class AddManualDialog(Adw.Window):
         Returns:
             uri of the copied file or src_uri if is a resource.
         """
-
+        
         if src_uri.startswith('file'):
             extension = src_uri[src_uri.rindex('.'):]
             shutil.copy2(
                 src_uri[7:], f'{dest_folder}/{unquote(filename)}{extension}')
-            return f'file://{dest_folder}/{unquote(filename)}{extension}'
-        return src_uri
+            return f'file://{dest_folder}/{unquote(filename)}{extension}', \
+                self._compute_badge_color(Path(src_uri[7:], f'{dest_folder}/{unquote(filename)}{extension}'))
+        return (src_uri,False)
 
     def update_seasons_ui(self) -> None:
         """

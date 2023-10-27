@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gi.repository import Gio, GObject, Gtk
-from PIL import Image, ImageStat
 from pathlib import Path
 from .. import shared  # type: ignore
 from ..models.movie_model import MovieModel
@@ -56,6 +55,7 @@ class PosterButton(Gtk.Box):
     def __init__(self, content: MovieModel | SeriesModel):
         super().__init__()
         self.title = content.title
+        self.badge_color_light = content.color
         self.year = content.release_date[0:4]
         self.tmdb_id = content.id
         self.poster_path = content.poster_path
@@ -80,31 +80,19 @@ class PosterButton(Gtk.Box):
         """
 
 
-
-        badge_color_light = 0
-        if len(self.poster_path) > 0:
-            path = Path(self.poster_path[7:])
-            im = Image.open(path)
-            box = (im.size[0]-175, 0, im.size[0], 175)
-            region = im.crop(box)
-            median = ImageStat.Stat(region).median
-            if sum(median) < 3 * 128:
-                badge_color_light = 1
-
-
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
 
         if type(self.content) is SeriesModel:
             if self.new_release:
                 self._new_release_badge.set_visible(True)
-                if badge_color_light:
+                if self.badge_color_light:
                     self._new_release_badge.add_css_class("light")
                 else:
                     self._new_release_badge.add_css_class("dark")
             elif self.soon_release:
                 self._soon_release_badge.set_visible(True)
-                if badge_color_light:
+                if self.badge_color_light:
                     self._soon_release_badge.add_css_class("light")
                 else:
                     self._soon_release_badge.add_css_class("dark")
@@ -116,7 +104,7 @@ class PosterButton(Gtk.Box):
             self._status_lbl.set_visible(False)
         if self.watched:
             self._watched_badge.set_visible(True)
-            if badge_color_light:
+            if self.badge_color_light:
                 self._watched_badge.add_css_class("light")
             else:
                 self._watched_badge.add_css_class("dark")

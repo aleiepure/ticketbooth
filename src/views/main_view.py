@@ -47,14 +47,8 @@ class MainView(Adw.Bin):
         super().__init__()
         self.app = window.app
         local.update_series_table()
-        logging.info('Starting automatic update...')
-        BackgroundQueue.add(
-            activity=BackgroundActivity(
-                activity_type=ActivityType.UPDATE,
-                title=C_('Background activity title',
-                            'Automatic update'),
-                task_function=self._update_content),
-            on_done=self._on_update_done)
+        local.update_movies_table()
+
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',

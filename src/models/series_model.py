@@ -6,10 +6,11 @@ import glob
 import re
 from datetime import datetime
 from typing import List
+from pathlib import Path
 
 import requests
 from gi.repository import GLib, GObject
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageStat
 
 import src.providers.local_provider as local
 
@@ -25,6 +26,7 @@ class SeriesModel(GObject.GObject):
     Properties:
         add_date (str): date of addition to the db (ISO format)
         backdrop_path (str): uri of the background image
+        color (bool): color of the poster badges, False being dark
         created_by (List[str]): list of creators
         episodes_number (int): number of total episodes
         genres (List[str]): list of genres
@@ -58,6 +60,7 @@ class SeriesModel(GObject.GObject):
     activate_notification = GObject.Property(type=bool, default=False)
     add_date = GObject.Property(type=str, default='')
     backdrop_path = GObject.Property(type=str, default='')
+    color = GObject.Property(type=bool, default=True)
     created_by = GObject.Property(type=GLib.strv_get_type())
     episodes_number = GObject.Property(type=int, default=0)
     genres = GObject.Property(type=GLib.strv_get_type())
@@ -104,7 +107,7 @@ class SeriesModel(GObject.GObject):
                 d['original_language'])  # type: ignore
             self.original_title = d['original_name']
             self.overview = re.sub(r'\s{2}', ' ', d['overview'])
-            self.poster_path = self._download_poster(d['poster_path'])
+            self.poster_path, self.color = self._download_poster(d['poster_path'])   # Here the color is also set since it was easy to hook it into the poster download
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']
             self.seasons = self._parse_seasons(d['seasons'])
@@ -118,6 +121,7 @@ class SeriesModel(GObject.GObject):
             self.add_date = t["add_date"]  # type: ignore
             self.backdrop_path = t["backdrop_path"]  # type: ignore
             self.created_by = self._parse_creators(db_str=t["created_by"])  # type: ignore
+            self.color = t["color"]
             self.episodes_number = t["episodes_number"]  # type: ignore
             self.genres = self._parse_genres(db_str=t["genres"])  # type: ignore
             self.id = t["id"]  # type: ignore
@@ -250,7 +254,7 @@ class SeriesModel(GObject.GObject):
         except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
             return ''
 
-    def _download_poster(self, path: str) -> str:
+    def _download_poster(self, path: str) -> (str,bool):
         """
         Returns the uri of the poster image on the local filesystem, downloading if necessary.
 
@@ -262,11 +266,12 @@ class SeriesModel(GObject.GObject):
         """
 
         if not path:
-            return f'resource://{shared.PREFIX}/blank_poster.jpg'
+            return (f'resource://{shared.PREFIX}/blank_poster.jpg', False)
 
         files = glob.glob(f'{path[1:-4]}.jpg', root_dir=shared.poster_dir)
         if files:
-            return f'file://{shared.poster_dir}/{files[0]}'
+            color = self._compute_badge_color(Path(f'{files[0]}'))
+            return (f'file://{shared.poster_dir}/{files[0]}',color)
 
         url = f'https://image.tmdb.org/t/p/w500{path}'
         try:
@@ -274,8 +279,21 @@ class SeriesModel(GObject.GObject):
             if r.status_code == 200:
                 with open(f'{shared.poster_dir}{path}', 'wb') as f:
                     f.write(r.content)
-                return f'file://{shared.poster_dir}{path}'
+                color = self._compute_badge_color(Path(f'{path}'))
+                return (f'file://{shared.poster_dir}{path}', color)
             else:
                 return f'resource://{shared.PREFIX}/blank_poster.jpg'
         except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
             return f'resource://{shared.PREFIX}/blank_poster.jpg'
+
+
+    def _compute_badge_color(self, path: str) -> bool:
+        color_light = False
+        im = Image.open(Path(f'{shared.poster_dir}/{path}'))
+        box = (im.size[0]-175, 0, im.size[0], 175)
+        region = im.crop(box)
+        median = ImageStat.Stat(region).median
+        if sum(median) < 3 * 128:
+            color_light = True
+
+        return color_light
