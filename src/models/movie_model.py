@@ -91,24 +91,25 @@ class MovieModel(GObject.GObject):
             self.title = d['title']
             self.watched = False
         else:
-            self.add_date = t[0]  # type: ignore
-            self.backdrop_path = t[1]  # type: ignore
-            self.budget = t[2]  # type: ignore
-            self.genres = self._parse_genres(db_str=t[3])  # type: ignore
-            self.id = t[4]  # type: ignore
-            self.manual = t[5]  # type:ignore
+            self.add_date = t["add_date"]  # type: ignore
+            self.backdrop_path = t["backdrop_path"]  # type: ignore
+            self.budget = t["budget"]  # type: ignore
+            self.color = t["color"]
+            self.genres = self._parse_genres(db_str=t["genres"])  # type: ignore
+            self.id = t["id"]  # type: ignore
+            self.manual = t["manual"]  # type:ignore
             self.original_language = local.LocalProvider.get_language_by_code(
-                t[6])  # type: ignore
-            self.original_title = t[7]  # type: ignore
-            self.overview = t[8]  # type: ignore
-            self.poster_path = t[9]  # type: ignore
-            self.release_date = t[10]  # type: ignore
-            self.revenue = t[11]  # type: ignore
-            self.runtime = t[12]  # type: ignore
-            self.status = t[13]  # type: ignore
-            self.tagline = t[14]  # type: ignore
-            self.title = t[15]  # type: ignore
-            self.watched = t[16]  # type:ignore
+                t["original_language"])  # type: ignore
+            self.original_title = t["original_title"]  # type: ignore
+            self.overview = t["overview"]  # type: ignore
+            self.poster_path = t["poster_path"]  # type: ignore
+            self.release_date = t["release_date"]  # type: ignore
+            self.revenue = t["revenue"]  # type: ignore
+            self.runtime = t["runtime"]  # type: ignore
+            self.status = t["status"]  # type: ignore
+            self.tagline = t["tagline"]  # type: ignore
+            self.title = t["title"]  # type: ignore
+            self.watched = t["watched"]  # type:ignore
 
     def _parse_genres(self, api_dict: dict = {}, db_str: str = '') -> List[str]:
         """

@@ -350,7 +350,26 @@ class LocalProvider:
             movie = MovieModel(tmdb.get_movie(id))
 
         with sqlite3.connect(shared.db) as connection:
-            sql = 'INSERT INTO movies VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            sql = """INSERT INTO movies (
+                add_date,
+                backdrop_path,
+                budget,
+                color,
+                genres,
+                id,
+                manual,
+                original_language,
+                original_title,
+                overview,
+                poster_path,
+                release_date,
+                revenue,
+                runtime,
+                status,
+                tagline,
+                title,
+                watched
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
                 movie.add_date,
                 movie.backdrop_path,
@@ -531,6 +550,7 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM movies WHERE id = ?;"""
+            connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql, (id,)).fetchone()
             if result:
                 movie = MovieModel(t=result)
@@ -555,6 +575,7 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM movies;"""
+            connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql).fetchall()
             if result:
                 logging.debug(f'[db] Get all movies: {result}')

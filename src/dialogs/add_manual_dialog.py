@@ -390,26 +390,27 @@ class AddManualDialog(Adw.Window):
         end_iter = buffer.get_end_iter()
         overview = buffer.get_text(start_iter, end_iter, False)
 
-        movie = MovieModel(t=(
-            datetime.now(),  # add date
-            '',  # background
-            int(self._budget_spinrow.get_value()),  # budget
-            ''.join(self._genres_entry.get_text().split()),  # genres
-            local.get_next_manual_movie() if not self.edit_mode else self._content.id,  # id
-            True,   # manual
-            local.get_language_by_name(self._original_language_comborow.get_selected_item(
+        movie = MovieModel(t={
+            "add_date": datetime.now(),  # add date
+            "backdrop_path": '',  # background
+            "budget":int(self._budget_spinrow.get_value()),  # budget
+            "color": color,
+            "genres": ''.join(self._genres_entry.get_text().split()),  # genres
+            "id": local.get_next_manual_movie() if not self.edit_mode else self._content.id,  # id
+            "manual":True,   # manual
+            "original_language":local.get_language_by_name(self._original_language_comborow.get_selected_item(
             ).get_string()).iso_name,  # original language
-            self._original_title_entry.get_text(),  # original title
-            overview,   # overview
-            poster_uri,  # poster
-            self._calendar.get_date().format('%Y-%m-%d'),   # release date
-            int(self._revenue_spinrow.get_value()),  # revenue
-            int(self._runtime_spinrow.get_value()),  # runtime
-            self._status_entry.get_text(),  # status
-            self._tagline_entry.get_text(),  # tagline
-            self._title_entry.get_text(),   # title
-            False if not self.edit_mode else self._content.watched  # watched
-        ))
+            "original_title": self._original_title_entry.get_text(),  # original title
+            "overview":overview,   # overview
+            "poster_path": poster_uri,  # poster
+            "release_date": self._calendar.get_date().format('%Y-%m-%d'),   # release date
+            "revenue":int(self._revenue_spinrow.get_value()),  # revenue
+            "runtime":int(self._runtime_spinrow.get_value()),  # runtime
+            "status":self._status_entry.get_text(),  # status
+            "tagline":self._tagline_entry.get_text(),  # tagline
+            "title":self._title_entry.get_text(),   # title
+            "watched": False if not self.edit_mode else self._content.watched  # watched
+        })
 
         if not self.edit_mode:
             local.add_movie(movie=movie)
