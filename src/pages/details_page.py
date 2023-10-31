@@ -257,7 +257,7 @@ class DetailsView(Adw.NavigationPage):
             for episode in season.episodes:
                 episode_row = EpisodeRow(episode)
                 episode_row.connect(
-                    'watched-clicked', self._on_episode_watch_clicked, (btn_content, season))
+                    'watched-clicked', self._on_episode_watch_clicked, (btn_content, season, episode))
                 season_row.add_row(episode_row)
                 tmp.append(episode_row)
 
@@ -290,6 +290,10 @@ class DetailsView(Adw.NavigationPage):
         for idx, season in enumerate(self.content.seasons):  # type: ignore
             if season == data[1]:
                 season_idx = idx
+        #compare if the episode clicked was the newest released episode if this is the case set new_release to False
+        if (season_idx+1) == int(self.content.last_episode_number.split('.')[0]) \
+                and data[2].number == int(self.content.last_episode_number.split('.')[1]):
+            local.set_new_release_status(self.content.id, False)
 
         if all(episode.watched for episode in self.content.seasons[season_idx].episodes):
             btn_content.set_label(_('Watched'))

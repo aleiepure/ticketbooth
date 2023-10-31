@@ -238,6 +238,13 @@ class LocalProvider:
                 connection.cursor().execute(sql)
                 connection.commit()
 
+            if not any(item[1] == "last_episode_number" for item in result):
+                sql = """ALTER TABLE series
+                            ADD last_episode_number TEXT
+                            DEFAULT ('');"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
             connection.cursor().close()
             sql = """SELECT * FROM series;"""
             connection.row_factory = sqlite3.Row
@@ -494,6 +501,7 @@ class LocalProvider:
                 id,
                 in_production,
                 last_air_date,
+                last_episode_number,
                 manual,
                 next_air_date,
                 new_release,
@@ -508,7 +516,7 @@ class LocalProvider:
                 tagline,
                 title,
                 watched
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
                 serie.activate_notification,
                 serie.add_date,
@@ -520,6 +528,7 @@ class LocalProvider:
                 serie.id,
                 serie.in_production,
                 serie.last_air_date,
+                serie.last_episode_number,
                 serie.manual,
                 serie.next_air_date,
                 serie.new_release,

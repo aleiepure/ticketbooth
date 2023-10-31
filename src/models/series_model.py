@@ -67,6 +67,7 @@ class SeriesModel(GObject.GObject):
     id = GObject.Property(type=str, default='')
     in_production = GObject.Property(type=bool, default=True)
     last_air_date = GObject.Property(type=str, default='')
+    last_episode_number = GObject.Property(type=str, default='')
     manual = GObject.Property(type=bool, default=False)
     new_release = GObject.Property(type=bool, default=False)
     next_air_date = release_date = GObject.Property(type=str, default='')
@@ -96,6 +97,7 @@ class SeriesModel(GObject.GObject):
             self.id = d['id']
             self.in_production = d['in_production']
             self.last_air_date = d['last_air_date']
+            self.last_episode_number = f"{d['last_episode_to_air']['season_number']}.{d['last_episode_to_air']['episode_number']}"
             self.manual = False
             self.new_release = False
             next_episode_to_air = d['next_episode_to_air']
@@ -127,6 +129,7 @@ class SeriesModel(GObject.GObject):
             self.id = t["id"]  # type: ignore
             self.in_production = t["in_production"]  # type: ignore
             self.last_air_date = t["last_air_date"]
+            self.last_episode_number = t["last_episode_number"]
             self.manual = t["manual"]  # type: ignore
             self.new_release = t["new_release"]
             self.next_air_date = t["next_air_date"]
