@@ -15,6 +15,7 @@ from .background_queue import BackgroundQueue
 from .dialogs.add_manual_dialog import AddManualDialog
 from .dialogs.add_tmdb_dialog import AddTMDBDialog
 from .views.first_run_view import FirstRunView
+from .views.db_update_view import DbUpdateView
 from .views.main_view import MainView
 
 
@@ -244,16 +245,27 @@ class TicketboothWindow(Adw.ApplicationWindow):
         is_first_run = shared.schema.get_boolean('first-run')
         logging.info(f'is first run: {is_first_run}')
 
-        if not is_first_run:
-            self._win_stack.add_named(child=MainView(self), name='main')
-            self._win_stack.set_visible_child_name('main')
+        if is_first_run:
+            logging.info('Start first run setup')
+            self.first_run_view = FirstRunView()
+            self._win_stack.add_named(child=self.first_run_view, name='first-run')
+            self._win_stack.set_visible_child_name('first-run')
+            self.first_run_view.connect('exit', self._on_first_run_exit)
+            shared.schema.set_boolean('db-needs-update', False)
             return
-
-        logging.info('Start first run setup')
-        self.first_run_view = FirstRunView()
-        self._win_stack.add_named(child=self.first_run_view, name='first-run')
-        self._win_stack.set_visible_child_name('first-run')
-        self.first_run_view.connect('exit', self._on_first_run_exit)
+            
+        db_needs_update = shared.schema.get_boolean('db-needs-update')
+        if db_needs_update:
+            logging.info('Start db update')
+            self.db_update_view = DbUpdateView()
+            self._win_stack.add_named(child=self.db_update_view, name='db-update')
+            self._win_stack.set_visible_child_name('db-update')
+            self.db_update_view.connect('exit', self._on_db_update_exit)
+            return
+            
+        self._win_stack.add_named(child=MainView(self), name='main')
+        self._win_stack.set_visible_child_name('main')
+        return
 
     def _on_network_changed(self, network_monitor: Gio.NetworkMonitor, network_available: bool) -> None:
         """
@@ -286,6 +298,21 @@ class TicketboothWindow(Adw.ApplicationWindow):
         """
 
         logging.info('First setup done')
+        self._win_stack.add_named(child=MainView(self), name='main')
+        self._win_stack.set_visible_child_name('main')
+
+    def _on_db_update_exit(self, source: Gtk.Widget) -> None:
+        """
+        Callback for the "exit" of the db_update task. Changes the visible view.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
+        logging.info('Database Update done')
         self._win_stack.add_named(child=MainView(self), name='main')
         self._win_stack.set_visible_child_name('main')
 
