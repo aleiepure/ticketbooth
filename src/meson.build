@@ -16,6 +16,7 @@ blueprints = custom_target('blueprints',
 
     'ui/views/main_view.blp',
     'ui/views/first_run_view.blp',
+    'ui/views/db_update_view.blp',
     'ui/views/content_view.blp',
 
     'ui/dialogs/add_manual.blp',

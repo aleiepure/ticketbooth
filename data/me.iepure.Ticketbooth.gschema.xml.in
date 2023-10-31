@@ -34,6 +34,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<default>true</default>
 			<summary>Specifies if the app is run for the first time</summary>
 		</key>
+		<key name="db-needs-update" type="b">
+			<default>true</default>
+			<summary>Specifies if the database needs an update</summary>
+		</key>
 		<key name="onboard-complete" type="b">
 			<default>false</default>
 			<summary>Specifies if the app downloaded the required data</summary>

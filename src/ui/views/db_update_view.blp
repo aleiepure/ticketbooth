@@ -1,0 +1,54 @@
+// Copyright (C) 2023 Alessandro Iepure
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $dbUpdateView: Adw.Bin {
+  map => $_on_map();
+  
+
+  Box {
+    orientation: vertical;
+    
+    Adw.HeaderBar {
+      styles ["flat"]
+      title-widget: Label {};
+    }
+
+    Adw.StatusPage {
+      margin-top: 64;
+      title: _("Updating your watchlist");
+      description: _("After the update of Ticketbooth we need to update the local database entries");
+      icon-name: "network-transmit-receive";
+      Box {
+        margin-top: 42;
+        orientation: vertical;
+        halign: center;
+        valign: center;
+
+        ProgressBar _progress_bar{
+            fraction: 0.0;
+            show-text: true;
+            margin-bottom: 24;
+        }
+
+        Button _offline_btn {
+            visible: false;
+            halign: center;
+            label: _("Use Offline Mode");
+            clicked => $_on_offline_btn_clicked();
+            styles ["suggested-action", "pill"]
+        }
+
+        CheckButton _retry_check_btn {
+            label: _("Try again on next run");
+            visible: false;
+            active: true;
+            halign: center;
+        }
+      }
+    }
+  }
+}
