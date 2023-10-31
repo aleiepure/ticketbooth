@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
+from datetime import datetime, timedelta
 from datetime import date
 from gettext import gettext as _
 from gettext import ngettext
@@ -166,6 +167,11 @@ class DetailsView(Adw.NavigationPage):
                 self._chip2_lbl.set_visible(True)
                 self._chip2_lbl.set_text(
                     self._format_runtime(self.content.runtime))
+
+            if not self.content.manual and datetime.strptime(self.content.release_date,'%Y-%m-%d') > datetime.now():
+                self._notification_icon.set_visible(True)
+                self._activate_notification_btn.set_visible(True)
+                self._activate_notification_btn.set_active(local.get_notification_list_status(self.content.id, movie=True))
 
         # TV series specific
         if type(self.content) is SeriesModel:
@@ -561,15 +567,15 @@ class DetailsView(Adw.NavigationPage):
         Returns:
             None
         """
-        
-        local.set_notification_list_status(self.content.id, self._activate_notification_btn.get_active())
+        movie = type(self.content) == MovieModel
+        local.set_notification_list_status(self.content.id, self._activate_notification_btn.get_active(), movie=movie)
 
         # TODO Trigger if a soon_release should be set
 
-        #if we remove the series from the notification_list then remove the new/soon_release flags
+        #if we remove the content from the notification_list then remove the new/soon_release flags
         if not self._activate_notification_btn.get_active():
-            local.set_new_release_status(self.content.id, False)
-            local.set_soon_release_status(self.content.id, False)
+            local.set_new_release_status(self.content.id, False, movie=movie)
+            local.set_soon_release_status(self.content.id, False, movie=movie)
 
 
     def _update(self, activity: BackgroundActivity) -> None:

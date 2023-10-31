@@ -61,9 +61,8 @@ class PosterButton(Gtk.Box):
         self.poster_path = content.poster_path
         self.watched = content.watched
         self.status = content.status
-        if type(content) is SeriesModel:
-            self.new_release = content.new_release
-            self.soon_release = content.soon_release
+        self.new_release = content.new_release
+        self.soon_release = content.soon_release
         self.content = content
 
     @Gtk.Template.Callback('_on_map')
@@ -83,19 +82,19 @@ class PosterButton(Gtk.Box):
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
 
-        if type(self.content) is SeriesModel:
-            if self.new_release:
-                self._new_release_badge.set_visible(True)
-                if self.badge_color_light:
-                    self._new_release_badge.add_css_class("light")
-                else:
-                    self._new_release_badge.add_css_class("dark")
-            elif self.soon_release:
-                self._soon_release_badge.set_visible(True)
-                if self.badge_color_light:
-                    self._soon_release_badge.add_css_class("light")
-                else:
-                    self._soon_release_badge.add_css_class("dark")
+        
+        if self.new_release:
+            self._new_release_badge.set_visible(True)
+            if self.badge_color_light:
+                self._new_release_badge.add_css_class("light")
+            else:
+                self._new_release_badge.add_css_class("dark")
+        elif self.soon_release:
+            self._soon_release_badge.set_visible(True)
+            if self.badge_color_light:
+                self._soon_release_badge.add_css_class("light")
+            else:
+                self._soon_release_badge.add_css_class("dark")
 
             
         if not self.year:

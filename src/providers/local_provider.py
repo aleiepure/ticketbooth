@@ -62,12 +62,12 @@ class LocalProvider:
         update_movie(old: MovieModel, new: MovieModel): Updates a movie with new data.
         mark_watched_episode(id: str, watched: bool): Sets the watched flag on the specified episode.
         get_episode_by_id(id: str): Retrieves an episode from the db via its id.
-        set_notification_list_status(id: int, value: bool):  Sets the activate_notification field of the given series to value
-        get_notification_list_status(id: int): Returns if the series given by the id is on the notification list
-        set_new_release_status(id: int, value: bool): Sets the new_release field of the given series to value
-        get_new_release_status(id: int): Returns if the series given by the id has had a new release
-        set_soon_release_status(id: int, value: bool): Sets the soon_release field of the given series to value
-        get_soon_release_status(id: int): Returns if the series given by the id has a new release soon
+        set_notification_list_status(id: int, value: bool):  Sets the activate_notification field of the given content to value
+        get_notification_list_status(id: int): Returns if the content given by the id is on the notification list
+        set_new_release_status(id: int, value: bool): Sets the new_release field of the given content to value
+        get_new_release_status(id: int): Returns if the content given by the id has had a new release
+        set_soon_release_status(id: int, value: bool): Sets the soon_release field of the given content to value
+        get_soon_release_status(id: int): Returns if the content given by the id has a new release soon
     """
 
     @staticmethod
@@ -85,6 +85,7 @@ class LocalProvider:
         with sqlite3.connect(shared.db) as connection:
             logging.debug('[db] Create movie table')
             sql = """CREATE TABLE IF NOT EXISTS movies (
+                        activate_notification BOOLEAN,
                         add_date TEXT,
                         backdrop_path TEXT,
                         budget INTEGER,
@@ -92,6 +93,7 @@ class LocalProvider:
                         genres TEXT,
                         id TEXT PRIMARY KEY,
                         manual BOOLEAN,
+                        new_release BOOLEAN,
                         original_language TEXT,
                         original_title TEXT,
                         overview TEXT,
@@ -99,6 +101,7 @@ class LocalProvider:
                         release_date TEXT,
                         revenue INTEGER,
                         runtime INTEGER,
+                        soon_release BOOLEAN,
                         status TEXT,
                         tagline TEXT,
                         title TEXT,
@@ -189,7 +192,6 @@ class LocalProvider:
         
 
         with sqlite3.connect(shared.db) as connection:
-            
 
             sql = """pragma table_info(series)"""
             result = connection.cursor().execute(sql).fetchall()
@@ -243,22 +245,26 @@ class LocalProvider:
             connection.cursor().close()
 
             for entry in result:
-                new_backdrop, new_poster = '', ''
-                backdrop = entry["backdrop_path"].replace(".Devel",'')
-                poster = entry["poster_path"].replace(".Devel",'')
+                backdrop = entry["backdrop_path"]
+                poster = entry["poster_path"]
+                if shared.DEBUG: #if we are in debug build we add Devel to the path, this way we can copy release databases to the debug build to test.
+                    backdrop = backdrop.replace(".Devel",'')
+                    poster = poster.replace(".Devel",'')
                 index = backdrop.find("/data")
                 if index > 0:
-                    new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
-                    new_poster = poster[:index] + ".Devel" + poster[index:]
-                    color = LocalProvider.compute_badge_color(Path(new_poster[7:]))
+                    if shared.DEBUG:
+                        backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
+                        poster = poster[:index] + ".Devel" + poster[index:]
+                    color = LocalProvider.compute_badge_color(Path(poster[7:]))
                 else:
                     color = False
                 sql = """UPDATE series SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
-                    new_backdrop,
-                    new_poster,
+                    backdrop,
+                    poster,
+                    color,
                     entry["id"],
-                    color,))
+                    ))
                 connection.commit()
 
 
@@ -277,31 +283,55 @@ class LocalProvider:
                 connection.cursor().execute(sql)
                 connection.commit()
 
+            if not any(item[1] == "activate_notification" for item in result):
+                sql = """ALTER TABLE movies
+                            ADD activate_notification BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
+            if not any(item[1] == "new_release" for item in result):
+                sql = """ALTER TABLE movies
+                            ADD new_release BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
+            if not any(item[1] == "soon_release" for item in result):
+                sql = """ALTER TABLE movies
+                            ADD soon_release BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
             sql = """SELECT * FROM movies;"""
             connection.row_factory = sqlite3.Row
             result = connection.cursor().execute(sql)
             connection.cursor().close()
             for entry in result:
-                new_backdrop, new_poster = '', ''
-                backdrop = entry["backdrop_path"].replace(".Devel",'')
-                poster = entry["poster_path"].replace(".Devel",'')
+                backdrop = entry["backdrop_path"]
+                poster = entry["poster_path"]
+                if shared.DEBUG:
+                    backdrop = backdrop.replace(".Devel",'')
+                    poster = poster.replace(".Devel",'')
                 index = backdrop.find("/data")
                 if index > 0:
-                    new_backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
-                    new_poster = poster[:index] + ".Devel" + poster[index:]
-                    color = LocalProvider.compute_badge_color(Path(new_poster[7:]))
+                    if shared.DEBUG:
+                        backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
+                        poster = poster[:index] + ".Devel" + poster[index:]
+                    color = LocalProvider.compute_badge_color(Path(poster[7:]))
                 else:
                     color = False
                 sql = """UPDATE movies SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
-                    new_backdrop,
-                    new_poster,
+                    backdrop,
+                    poster,
                     entry["id"],
                     color,))
                 connection.commit()
 
     @staticmethod
-    def compute_badge_color(poster_path) -> bool:
+    def compute_badge_color(poster_path: Path) -> bool:
         im = Image.open(poster_path)
         box = (im.size[0]-175, 0, im.size[0], 175)
         region = im.crop(box)
@@ -386,6 +416,7 @@ class LocalProvider:
 
         with sqlite3.connect(shared.db) as connection:
             sql = """INSERT INTO movies (
+                activate_notification,
                 add_date,
                 backdrop_path,
                 budget,
@@ -393,6 +424,7 @@ class LocalProvider:
                 genres,
                 id,
                 manual,
+                new_release,
                 original_language,
                 original_title,
                 overview,
@@ -400,12 +432,14 @@ class LocalProvider:
                 release_date,
                 revenue,
                 runtime,
+                soon_release,
                 status,
                 tagline,
                 title,
                 watched
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
+                movie.activate_notification,
                 movie.add_date,
                 movie.backdrop_path,
                 movie.budget,
@@ -413,6 +447,7 @@ class LocalProvider:
                 ','.join(movie.genres),
                 movie.id,
                 movie.manual,
+                movie.new_release,
                 movie.original_language.iso_name,  # type: ignore
                 movie.original_title,
                 movie.overview,
@@ -420,6 +455,7 @@ class LocalProvider:
                 movie.release_date,
                 movie.revenue,
                 movie.runtime,
+                movie.soon_release,
                 movie.status,
                 movie.tagline,
                 movie.title,
@@ -638,6 +674,10 @@ class LocalProvider:
             int or None containing the id of the last modified row
         """
 
+        if watched:
+            LocalProvider.set_new_release_status(id, False, movie=True)
+            LocalProvider.set_soon_release_status(id, False, movie=True)
+
         with sqlite3.connect(shared.db) as connection:
             sql = """UPDATE movies SET watched = ? WHERE id = ?"""
             result = connection.cursor().execute(sql, (watched, id,))
@@ -793,7 +833,7 @@ class LocalProvider:
                 return []
 
     @staticmethod
-    def get_all_notification_list() -> List[SeriesModel]:
+    def get_all_series_notification_list() -> List[SeriesModel]:
         """
         Retrieves all tv series from the notification_list.
 
@@ -816,6 +856,32 @@ class LocalProvider:
                 return series
             else:
                 logging.debug(f'[db] Get all tv series in notification_list: {[]}')
+                return []
+    
+    @staticmethod
+    def get_all_movies_notification_list() -> List[MovieModel]:
+        """
+        Retrieves all tv series from the notification_list.
+
+        Args:
+            None
+
+        Returns:
+            List of SeriesModel or None
+        """
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """SELECT * FROM movies WHERE activate_notification = 1;"""
+            connection.row_factory = sqlite3.Row
+            result = connection.cursor().execute(sql).fetchall()
+            if result:
+                logging.debug(f'[db] Get all moviesin notification_list: {result}')
+                movies = []
+                for movie in result:
+                    movies.append(MovieModel(t=movie))
+                return movies
+            else:
+                logging.debug(f'[db] Get all movies in notification_list: {[]}')
                 return []
 
     @staticmethod
@@ -1160,9 +1226,9 @@ class LocalProvider:
                 return None
 
     @staticmethod
-    def set_notification_list_status(id: int, value: bool) ->  None:
+    def set_notification_list_status(id: int, value: bool, movie: bool = False) ->  None:
         """
-        Sets notification_list status of the series with the id to value.
+        Sets notification_list status of the content with the id to value.
 
         Args:
             id (str): id of the movie to look for
@@ -1171,110 +1237,159 @@ class LocalProvider:
         Returns:
             None
         """
-        logging.debug(f'[db] TV series {id}, set activation_notification field to {value}')
+        if not movie:
+            logging.debug(f'[db] TV series {id}, set activation_notification field to {value}')
 
-        with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET activate_notification = ? WHERE id = ?"""
-            result = connection.cursor().execute(sql, (value, id,)).fetchone()
-            connection.commit()
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE series SET activate_notification = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+        else:
+            logging.debug(f'[db] Movie {id}, set activation_notification field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE movies SET activate_notification = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+
 
 
     @staticmethod
-    def get_notification_list_status(id: int) -> bool:
+    def get_notification_list_status(id: int, movie: bool = False) -> bool:
         """
-        Returns activate_notification status from the series with given id.
+        Returns activate_notification status from the content with given id.
 
         Args:
-            id (str): id of the series to look for
+            id (str): id of the content to look for
 
         Returns:
             Bool with the status
         """
 
-        logging.debug(f'[db] TV series {id}, get notification_list status')
+        if not movie:
+            logging.debug(f'[db] TV series {id}, get notification_list status')
 
-        with sqlite3.connect(shared.db) as connection:
-            sql = """SELECT activate_notification FROM series WHERE id = ?;"""
-            result = connection.cursor().execute(sql, (id,)).fetchone()
-            return result[0]
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT activate_notification FROM series WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]
+        else:
+            logging.debug(f'[db] Movie {id}, get notification_list status')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT activate_notification FROM movies WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]
+
 
     @staticmethod
-    def set_new_release_status(id: int, value: bool) -> None:
+    def set_new_release_status(id: int, value: bool, movie: bool = False) -> None:
         """
-        Sets new_release status of the series with the id to value.
+        Sets new_release status of the content with the id to value.
 
         Args:
-            id (str): id of the series to look for
+            id (str): id of the content to look for
+            value (bool): the value to set
+
+        Returns:
+            Success int or None if not found in db
+        """
+        if not movie:
+            logging.debug(f'[db] TV series {id}, set new_release field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE series SET new_release = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+        else:
+            logging.debug(f'[db] movie {id}, set new_release field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE movies SET new_release = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+
+    @staticmethod
+    def get_new_release_status(id: int, movie: bool = False) -> None:
+        """
+        Returns new_release status from the content with given id.
+
+        Args:
+            id (str): id of the content to look for
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        if not movie:
+            logging.debug(f'[db] TV series {id}, get new_release status')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT new_release FROM series WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]
+        else:
+            logging.debug(f'[db] movie {id}, get new_release status')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT new_release FROM movies WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]
+
+    @staticmethod
+    def set_soon_release_status(id: int, value: bool, movie: bool = False) -> None:
+        """
+        Sets soon_release status of the content with the id to value.
+
+        Args:
+            id (str): id of the content to look for
             value (bool): the value to set
 
         Returns:
             Success int or None if not found in db
         """
 
-        logging.debug(f'[db] TV series {id}, set new_release field to {value}')
+        if not movie:
+            logging.debug(f'[db] TV series {id}, set soon_release field to {value}')
 
-        with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET new_release = ? WHERE id = ?"""
-            result = connection.cursor().execute(sql, (value, id,)).fetchone()
-            connection.commit()
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE series SET soon_release = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+        else:
+            logging.debug(f'[db] movie {id}, set soon_release field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE movies SET soon_release = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,)).fetchone()
+                connection.commit()
+
+
 
     @staticmethod
-    def get_new_release_status(id: int) -> None:
+    def get_soon_release_status(id: int, value: bool, movie: bool = False) -> None:
         """
-        Returns new_release status from the series with given id.
+        Returns soon_release status from the content with given id.
 
         Args:
-            id (str): id of the series to look for
+            id (str): id of the content to look for
 
         Returns:
             Success int or None if not found in db
         """
 
-        logging.debug(f'[db] TV series {id}, get new_release status')
+        if not movie:
+            logging.debug(f'[db] TV series {id}, get soon_release status')
 
-        with sqlite3.connect(shared.db) as connection:
-            sql = """SELECT new_release FROM series WHERE id = ?;"""
-            result = connection.cursor().execute(sql, (id,)).fetchone()
-            return result[0]
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT soon_release FROM series WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]  
+        else:
+            logging.debug(f'[db] movie {id}, get soon_release status')
 
-    @staticmethod
-    def set_soon_release_status(id: int, value: bool) -> None:
-        """
-        Sets soon_release status of the series with the id to value.
-
-        Args:
-            id (str): id of the series to look for
-            value (bool): the value to set
-
-        Returns:
-            Success int or None if not found in db
-        """
-
-        logging.debug(f'[db] TV series {id}, set soon_release field to {value}')
-
-        with sqlite3.connect(shared.db) as connection:
-            sql = """UPDATE series SET soon_release = ? WHERE id = ?"""
-            result = connection.cursor().execute(sql, (value, id,)).fetchone()
-            connection.commit()
-
-
-
-    @staticmethod
-    def get_soon_release_status(id: int, value: bool) -> None:
-        """
-        Returns soon_release status from the series with given id.
-
-        Args:
-            id (str): id of the series to look for
-
-        Returns:
-            Success int or None if not found in db
-        """
-
-        logging.debug(f'[db] TV series {id}, get soon_release status')
-
-        with sqlite3.connect(shared.db) as connection:
-            sql = """SELECT soon_release FROM series WHERE id = ?;"""
-            result = connection.cursor().execute(sql, (id,)).fetchone()
-            return result[0]               
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT soon_release FROM movies WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]              
 

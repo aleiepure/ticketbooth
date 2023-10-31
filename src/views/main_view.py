@@ -228,7 +228,7 @@ class MainView(Adw.Bin):
         Returns:
             None
         """
-        series = local.get_all_notification_list()
+        series = local.get_all_series_notification_list()
 
         new_release = []
         soon_release = []
