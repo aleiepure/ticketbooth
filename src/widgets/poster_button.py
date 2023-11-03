@@ -29,6 +29,7 @@ class PosterButton(Gtk.Box):
 
     __gtype_name__ = 'PosterButton'
 
+    _poster_box = Gtk.Template.Child()
     _picture = Gtk.Template.Child()
     _spinner = Gtk.Template.Child()
     _year_lbl = Gtk.Template.Child()
@@ -63,6 +64,7 @@ class PosterButton(Gtk.Box):
         self.status = content.status
         self.new_release = content.new_release
         self.soon_release = content.soon_release
+        self.recent_change = content.recent_change
         self.content = content
 
     @Gtk.Template.Callback('_on_map')
@@ -82,6 +84,9 @@ class PosterButton(Gtk.Box):
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
 
+        if self.recent_change:
+            self._poster_box.add_css_class("pulse")
+            self._picture.add_css_class("shadow")
         
         if self.new_release:
             self._new_release_badge.set_visible(True)

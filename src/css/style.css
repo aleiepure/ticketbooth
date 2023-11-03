@@ -27,6 +27,34 @@
     border-radius: 6px;
 }
 
+.shadow{
+    box-shadow: 0px 0px 4px 4px @accent_color;
+}
+.pulse{
+    animation-name: breathing;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-delay: 0s;
+    animation-fill-mode: none;
+    animation-play-state: running;
+}
+  
+@keyframes breathing {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 .progress_complete progress {
 	background-color: @success_color;
 }

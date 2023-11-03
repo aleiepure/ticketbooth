@@ -251,8 +251,9 @@ class MainView(Adw.Bin):
                 # Set the new release status and add the series to the new releases list and set soon_release to false
                 local.set_new_release_status(serie.id, True)
                 local.set_soon_release_status(serie.id, False)
-                new_release.append(new_serie)
-                new_release_span = datetime.now() - new_last_air_date  #we only save one, since we do not use it if more than one series has a new release
+                local.set_recent_change_status(serie.id, True)
+                new_release_series.append(new_serie)
+                new_release_series_span = datetime.now() - new_last_air_date  #we only save one, since we do not use it if more than one series has a new release
             
             # Check if the next air date is set to soon (6 days in the future)
             if datetime.now() + timedelta(days=6) > new_next_air_date:

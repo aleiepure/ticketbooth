@@ -17,6 +17,7 @@ from .dialogs.add_tmdb_dialog import AddTMDBDialog
 from .views.first_run_view import FirstRunView
 from .views.db_update_view import DbUpdateView
 from .views.main_view import MainView
+from .providers.local_provider import LocalProvider as local
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/window.ui')
@@ -227,6 +228,9 @@ class TicketboothWindow(Adw.ApplicationWindow):
                 os.remove(shared.cache_dir / file)
             logging.info('Cache deleted')
 
+        # recent_change reset
+        local.reset_recent_change()
+        logging.info('recent_change reseted')
         logging.info('Closing')
         return False
 
