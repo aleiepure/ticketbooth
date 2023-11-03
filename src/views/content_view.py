@@ -209,7 +209,7 @@ class ContentView(Adw.Bin):
 
         logging.info(
             f'Clicked on [{"movie" if self.movie_view else "TV series"}] {content.title}')
-        page = DetailsView(content)
+        page = DetailsView(content, self)
         page.connect('deleted', lambda *args: self.refresh_view())
         self.get_ancestor(Adw.NavigationView).push(page)
 

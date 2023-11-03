@@ -78,12 +78,12 @@ class DetailsView(Adw.NavigationPage):
     _flow_box = Gtk.Template.Child()
     _loading_lbl = Gtk.Template.Child()
 
-    def __init__(self, content: MovieModel | SeriesModel):
+    def __init__(self, content: MovieModel | SeriesModel, content_view):
         super().__init__()
 
+        self.content_view = content_view
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
         self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
-
         if type(content) is MovieModel:
             self.content = local.get_movie_by_id(content.id)
         else:
@@ -91,6 +91,8 @@ class DetailsView(Adw.NavigationPage):
         logging.info(
             f'Loading info [{"movie" if type(content) is MovieModel else "TV Serie"}] {self.content.title}')
 
+        local.set_recent_change_status(self.content.id, False, type(content) == MovieModel) #reset rechent_change since it was clicked on
+        self.content_view.refresh_view()
         self.set_title(self.content.title)  # type: ignore
         self._view_stack.set_visible_child_name('loading')
         self._populate_data()
@@ -574,12 +576,20 @@ class DetailsView(Adw.NavigationPage):
         movie = type(self.content) == MovieModel
         local.set_notification_list_status(self.content.id, self._activate_notification_btn.get_active(), movie=movie)
 
-        # TODO Trigger if a soon_release should be set
 
-        #if we remove the content from the notification_list then remove the new/soon_release flags
+        #if we remove the content from the notification_list then remove the new/soon_release flags and refresh the ContentView
         if not self._activate_notification_btn.get_active():
             local.set_new_release_status(self.content.id, False, movie=movie)
             local.set_soon_release_status(self.content.id, False, movie=movie)
+            self.content_view.refresh_view()
+        else: # if we add content we check if should set the soon_release flag
+            compare_date = self.content.release_date if movie else self.content.next_air_date
+            if datetime.strptime(self.content.next_air_date, '%Y-%m-%d') < datetime.now() + timedelta(days=14 if movie else 6): # TODO make this a variable and sync with main_view.py
+                local.set_soon_release_status(self.content.id, True, movie=movie)
+                self.content_view.refresh_view()
+
+        
+
 
 
     def _update(self, activity: BackgroundActivity) -> None:
