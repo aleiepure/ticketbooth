@@ -125,9 +125,12 @@ class MainView(Adw.Bin):
         last_check = datetime.fromisoformat(
             shared.schema.get_string('last-update'))
         frequency = shared.schema.get_string('update-freq')
+        last_notification_check = datetime.fromisoformat(
+            shared.schema.get_string('last-notification-update'))
 
-        #TODO change this to a suitable duration, 12hours maybe?
-        if last_check + timedelta(seconds=20) < datetime.now():
+        if last_notification_check + timedelta(hours=12) < datetime.now():
+            shared.schema.set_string(
+            'last-notification-update', datetime.now().strftime('%Y-%m-%d %H:%M'))
             logging.info('Starting automatic notification list update...')
             BackgroundQueue.add(
                 activity=BackgroundActivity(
@@ -230,9 +233,9 @@ class MainView(Adw.Bin):
         """
         series = local.get_all_series_notification_list()
 
-        new_release = []
-        soon_release = []
-        out_of_production = []
+        new_release_series = []
+        soon_release_series = []
+        out_of_production_series = []
 
         for serie in series:
             
@@ -261,79 +264,23 @@ class MainView(Adw.Bin):
                 # if we also detect a considerable amount of time bewteen epsidoe notify user that the series has new releases coming soon.
                 # 3 weeks are chosen to include the new streaming release model of two chunks a month apart but not spam the user for weekly or bi-weekly releases
                 if new_next_air_date - timedelta(days=20) > last_air_date:
-                    soon_release.append(new_serie)
-                    soon_release_span =  new_next_air_date - datetime.now()
+                    local.set_recent_change_status(serie.id, True)
+                    soon_release_series.append(new_serie)
+                    soon_release_series_span =  new_next_air_date - datetime.now()
             
             # Check if the series went from in production to not in production
             if serie.in_production == 1 and new_serie.in_production == 0:
+                local.set_recent_change_status(serie.id, True)
                 out_of_production.append(new_serie)
                 local.set_notification_list_status(serie.id, False)
 
+            serie = local.get_series_by_id(serie.id) #refetch serie to get all the correct flags that we set from the database
             local.update_series(serie, new_serie)
-
-        if new_release:
-            if len(new_release) == 1:
-                title = "New release for " + new_release[0].title
-                action= "-" # TODO probably set it to open the details page
-                body = f"A new episode of {new_release[0].title} was released {new_release_span} days ago"
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            else:
-                title = f"New release for {len(new_release)} series on your watchlist"
-                action= "-" # TODO set to main view with category new releases on top
-                string = ", ".join(new.title for new in new_release)
-                body = f"The series are {string}."
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-
-        if soon_release:
-            if len(soon_release) == 1:
-                title = f"{soon_release[0].title} will have a release soon"
-                action= "-" # TODO probably set it to open the details page
-                body = f"A new episode will release in {soon_release_span.days} days"
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            else:
-                title = f"{len(new_release)} series on your watchlist will have a new episode soon"
-                action= "-" # TODO  do not know
-                string = ", ".join(soon.title for soon in soon_release)
-                body = f"The series are {string}."
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-
-        if out_of_production:
-            if len(out_of_production) == 1:
-                title =  f"{out_of_production[0].title} has gone out of production"
-                action= "-" # TODO probably set it to open the details page
-                body = f"We hope {out_of_production[0].title} has come to an satisfiying ending." # TODO tone okay?
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            else:
-                title =  f"{len(out_of_production)} series of your watchlist have gone out of production"
-                action= "-" # TODO probably just open main_view on series
-                string = ", ".join(out.title for out in out_of_production)
-                body = f"The series are {string}" #if somebody is unfortunate enough to have more than 5 series cancelled then this will probably overflow
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            
-
 
         movies = local.get_all_movies_notification_list()
 
-        new_release = []
-        soon_release = []
+        new_release_movies = []
+        soon_release_movies = []
 
         for movie in movies:
             
@@ -342,56 +289,141 @@ class MainView(Adw.Bin):
             release_date = datetime.strptime(new_movie.release_date, '%Y-%m-%d')
 
             if release_date < datetime.now():
+                local.set_recent_change_status(movie.id, True, movie=True)
                 local.set_new_release_status(movie.id, True, movie=True)
                 local.set_soon_release_status(movie.id, False, movie=True)
                 if not movie.new_release: #if new_release was not set send a notification
-                    new_release_span = datetime.now() - release_date
-                    new_release.append(new_movie)
+                    new_release_movies_span = datetime.now() - release_date
+                    new_release_movies.append(new_movie)
             elif release_date < datetime.now() + timedelta(days=14):
+                local.set_recent_change_status(movie.id, True, movie=True)
                 local.set_soon_release_status(movie.id, True, movie=True)
                 if not movie.soon_release: #if soon_release was not set send a notification
-                    soon_release_span = release_date - datetime.now()
-                    soon_release.append(new_movie)
-
+                    soon_release_movies_span = release_date - datetime.now()
+                    soon_release_movies.append(new_movie)
+            #For movies we do not need to refetch the movie from the local db since the new data gets inserted by SQL UPDATE
             local.update_movie(movie, new_movie)
 
-        if new_release:
-            if len(new_release) == 1:
-                title = f"{new_release[0].title} has had its release!"
-                action= "-" # TODO probably set it to open the details page
-                body = f"{new_release[0].title} was released {new_release_span.days} days ago." #
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            else:
-                title = f"{len(new_release)} movies on your watchlist have had their releases"
-                action= "-" # TODO set to main view with category new releases on top
-                string = ", ".join(new.title for new in new_release)
-                body = f"The movies are {string}."
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
+        length_check = lambda x: len(x) > 0
+        count = length_check(new_release_movies) + length_check(new_release_series) + length_check(soon_release_movies) + length_check(soon_release_series) + length_check(out_of_production_series)
 
-        if soon_release:
-            if len(soon_release) == 1:
-                title = f"{soon_release[0].title} will have its release soon!"
-                action= "-" # TODO probably set it to open the details page
-                body = f"{soon_release[0].title} will have its release in {soon_release_span.days} days."
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
-            else:
-                title = f"{len(new_release)} movies on your watchlist will have their releases soon"
-                action= "-" # TODO  do not know
-                string = ", ".join(soon.title for soon in soon_release)
-                body = f"The series are {string}."
-                notification = Gio.Notification.new(title)
-                notification.set_default_action(action) 
-                notification.set_body(body)
-                self.app.send_notification(None, notification)
+        if count == 0:
+            return
+        elif count == 1:
+            if new_release_series:
+                if len(new_release_series) == 1:
+                    title = "New release for " + new_release_series[0].title
+                    action= "-" # TODO probably set it to open the details page
+                    body = f"A new episode of {new_release_series[0].title} was released {new_release_series_span.days} days ago"
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                else:
+                    title = f"New release for {len(new_release_series)} series on your watchlist"
+                    action= "-" # TODO set to main view with category new releases on top
+                    string = ", ".join(new.title for new in new_release_series)
+                    body = f"The series are {string}."
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+
+            if soon_release_series:
+                if len(soon_release_series) == 1:
+                    title = f"{soon_release_series[0].title} will have a release soon"
+                    action= "-" # TODO probably set it to open the details page
+                    body = f"A new episode will release in {soon_release_series_span.days} days"
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                else:
+                    title = f"{len(soon_release_series)} series on your watchlist will have a new episode soon"
+                    action= "-" # TODO  do not know
+                    string = ", ".join(soon.title for soon in soon_release)
+                    body = f"The series are {string}."
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+
+            if out_of_production_series:
+                if len(out_of_production_series) == 1:
+                    title =  f"{out_of_production_series[0].title} has gone out of production"
+                    action= "-" # TODO probably set it to open the details page
+                    body = f"We hope {out_of_production_series[0].title} has come to an satisfiying ending." # TODO tone okay?
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                else:
+                    title =  f"{len(out_of_production_series)} series of your watchlist have gone out of production"
+                    action= "-" # TODO probably just open main_view on series
+                    string = ", ".join(out.title for out in out_of_production_series)
+                    body = f"The series are {string}" #if somebody is unfortunate enough to have more than 5 series cancelled then this will probably overflow
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                
+
+            if new_release_movies:
+                if len(new_release_movies) == 1:
+                    title = f"{new_release_movies[0].title} has had its release!"
+                    action= "-" # TODO probably set it to open the details page
+                    body = f"{new_release_movies[0].title} was released {new_release_movies_span.days} days ago." #
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                else:
+                    title = f"{len(new_release_movies)} movies on your watchlist have had their releases"
+                    action= "-" # TODO set to main view with category new releases on top
+                    string = ", ".join(new.title for new in new_release_movies)
+                    body = f"The movies are {string}."
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+
+            if soon_release_movies:
+                if len(soon_release_movies) == 1:
+                    title = f"{soon_release_movies[0].title} will have its release soon!"
+                    action= "-" # TODO probably set it to open the details page
+                    body = f"{soon_release_movies[0].title} will have its release in {soon_release_movies_span.days} days."
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+                else:
+                    title = f"{len(soon_release_movies)} movies on your watchlist will have their releases soon"
+                    action= "-" # TODO  do not know
+                    string = ", ".join(soon.title for soon in soon_release_movies)
+                    body = f"The series are {string}."
+                    notification = Gio.Notification.new(title)
+                    notification.set_default_action(action) 
+                    notification.set_body(body)
+                    self.app.send_notification(None, notification)
+        else:
+            count_movies = len(new_release_movies) + len(new_release_series)
+            count_series = len(soon_release_movies) + len(soon_release_series) + len(out_of_production_series)
+            title = f"{count_movies + count_series} items of your watchlist have an update"
+            action= "-" # TODO  do not know
+
+            string_body_movies = ''
+            string_body_series = ''
+            if count_movies > 0:
+                string_body_movies = f"{count_movies} movie(s)"
+            if count_series > 0:
+                string_body_movies = f"{count_series} serie(s)"
+            connector = "and" if count_movies > 0 and count_series > 0 else ''
+            body = f"This updates affect {string_body_movies} {connector} {string_body_series}"
+
+            notification = Gio.Notification.new(title)
+            notification.set_default_action(action) 
+            notification.set_body(body)
+            self.app.send_notification(None, notification)
 
 
     def _on_notification_list_done(self,
