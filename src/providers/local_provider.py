@@ -1194,7 +1194,14 @@ class LocalProvider:
             connection.cursor().close()
             logging.debug(f'[db] TV series {id}, deleted: {result.lastrowid}')
 
-
+        #Copy all flags that get reset but are still needed from the old to the new
+        new.activate_notification = old.activate_notification
+        new.add_date = old.add_date
+        new.new_release = old.new_release     
+        new.recent_change = old.recent_change
+        new.soon_release = old.soon_release
+        new.watched = old.watched
+        
         # Restore episodes statuses if they match before addition
         for idx, season in enumerate(new.seasons):
             for jdx, episode in enumerate(season.episodes):
@@ -1203,14 +1210,9 @@ class LocalProvider:
                     new.seasons[idx].episodes[jdx].watched = True
                 except ValueError:
                     new.seasons[idx].episodes[jdx].watched = False
+                    #we have found a new episode therefore the watched flag needs to be set to false
+                    new.watched = False
         
-        #Copy all flags that get reset but are still needed from the old to the new
-        new.activate_notification = old.activate_notification
-        new.add_date = old.add_date
-        new.new_release = old.new_release     
-        new.recent_change = old.recent_change
-        new.soon_release = old.soon_release
-        new.watched = old.watched
         
         LocalProvider.add_series(serie=new)
 
