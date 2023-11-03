@@ -10,6 +10,7 @@ import time
 from typing import List
 from pathlib import Path
 from PIL import Image, ImageStat
+from datetime import datetime, timedelta
 
 
 from .. import shared  # type: ignore
@@ -277,8 +278,12 @@ class LocalProvider:
                     color = LocalProvider.compute_badge_color(Path(poster[7:]))
                 else:
                     color = False
-                sql = """UPDATE series SET backdrop_path = ?, poster_path = ?, color = ?, watched = ? WHERE id = ?;"""
+
+                activate_notification = entry["in_production"]
+
+                sql = """UPDATE series SET activate_notification = ?, backdrop_path = ?, poster_path = ?, color = ?, watched = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
+                    activate_notification,
                     backdrop,
                     poster,
                     color,
@@ -349,8 +354,11 @@ class LocalProvider:
                     color = LocalProvider.compute_badge_color(Path(poster[7:]))
                 else:
                     color = False
-                sql = """UPDATE movies SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
+                activate_notification = datetime.strptime(entry["release_date"], '%Y-%m-%d') > datetime.now()
+
+                sql = """UPDATE movies SET activate_notification = ?, backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
+                    activate_notification,
                     backdrop,
                     poster,
                     color,
