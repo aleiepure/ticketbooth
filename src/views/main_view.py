@@ -46,9 +46,7 @@ class MainView(Adw.Bin):
     def __init__(self, window):
         super().__init__()
         self.app = window.app
-        local.update_series_table()
-        local.update_movies_table()
-
+ 
 
         self._tab_stack.add_titled_with_icon(ContentView(movie_view=True),
                                              'movies',
@@ -178,8 +176,6 @@ class MainView(Adw.Bin):
             case 'never':
                 return
 
-
-
         shared.schema.set_string(
             'last-update', datetime.now().strftime('%Y-%m-%d'))
 
@@ -194,7 +190,6 @@ class MainView(Adw.Bin):
             None
         """
 
-        # Movies
         movies = local.get_all_movies()
         if movies:
             for movie in movies:    # type: ignore
@@ -202,7 +197,6 @@ class MainView(Adw.Bin):
                     new_movie = MovieModel(tmdb.get_movie(movie.id))
                     local.update_movie(old=movie, new=new_movie)
 
-        # TV Series
         series = local.get_all_series()
         if series:
             for serie in series:    # type: ignore

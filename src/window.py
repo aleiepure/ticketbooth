@@ -248,7 +248,6 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         is_first_run = shared.schema.get_boolean('first-run')
         logging.info(f'is first run: {is_first_run}')
-
         if is_first_run:
             logging.info('Start first run setup')
             self.first_run_view = FirstRunView()

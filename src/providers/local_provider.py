@@ -263,22 +263,26 @@ class LocalProvider:
             for entry in result:
                 backdrop = entry["backdrop_path"]
                 poster = entry["poster_path"]
+                new_watched = (all(episode.watched for season in LocalProvider.get_all_seasons(entry["id"]) for episode in season.episodes))
+                        
                 if shared.DEBUG: #if we are in debug build we add Devel to the path, this way we can copy release databases to the debug build to test.
                     backdrop = backdrop.replace(".Devel",'')
                     poster = poster.replace(".Devel",'')
-                index = backdrop.find("/data")
+                index = poster.find("/data")
                 if index > 0:
                     if shared.DEBUG:
                         backdrop = backdrop[:index] + ".Devel" + backdrop[index:]
                         poster = poster[:index] + ".Devel" + poster[index:]
+                        
                     color = LocalProvider.compute_badge_color(Path(poster[7:]))
                 else:
                     color = False
-                sql = """UPDATE series SET backdrop_path = ?, poster_path = ?, color = ? WHERE id = ?;"""
+                sql = """UPDATE series SET backdrop_path = ?, poster_path = ?, color = ?, watched = ? WHERE id = ?;"""
                 result = connection.cursor().execute(sql, (
                     backdrop,
                     poster,
                     color,
+                    new_watched,
                     entry["id"],
                     ))
                 connection.commit()
@@ -349,8 +353,8 @@ class LocalProvider:
                 result = connection.cursor().execute(sql, (
                     backdrop,
                     poster,
-                    entry["id"],
-                    color,))
+                    color,
+                    entry["id"],))
                 connection.commit()
 
     @staticmethod
@@ -846,7 +850,6 @@ class LocalProvider:
         Returns:
             List of SeriesModel or None
         """
-        LocalProvider.update_series_table()
         with sqlite3.connect(shared.db) as connection:
             sql = """SELECT * FROM series;"""
             connection.row_factory = sqlite3.Row
