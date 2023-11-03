@@ -98,6 +98,7 @@ class LocalProvider:
                         original_title TEXT,
                         overview TEXT,
                         poster_path TEXT,
+                        recent_change BOOLEAN,
                         release_date TEXT,
                         revenue INTEGER,
                         runtime INTEGER,
@@ -142,6 +143,7 @@ class LocalProvider:
                             original_title TEXT,
                             overview TEXT,
                             poster_path TEXT,
+                            recent_change BOOLEAN,
                             release_date TEXT,
                             seasons_number INT,
                             soon_release BOOLEAN,
@@ -217,6 +219,13 @@ class LocalProvider:
                 connection.cursor().execute(sql)
                 connection.commit()
 
+            if not any(item[1] == "recent_change" for item in result):
+                sql = """ALTER TABLE series
+                            ADD recent_change BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
             if not any(item[1] == "next_air_date" for item in result):
                 sql = """ALTER TABLE series
                             ADD next_air_date TEXT
@@ -286,6 +295,13 @@ class LocalProvider:
             if not any(item[1] == "color" for item in result):
                 sql = """ALTER TABLE movies
                             ADD color BOOLEAN
+                            DEFAULT (0);"""
+                connection.cursor().execute(sql)
+                connection.commit()
+
+            if not any(item[1] == "recent_change" for item in result):
+                sql = """ALTER TABLE movies
+                            ADD recent_change BOOLEAN
                             DEFAULT (0);"""
                 connection.cursor().execute(sql)
                 connection.commit()
@@ -436,6 +452,7 @@ class LocalProvider:
                 original_title,
                 overview,
                 poster_path,
+                recent_change,
                 release_date,
                 revenue,
                 runtime,
@@ -444,7 +461,7 @@ class LocalProvider:
                 tagline,
                 title,
                 watched
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
                 movie.activate_notification,
                 movie.add_date,
@@ -459,6 +476,7 @@ class LocalProvider:
                 movie.original_title,
                 movie.overview,
                 movie.poster_path,
+                movie.recent_change,
                 movie.release_date,
                 movie.revenue,
                 movie.runtime,
@@ -509,6 +527,7 @@ class LocalProvider:
                 original_title,
                 overview,
                 poster_path,
+                recent_change,
                 release_date,
                 seasons_number,
                 soon_release,
@@ -516,7 +535,7 @@ class LocalProvider:
                 tagline,
                 title,
                 watched
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
             result = connection.cursor().execute(sql, (
                 serie.activate_notification,
                 serie.add_date,
@@ -536,6 +555,7 @@ class LocalProvider:
                 serie.original_title,
                 serie.overview,
                 serie.poster_path,
+                serie.recent_change,
                 serie.release_date,
                 serie.seasons_number,
                 serie.soon_release,
@@ -1180,12 +1200,15 @@ class LocalProvider:
                     new.seasons[idx].episodes[jdx].watched = True
                 except ValueError:
                     new.seasons[idx].episodes[jdx].watched = False
-
-        new.add_date = old.add_date
+        
+        #Copy all flags that get reset but are still needed from the old to the new
         new.activate_notification = old.activate_notification
-        new.watched = old.watched
+        new.add_date = old.add_date
+        new.new_release = old.new_release     
+        new.recent_change = old.recent_change
         new.soon_release = old.soon_release
-        new.new_release = old.new_release
+        new.watched = old.watched
+        
         LocalProvider.add_series(serie=new)
 
         return result.lastrowid
@@ -1402,3 +1425,79 @@ class LocalProvider:
                 result = connection.cursor().execute(sql, (id,)).fetchone()
                 return result[0]              
 
+    @staticmethod
+    def set_recent_change_status(id: int, value: bool, movie: bool = False) -> None:
+        """
+        Sets recent_change status of the content with the id to value.
+
+        Args:
+            id (str): id of the content to look for
+            value (bool): the value to set
+
+        Returns:
+            Success int or None if not found in db
+        """
+        if not movie:
+            logging.debug(f'[db] TV series {id}, set recent_change field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE series SET recent_change = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,))
+                connection.commit()
+        else:
+            logging.debug(f'[db] movie {id}, set recent_change field to {value}')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """UPDATE movies SET recent_change = ? WHERE id = ?"""
+                result = connection.cursor().execute(sql, (value, id,))
+                connection.commit()
+
+
+
+    @staticmethod
+    def get_recent_change_status(id: int, value: bool, movie: bool = False) -> None:
+        """
+        Returns recent_change status from the content with given id.
+
+        Args:
+            id (str): id of the content to look for
+
+        Returns:
+            Success int or None if not found in db
+        """
+
+        if not movie:
+            logging.debug(f'[db] TV series {id}, get recent_change status')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT recent_change FROM series WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]  
+        else:
+            logging.debug(f'[db] movie {id}, get recent_change status')
+
+            with sqlite3.connect(shared.db) as connection:
+                sql = """SELECT recent_change FROM movies WHERE id = ?;"""
+                result = connection.cursor().execute(sql, (id,)).fetchone()
+                return result[0]   
+
+    @staticmethod
+    def reset_recent_change() -> None:
+        """
+            Sets recent change of all content to False, must be called on application exit
+        Args:
+            None
+        Returns:
+            None
+        """
+
+        logging.debug(f'[db] All content, set recent_change to false')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET recent_change = False;"""
+            connection.cursor().execute(sql, ())
+            connection.commit()
+            sql = """UPDATE movies SET recent_change = False;"""
+            connection.cursor().execute(sql, ())
+            connection.commit()
+                        

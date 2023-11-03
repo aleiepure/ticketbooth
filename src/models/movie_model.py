@@ -36,6 +36,7 @@ class MovieModel(GObject.GObject):
         original_title (str): movie title in original language
         overview (str): movie overview, usually the main plot
         poster_path (str): path where the backgroud poster is stored
+        recent_change (bool): indicates that new/soon_release was changed during the last check
         release_date (str): release date in YYYY-MM-DD format
         revenue (float): movie revenue
         runtime (int): movie runtime in minutes
@@ -67,6 +68,7 @@ class MovieModel(GObject.GObject):
     original_title = GObject.Property(type=str, default='')
     overview = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
+    recent_change = GObject.Property(type=bool, default=False)
     release_date = GObject.Property(type=str, default='')
     revenue = GObject.Property(type=float, default=0)
     runtime = GObject.Property(type=int, default=0)
@@ -93,6 +95,7 @@ class MovieModel(GObject.GObject):
             self.original_title = d['original_title']
             self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path,self.color = self._download_poster(path=d['poster_path'], color = False)
+            self.recent_change = False
             self.release_date = d['release_date']
             self.revenue = d['revenue']
             self.runtime = d['runtime']
@@ -117,6 +120,7 @@ class MovieModel(GObject.GObject):
             self.original_title = t["original_title"]  # type: ignore
             self.overview = t["overview"]  # type: ignore
             self.poster_path = t["poster_path"]  # type: ignore
+            self.recent_change = t["recent_change"]
             self.release_date = t["release_date"]  # type: ignore
             self.revenue = t["revenue"]  # type: ignore
             self.runtime = t["runtime"]  # type: ignore

@@ -40,6 +40,7 @@ class SeriesModel(GObject.GObject):
         original_title (str): series title in original language
         overview (str): series overview
         poster_path (str): uri of the poster image
+        recent_change (bool): indicates that new/soon_release has chagned in the last check
         release_date (str): first air date in YYYY-MM-DD format
         seasons_number (int): number of total seasons
         seasons (List[SeasonModel]): list of SeasonModels
@@ -75,6 +76,7 @@ class SeriesModel(GObject.GObject):
     original_title = GObject.Property(type=str, default='')
     overview = GObject.Property(type=str, default='')
     poster_path = GObject.Property(type=str, default='')
+    recent_change = GObject.Property(type=bool, default=False)
     release_date = GObject.Property(type=str, default='')
     seasons_number = GObject.Property(type=int, default=0)
     seasons = GObject.Property(type=object)
@@ -110,6 +112,7 @@ class SeriesModel(GObject.GObject):
             self.original_title = d['original_name']
             self.overview = re.sub(r'\s{2}', ' ', d['overview'])
             self.poster_path, self.color = self._download_poster(d['poster_path'])   # Here the color is also set since it was easy to hook it into the poster download
+            self.recent_change = False
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']
             self.seasons = self._parse_seasons(d['seasons'])
@@ -138,6 +141,7 @@ class SeriesModel(GObject.GObject):
             self.original_title = t["original_title"]  # type: ignore
             self.overview = t["overview"]  # type: ignore
             self.poster_path = t["poster_path"]  # type: ignore
+            self.recent_change = t["recent_change"]
             self.release_date = t["release_date"]  # type: ignore
             self.seasons_number = t["seasons_number"]  # type: ignore
             self.soon_release = t["soon_release"]  # type: ignore
