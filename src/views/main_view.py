@@ -252,8 +252,8 @@ class MainView(Adw.Bin):
                 new_release_series.append(new_serie)
                 new_release_series_span = datetime.now() - new_last_air_date  #we only save one, since we do not use it if more than one series has a new release
             
-            # Check if the next air date is set to soon (6 days in the future)
-            if datetime.now() + timedelta(days=6) > new_next_air_date:
+            # Check if the next air date is set to soon (7 days in the future)
+            if datetime.now() + timedelta(days=7) > new_next_air_date:
                 local.set_soon_release_status(serie.id, True)
                 # if we also detect a considerable amount of time bewteen epsidoe notify user that the series has new releases coming soon.
                 # 3 weeks are chosen to include the new streaming release model of two chunks a month apart but not spam the user for weekly or bi-weekly releases
