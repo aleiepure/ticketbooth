@@ -53,6 +53,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   <gresource prefix="@prefix@/icons/scalable/actions">
     <file preprocess="xml-stripblanks" alias="series-symbolic.svg">../data/icons/symbolic/series-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="bell-outline-symbolic.svg">../data/icons/symbolic/bell-outline-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="check-round-outline-symbolic.svg">../data/icons/symbolic/check-round-outline-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="movies-symbolic.svg">../data/icons/symbolic/movies-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="network-transmit-receive-symbolic.svg">../data/icons/symbolic/network-transmit-receive-symbolic.svg</file>

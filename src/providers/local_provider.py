@@ -1513,4 +1513,24 @@ class LocalProvider:
             sql = """UPDATE movies SET recent_change = False;"""
             connection.cursor().execute(sql, ())
             connection.commit()
+
+    @staticmethod
+    def reset_activate_notification() -> None:
+        """
+            Sets activate_notification of all content to False
+        Args:
+            None
+        Returns:
+            None
+        """
+
+        logging.debug(f'[db] All content, set activate_notification to false')
+
+        with sqlite3.connect(shared.db) as connection:
+            sql = """UPDATE series SET activate_notification = False;"""
+            connection.cursor().execute(sql, ())
+            connection.commit()
+            sql = """UPDATE movies SET activate_notification = False;"""
+            connection.cursor().execute(sql, ())
+            connection.commit()
                         

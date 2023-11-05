@@ -17,38 +17,80 @@ template $dbUpdateView: Adw.Bin {
       title-widget: Label {};
     }
 
-    Adw.StatusPage {
-      margin-top: 64;
-      title: _("Updating your watchlist");
-      description: _("After the update of Ticketbooth we need to update the local database entries");
-      icon-name: "network-transmit-receive";
-      Box {
-        margin-top: 42;
-        orientation: vertical;
-        halign: center;
-        valign: center;
+    Adw.Carousel _carousel {
+      vexpand: true;
+      hexpand: true;
+      allow-scroll-wheel: false;
+      allow-mouse-drag: false;
+      allow-long-swipes: false;
+    
+      Adw.StatusPage _update_progress_page {
+        margin-top: 64;
+        title: _("Updating your watchlist");
+        description: _("After the update of Ticketbooth we need to update the local database entries");
+        icon-name: "network-transmit-receive";
+        vexpand: true;
+        hexpand: true;
+        Box {
+          margin-top: 42;
+          orientation: vertical;
+          halign: center;
+          valign: center;
 
-        ProgressBar _progress_bar{
-            fraction: 0.0;
-            show-text: true;
-            margin-bottom: 24;
-        }
+          ProgressBar _progress_bar{
+              fraction: 0.0;
+              show-text: true;
+              margin-bottom: 24;
+          }
 
-        Button _offline_btn {
-            visible: false;
-            halign: center;
-            label: _("Use Offline Mode");
-            clicked => $_on_offline_btn_clicked();
-            styles ["suggested-action", "pill"]
-        }
+          Button _offline_btn {
+              visible: true;
+              halign: center;
+              label: _("Use Offline Mode");
+              clicked => $_on_offline_btn_clicked();
+              styles ["suggested-action", "pill"]
+          }
 
-        CheckButton _retry_check_btn {
-            label: _("Try again on next run");
-            visible: false;
-            active: true;
-            halign: center;
+          CheckButton _retry_check_btn {
+              label: _("Try again on next run");
+              visible: true;
+              active: true;
+              halign: center;
+          }
         }
       }
+
+      Adw.StatusPage _notification_question {
+        margin-top: 64;
+        margin-end: 20;
+        title: _("Activate Notifications?");
+        description: _("Would you like to activate notifications for all series that are still in production and for all movies that have not yet released?");
+        icon-name: "bell-outline-symbolic";
+        vexpand: true;
+        hexpand: true;
+        Box {
+          orientation: horizontal;
+          halign: center;
+          Button _activate_btn {
+            margin-end: 8;
+            label: _("Activate");
+            use-underline: true;
+            halign: center;
+            clicked => $_on_activate_btn_clicked();
+            styles ["suggested-action", "pill"]
+          }
+
+          Button _deactivate_btn {
+            margin-end: 8;
+            label: _("Deactivate");
+            use-underline: true;
+            halign: center;
+            clicked => $_on_deactivate_btn_clicked();
+            styles ["destructive-action", "pill" ]
+          }
+        }
+      }
+
     }
   }
 }
