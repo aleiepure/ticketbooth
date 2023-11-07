@@ -25,7 +25,9 @@ from . import shared  # type: ignore
 from .models.search_result_model import SearchResultModel
 from .preferences import PreferencesWindow
 from .views.content_view import ContentView
+from .pages.details_page import DetailsView
 from .views.first_run_view import FirstRunView
+from .views.db_update_view import DbUpdateView
 from .views.main_view import MainView
 from .widgets.background_activity_row import BackgroundActivityRow
 from .widgets.background_indicator import BackgroundIndicator
@@ -44,6 +46,8 @@ class TicketboothApplication(Adw.Application):
         SearchResultModel,
         PosterButton,
         SearchResultRow,
+        DetailsView,
+        DbUpdateView,
         FirstRunView,
         MainView,
         ContentView,
@@ -104,7 +108,7 @@ class TicketboothApplication(Adw.Application):
         about_window.set_application_icon(shared.APP_ID)
         about_window.set_version(shared.VERSION)
         about_window.set_transient_for(self.props.active_window)
-        about_window.add_credit_section('Contributors', [])
+        about_window.add_credit_section('Contributors', ["Leo Merholz"])
         about_window.add_legal_section('Movie and TV Series Metadata', 'This product uses the TMDB API but is not endorsed or certified by TMDB.', Gtk.License.CUSTOM, 'All rights belong to their respective owners.')
         logging.debug('About window open')
         about_window.present()

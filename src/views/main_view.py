@@ -133,7 +133,7 @@ class MainView(Adw.Bin):
             BackgroundQueue.add(
                 activity=BackgroundActivity(
                     activity_type=ActivityType.UPDATE,
-                    title=C_('Background activity title',
+                    title=C_('Notification List activity title',
                                 'Automatic update of notification list'),
                     task_function=self._update_notification_list),
                 on_done=self._on_notification_list_done)
@@ -306,78 +306,96 @@ class MainView(Adw.Bin):
         elif count == 1:
             if new_release_series:
                 if len(new_release_series) == 1:
-                    title = "New release for " + new_release_series[0].title
+                    title = _("New release for " + new_release_series[0].title)
                     action= "-" # TODO probably set it to open the details page
-                    body = f"A new episode of {new_release_series[0].title} was released {new_release_series_span.days} days ago"
+                    day = _("day") if new_release_movies_span.days == 1 else _("days")
+                    # TRANSLATOR: {title} is the title of the series and {new_release_series_span.days} the number of days, {day} is either day or days
+                    body = _(f"A new episode of {new_release_series[0].title} was released {new_release_series_span.days} {day} ago.")
                 else:
-                    title = f"New release for {len(new_release_series)} series on your watchlist"
+                    title = _(f"New release for {len(new_release_series)} series on your watchlist")
                     action= "-" # TODO set to main view with category new releases on top
                     string = ", ".join(new.title for new in new_release_series)
-                    body = f"The series are {string}."
+                    # TRANSLATOR: {string} will be list of series seperated by a comma
+                    body = _(f"The series are {string}.")
 
             if soon_release_series:
                 if len(soon_release_series) == 1:
-                    title = f"{soon_release_series[0].title} will have a release soon"
+                    title = _(f"{soon_release_series[0].title} will have a release soon")
                     action= "-" # TODO probably set it to open the details page
-                    body = f"A new episode will release in {soon_release_series_span.days} days"
+                    day = _("day") if new_release_movies_span.days == 1 else _("days")
+                    # TRANSLATOR: {title} is the title of the series and {new_release_series_span.days} the number of days, {day} is either day or days
+                    body = _(f"A new episode will release in {soon_release_series_span.days} {day}.")
                 else:
-                    title = f"{len(soon_release_series)} series on your watchlist will have a new episode soon"
+                    title = _(f"{len(soon_release_series)} series on your watchlist will have a new episode soon")
                     action= "-" # TODO  do not know
                     string = ", ".join(soon.title for soon in soon_release)
-                    body = f"The series are {string}."
+                    # TRANSLATOR: {string} will be list of all series affected seperated by a comma
+                    body = _(f"The series are {string}.")
 
             if out_of_production_series:
                 if len(out_of_production_series) == 1:
-                    title =  f"{out_of_production_series[0].title} has gone out of production"
+                    title =  _(f"{out_of_production_series[0].title} has gone out of production")
                     action= "-" # TODO probably set it to open the details page
-                    body = f"We hope {out_of_production_series[0].title} has come to an satisfiying ending." # TODO tone okay?
+                    # TRANSLATOR: {title} is the title of the series 
+                    body = _(f"We hope {out_of_production_series[0].title} has come to an satisfiying ending.") # TODO tone okay?
                 else:
-                    title =  f"{len(out_of_production_series)} series of your watchlist have gone out of production"
+                    title =  _(f"{len(out_of_production_series)} series of your watchlist have gone out of production")
                     action= "-" # TODO probably just open main_view on series
                     string = ", ".join(out.title for out in out_of_production_series)
-                    body = f"The series are {string}" #if somebody is unfortunate enough to have more than 5 series cancelled then this will probably overflow
+                    # TRANSLATOR: {string} will be list of all series affected seperated by a comma
+                    body = _(f"The series are {string}." )
 
 
             if new_release_movies:
                 if len(new_release_movies) == 1:
-                    title = f"{new_release_movies[0].title} has had its release!"
+                    title = _(f"{new_release_movies[0].title} has had its release!")
                     action= "-" # TODO probably set it to open the details page
-                    body = f"{new_release_movies[0].title} was released {new_release_movies_span.days} days ago." #
+                    day = _("day") if new_release_movies_span.days == 1 else _("days")
+                    # TRANSLATOR: {title} is the title of the series and {new_release_series_span.days} the number of days, {day} is either day or days
+                    body = _(f"{new_release_movies[0].title} was released {new_release_movies_span.days} {day} ago.") #
                 else:
-                    title = f"{len(new_release_movies)} movies on your watchlist have had their releases"
+                    title = _(f"{len(new_release_movies)} movies on your watchlist have had their releases.")
                     action= "-" # TODO set to main view with category new releases on top
                     string = ", ".join(new.title for new in new_release_movies)
-                    body = f"The movies are {string}."
+                    # TRANSLATOR: {string} will be list of all series affected seperated by a comma
+                    body = _(f"The movies are {string}.")
 
             if soon_release_movies:
                 if len(soon_release_movies) == 1:
-                    title = f"{soon_release_movies[0].title} will have its release soon!"
+                    title = _(f"{soon_release_movies[0].title} will have its release soon!")
                     action= "-" # TODO probably set it to open the details page
-                    body = f"{soon_release_movies[0].title} will have its release in {soon_release_movies_span.days} days."
+                    day = _("day") if new_release_movies_span.days == 1 else _("days")
+                    # TRANSLATOR: {title} is the title of the series and {new_release_series_span.days} the number of days, {day} is either day or days
+                    body = _(f"{soon_release_movies[0].title} will have its release in {soon_release_movies_span.days} {day}.")
                 else:
-                    title = f"{len(soon_release_movies)} movies on your watchlist will have their releases soon"
+                    title = _(f"{len(soon_release_movies)} movies on your watchlist will have their releases soon")
                     action= "-" # TODO  do not know
                     string = ", ".join(soon.title for soon in soon_release_movies)
-                    body = f"The series are {string}."
+                    # TRANSLATOR: {string} will be list of all series affected seperated by a comma
+                    body = _(f"The series are {string}.")
 
             notification = Gio.Notification.new(title)
             notification.set_default_action(action) 
             notification.set_body(body)
             self.app.send_notification(None, notification)       
         else:
-            count_movies = len(new_release_movies) + len(new_release_series)
-            count_series = len(soon_release_movies) + len(soon_release_series) + len(out_of_production_series)
-            title = f"{count_movies + count_series} items of your watchlist have an update"
+            count_movies = len(new_release_movies) + len(soon_release_movies)
+            count_series = len(new_release_series) + len(soon_release_series) + len(out_of_production_series)
+            # TRANSLATOR: count_movies + count_series is the number of affected items
+            title = _(f"{count_movies + count_series} items of your watchlist have an update")
             action= "-" # TODO  do not know
 
             string_body_movies = ''
             string_body_series = ''
+            movie = _("movie") if count_movies == 1 else _("movies")
+            serie = _("serie") if count_series == 1 else _("series")
             if count_movies > 0:
-                string_body_movies = f"{count_movies} movie(s)"
+                string_body_movies = f"{count_movies} {movie}"
             if count_series > 0:
-                string_body_movies = f"{count_series} serie(s)"
-            connector = "and" if count_movies > 0 and count_series > 0 else ''
-            body = f"This updates affect {string_body_movies} {connector} {string_body_series}"
+                string_body_movies = f"{count_series} {serie}"
+            connector = _("and") if count_movies > 0 and count_series > 0 else ''
+            # TRANSLATOR: string_body_movies could be "(digit) movie(s)" or empty; connector could be "and" or empty ; string_body_series could be "(digit) series(s)" or empty
+            body = _(f"These updates affect {string_body_movies} {connector} {string_body_series}.")
 
             notification = Gio.Notification.new(title)
             notification.set_default_action(action) 

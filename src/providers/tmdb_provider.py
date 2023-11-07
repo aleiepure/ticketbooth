@@ -95,8 +95,8 @@ class TMDBProvider:
         """
         if not lang:
             lang = shared.schema.get_string('tmdb-lang')
-        result = tmdb.TV(id).info(language=lang)
-        return result
+            
+        return tmdb.TV(id).info(language=lang)
 
     @staticmethod
     def get_season_episodes(id: int, season: int, lang: str | None = None) -> dict:

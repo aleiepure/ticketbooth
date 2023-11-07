@@ -27,6 +27,7 @@ src/ui/pages/details_page.blp
 src/ui/pages/edit_episode_page.blp
 src/ui/preferences.blp
 src/ui/views/content_view.blp
+src/ui/views/db_update_view.blp
 src/ui/views/first_run_view.blp
 src/ui/views/main_view.blp
 src/ui/widgets/background_activity_row.blp
@@ -39,6 +40,7 @@ src/ui/widgets/season_expander.blp
 src/ui/widgets/theme_switcher.blp
 src/ui/window.blp
 src/views/content_view.py
+src/views/db_update_view.py
 src/views/first_run_view.py
 src/views/main_view.py
 src/widgets/background_activity_row.py

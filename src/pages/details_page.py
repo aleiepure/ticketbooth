@@ -169,6 +169,7 @@ class DetailsView(Adw.NavigationPage):
                 self._chip2_lbl.set_visible(True)
                 self._chip2_lbl.set_text(
                     self._format_runtime(self.content.runtime))
+                self._chip2_lbl.set_tooltip_text(_("Runtime of Movie"))
 
             if not self.content.manual and datetime.strptime(self.content.release_date,'%Y-%m-%d') > datetime.now():
                 self._notification_icon.set_visible(True)
@@ -184,6 +185,7 @@ class DetailsView(Adw.NavigationPage):
                                                   '{num} Seasons'.format(
                                                       num=self.content.seasons_number),
                                          self.content.seasons_number))
+                self._chip2_lbl.set_tooltip_text(_("Number of Seasons"))
 
             if self.content.episodes_number:
                 self._chip3_lbl.set_visible(True)
@@ -643,7 +645,7 @@ class DetailsView(Adw.NavigationPage):
         dialog = Adw.MessageDialog.new(self.get_ancestor(Adw.ApplicationWindow),  # TRANSLATORS: {title} is the content's title
                                        C_('message dialog heading', 'Delete {title}?').format(
                                            title=self.content.title),
-                                       C_('message dialog body', 'This title will be deleted from your notification list.'))
+                                       C_('message dialog body', 'This title will be deleted from your watchlist.'))
         dialog.add_response('cancel', C_('message dialog action', '_Cancel'))
         dialog.add_response('delete', C_('message dialog action', '_Delete'))
         dialog.set_response_appearance(
