@@ -20,6 +20,7 @@ from ..dialogs.add_manual_dialog import AddManualDialog
 from ..models.movie_model import MovieModel
 from ..models.season_model import SeasonModel
 from ..models.series_model import SeriesModel
+from ..models.episode_model import EpisodeModel
 from ..providers.local_provider import LocalProvider as local
 from ..providers.tmdb_provider import TMDBProvider as tmdb
 from ..widgets.episode_row import EpisodeRow
@@ -273,14 +274,14 @@ class DetailsView(Adw.NavigationPage):
 
     def _on_episode_watch_clicked(self,
                                   source: Gtk.Widget,
-                                  data: Tuple[Adw.ButtonContent, SeasonModel]) -> None:
+                                  data: Tuple[Adw.ButtonContent, SeasonModel, EpisodeModel]) -> None:
         """
         Callback for "watched-clicked" signal.
         Called after an episode is (un)marked as watched, checks and updates, if needed, the watched button for the corresponding season.
 
         Args:
             source (Gtk.Widget): caller widget
-            data(tuple[Adw.ButtonContent, SeasonModel]): tuple with the Adw.ButtonContent to change and the SeasonModel
+            data(tuple[Adw.ButtonContent, SeasonModel, EpisodeModel]): tuple with the Adw.ButtonContent to change and the SeasonModel
                 parent of the changed episode
 
         Returns:
@@ -294,6 +295,7 @@ class DetailsView(Adw.NavigationPage):
         for idx, season in enumerate(self.content.seasons):  # type: ignore
             if season == data[1]:
                 season_idx = idx
+
         #compare if the episode clicked was the newest released episode if this is the case set new_release to False
         if (season_idx+1) == int(self.content.last_episode_number.split('.')[0]) \
                 and data[2].number == int(self.content.last_episode_number.split('.')[1]):
@@ -341,28 +343,35 @@ class DetailsView(Adw.NavigationPage):
             if item[0] == self.content.seasons[season_idx]:  # type: ignore
                 episode_rows = item[1]
 
+        #determine if we want to set all episodes to watched or to not watched
+        set_to_watched = btn_content.get_label() == 'Mark as Watched'
+        
         # Make changes in db
-        # type: ignore
         for episode in self.content.seasons[season_idx].episodes:
-            local.mark_watched_episode(episode.id, not all(
-                episode.watched for episode in self.content.seasons[season_idx].episodes))  # type: ignore
+            local.mark_watched_episode(episode.id, set_to_watched)  # type: ignore
+
+        #if the season in which the last aired episode is in is clicked as watched remove new_release
+        if season_idx == int(self.content.last_episode_number.split('.')[0]):
+            local.set_new_release_status(self.content.id, False)
 
         # Update episode rows
         for episode_row in episode_rows:
-            episode_row.set_watched_btn(
-                not all(episode.watched for episode in self.content.seasons[season_idx].episodes))  # type: ignore
+            episode_row.set_watched_btn(set_to_watched)  # type: ignore
 
         # Update season expander
-        if not all(episode.watched for episode in self.content.seasons[season_idx].episodes):
+        if set_to_watched:
             btn_content.set_label(_('Watched'))
             btn_content.set_icon_name('check-plain')
         else:
             btn_content.set_label(_('Mark as Watched'))
             btn_content.set_icon_name('watchlist')
 
+        #refetch data from db since we have changed episode.watched earlier
+        self.content = local.get_series_by_id(self.content.id)
+        
         # Update season status
-        local.mark_watched_series(self.content.id, not all(  # type: ignore
-            episode.watched for season in self.content.seasons for episode in season.episodes))  # type: ignore
+        local.mark_watched_series(self.content.id, all(  
+            episode.watched for season in self.content.seasons for episode in season.episodes)) 
         self.activate_action('win.refresh', None)
 
     def _build_flow_box(self) -> None:
@@ -623,7 +632,7 @@ class DetailsView(Adw.NavigationPage):
         root_page = self.get_ancestor(
             Adw.NavigationView).get_previous_page(self)
         self.get_ancestor(Adw.NavigationView).replace(
-            [root_page, DetailsView(self.new_content)])
+            [root_page, DetailsView(self.new_content, self.content_view)])
         self._loading_lbl.set_label(_('Loading Metadata…'))
         self._view_stack.set_visible_child_name('filled')
         activity.end()
