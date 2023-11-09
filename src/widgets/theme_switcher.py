@@ -19,8 +19,13 @@ from .. import shared  # type: ignore
 class ThemeSwitcher(Gtk.Box):
     __gtype_name__ = 'ThemeSwitcher'
 
+    __gsignals__ = {
+        'themer-clicked': (GObject.SIGNAL_RUN_FIRST, None, ()),
+    } 
+
     show_system = GObject.property(type=bool, default=True)
     color_scheme = 'light'
+   
 
     system = Gtk.Template.Child()
     light = Gtk.Template.Child()
@@ -70,3 +75,5 @@ class ThemeSwitcher(Gtk.Box):
         if self.dark.get_active():
             self.selected_color_scheme = 'dark'  # type: ignore
             shared.schema.set_string('style-scheme', 'dark')
+        # emit signal so we can change the background of details page if needed
+        self.emit('themer-clicked')

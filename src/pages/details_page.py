@@ -78,8 +78,11 @@ class DetailsView(Adw.NavigationPage):
         super().__init__()
 
         # Theme switcher (Adapted from https://gitlab.gnome.org/tijder/blueprintgtk/)
-        self._menu_btn.get_popover().add_child(ThemeSwitcher(), 'themeswitcher')
-
+        themeswitcher = ThemeSwitcher()
+        themeswitcher.connect(
+                    'themer-clicked', self._on_themeswitcher_clicked,)
+        self._menu_btn.get_popover().add_child(themeswitcher, 'themeswitcher')
+        
         if type(content) is MovieModel:
             self.content = local.get_movie_by_id(content.id)
         else:
@@ -234,12 +237,18 @@ class DetailsView(Adw.NavigationPage):
 
             button.set_child(btn_content)
             season_row.add_suffix(button)
+            season_row.add_css_class("groupcolor")
 
             tmp = []
             for episode in season.episodes:
                 episode_row = EpisodeRow(episode)
                 episode_row.connect(
+<<<<<<< HEAD
                     'watched-clicked', self._on_episode_watch_clicked, (btn_content, season))
+=======
+                    'watched-clicked', self._on_episode_watch_clicked, (btn_content, season, episode))
+                episode_row.add_css_class("groupcolor")
+>>>>>>> 59b90f0 (Improve theming behaviour of DetailsView)
                 season_row.add_row(episode_row)
                 tmp.append(episode_row)
 
@@ -650,3 +659,32 @@ class DetailsView(Adw.NavigationPage):
 
         self.emit('deleted')
         activity.end()
+
+    def _on_themeswitcher_clicked(self,
+                                  source: Gtk.Widget) -> None:
+        """
+        Callback for "themer-clicked" signal.
+        Called after an theme is switched changes background picture if needed
+
+        Args:
+            source (Gtk.Widget): caller widget
+
+        Returns:
+            None
+        """
+
+        if self.content.backdrop_path:  # type: ignore
+            if not Adw.StyleManager.get_default().get_high_contrast():
+                self._background_picture.set_file(Gio.File.new_for_uri(
+                    self.content.backdrop_path))  # type: ignore
+                # type: ignore
+                with Image.open(self.content.backdrop_path[7:]) as image:
+                    stat = ImageStat.Stat(image.convert('L'))
+
+                    luminance = [
+                        min((stat.mean[0] + stat.extrema[0][0]) / 510, 0.7),
+                        max((stat.mean[0] + stat.extrema[0][1]) / 510, 0.3),
+                    ]
+                self._background_picture.set_opacity(1 - luminance[0]
+                                                     if Adw.StyleManager.get_default().get_dark()
+                                                     else luminance[1])

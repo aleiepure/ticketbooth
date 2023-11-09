@@ -21,6 +21,10 @@
     border-radius: 6px;
 }
 
+.groupcolor list {
+    background-color: alpha(#dddddd, 0.2);
+}
+
 .progress_complete progress {
 	background-color: @success_color;
 }
