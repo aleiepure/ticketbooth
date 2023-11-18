@@ -7,203 +7,214 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-11-18 11:13+0000\n"
+"Last-Translator: Robert Wolniak <RobertWolniak@users.noreply.hosted.weblate."
+"org>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.2\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
 msgid "@app_name@"
-msgstr ""
+msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr ""
+msgstr "Szerokość okna"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr ""
+msgstr "Wysokość okna"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr ""
+msgstr "Okno zmaksymalizowane"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr ""
+msgstr "Aktywna karta"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr ""
+msgstr "Określa, czy aplikacja jest uruchamiana po raz pierwszy"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
 msgid "Specifies if the app downloaded the required data"
-msgstr ""
+msgstr "Określa, czy aplikacja pobrała niezbędne dane"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:51
 msgid "View sorting style"
-msgstr ""
+msgstr "Zobacz styl sortowania"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:62
 msgid "App color scheme"
-msgstr ""
+msgstr "Schemat kolorystyczny aplikacji"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:66
 msgid "Language used by TMDB results"
-msgstr ""
+msgstr "Język rezultatów z TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:79
 msgid "Frequency to check for new data on TMDB"
-msgstr ""
+msgstr "Częstotliwość sprawdzania TMDB pod kątem nowych danych"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:83
 msgid "Last autoupdate date"
-msgstr ""
+msgstr "Data najnowszej automatycznej aktualizacji"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:87
 msgid "Clear cache on exit"
-msgstr ""
+msgstr "Wyczyść ciasteczka przy wyłączaniu aplikacji"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15
 msgid "Keep track of your favorite shows"
-msgstr ""
+msgstr "Śledź swoje ulubione programy"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:18
 msgid ""
 "Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
 "track of watched titles, and find information about the latest releases."
 msgstr ""
+"Dzięki Ticket Booth możesz stworzyć swoją listę filmów i seriali do "
+"obejrzenia, jak również śledzić na bieżąco postępy w oglądanych tytułach i "
+"znajdywać informacje o nowościach."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:20
 msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
+"Ticket Booth nie zawiera funkcji oglądania czy pobierania zawartości. "
+"Aplikacja korzysta z TMDB API, ale nie jest wspierana ani w żaden sposób "
+"powiązana z TMDB."
 
 #: src/dialogs/add_manual_dialog.py:89
 msgid "Edit Movie"
-msgstr ""
+msgstr "Edytuj film"
 
 #: src/dialogs/add_manual_dialog.py:92
 msgid "Edit TV Series"
-msgstr ""
+msgstr "Edytuj seriale"
 
 #: src/dialogs/add_manual_dialog.py:294
 #, python-brace-format
 msgid "Season {num}"
-msgstr ""
+msgstr "Sezon {num}"
 
 #: src/dialogs/add_manual_dialog.py:334 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
-msgstr ""
+msgstr "Dodaj {title}"
 
 #: src/dialogs/add_manual_dialog.py:340
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr ""
+msgstr "Zaktualizuj {title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
-msgstr ""
+msgstr "Sezon"
 
 #: src/pages/details_page.py:155 src/pages/details_page.py:229
 #: src/pages/details_page.py:277 src/pages/details_page.py:326
 #: src/pages/details_page.py:447 src/widgets/episode_row.py:114
 #: src/widgets/episode_row.py:137 src/widgets/episode_row.py:291
 msgid "Watched"
-msgstr ""
+msgstr "Obejrzane"
 
 #: src/pages/details_page.py:158 src/pages/details_page.py:232
 #: src/pages/details_page.py:280 src/pages/details_page.py:329
 #: src/pages/details_page.py:450 src/widgets/episode_row.py:117
 #: src/widgets/episode_row.py:140 src/widgets/episode_row.py:294
 msgid "Mark as Watched"
-msgstr ""
+msgstr "Oznacz jako obejrzane"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:171
 #, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{num} sezon"
+msgstr[1] "{num} sezony"
+msgstr[2] "{num} sezonów"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:179 src/pages/details_page.py:211
 #, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{num} odcinek"
+msgstr[1] "{num} odcinki"
+msgstr[2] "{num} odcinków"
 
 #: src/pages/details_page.py:349 src/ui/dialogs/add_manual.blp:188
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: src/pages/details_page.py:357 src/ui/dialogs/add_manual.blp:192
 msgid "Original Language"
-msgstr ""
+msgstr "Język oryginału"
 
 #: src/pages/details_page.py:366 src/ui/dialogs/add_manual.blp:197
 msgid "Original Title"
-msgstr ""
+msgstr "Oryginalny tytuł"
 
 #: src/pages/details_page.py:378
 msgid "Budget"
-msgstr ""
+msgstr "Budżet"
 
 #: src/pages/details_page.py:388
 msgid "Revenue"
-msgstr ""
+msgstr "Dochód"
 
 #: src/pages/details_page.py:398
 msgid "In Production"
-msgstr ""
+msgstr "W produkcji"
 
 #: src/pages/details_page.py:401
 msgid "Yes"
-msgstr ""
+msgstr "Tak"
 
 #: src/pages/details_page.py:402
 msgid "No"
-msgstr ""
+msgstr "Nie"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
 #: src/pages/details_page.py:423 src/widgets/episode_row.py:161
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr ""
+msgstr "{h}g {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:426 src/widgets/episode_row.py:165
 #, python-brace-format
 msgid "{m}min"
-msgstr ""
+msgstr "{m}min"
 
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:508
 #, python-brace-format
 msgid "Updating {title}"
-msgstr ""
+msgstr "Aktualizowanie {title}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:515
 #, python-brace-format
 msgid "Update {title}"
-msgstr ""
+msgstr "Aktualizuj {title}"
 
 #: src/pages/details_page.py:550
 msgid "Loading Metadata…"
-msgstr ""
+msgstr "Wczytywanie metadanych…"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:569 src/widgets/episode_row.py:240
@@ -211,66 +222,66 @@ msgstr ""
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr ""
+msgstr "Usunąć {title}?"
 
 #: src/pages/details_page.py:571
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr ""
+msgstr "Tytuł ten zostanie usunięty z twojej listy do obejrzenia."
 
 #: src/pages/details_page.py:572 src/widgets/episode_row.py:244
 #: src/widgets/season_expander.py:143
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Anuluj"
 
 #: src/pages/details_page.py:573 src/widgets/episode_row.py:245
 #: src/widgets/season_expander.py:144
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr ""
+msgstr "_Usuń"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:603
 #, python-brace-format
 msgid "Delete {title}"
-msgstr ""
+msgstr "Usuń {title}"
 
 #: src/preferences.py:238
 msgctxt "message dialog heading"
 msgid "No Network"
-msgstr ""
+msgstr "Brak połączenia z siecią"
 
 #: src/preferences.py:239
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
-msgstr ""
+msgstr "Aby ukończyć konfigurację, połącz się z internetem."
 
 #: src/preferences.py:240 src/window.py:163
 msgctxt "message dialog action"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/preferences.py:306
 msgctxt "Background activity title"
 msgid "Clear cache"
-msgstr ""
+msgstr "Wyczyść ciasteczka"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:358 src/preferences.py:360
 #, python-brace-format
 msgid "{number} Titles"
-msgstr ""
+msgstr "{number} tytułów"
 
 #: src/preferences.py:398
 msgctxt "Background activity title"
 msgid "Delete all movies"
-msgstr ""
+msgstr "Usuń wszystkie filmy"
 
 #: src/preferences.py:409
 msgctxt "Background activity title"
 msgid "Delete all TV Series"
-msgstr ""
+msgstr "Usuń wszystkie seriale"
 
 #. TRANSLATORS: {total_space:.2f} is the total occupied space
 #: src/preferences.py:484
@@ -279,225 +290,229 @@ msgid ""
 "Ticket Booth is currently using {total_space:.2f} MB. Use the options below "
 "to free some space."
 msgstr ""
+"Ticket Booth obecnie używa {total_space:.2f} MB przestrzeni na dysku. Użyj "
+"opcji poniżej by zwolnić nieco miejsca."
 
 #: src/preferences.py:488 src/preferences.py:490
 #, python-brace-format
 msgid "{space:.2f} MB occupied"
-msgstr ""
+msgstr "{space:.2f} MB używane"
 
 #. TRANSLATORS: replace with your name (and an optional email or website)
 #: src/ui/about_window.blp:16
 msgid "translator-credits"
-msgstr ""
+msgstr "Robert Wolniak <robert.wolniak@protonmail.com>"
 
 #: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:80
 msgctxt "Category"
 msgid "Movie"
-msgstr ""
+msgstr "Film"
 
 #: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:57
 #: src/widgets/search_result_row.py:82
 msgctxt "Category"
 msgid "TV Series"
-msgstr ""
+msgstr "Seriale"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:35
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: src/ui/dialogs/add_manual.blp:67 src/ui/dialogs/edit_season.blp:41
 #: src/ui/pages/edit_episode_page.blp:22
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #: src/ui/dialogs/add_manual.blp:101 src/ui/dialogs/edit_season.blp:69
 #: src/ui/pages/edit_episode_page.blp:58
 msgid "General"
-msgstr ""
+msgstr "Ogólne"
 
 #: src/ui/dialogs/add_manual.blp:104 src/ui/dialogs/edit_season.blp:72
 #: src/ui/pages/edit_episode_page.blp:70
 msgid "Title (required)"
-msgstr ""
+msgstr "Tytuł (wymagane)"
 
 #: src/ui/dialogs/add_manual.blp:110
 msgid "Release Date"
-msgstr ""
+msgstr "Data premiery"
 
 #: src/ui/dialogs/add_manual.blp:126
 msgid "Genres (comma separated)"
-msgstr ""
+msgstr "Gatunki (oddzielone przecinkiem)"
 
 #: src/ui/dialogs/add_manual.blp:131 src/ui/pages/edit_episode_page.blp:75
 msgid "Runtime (minutes)"
-msgstr ""
+msgstr "Czas trwania (w minutach)"
 
 #: src/ui/dialogs/add_manual.blp:140
 msgid "Tagline"
-msgstr ""
+msgstr "Słowa kluczowe"
 
 #: src/ui/dialogs/add_manual.blp:145 src/ui/pages/details_page.blp:188
 msgid "Created by"
-msgstr ""
+msgstr "Stworzony przez"
 
 #: src/ui/dialogs/add_manual.blp:153 src/ui/pages/edit_episode_page.blp:87
 msgid "Overview"
-msgstr ""
+msgstr "Streszczenie"
 
 #: src/ui/dialogs/add_manual.blp:170
 msgid "Seasons (required)"
-msgstr ""
+msgstr "Ilość sezonów (wymagane)"
 
 #: src/ui/dialogs/add_manual.blp:171
 msgid "Use the + button to add seasons"
-msgstr ""
+msgstr "Użyj przycisku + by dodać sezon"
 
 #: src/ui/dialogs/add_manual.blp:176 src/ui/dialogs/edit_season.blp:86
 msgid "Add"
-msgstr ""
+msgstr "Dodaj"
 
 #: src/ui/dialogs/add_manual.blp:185 src/ui/pages/details_page.blp:240
 msgid "Additional Information"
-msgstr ""
+msgstr "Dodatkowe informacje"
 
 #: src/ui/dialogs/add_manual.blp:202
 msgid "Budget (US$)"
-msgstr ""
+msgstr "Budżet (w dolarach amerykańskich)"
 
 #: src/ui/dialogs/add_manual.blp:212
 msgid "Revenue (US$)"
-msgstr ""
+msgstr "Dochód (w dolarach amerykańskich)"
 
 #: src/ui/dialogs/add_manual.blp:221
 msgid "In production"
-msgstr ""
+msgstr "W produkcji"
 
 #: src/ui/dialogs/add_tmdb.blp:30
 msgid "Search The Movie Database…"
-msgstr ""
+msgstr "Przeszukaj The Movie Database…"
 
 #: src/ui/dialogs/add_tmdb.blp:40
 msgid "Search For a Title"
-msgstr ""
+msgstr "Szukaj po tytule"
 
 #: src/ui/dialogs/add_tmdb.blp:42
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
 msgstr ""
+"Zacznij wpisywać w pasku wyszukiwania, aby wyświetlić listę pasujących "
+"filmów i seriali"
 
 #: src/ui/dialogs/add_tmdb.blp:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Brak wyników"
 
 #: src/ui/dialogs/add_tmdb.blp:51
 msgid "Try a different search"
-msgstr ""
+msgstr "Spróbuj wyszukać inną frazę"
 
 #: src/ui/dialogs/edit_season.blp:24
 msgid "Edit Season"
-msgstr ""
+msgstr "Edytuj sezon"
 
 #: src/ui/dialogs/edit_season.blp:80
 msgid "Episodes (required)"
-msgstr ""
+msgstr "Ilość odcinków (wymagane)"
 
 #: src/ui/dialogs/edit_season.blp:81
 msgid "Use the + button to add episodes"
-msgstr ""
+msgstr "Użyj przycisku + by dodać odcinki"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Ogólne"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Pokaż skróty klawiszowe"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
 msgid "Show Preferences"
-msgstr ""
+msgstr "Pokaż ustawienia"
 
 #: src/ui/gtk/help-overlay.blp:28
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Wyjdź"
 
 #: src/ui/gtk/help-overlay.blp:34
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr ""
+msgstr "Zarządzanie biblioteką"
 
 #: src/ui/gtk/help-overlay.blp:37
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr ""
+msgstr "Dodaj tytuł z TMDB"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr ""
+msgstr "Dodaj tytuł ręcznie"
 
 #: src/ui/gtk/help-overlay.blp:46
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr ""
+msgstr "Odśwież bibliotekę"
 
 #: src/ui/pages/details_page.blp:29 src/ui/views/main_view.blp:71
 msgid "Main Menu"
-msgstr ""
+msgstr "Menu główne"
 
 #: src/ui/pages/details_page.blp:126
 msgid "Update Metadata"
-msgstr ""
+msgstr "Zaktualizuj metadane"
 
 #: src/ui/pages/details_page.blp:136 src/ui/widgets/episode_row.blp:88
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr ""
+msgstr "Edytuj"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Delete"
-msgstr ""
+msgstr "Usuń"
 
 #: src/ui/pages/details_page.blp:166
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #: src/ui/pages/details_page.blp:215
 msgid "Seasons"
-msgstr ""
+msgstr "Sezony"
 
 #: src/ui/pages/details_page.blp:314 src/ui/views/main_view.blp:162
 msgid "_Preferences"
-msgstr ""
+msgstr "_Ustawienia"
 
 #: src/ui/pages/details_page.blp:319 src/ui/views/main_view.blp:167
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Skróty klawiszowe"
 
 #: src/ui/pages/details_page.blp:324 src/ui/views/main_view.blp:172
 msgid "_About Ticket Booth"
-msgstr ""
+msgstr "_O aplikacji Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:12
 msgid "Edit Episode"
-msgstr ""
+msgstr "Edytuj odcinek"
 
 #: src/ui/pages/edit_episode_page.blp:61
 msgid "Episode Number (required)"
-msgstr ""
+msgstr "Numer odcinka (wymagane)"
 
 #: src/ui/preferences.blp:16 src/ui/views/main_view.blp:85
 msgid "Preferences"
-msgstr ""
+msgstr "Ustawienia"
 
 #: src/ui/preferences.blp:19
 msgctxt "preferences"
 msgid "Optional Download"
-msgstr ""
+msgstr "Opcjonalne pobieranie"
 
 #: src/ui/preferences.blp:20
 msgctxt "preferences"
@@ -506,17 +521,21 @@ msgid ""
 "setup could not retrieve the data automatically and thus offline mode has "
 "been activated. It will remain active until the setup is completed."
 msgstr ""
+"W celu uzyskania pełniejszego doświadczenia z programu wymagane jest "
+"pobranie 15 KB danych. W trakcie wstępnej konfiguracji nie udało się pobrać "
+"tych danych automatycznie, w związku z czym został włączony tryb offline. "
+"Pozostanie on włączony, dopóki etap konfiguracji nie zostanie zakończony."
 
 #. TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
 #: src/ui/preferences.blp:24
 msgctxt "preferences"
 msgid "Complete Setup"
-msgstr ""
+msgstr "Ukończ konfigurację"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr ""
+msgstr "Tryb offline"
 
 #: src/ui/preferences.blp:36
 msgctxt "preferences"
@@ -525,16 +544,20 @@ msgid ""
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
+"Ticket Booth ma możliwość działania bez dostępu do internetu. Jeśli "
+"zdecydujesz się na korzystanie z programu w tym trybie, niektóre funkcje "
+"wymagające połączenia z internetem i/lub dostępu do API stron trzecich nie "
+"będą dostępne."
 
 #: src/ui/preferences.blp:39
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr ""
+msgstr "Włącz tryb offline"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr ""
+msgstr "The Movie Database (TMDB)"
 
 #: src/ui/preferences.blp:45
 msgctxt "preferences"
