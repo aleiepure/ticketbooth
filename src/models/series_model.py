@@ -4,7 +4,7 @@
 
 import glob
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 from pathlib import Path
 
@@ -89,8 +89,7 @@ class SeriesModel(GObject.GObject):
     def __init__(self, d=None, t=None):
         super().__init__()
         
-        if d is not None:
-            self.activate_notification = False
+        if d is not None:          
             self.add_date = datetime.now()
             self.backdrop_path = self._download_background(d['backdrop_path'])
             self.created_by = self._parse_creators(api_dict=d['created_by'])
@@ -116,11 +115,15 @@ class SeriesModel(GObject.GObject):
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']
             self.seasons = self._parse_seasons(d['seasons'])
-            self.soon_release = False
             self.status = d['status']
             self.tagline = d['tagline']
             self.title = d['name']
             self.watched = False
+            self.activate_notification = self.in_production
+            if self.next_air_date != '':
+                self.soon_release = datetime.strptime(self.next_air_date, '%Y-%m-%d') < datetime.now() + timedelta(days=6)
+            else:
+                self.soon_release = False
         else:
             self.activate_notification = t["activate_notification"]
             self.add_date = t["add_date"]  # type: ignore

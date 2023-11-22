@@ -265,7 +265,7 @@ class MainView(Adw.Bin):
             # Check if the series went from in production to not in production
             if serie.in_production == 1 and new_serie.in_production == 0:
                 local.set_recent_change_status(serie.id, True)
-                out_of_production.append(new_serie)
+                out_of_production_series.append(new_serie)
                 local.set_notification_list_status(serie.id, False)
 
             serie = local.get_series_by_id(serie.id) #refetch serie to get all the correct flags that we set from the database

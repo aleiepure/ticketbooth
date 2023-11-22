@@ -55,6 +55,7 @@ class PosterButton(Gtk.Box):
 
     def __init__(self, content: MovieModel | SeriesModel):
         super().__init__()
+        self.activate_notification = content.activate_notification
         self.title = content.title
         self.badge_color_light = content.color
         self.year = content.release_date[0:4]
@@ -84,29 +85,33 @@ class PosterButton(Gtk.Box):
         self._picture.set_file(Gio.File.new_for_uri(self.poster_path))
         self._spinner.set_visible(False)
 
-        if self.recent_change:
-            self._poster_box.add_css_class("pulse")
-            self._picture.add_css_class("shadow")
-        
-        if self.new_release:
-            self._new_release_badge.set_visible(True)
-            if self.badge_color_light:
-                self._new_release_badge.add_css_class("light")
-            else:
-                self._new_release_badge.add_css_class("dark")
-        elif self.soon_release:
-            self._soon_release_badge.set_visible(True)
-            if self.badge_color_light:
-                self._soon_release_badge.add_css_class("light")
-            else:
-                self._soon_release_badge.add_css_class("dark")
+        badge_visible = False
+        if self.activate_notification:
+            if self.recent_change:
+                self._poster_box.add_css_class("pulse")
+                self._picture.add_css_class("shadow")
+            
+            if self.new_release:
+                self._new_release_badge.set_visible(True)
+                badge_visible = True
+                if self.badge_color_light:
+                    self._new_release_badge.add_css_class("light")
+                else:
+                    self._new_release_badge.add_css_class("dark")
+            elif self.soon_release:
+                self._soon_release_badge.set_visible(True)
+                badge_visible = True
+                if self.badge_color_light:
+                    self._soon_release_badge.add_css_class("light")
+                else:
+                    self._soon_release_badge.add_css_class("dark")
 
             
         if not self.year:
             self._year_lbl.set_visible(False)
         if self.status == '':
             self._status_lbl.set_visible(False)
-        if self.watched:
+        if self.watched and not badge_visible:
             self._watched_badge.set_visible(True)
             if self.badge_color_light:
                 self._watched_badge.add_css_class("light")

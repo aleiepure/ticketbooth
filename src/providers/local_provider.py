@@ -1202,12 +1202,11 @@ class LocalProvider:
             connection.cursor().close()
             logging.debug(f'[db] TV series {id}, deleted: {result.lastrowid}')
 
-        #Copy all flags that get reset but are still needed from the old to the new
+        #Copy all flags that get reset but are still needed from the old to the new soon_release is automatically set in SeriesModel
         new.activate_notification = old.activate_notification
         new.add_date = old.add_date
         new.new_release = old.new_release     
         new.recent_change = old.recent_change
-        new.soon_release = old.soon_release
         new.watched = old.watched
         
         # Restore episodes statuses if they match before addition

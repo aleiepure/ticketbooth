@@ -99,7 +99,7 @@ class MovieModel(GObject.GObject):
             self.release_date = d['release_date']
             self.revenue = d['revenue']
             self.runtime = d['runtime']
-            self.soon_release = datetime.strptime(self.release_date, '%Y-%m-%d') < datetime.strptime(self.add_date, '%Y-%m-%d') + timedelta(days=14)
+            self.soon_release = datetime.strptime(self.release_date, '%Y-%m-%d') < datetime.strptime(self.add_date, '%Y-%m-%d') + timedelta(days=14) and datetime.strptime(self.release_date, '%Y-%m-%d') > datetime.strptime(self.add_date, '%Y-%m-%d')
             self.status = d['status']
             self.tagline = d['tagline']
             self.title = d['title']
