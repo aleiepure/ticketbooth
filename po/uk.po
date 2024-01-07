@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ticketbooth package.
-# Juliano Dorigão <jdorigao@gmail.com>, 2023.
-# ssantos <ssantos@web.de>, 2023.
+# DartDeaDia <dartdeadia@protonmail.com>, 2023.
+# Сергій <sergiy.goncharuk.1@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 19:11+0200\n"
-"PO-Revision-Date: 2023-12-19 16:08+0000\n"
-"Last-Translator: ssantos <ssantos@web.de>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/ticket-booth/"
-"ticket-booth/pt/>\n"
-"Language: pt\n"
+"PO-Revision-Date: 2024-01-07 19:06+0000\n"
+"Last-Translator: Сергій <sergiy.goncharuk.1@gmail.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/uk/>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -26,191 +27,193 @@ msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr "Largura da janela"
+msgstr "Ширина вікна"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr "Altura da janela"
+msgstr "Висота вікна"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr "Janela maximizada"
+msgstr "Вікно розгорнуто"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr "Guia ativa"
+msgstr "Активна вкладка"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr "Especifica se o aplicativo é executado pela primeira vez"
+msgstr "Вказує, чи запускається програма вперше"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
 msgid "Specifies if the app downloaded the required data"
-msgstr "Especifica se o aplicativo baixou os dados necessários"
+msgstr "Вказує, чи завантажив застосунок необхідні дані"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:51
 msgid "View sorting style"
-msgstr "Ver estilo de classificação"
+msgstr "Переглянути стиль упорядкування"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:62
 msgid "App color scheme"
-msgstr "Esquema de cores do aplicativo"
+msgstr "Колірна схема додатку"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:66
 msgid "Language used by TMDB results"
-msgstr "Linguagem usada pelos resultados do TMDB"
+msgstr "Мова, що використовується в результатах TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:79
 msgid "Frequency to check for new data on TMDB"
-msgstr "Frequência para verificar novos dados no TMDB"
+msgstr "Частота перевірки нових даних у TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:83
 msgid "Last autoupdate date"
-msgstr "Data da última atualização automática"
+msgstr "Дата останнього автооновлення"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:87
 msgid "Clear cache on exit"
-msgstr "Limpar cache ao sair"
+msgstr "Очищення кешу при виході"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15
 msgid "Keep track of your favorite shows"
-msgstr "Acompanhe seus programas favoritos"
+msgstr "Відстежуйте ваші улюблені шоу"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:18
 msgid ""
 "Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
 "track of watched titles, and find information about the latest releases."
 msgstr ""
-"O Ticket Booth permite que você crie sua lista de filmes e programas de TV, "
-"acompanhe os títulos assistidos e encontre informações sobre os últimos "
-"lançamentos."
+"Ticket Booth дозволяє створювати список фільмів і серіалів для перегляду, "
+"відстежувати переглянуті стрічки та знаходити інформацію про найновіші "
+"випуски."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:20
 msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
-"O Ticket Booth não permite que você assista ou baixe conteúdo. Este "
-"aplicativo usa a API TMDB, mas não é endossado ou certificado pelo TMDB."
+"Ticket Booth не дозволяє переглядати або завантажувати контент. Цей додаток "
+"використовує API TMDB, але не схвалений і не сертифікований TMDB."
 
 #: src/dialogs/add_manual_dialog.py:89
 msgid "Edit Movie"
-msgstr "Editar filme"
+msgstr "Редагувати фільм"
 
 #: src/dialogs/add_manual_dialog.py:92
 msgid "Edit TV Series"
-msgstr "Editar série de TV"
+msgstr "Редагувати серіал"
 
 #: src/dialogs/add_manual_dialog.py:294
 #, python-brace-format
 msgid "Season {num}"
-msgstr "Temporada {num}"
+msgstr "Сезон {num}"
 
 #: src/dialogs/add_manual_dialog.py:334 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
-msgstr "Adicionar {title}"
+msgstr "Додати {title}"
 
 #: src/dialogs/add_manual_dialog.py:340
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr "Atualizar {title}"
+msgstr "Оновити {title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
-msgstr "Temporada"
+msgstr "Сезон"
 
 #: src/pages/details_page.py:155 src/pages/details_page.py:229
 #: src/pages/details_page.py:277 src/pages/details_page.py:326
 #: src/pages/details_page.py:447 src/widgets/episode_row.py:114
 #: src/widgets/episode_row.py:137 src/widgets/episode_row.py:291
 msgid "Watched"
-msgstr "Assistido"
+msgstr "Переглянуте"
 
 #: src/pages/details_page.py:158 src/pages/details_page.py:232
 #: src/pages/details_page.py:280 src/pages/details_page.py:329
 #: src/pages/details_page.py:450 src/widgets/episode_row.py:117
 #: src/widgets/episode_row.py:140 src/widgets/episode_row.py:294
 msgid "Mark as Watched"
-msgstr "Marcar como assistido"
+msgstr "Позначити як переглянуте"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:171
 #, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] "{num} Temporada"
-msgstr[1] "{num} Temporadas"
+msgstr[0] "{num} Сезон"
+msgstr[1] "{num} Сезонiв"
+msgstr[2] "{num} Сезонiв"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:179 src/pages/details_page.py:211
 #, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] "{num} Episódio"
-msgstr[1] "{num} Episódios"
+msgstr[0] "{num} Серія"
+msgstr[1] "{num} Серій"
+msgstr[2] "{num} Серій"
 
 #: src/pages/details_page.py:349 src/ui/dialogs/add_manual.blp:188
 msgid "Status"
-msgstr "Estado"
+msgstr "Статус"
 
 #: src/pages/details_page.py:357 src/ui/dialogs/add_manual.blp:192
 msgid "Original Language"
-msgstr "Idioma Original"
+msgstr "Мова оригіналу"
 
 #: src/pages/details_page.py:366 src/ui/dialogs/add_manual.blp:197
 msgid "Original Title"
-msgstr "Título original"
+msgstr "Оригінальна назва"
 
 #: src/pages/details_page.py:378
 msgid "Budget"
-msgstr "Orçamento"
+msgstr "Кошторис"
 
 #: src/pages/details_page.py:388
 msgid "Revenue"
-msgstr "Receita"
+msgstr "Касові збори"
 
 #: src/pages/details_page.py:398
 msgid "In Production"
-msgstr "Em Produção"
+msgstr "У виробництві"
 
 #: src/pages/details_page.py:401
 msgid "Yes"
-msgstr "Sim"
+msgstr "Так"
 
 #: src/pages/details_page.py:402
 msgid "No"
-msgstr "Não"
+msgstr "Ні"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
 #: src/pages/details_page.py:423 src/widgets/episode_row.py:161
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr "{h}h {m}min"
+msgstr "{h}год {m}хв"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:426 src/widgets/episode_row.py:165
 #, python-brace-format
 msgid "{m}min"
-msgstr "{m}min"
+msgstr "{m}хв"
 
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:508
 #, python-brace-format
 msgid "Updating {title}"
-msgstr "A atualizar {title}"
+msgstr "Оновлення {title}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:515
 #, python-brace-format
 msgid "Update {title}"
-msgstr "Atualizar {title}"
+msgstr "Оновити {title}"
 
 #: src/pages/details_page.py:550
 msgid "Loading Metadata…"
-msgstr "A carregar metadados…"
+msgstr "Завантаження метаданих…"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:569 src/widgets/episode_row.py:240
@@ -218,66 +221,66 @@ msgstr "A carregar metadados…"
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr "Apagar {title}?"
+msgstr "Видалити {title}?"
 
 #: src/pages/details_page.py:571
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr "Este título será apagado da sua lista de observação."
+msgstr "Ця стрiчка буде видалена з вашого списку спостереження."
 
 #: src/pages/details_page.py:572 src/widgets/episode_row.py:244
 #: src/widgets/season_expander.py:143
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr "_Cancelar"
+msgstr "_Скасувати"
 
 #: src/pages/details_page.py:573 src/widgets/episode_row.py:245
 #: src/widgets/season_expander.py:144
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr "_Excluir"
+msgstr "_Видалити"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:603
 #, python-brace-format
 msgid "Delete {title}"
-msgstr "Apagar {title}"
+msgstr "Видалити {title}"
 
 #: src/preferences.py:238
 msgctxt "message dialog heading"
 msgid "No Network"
-msgstr "Sem rede"
+msgstr "Немає мережі"
 
 #: src/preferences.py:239
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
-msgstr "Conecte-se à Internet para concluir a configuração."
+msgstr "Підключіться до Інтернету, щоб завершити налаштування."
 
 #: src/preferences.py:240 src/window.py:163
 msgctxt "message dialog action"
 msgid "OK"
-msgstr "OK"
+msgstr "ОК"
 
 #: src/preferences.py:306
 msgctxt "Background activity title"
 msgid "Clear cache"
-msgstr "Limpar cache"
+msgstr "Очистити кеш"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:358 src/preferences.py:360
 #, python-brace-format
 msgid "{number} Titles"
-msgstr "{number} Títulos"
+msgstr "{number} Стрiчок"
 
 #: src/preferences.py:398
 msgctxt "Background activity title"
 msgid "Delete all movies"
-msgstr "Apagar todos os filmes"
+msgstr "Видалити всі фільми"
 
 #: src/preferences.py:409
 msgctxt "Background activity title"
 msgid "Delete all TV Series"
-msgstr "Apagar todas as séries de TV"
+msgstr "Видалити всі серіали"
 
 #. TRANSLATORS: {total_space:.2f} is the total occupied space
 #: src/preferences.py:484
@@ -286,229 +289,229 @@ msgid ""
 "Ticket Booth is currently using {total_space:.2f} MB. Use the options below "
 "to free some space."
 msgstr ""
-"Ticket Booth usa atualmente {total_space:.2f} MB. Use as opções abaixo para "
-"liberar espaço."
+"Ticket Booth зараз використовує {total_space:.2f} МБ. Скористайтеся "
+"наведеними нижче опціями, щоб звільнити місце."
 
 #: src/preferences.py:488 src/preferences.py:490
 #, python-brace-format
 msgid "{space:.2f} MB occupied"
-msgstr "{space:.2f} MB ocupado"
+msgstr "Зайнято {space:.2f} МБ"
 
 #. TRANSLATORS: replace with your name (and an optional email or website)
 #: src/ui/about_window.blp:16
 msgid "translator-credits"
-msgstr "Juliano Dorigão <jdorigao@gmail.com>"
+msgstr "DartDeaDia"
 
 #: src/ui/dialogs/add_manual.blp:47 src/widgets/search_result_row.py:80
 msgctxt "Category"
 msgid "Movie"
-msgstr "Filme"
+msgstr "Кіно"
 
 #: src/ui/dialogs/add_manual.blp:53 src/views/main_view.py:57
 #: src/widgets/search_result_row.py:82
 msgctxt "Category"
 msgid "TV Series"
-msgstr "Série de TV"
+msgstr "Серіали"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:35
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Скасувати"
 
 #: src/ui/dialogs/add_manual.blp:67 src/ui/dialogs/edit_season.blp:41
 #: src/ui/pages/edit_episode_page.blp:22
 msgid "Save"
-msgstr "Gravar"
+msgstr "Зберегти"
 
 #: src/ui/dialogs/add_manual.blp:101 src/ui/dialogs/edit_season.blp:69
 #: src/ui/pages/edit_episode_page.blp:58
 msgid "General"
-msgstr "Geral"
+msgstr "Загальне"
 
 #: src/ui/dialogs/add_manual.blp:104 src/ui/dialogs/edit_season.blp:72
 #: src/ui/pages/edit_episode_page.blp:70
 msgid "Title (required)"
-msgstr "Título (obrigatório)"
+msgstr "Назва (обов'язково)"
 
 #: src/ui/dialogs/add_manual.blp:110
 msgid "Release Date"
-msgstr "Data de lançamento"
+msgstr "Дата випуску"
 
 #: src/ui/dialogs/add_manual.blp:126
 msgid "Genres (comma separated)"
-msgstr "Gêneros (separados por vírgula)"
+msgstr "Жанри (через кому)"
 
 #: src/ui/dialogs/add_manual.blp:131 src/ui/pages/edit_episode_page.blp:75
 msgid "Runtime (minutes)"
-msgstr "Duração (minutos)"
+msgstr "Тривалість (хвилини)"
 
 #: src/ui/dialogs/add_manual.blp:140
 msgid "Tagline"
-msgstr "Slogan"
+msgstr "Слоган"
 
 #: src/ui/dialogs/add_manual.blp:145 src/ui/pages/details_page.blp:188
 msgid "Created by"
-msgstr "Criado por"
+msgstr "Автор"
 
 #: src/ui/dialogs/add_manual.blp:153 src/ui/pages/edit_episode_page.blp:87
 msgid "Overview"
-msgstr "Visão geral"
+msgstr "Загальна інформація"
 
 #: src/ui/dialogs/add_manual.blp:170
 msgid "Seasons (required)"
-msgstr "Temporadas (obrigatório)"
+msgstr "Сезони (обов'язково)"
 
 #: src/ui/dialogs/add_manual.blp:171
 msgid "Use the + button to add seasons"
-msgstr "Use o botão + para adicionar temporadas"
+msgstr "Використовуйте кнопку \"+\", щоб додати сезони"
 
 #: src/ui/dialogs/add_manual.blp:176 src/ui/dialogs/edit_season.blp:86
 msgid "Add"
-msgstr "Adicionar"
+msgstr "Додати"
 
 #: src/ui/dialogs/add_manual.blp:185 src/ui/pages/details_page.blp:240
 msgid "Additional Information"
-msgstr "Informações adicionais"
+msgstr "Додаткова інформація"
 
 #: src/ui/dialogs/add_manual.blp:202
 msgid "Budget (US$)"
-msgstr "Orçamento (US$)"
+msgstr "Кошторис (US$)"
 
 #: src/ui/dialogs/add_manual.blp:212
 msgid "Revenue (US$)"
-msgstr "Receita (US$)"
+msgstr "Касові збори (US$)"
 
 #: src/ui/dialogs/add_manual.blp:221
 msgid "In production"
-msgstr "Em produção"
+msgstr "У виробництві"
 
 #: src/ui/dialogs/add_tmdb.blp:30
 msgid "Search The Movie Database…"
-msgstr "Buscar no banco de dados de filmes…"
+msgstr "Пошук у базі даних фільмів…"
 
 #: src/ui/dialogs/add_tmdb.blp:40
 msgid "Search For a Title"
-msgstr "Pesquisar por Título"
+msgstr "Пошук стрiчки"
 
 #: src/ui/dialogs/add_tmdb.blp:42
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
 msgstr ""
-"Comece a digitar na barra de pesquisa para ver uma lista de filmes e séries "
-"de TV correspondentes"
+"Почніть вводити текст у рядку пошуку, щоб побачити список відповідних "
+"фільмів і серіалів"
 
 #: src/ui/dialogs/add_tmdb.blp:49
 msgid "No Results Found"
-msgstr "Nenhum resultado encontrado"
+msgstr "Нічого не знайдено"
 
 #: src/ui/dialogs/add_tmdb.blp:51
 msgid "Try a different search"
-msgstr "Tente uma pesquisa diferente"
+msgstr "Спробуйте інший варіант пошуку"
 
 #: src/ui/dialogs/edit_season.blp:24
 msgid "Edit Season"
-msgstr "Editar temporada"
+msgstr "Редагувати сезон"
 
 #: src/ui/dialogs/edit_season.blp:80
 msgid "Episodes (required)"
-msgstr "Episódios (obrigatório)"
+msgstr "Серії (обов'язково)"
 
 #: src/ui/dialogs/edit_season.blp:81
 msgid "Use the + button to add episodes"
-msgstr "Use o botão + para adicionar episódios"
+msgstr "Використовуйте кнопку \"+\", щоб додати серії"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr "Geral"
+msgstr "Загальне"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr "Mostrar atalhos"
+msgstr "Показати клавіатурні скорочення"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
 msgid "Show Preferences"
-msgstr "Mostrar preferências"
+msgstr "Показати налаштування"
 
 #: src/ui/gtk/help-overlay.blp:28
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr "Sair"
+msgstr "Вийти"
 
 #: src/ui/gtk/help-overlay.blp:34
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr "Gestão de biblioteca"
+msgstr "Керування бібліотекою"
 
 #: src/ui/gtk/help-overlay.blp:37
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr "Adicionar título do TMDB"
+msgstr "Додати назву з бази даних TMDB"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr "Adicionar título manualmente"
+msgstr "Додати стрічку вручну"
 
 #: src/ui/gtk/help-overlay.blp:46
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr "Atualizar biblioteca"
+msgstr "Оновити бібліотеку"
 
 #: src/ui/pages/details_page.blp:29 src/ui/views/main_view.blp:71
 msgid "Main Menu"
-msgstr "Menu principal"
+msgstr "Головне меню"
 
 #: src/ui/pages/details_page.blp:126
 msgid "Update Metadata"
-msgstr "Atualizar metadados"
+msgstr "Оновити метадані"
 
 #: src/ui/pages/details_page.blp:136 src/ui/widgets/episode_row.blp:88
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr "Editar"
+msgstr "Редагувати"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Delete"
-msgstr "Apagar"
+msgstr "Видалити"
 
 #: src/ui/pages/details_page.blp:166
 msgid "Description"
-msgstr "Descrição"
+msgstr "Опис"
 
 #: src/ui/pages/details_page.blp:215
 msgid "Seasons"
-msgstr "Temporadas"
+msgstr "Сезони"
 
 #: src/ui/pages/details_page.blp:314 src/ui/views/main_view.blp:162
 msgid "_Preferences"
-msgstr "_Preferências"
+msgstr "_Налаштування"
 
 #: src/ui/pages/details_page.blp:319 src/ui/views/main_view.blp:167
 msgid "_Keyboard Shortcuts"
-msgstr "_Atalhos do teclado"
+msgstr "_Клавіатурні скорочення"
 
 #: src/ui/pages/details_page.blp:324 src/ui/views/main_view.blp:172
 msgid "_About Ticket Booth"
-msgstr "_Sobre Ticket Booth"
+msgstr "_Про Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:12
 msgid "Edit Episode"
-msgstr "Editar episódio"
+msgstr "Редагувати серію"
 
 #: src/ui/pages/edit_episode_page.blp:61
 msgid "Episode Number (required)"
-msgstr "Número do episódio (obrigatório)"
+msgstr "Номер серії (обов'язково)"
 
 #: src/ui/preferences.blp:16 src/ui/views/main_view.blp:85
 msgid "Preferences"
-msgstr "Preferências"
+msgstr "Налаштування"
 
 #: src/ui/preferences.blp:19
 msgctxt "preferences"
 msgid "Optional Download"
-msgstr "Descarregar opcional"
+msgstr "Необов'язкове завантаження"
 
 #: src/ui/preferences.blp:20
 msgctxt "preferences"
@@ -517,21 +520,20 @@ msgid ""
 "setup could not retrieve the data automatically and thus offline mode has "
 "been activated. It will remain active until the setup is completed."
 msgstr ""
-"Para uma experiência completa uma descarga de 15 KB é necessária. A "
-"configuração inicial não conseguiu recuperar os dados automaticamente e, "
-"portanto, o modo offline foi ativado. Permanecerá ativo até que a "
-"configuração seja concluída."
+"Для повноцінної роботи необхідно завантажити 15 КБ. Під час початкового "
+"налаштування не вдалося отримати дані автоматично, тому було ввімкнено "
+"автономний режим. Він залишатиметься активним до завершення налаштування."
 
 #. TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
 #: src/ui/preferences.blp:24
 msgctxt "preferences"
 msgid "Complete Setup"
-msgstr "Configuração completa"
+msgstr "Завершити налаштування"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr "Modo offline"
+msgstr "Автономний режим"
 
 #: src/ui/preferences.blp:36
 msgctxt "preferences"
@@ -540,19 +542,19 @@ msgid ""
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
-"O Ticket Booth pode funcionar totalmente offline. Se optar por executar "
-"neste modo, alguns recursos que exigem Internet e/ou acesso a APIs de "
-"terceiros não estarão disponíveis."
+"Ticket Booth може працювати повністю у автономному режимi. Якщо ви вирішите "
+"працювати в цьому режимі, деякі функції, які потребують Інтернету та/або "
+"доступу до сторонніх API, будуть недоступні."
 
 #: src/ui/preferences.blp:39
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr "Ativar modo offline"
+msgstr "Увімкнути автономний режим"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr "O banco de dados de filmes (TMDB)"
+msgstr "База даних фільмів (TMDB)"
 
 #: src/ui/preferences.blp:45
 msgctxt "preferences"
@@ -565,172 +567,172 @@ msgid ""
 "to TMDB</a>. Additionally, an automatic update is performed on a frequency "
 "of your choosing."
 msgstr ""
-"O TMDB fornece metadados localizados para a maioria dos conteúdos. O Ticket "
-"Booth descarguerá no idioma de sua preferência, selecionável abaixo. Caso "
-"não esteja disponível, o inglês dos EUA será usado e depois o idioma "
-"original do conteúdo. Se nenhum estiver disponível, resultará numa linha em "
-"branco. Por favor, considere <a href='https://www.themoviedb.org/bible/"
-"new_content'>contribuir para o TMDB</a>. Além disso, uma atualização "
-"automática é realizada na frequência da sua escolha."
+"TMDB надає локалізовані метадані для більшості матеріалів. Ticket Booth "
+"завантажить їх мовою, якій ви надаєте перевагу, яку можна вибрати нижче. "
+"Якщо вона недоступна, буде використано англійську (США), а потім мову "
+"оригіналу. Якщо жоден із них недоступний, це призведе до порожнього рядка. "
+"Будь ласка, розгляньте можливість <a href='https://www.themoviedb.org/bible/"
+"new_content'>зробити свій внесок до TMDB</a>. Крім того, автоматичне "
+"оновлення виконується з частотою, яку ви виберете."
 
 #: src/ui/preferences.blp:48
 msgctxt "preferences"
 msgid "TMDB Results Language"
-msgstr "Idioma dos resultados TMDB"
+msgstr "Мова результатів TMDB"
 
 #: src/ui/preferences.blp:53
 msgctxt "preferences"
 msgid "Update Frequency"
-msgstr "Frequência de atualização"
+msgstr "Частота оновлення"
 
 #: src/ui/preferences.blp:54
 msgctxt "preferences"
 msgid "Restart Ticket Booth after changing"
-msgstr "Reinicie Ticket Booth após alterar"
+msgstr "Після внесення змін перезапустіть Ticket Booth"
 
 #: src/ui/preferences.blp:57
 msgctxt "preferences"
 msgid "Never"
-msgstr "Nunca"
+msgstr "Ніколи"
 
 #: src/ui/preferences.blp:58
 msgctxt "preferences"
 msgid "Daily"
-msgstr "Diário"
+msgstr "Щодня"
 
 #: src/ui/preferences.blp:59
 msgctxt "preferences"
 msgid "Weekly"
-msgstr "Semanalmente"
+msgstr "Щотижня"
 
 #: src/ui/preferences.blp:60
 msgctxt "preferences"
 msgid "Monthly"
-msgstr "Mensal"
+msgstr "Щомісяця"
 
 #: src/ui/preferences.blp:67
 msgctxt "preferences"
 msgid "Housekeeping"
-msgstr "Serviço de limpeza"
+msgstr "Прибирання"
 
 #: src/ui/preferences.blp:71
 msgctxt "preferences"
 msgid "Clear Cache on Exit"
-msgstr "Limpar Cache ao Sair"
+msgstr "Очищати кеш при виході"
 
 #: src/ui/preferences.blp:75
 msgctxt "preferences"
 msgid "Clear Cached Search Data"
-msgstr "Limpar dados de pesquisa em cache"
+msgstr "Очистити кешовані дані пошуку"
 
 #: src/ui/preferences.blp:85
 msgctxt "preferences"
 msgid "Clear Data"
-msgstr "Apagar os dados"
+msgstr "Очистити дані"
 
 #: src/ui/views/content_view.blp:14
 msgid "Your Watchlist Is Empty"
-msgstr "A sua lista está vazia"
+msgstr "Ваш список спостереження порожній"
 
 #: src/ui/views/content_view.blp:15
 msgid "Add content with the + button."
-msgstr "Adicione conteúdo com o botão +."
+msgstr "Додайте контент за допомогою кнопки \"+\"."
 
 #: src/ui/views/content_view.blp:98
 msgid "Your Watchlist"
-msgstr "A sua lista"
+msgstr "Ваш список спостереження"
 
 #: src/ui/views/first_run_view.blp:56
 msgid "Use Offline Mode"
-msgstr "Usar o modo offline"
+msgstr "Скористатися автономним режимом"
 
 #: src/ui/views/first_run_view.blp:62
 msgid "Try again on next run"
-msgstr "Tente novamente na próxima execução"
+msgstr "Спробуйте ще раз під час наступного запуску"
 
 #: src/ui/views/main_view.blp:63
 msgid "Add a title to your library"
-msgstr "Adicione um título à sua biblioteca"
+msgstr "Додайте стрічку до своєї бібліотеки"
 
 #: src/ui/views/main_view.blp:84
 msgid "Offline Mode Enabled"
-msgstr "Modo offline ativado"
+msgstr "Ввімкнено автономний режим"
 
 #: src/ui/views/main_view.blp:115
 msgid "_Sorting"
-msgstr "_Ordenação"
+msgstr "_Упорядкування"
 
 #: src/ui/views/main_view.blp:118
 msgid "A-Z"
-msgstr "A-Z"
+msgstr "А-Я"
 
 #: src/ui/views/main_view.blp:124
 msgid "Z-A"
-msgstr "Z-A"
+msgstr "Я-А"
 
 #: src/ui/views/main_view.blp:130
 msgid "Date added (newest first)"
-msgstr "Data adicionada (mais recente primeiro)"
+msgstr "Дата додавання (найновіші спочатку)"
 
 #: src/ui/views/main_view.blp:136
 msgid "Date added (oldest first)"
-msgstr "Data adicionada (o mais antigo primeiro)"
+msgstr "Дата додавання (найстаріші спочатку)"
 
 #: src/ui/views/main_view.blp:142
 msgid "Release date (newest first)"
-msgstr "Data de lançamento (mais recente primeiro)"
+msgstr "Дата випуску (найновіші спочатку)"
 
 #: src/ui/views/main_view.blp:148
 msgid "Release date (oldest first)"
-msgstr "Data de lançamento (mais antigo primeiro)"
+msgstr "Дата випуску (найстаріші спочатку)"
 
 #: src/ui/views/main_view.blp:155
 msgid "_Refresh"
-msgstr "_Atualizar"
+msgstr "_Оновити"
 
 #: src/ui/views/main_view.blp:180
 msgid "From The Movie Database (TMDB)"
-msgstr "Do banco de dados de filmes (TMDB)"
+msgstr "З бази даних фільмів (TMDB)"
 
 #: src/ui/views/main_view.blp:185
 msgid "Manually"
-msgstr "Manualmente"
+msgstr "Вручну"
 
 #: src/ui/widgets/background_indicator.blp:13
 msgid "Background Activities"
-msgstr "Atividades em segundo plano"
+msgstr "Фонові дії"
 
 #: src/ui/widgets/background_indicator.blp:37
 msgid "No Background Activities"
-msgstr "Sem atividades em segundo plano"
+msgstr "Немає фонових дій"
 
 #: src/ui/widgets/image_selector.blp:26
 msgid "Edit poster"
-msgstr "Editar pôster"
+msgstr "Редагувати постер"
 
 #: src/ui/widgets/image_selector.blp:44
 msgid "Delete poster"
-msgstr "Apagar pôster"
+msgstr "Видалити постер"
 
 #: src/ui/widgets/search_result_row.blp:90
 msgid "Add to watchlist"
-msgstr "Adicionar à lista"
+msgstr "Додати до списку спостереження"
 
 #: src/ui/widgets/theme_switcher.blp:29
 msgid "Follow system style"
-msgstr "Seguir o estilo do sistema"
+msgstr "Використовувати стиль системи"
 
 #: src/ui/widgets/theme_switcher.blp:43
 msgid "Light style"
-msgstr "Estilo claro"
+msgstr "Світлий стиль"
 
 #: src/ui/widgets/theme_switcher.blp:57
 msgid "Dark style"
-msgstr "Estilo escuro"
+msgstr "Темний стиль"
 
 #: src/views/first_run_view.py:101
 msgid "Waiting for Network…"
-msgstr "A aguardar rede…"
+msgstr "В очікуванні мережі…"
 
 #: src/views/first_run_view.py:103
 msgid ""
@@ -738,47 +740,47 @@ msgid ""
 "are not connected to the Internet or don't want to wait, you can skip this "
 "step and continue offline without some features."
 msgstr ""
-"Para uma experiência completa é necessária uma descarga de 15 KB. Porém, se "
-"não estiver conectado à Internet ou não quiser esperar, pode pular esta "
-"etapa e continuar offline sem alguns recursos."
+"Для повноцінної роботи потрібно завантажити 15 КБ. Однак, якщо ви не "
+"підключені до Інтернету або не хочете чекати, ви можете пропустити цей крок "
+"і продовжити роботу в автономному режимі без деяких функцій."
 
 #: src/views/first_run_view.py:107
 msgid "Getting things ready…"
-msgstr "A preparar…"
+msgstr "Готуємо все необхідне…"
 
 #: src/views/first_run_view.py:108
 msgid "Downloading data"
-msgstr "A descarregar dados"
+msgstr "Завантаження даних"
 
 #: src/views/main_view.py:51
 msgctxt "Category"
 msgid "Movies"
-msgstr "Filmes"
+msgstr "Фільми"
 
 #: src/views/main_view.py:135 src/views/main_view.py:145
 #: src/views/main_view.py:155
 msgctxt "Background activity title"
 msgid "Automatic update"
-msgstr "Atualização automática"
+msgstr "Автоматичне оновлення"
 
 #: src/widgets/episode_row.py:242
 msgctxt "message dialog body"
 msgid "All changes to this episode will be lost."
-msgstr "Todas as alterações neste episódio serão perdidas."
+msgstr "Всі зміни до цієї серії будуть втрачені."
 
 #: src/widgets/search_result_row.py:100 src/widgets/search_result_row.py:192
 msgid "Already in your watchlist"
-msgstr "Já está na sua lista"
+msgstr "Вже у вашому списку спостереження"
 
 #: src/widgets/season_expander.py:141
 msgctxt "message dialog body"
 msgid "This season contains unsaved metadata."
-msgstr "Esta temporada contém metadados não gravados."
+msgstr "Цей сезон містить незбережені метадані."
 
 #: src/window.py:161
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
-msgstr "Atividades em segundo plano em execução"
+msgstr "Запуск фонових дій"
 
 #: src/window.py:162
 msgctxt "message dialog body"
@@ -787,6 +789,6 @@ msgid ""
 "before exiting. Look for the indicator in the header bar to check when they "
 "are finished."
 msgstr ""
-"Algumas atividades estão sendo executadas em segundo plano e precisam ser "
-"concluídas antes de sair. Procure o indicador na barra de cabeçalho para "
-"verificar quando terminar."
+"Деякі дії виконуються у фоновому режимі і мають бути завершені перед "
+"виходом. Щоб перевірити, коли дія завершиться, подивіться на індикатор у "
+"рядку заголовка."
