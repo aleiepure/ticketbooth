@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-12-16 14:11+0000\n"
+"Last-Translator: guillermo baeza <guillermobaezaares@proton.me>\n"
+"Language-Team: Catalan <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -23,101 +25,104 @@ msgstr ""
 
 #: data/me.iepure.Ticketbooth.desktop.in:14
 msgid "Movies;Films;Shows;TV;Series;Anime;Watch;List;Library;"
-msgstr ""
+msgstr "Pel·lícules; Sèries;Tv;Series;Anime;Llista;Seguiment;Biblioteca;"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr ""
+msgstr "Amplada de la finestra"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr ""
+msgstr "Alçada de la finestra"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr ""
+msgstr "Finestra maximitzada"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr ""
+msgstr "Pestanya activa"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr ""
+msgstr "Especifica si l'aplicació s'executa per primer cop"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
 msgid "Specifies if the database needs an update"
-msgstr ""
+msgstr "Especifica si la base de dades necessita una actualització"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:43
 msgid "Specifies if the app downloaded the required data"
-msgstr ""
+msgstr "Especifica si l'aplicació ha descarregat les dades necessàries"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:57
 msgid "View sorting style"
-msgstr ""
+msgstr "Estil de classificació de la vista"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:61
 msgid "Separate watched content from unwatched"
-msgstr ""
+msgstr "Separa els continguts vistos dels no vistos"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:65
 msgid "Hide watched content"
-msgstr ""
+msgstr "Amaga el contingut vist"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:71
 msgid "Search bar visibility"
-msgstr ""
+msgstr "Visibilitat de la barra de cerca"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:82
 msgid "Search mode"
-msgstr ""
+msgstr "Mode de cerca"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:86
 msgid "Search query"
-msgstr ""
+msgstr "Cerca"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:98
 msgid "App color scheme"
-msgstr ""
+msgstr "Esquema de colors de l'aplicació"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:102
 msgid "Language used by TMDB results"
-msgstr ""
+msgstr "Llengua emprada pels resultats de TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:115
 msgid "Frequency to check for new data on TMDB"
-msgstr ""
+msgstr "Freqüència de comprovació de dades noves a TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:119
 msgid "Last autoupdate date"
-msgstr ""
+msgstr "Última data d'actualització automàtica"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:123
 msgid "Last notification autoupdate date"
-msgstr ""
+msgstr "Última data de notificació d'actualització automàtica"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:127
 msgid "Clear cache on exit"
-msgstr ""
+msgstr "Netejar la memòria cau en sortir"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:131
 msgid "Use the user's TMDB key"
-msgstr ""
+msgstr "Utilitzar la clau d'usuari de TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:135
 msgid "User's TMDB key"
-msgstr ""
+msgstr "Clau d'usuari de TMDB"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15 src/ui/about_dialog.blp:10
 msgid "Keep track of your favorite shows"
-msgstr ""
+msgstr "Segueix els teus programes preferits"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:20
 msgid ""
 "Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
 "track of watched titles, and find information about the latest releases."
 msgstr ""
+"Ticket Booth et permet crear la seva llista de pel·lícules i programes de "
+"TV, fer un seguiment dels títols que has vist i trobar informació sobre les "
+"últimes estrenes."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:22
 msgid ""
@@ -135,102 +140,108 @@ msgstr ""
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:52
 msgid "TV Series Library"
-msgstr ""
+msgstr "Biblioteca de Sèries de TV"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:56
 msgid "TV Series Details"
-msgstr ""
+msgstr "Detalls de Sèries de TV"
 
 #: src/main.py:193
 msgid "Confirm Export?"
-msgstr ""
+msgstr "Confirmar l'exportació?"
 
 #: src/main.py:194
 msgid ""
 "Exporting your library will create an archive containing all your data. You "
 "can import this archive later to restore your library."
 msgstr ""
+"Exportar la teva biblioteca crearà un arxiu amb totes les seves dades. Pots "
+"importar aquest arxiu més tard per a restaurar la teva biblioteca."
 
 #: src/main.py:196 src/main.py:332 src/widgets/episode_row.py:272
 #: src/widgets/season_expander.py:146
 msgctxt "alert dialog action"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancel·lar"
 
 #: src/main.py:197
 msgctxt "alert dialog action"
 msgid "_Export"
-msgstr ""
+msgstr "_Exportar"
 
 #: src/main.py:230
 msgctxt "Background activity title"
 msgid "Exporting library"
-msgstr ""
+msgstr "Exportant biblioteca"
 
 #: src/main.py:263
 msgid "Export Completed"
-msgstr ""
+msgstr "Exportació Completada"
 
 #: src/main.py:264
 msgid "The library has been exported successfully."
-msgstr ""
+msgstr "La biblioteca s'ha exportat correctament."
 
 #: src/main.py:267 src/main.py:277 src/main.py:408 src/main.py:417
 #: src/preferences.py:256 src/window.py:235
 msgctxt "alert dialog action"
 msgid "_OK"
-msgstr ""
+msgstr "_Acceptar"
 
 #: src/main.py:273
 msgid "Export failed"
-msgstr ""
+msgstr "L'exportació ha fallat"
 
 #: src/main.py:274
 msgid "An error occurred while exporting the library."
-msgstr ""
+msgstr "Hi ha hagut un error exportant la biblioteca."
 
 #: src/main.py:329
 msgid "Confirm Import?"
-msgstr ""
+msgstr "Confirmar l'importació?"
 
 #: src/main.py:330
 msgid ""
 "Importing a library will merge it with the current library. This action "
 "cannot be undone and in case of conflicts, the new data will be kept."
 msgstr ""
+"Si importes una biblioteca unirà les dades amb l'actual. Aquesta acció no es "
+"pot desfer i, en cas de conflictes, es mantindran les noves dades."
 
 #: src/main.py:333
 msgctxt "alert dialog action"
 msgid "_Import"
-msgstr ""
+msgstr "_Importar"
 
 #: src/main.py:366
 msgctxt "Background activity title"
 msgid "Importing library"
-msgstr ""
+msgstr "Important biblioteca"
 
 #: src/main.py:404
 msgid "Import Completed"
-msgstr ""
+msgstr "Importació completa"
 
 #: src/main.py:405
 msgid "The library has been imported successfully."
-msgstr ""
+msgstr "La biblioteca s'ha importat amb èxit."
 
 #: src/main.py:413
 msgid "Import failed"
-msgstr ""
+msgstr "La importació ha fallat"
 
 #: src/main.py:414
 msgid ""
 "Please check the selected archive and try again. Only archives created by "
 "Ticket Booth are supported."
 msgstr ""
+"Reviseu l'arxiu seleccionat i torneu-ho a provar si us plau. Només son "
+"compatible els arxius de biblioteques creats amb Ticket Booth."
 
 #: src/preferences.py:253
 msgctxt "message dialog heading"
 msgid "No Network"
-msgstr ""
+msgstr "Sense connexió a la xarxa"
 
 #: src/preferences.py:254
 msgctxt "message dialog body"
