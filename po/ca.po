@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2025-12-16 14:11+0000\n"
+"PO-Revision-Date: 2025-12-17 15:00+0000\n"
 "Last-Translator: guillermo baeza <guillermobaezaares@proton.me>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/ca/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
 msgid "@app_name@"
-msgstr ""
+msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.desktop.in:14
 msgid "Movies;Films;Shows;TV;Series;Anime;Watch;List;Library;"
@@ -61,7 +61,7 @@ msgstr "Estil de classificació de la vista"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:61
 msgid "Separate watched content from unwatched"
-msgstr "Separa els continguts vistos dels no vistos"
+msgstr "Separa els continguts vistos dels que no"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:65
 msgid "Hide watched content"
@@ -129,22 +129,24 @@ msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
+"Ticket Booth no et permet veure ni descarregar continguts. Aquesta aplicació "
+"fa servir l'API de TMDB, però no està avalada ni certificada per TMDB."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:44
 msgid "Movie Library"
-msgstr ""
+msgstr "Biblioteca de pel·lícules"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:48
 msgid "Movie Details"
-msgstr ""
+msgstr "Detalls de la pel·lícula"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:52
 msgid "TV Series Library"
-msgstr "Biblioteca de Sèries de TV"
+msgstr "Biblioteca de Sèries de televisió"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:56
 msgid "TV Series Details"
-msgstr "Detalls de Sèries de TV"
+msgstr "Detalls de Sèries de televisió"
 
 #: src/main.py:193
 msgid "Confirm Export?"
@@ -198,7 +200,7 @@ msgstr "Hi ha hagut un error exportant la biblioteca."
 
 #: src/main.py:329
 msgid "Confirm Import?"
-msgstr "Confirmar l'importació?"
+msgstr "Confirmar la importació?"
 
 #: src/main.py:330
 msgid ""
@@ -246,28 +248,28 @@ msgstr "Sense connexió a la xarxa"
 #: src/preferences.py:254
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
-msgstr ""
+msgstr "Connecta't a Internet per a completar la configuració."
 
 #: src/preferences.py:321
 msgctxt "Background activity title"
 msgid "Clear cache"
-msgstr ""
+msgstr "Netejar la memòria cau"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:373 src/preferences.py:375
 #, python-brace-format
 msgid "{number} Titles"
-msgstr ""
+msgstr "{number} títols"
 
 #: src/preferences.py:412
 msgctxt "Background activity title"
 msgid "Delete all movies"
-msgstr ""
+msgstr "Esborra totes les pel·lícules"
 
 #: src/preferences.py:423
 msgctxt "Background activity title"
 msgid "Delete all TV Series"
-msgstr ""
+msgstr "Esborra totes les sèries de televisió"
 
 #. TRANSLATORS: {total_space:.2f} is the total occupied space
 #: src/preferences.py:498
@@ -276,16 +278,18 @@ msgid ""
 "Ticket Booth is currently using {total_space:.2f} MB. Use the options below "
 "to free some space."
 msgstr ""
+"Ticket Booth està utilitzant {total_space:.2f}·MB. Allibera espai amb les "
+"opcions següents."
 
 #: src/preferences.py:502 src/preferences.py:504
 #, python-brace-format
 msgid "{space:.2f} MB occupied"
-msgstr ""
+msgstr "{space:.2f} MB ocupats"
 
 #: src/window.py:232
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
-msgstr ""
+msgstr "Executant activitats en segon pla"
 
 #: src/window.py:233
 msgctxt "message dialog body"
@@ -294,35 +298,37 @@ msgid ""
 "before exiting. Look for the indicator in the header bar to check when they "
 "are finished."
 msgstr ""
+"Executant algunes activitats en segon pla que han de completar-se abans de "
+"sortir. Busqui l'indicador a la barra superior per a comprovar el seu estat."
 
 #: src/dialogs/add_manual_dialog.py:90
 msgid "Edit Movie"
-msgstr ""
+msgstr "Editar pel·lícula"
 
 #: src/dialogs/add_manual_dialog.py:93
 msgid "Edit TV Series"
-msgstr ""
+msgstr "Editar sèries de televisió"
 
 #: src/dialogs/add_manual_dialog.py:296
 #, python-brace-format
 msgid "Season {num}"
-msgstr ""
+msgstr "Temporada {num}"
 
 #: src/dialogs/add_manual_dialog.py:336 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
-msgstr ""
+msgstr "Afegir{title}"
 
 #: src/dialogs/add_manual_dialog.py:342
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr ""
+msgstr "Actualitzar{title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
-msgstr ""
+msgstr "Temporada"
 
 #. type: ignore
 #: src/pages/details_page.py:213 src/pages/details_page.py:311
@@ -331,262 +337,266 @@ msgstr ""
 #: src/ui/widgets/poster_button.blp:141 src/widgets/episode_row.py:129
 #: src/widgets/episode_row.py:160 src/widgets/episode_row.py:330
 msgid "Watched"
-msgstr ""
+msgstr "Vist"
 
 #: src/pages/details_page.py:216 src/pages/details_page.py:314
 #: src/pages/details_page.py:376 src/pages/details_page.py:445
 #: src/pages/details_page.py:591 src/widgets/episode_row.py:132
 #: src/widgets/episode_row.py:163 src/widgets/episode_row.py:333
 msgid "Mark as Watched"
-msgstr ""
+msgstr "Marcar com a vist"
 
 #: src/pages/details_page.py:223
 msgid "Runtime of Movie"
-msgstr ""
+msgstr "Durada de la pel·lícula"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:235
 #, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{num} temporada"
+msgstr[1] "{num} temporades"
 
 #: src/pages/details_page.py:239
 msgid "Number of Seasons"
-msgstr ""
+msgstr "Nombre de temporades"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:244 src/pages/details_page.py:291
 #, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{num} episodi"
+msgstr[1] "{num} episodis"
 
 #: src/pages/details_page.py:478 src/ui/dialogs/add_manual.blp:182
 msgid "Status"
-msgstr ""
+msgstr "Estat"
 
 #: src/pages/details_page.py:486 src/ui/dialogs/add_manual.blp:186
 msgid "Original Language"
-msgstr ""
+msgstr "Idioma original"
 
 #: src/pages/details_page.py:496 src/ui/dialogs/add_manual.blp:192
 msgid "Original Title"
-msgstr ""
+msgstr "Títol original"
 
 #: src/pages/details_page.py:509
 msgid "Budget"
-msgstr ""
+msgstr "Pressupost"
 
 #: src/pages/details_page.py:519
 msgid "Revenue"
-msgstr ""
+msgstr "Ingressos"
 
 #: src/pages/details_page.py:529
 msgid "In Production"
-msgstr ""
+msgstr "En producció"
 
 #: src/pages/details_page.py:532
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: src/pages/details_page.py:533
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/pages/details_page.py:538
 msgid "TMDB ID"
-msgstr ""
+msgstr "ID de TMDB"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
 #: src/pages/details_page.py:564 src/widgets/episode_row.py:185
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr ""
+msgstr "{h}h {m}min"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:567 src/widgets/episode_row.py:189
 #, python-brace-format
 msgid "{m}min"
-msgstr ""
+msgstr "{m}min"
 
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:650
 #, python-brace-format
 msgid "Updating {title}"
-msgstr ""
+msgstr "Actualitzant {title}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:657
 #, python-brace-format
 msgid "Update {title}"
-msgstr ""
+msgstr "Actilitzar {title}"
 
 #: src/pages/details_page.py:720
 msgid "Loading Metadata…"
-msgstr ""
+msgstr "Carregant metadades…"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:740
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr ""
+msgstr "Esborrar {title}?"
 
 #. type: ignore
 #: src/pages/details_page.py:742
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr ""
+msgstr "Aquest títol serà eliminat de la teva llista de seguiment."
 
 #: src/pages/details_page.py:743
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancel·lar"
 
 #: src/pages/details_page.py:744
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr ""
+msgstr "_Esborrar"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:777
 #, python-brace-format
 msgid "Delete {title}"
-msgstr ""
+msgstr "Esborra {title}"
 
 #: src/ui/about_dialog.blp:9
 msgid ""
 "Copyright © 2023 - 2025 Alessandro Iepure\n"
 "Some icons are copyright of the GNOME Project"
 msgstr ""
+"Copyright © 2023 - 2025 Alessandro Iepure\n"
+"Algunes icones estan sota el copyright del projecte GNOME"
 
 #. TRANSLATORS: replace with your name (with optional email or website)
 #: src/ui/about_dialog.blp:16
 msgid "translator-credits"
-msgstr ""
+msgstr "guillermo baeza ares <guillermobaezaares@proton.me>"
 
 #: src/ui/dialogs/add_manual.blp:42 src/widgets/search_result_row.py:80
 msgctxt "Category"
 msgid "Movie"
-msgstr ""
+msgstr "Pel·lícula"
 
 #: src/ui/dialogs/add_manual.blp:47 src/views/main_view.py:63
 #: src/widgets/search_result_row.py:82
 msgctxt "Category"
 msgid "TV Series"
-msgstr ""
+msgstr "Sèrie de televisió"
 
 #: src/ui/dialogs/add_manual.blp:55 src/ui/dialogs/edit_season.blp:24
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel·lar"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:30
 #: src/ui/pages/edit_episode_page.blp:19
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: src/ui/dialogs/add_manual.blp:86 src/ui/dialogs/edit_season.blp:52
 #: src/ui/pages/edit_episode_page.blp:41
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: src/ui/dialogs/add_manual.blp:89 src/ui/dialogs/edit_season.blp:55
 #: src/ui/pages/edit_episode_page.blp:55
 msgid "Title (required)"
-msgstr ""
+msgstr "Títol (obligatori)"
 
 #: src/ui/dialogs/add_manual.blp:94
 msgid "Release Date"
-msgstr ""
+msgstr "Data de llançament"
 
 #: src/ui/dialogs/add_manual.blp:113
 msgid "Genres (comma separated)"
-msgstr ""
+msgstr "Gèneres (separats per comes)"
 
 #: src/ui/dialogs/add_manual.blp:119 src/ui/pages/edit_episode_page.blp:60
 msgid "Runtime (minutes)"
-msgstr ""
+msgstr "Durada (minuts)"
 
 #: src/ui/dialogs/add_manual.blp:129
 msgid "Tagline"
-msgstr ""
+msgstr "Eslògan"
 
 #: src/ui/dialogs/add_manual.blp:135 src/ui/pages/details_page.blp:292
 msgid "Created by"
-msgstr ""
+msgstr "Creat per"
 
 #: src/ui/dialogs/add_manual.blp:140 src/ui/pages/edit_episode_page.blp:71
 msgid "Overview"
-msgstr ""
+msgstr "Vista general"
 
 #: src/ui/dialogs/add_manual.blp:160
 msgid "Seasons (required)"
-msgstr ""
+msgstr "Temporades (obligatori)"
 
 #: src/ui/dialogs/add_manual.blp:161
 msgid "Use the + button to add seasons"
-msgstr ""
+msgstr "Utilitzi el botó + per a afegir temporades"
 
 #: src/ui/dialogs/add_manual.blp:166 src/ui/dialogs/edit_season.blp:67
 msgid "Add"
-msgstr ""
+msgstr "Afegir"
 
 #: src/ui/dialogs/add_manual.blp:179 src/ui/pages/details_page.blp:351
 msgid "Additional Information"
-msgstr ""
+msgstr "Informació addicional"
 
 #: src/ui/dialogs/add_manual.blp:198
 msgid "Budget (US$)"
-msgstr ""
+msgstr "Pressupost (US$)"
 
 #: src/ui/dialogs/add_manual.blp:210
 msgid "Revenue (US$)"
-msgstr ""
+msgstr "Ingressos (US$)"
 
 #: src/ui/dialogs/add_manual.blp:220
 msgid "In production"
-msgstr ""
+msgstr "En producció"
 
 #: src/ui/dialogs/add_tmdb.blp:27
 msgid "Search The Movie Database…"
-msgstr ""
+msgstr "Cerca a The Movie Database…"
 
 #: src/ui/dialogs/add_tmdb.blp:37
 msgid "Search For a Title"
-msgstr ""
+msgstr "Cerca un títol"
 
 #: src/ui/dialogs/add_tmdb.blp:39
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
 msgstr ""
+"Comenci a escriure a la barra de cerca per a veure una llista de pel·lícules "
+"i sèries de televisió coincidents"
 
 #: src/ui/dialogs/add_tmdb.blp:46
 msgid "No Results Found"
-msgstr ""
+msgstr "No s'han trobat resultats"
 
 #: src/ui/dialogs/add_tmdb.blp:48
 msgid "Try a different search"
-msgstr ""
+msgstr "Provi una cerca diferent"
 
 #: src/ui/dialogs/edit_season.blp:14
 msgid "Edit Season"
-msgstr ""
+msgstr "Editar temporada"
 
 #: src/ui/dialogs/edit_season.blp:61
 msgid "Episodes (required)"
-msgstr ""
+msgstr "Episodis (obligatori)"
 
 #: src/ui/dialogs/edit_season.blp:62
 msgid "Use the + button to add episodes"
-msgstr ""
+msgstr "Utilitzi el botó + per a afegir capítols"
 
 #: src/ui/dialogs/message_dialogs.blp:9
 msgctxt "message dialog heading"
 msgid "Clear Cached Data?"
-msgstr ""
+msgstr "Esborrar la memòria cau?"
 
 #: src/ui/dialogs/message_dialogs.blp:10
 msgctxt "message dialog body"
@@ -594,21 +604,23 @@ msgid ""
 "This operation will clear all stored cache data. It might get downloaded "
 "again next time you add content from TMDB."
 msgstr ""
+"Aquesta operació esborrarà tota la memòria cau. Pot ser que es torni a "
+"descarregar el proper cop que afegeixis contingut de TMDB."
 
 #: src/ui/dialogs/message_dialogs.blp:13 src/ui/dialogs/message_dialogs.blp:40
 msgctxt "message dialog action"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel·lar"
 
 #: src/ui/dialogs/message_dialogs.blp:14 src/ui/dialogs/message_dialogs.blp:41
 msgctxt "message dialog action"
 msgid "Clear"
-msgstr ""
+msgstr "Netejar"
 
 #: src/ui/dialogs/message_dialogs.blp:19
 msgctxt "message dialog heading"
 msgid "Clear Stored Data?"
-msgstr ""
+msgstr "Esborrar les dades guardades?"
 
 #: src/ui/dialogs/message_dialogs.blp:20
 msgctxt "message dialog body"
@@ -616,125 +628,127 @@ msgid ""
 "This operation will permanentlly delete the selected data, loosing all your "
 "changes."
 msgstr ""
+"Aquesta operació esborrarà les dades seleccionades de manera permanent, "
+"perdreu tots els canvis realitzats."
 
 #: src/ui/dialogs/message_dialogs.blp:26
 msgid "Movies"
-msgstr ""
+msgstr "Pel·lícules"
 
 #: src/ui/dialogs/message_dialogs.blp:34
 msgid "TV Series"
-msgstr ""
+msgstr "Sèries de televisió"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Mostra dreceres"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
 msgid "Show Preferences"
-msgstr ""
+msgstr "Mostra preferències"
 
 #: src/ui/gtk/help-overlay.blp:28
 msgctxt "shortcut window"
 msgid "Search your Watchlist"
-msgstr ""
+msgstr "Cerca a la teva llista de seguiment"
 
 #: src/ui/gtk/help-overlay.blp:33
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Sortir"
 
 #: src/ui/gtk/help-overlay.blp:39
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr ""
+msgstr "Gestió de la biblioteca"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr ""
+msgstr "Afegir títol de TMDB"
 
 #: src/ui/gtk/help-overlay.blp:47
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr ""
+msgstr "Afegir títol manualment"
 
 #: src/ui/gtk/help-overlay.blp:51
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr ""
+msgstr "Refrescar biblioteca"
 
 #: src/ui/pages/details_page.blp:30 src/ui/views/main_view.blp:84
 msgid "Main Menu"
-msgstr ""
+msgstr "Menú principal"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Number of Episodes"
-msgstr ""
+msgstr "Nombre d'episodis"
 
 #: src/ui/pages/details_page.blp:156
 msgid "Air Date of Next Episode"
-msgstr ""
+msgstr "Data d'emissió del proper capítol"
 
 #: src/ui/pages/details_page.blp:209
 msgid "Update Metadata"
-msgstr ""
+msgstr "Actualitzar metadades"
 
 #: src/ui/pages/details_page.blp:222 src/ui/widgets/episode_row.blp:87
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: src/ui/pages/details_page.blp:235
 msgid "Delete"
-msgstr ""
+msgstr "Esborrar"
 
 #: src/ui/pages/details_page.blp:264
 msgid "Description"
-msgstr ""
+msgstr "Descripció"
 
 #: src/ui/pages/details_page.blp:320
 msgid "Seasons"
-msgstr ""
+msgstr "Temporades"
 
 #: src/ui/pages/details_page.blp:379
 msgid "Notes"
-msgstr ""
+msgstr "Notes"
 
 #: src/ui/pages/details_page.blp:483 src/ui/views/main_view.blp:234
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferències"
 
 #: src/ui/pages/details_page.blp:488 src/ui/views/main_view.blp:239
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "Dreceres de _teclat"
 
 #: src/ui/pages/details_page.blp:493 src/ui/views/main_view.blp:244
 msgid "_About Ticket Booth"
-msgstr ""
+msgstr "_Sobre Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:9
 msgid "Edit Episode"
-msgstr ""
+msgstr "Editar capítol"
 
 #: src/ui/pages/edit_episode_page.blp:45
 msgid "Episode Number (required)"
-msgstr ""
+msgstr "Nombre d'episodi (obligatori)"
 
 #: src/ui/preferences.blp:15 src/ui/views/main_view.blp:131
 msgid "Preferences"
-msgstr ""
+msgstr "Preferències"
 
 #: src/ui/preferences.blp:18
 msgctxt "preferences"
 msgid "Optional Download"
-msgstr ""
+msgstr "Descàrrega opcional"
 
 #: src/ui/preferences.blp:19
 msgctxt "preferences"
@@ -743,17 +757,21 @@ msgid ""
 "setup could not retrieve the data automatically and thus offline mode has "
 "been activated. It will remain active until the setup is completed."
 msgstr ""
+"Per una experiència completa, és necessària una descàrrega de 15 KB. La "
+"configuració inicial no ha pogut recuperar les dades automàticament i s'ha "
+"activat el mode sense connexió. Romandrà actiu fins que es finalitzi la "
+"configuració."
 
 #. TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
 #: src/ui/preferences.blp:23
 msgctxt "preferences"
 msgid "Complete Setup"
-msgstr ""
+msgstr "Completar la configuració"
 
 #: src/ui/preferences.blp:34
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr ""
+msgstr "Mode sense connexió"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
@@ -762,16 +780,19 @@ msgid ""
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
+"Ticket Booth pot funcionar completament sense connexió. Algunes funciones "
+"que requereixen Internet i/o accés a APIs de tercers no estaran disponibles "
+"si decideix utilitzar l'aplicació en aquest mode."
 
 #: src/ui/preferences.blp:38
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr ""
+msgstr "Activar el mode sense connexió"
 
 #: src/ui/preferences.blp:43
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr ""
+msgstr "The Movie Database (TMDB)"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
@@ -784,86 +805,95 @@ msgid ""
 "to TMDB</a>. Additionally, an automatic update is performed on a frequency "
 "of your choosing."
 msgstr ""
+"TMDB proporciona metadades localitzats per a la majoria dels continguts. "
+"Ticket Booth els descarregarà en la seva llengua preferida, que pot "
+"seleccionar a continuació. En cas que no estigui disponible, passarà a "
+"l'anglès dels EEUU i, a continuació, a la llengua original del contingut. Si "
+"cap dels do sestà disponible, el resultat serà una cadena en blanc. Si us "
+"plau, consideri <a href='https://www.themoviedb.org/bible/new_content'>"
+"contribuir a TMDB</a>. Addicionalment, es realitzarà una actualització "
+"automàtica amb la freqüència que esculli."
 
 #: src/ui/preferences.blp:47
 msgctxt "preferences"
 msgid "TMDB Results Language"
-msgstr ""
+msgstr "Idioma dels resultats de TMDB"
 
 #: src/ui/preferences.blp:52
 msgctxt "preferences"
 msgid "Update Frequency"
-msgstr ""
+msgstr "Freqüència d'actualització"
 
 #: src/ui/preferences.blp:53
 msgctxt "preferences"
 msgid "Restart Ticket Booth after changing"
-msgstr ""
+msgstr "Reiniciï Ticket Booth després dels canvis"
 
 #: src/ui/preferences.blp:56
 msgctxt "preferences"
 msgid "Never"
-msgstr ""
+msgstr "Mai"
 
 #: src/ui/preferences.blp:57
 msgctxt "preferences"
 msgid "Daily"
-msgstr ""
+msgstr "Diàriament"
 
 #: src/ui/preferences.blp:58
 msgctxt "preferences"
 msgid "Weekly"
-msgstr ""
+msgstr "Setmanalment"
 
 #: src/ui/preferences.blp:59
 msgctxt "preferences"
 msgid "Monthly"
-msgstr ""
+msgstr "Mensualment"
 
 #: src/ui/preferences.blp:65
 msgctxt "preferences"
 msgid "Use Your API Key"
-msgstr ""
+msgstr "Utilitza la teva clau API"
 
 #: src/ui/preferences.blp:66
 msgctxt "preferences"
 msgid ""
 "Register yours <a href='https://www.themoviedb.org/settings/api'>here</a>"
 msgstr ""
+"Resgistra la teva<a href='https://www.themoviedb.org/settings/api'>aquí</a>"
 
 #: src/ui/preferences.blp:70
 msgctxt "preferences"
 msgid "Your API key"
-msgstr ""
+msgstr "La teva clau API"
 
 #: src/ui/preferences.blp:75
 msgctxt "preferences"
 msgid "Save Key"
-msgstr ""
+msgstr "Guardar clau"
 
 #: src/ui/preferences.blp:86
 msgctxt "preferences"
 msgid "Housekeeping"
-msgstr ""
+msgstr "Servei de neteja"
 
 #: src/ui/preferences.blp:90
 msgctxt "preferences"
 msgid "Clear Cache on Exit"
-msgstr ""
+msgstr "Neteja la memòria cau en sortir"
 
 #: src/ui/preferences.blp:94
 msgctxt "preferences"
 msgid "Clear Cached Search Data"
-msgstr ""
+msgstr "Neteja les dades de carca de la memòria cau"
 
 #: src/ui/preferences.blp:104
 msgctxt "preferences"
 msgid "Clear Data"
-msgstr ""
+msgstr "Netejar dades"
 
 #: src/ui/views/content_view.blp:14
 msgid "Your Watchlist Is Empty"
-msgstr ""
+msgstr "La teva llista de seguiment és buida"
 
 #: src/ui/views/content_view.blp:15
 msgid "Add content with the + button or import from an older watchlist."
