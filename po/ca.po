@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2025-12-17 15:00+0000\n"
+"PO-Revision-Date: 2025-12-18 16:00+0000\n"
 "Last-Translator: guillermo baeza <guillermobaezaares@proton.me>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/ca/>\n"
@@ -898,82 +898,88 @@ msgstr "La teva llista de seguiment és buida"
 #: src/ui/views/content_view.blp:15
 msgid "Add content with the + button or import from an older watchlist."
 msgstr ""
+"Afegeix contingut amb el botó + o importa'l una antiga llista de seguiment."
 
 #: src/ui/views/content_view.blp:111 src/views/content_view.py:363
 msgid "Your Watchlist"
-msgstr ""
+msgstr "La seva llista de seguiment"
 
 #: src/ui/views/content_view.blp:140
 msgid "Unwatched"
-msgstr ""
+msgstr "No vist"
 
 #: src/ui/views/db_update_view.blp:29
 msgid "Updating your watchlist"
-msgstr ""
+msgstr "Actualitzant la seva llista de seguiment"
 
 #: src/ui/views/db_update_view.blp:30
 msgid ""
 "After updating Ticket Booth we need to update the local database entries"
 msgstr ""
+"Després d'actualitzar Ticket Booth necessitem actualitzar les entrades de la "
+"seva base de dades"
 
 #: src/ui/views/db_update_view.blp:49 src/ui/views/first_run_view.blp:55
 msgid "Use Offline Mode"
-msgstr ""
+msgstr "Fer servir el mode sense connexió"
 
 #: src/ui/views/db_update_view.blp:55 src/ui/views/first_run_view.blp:61
 msgid "Try again on next run"
-msgstr ""
+msgstr "Provi-ho de nou a la propera execució"
 
 #: src/ui/views/db_update_view.blp:66
 msgid "Activate Notifications?"
-msgstr ""
+msgstr "Activar les notificacions?"
 
 #: src/ui/views/db_update_view.blp:67
 msgid ""
 "Would you like to activate notifications for all series that are still in "
 "production and for all movies that have not yet released?"
 msgstr ""
+"Li agradaria activar les notificacions per a totes les sèries que es "
+"mantenen en producció i per a totes les pel·lícules que encara no s'han "
+"estrenat?"
 
 #: src/ui/views/db_update_view.blp:76
 msgid "Activate"
-msgstr ""
+msgstr "Activar"
 
 #: src/ui/views/db_update_view.blp:85
 msgid "Deactivate"
-msgstr ""
+msgstr "Desactivar"
 
 #: src/ui/views/main_view.blp:69
 msgid "Add a title to your library"
-msgstr ""
+msgstr "Afegeix un títol a la teva biblioteca"
 
 #: src/ui/views/main_view.blp:76
 msgid "Show/Hide search bar"
-msgstr ""
+msgstr "Mostra/amaga la barra de cerca"
 
 #: src/ui/views/main_view.blp:105
 msgctxt "Search mode"
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: src/ui/views/main_view.blp:106
 msgctxt "Search mode"
 msgid "Genre"
-msgstr ""
+msgstr "Gènere"
 
 #: src/ui/views/main_view.blp:107
 msgctxt "Search mode"
 msgid "Overview"
-msgstr ""
+msgstr "Resum"
 
 #: src/ui/views/main_view.blp:108
 msgctxt "Search mode"
 msgid "Notes"
-msgstr ""
+msgstr "Notes"
 
 #: src/ui/views/main_view.blp:109
 msgctxt "Search mode"
 msgid "TMDB ID"
-msgstr ""
+msgstr "ID de TMDB"
 
 #: src/ui/views/main_view.blp:119
 msgid "Search Your Watchlist"
@@ -981,115 +987,115 @@ msgstr ""
 
 #: src/ui/views/main_view.blp:130
 msgid "Offline Mode Enabled"
-msgstr ""
+msgstr "Mode sense connexió activat"
 
 #: src/ui/views/main_view.blp:161
 msgid "_Sorting"
-msgstr ""
+msgstr "_Ordenant"
 
 #: src/ui/views/main_view.blp:165
 msgid "A-Z"
-msgstr ""
+msgstr "A-Z"
 
 #: src/ui/views/main_view.blp:171
 msgid "Z-A"
-msgstr ""
+msgstr "Z-A"
 
 #: src/ui/views/main_view.blp:177
 msgid "Date added (newest first)"
-msgstr ""
+msgstr "Data d'addició (la més recent primer)"
 
 #: src/ui/views/main_view.blp:183
 msgid "Date added (oldest first)"
-msgstr ""
+msgstr "Data d'addició (el més antic primer)"
 
 #: src/ui/views/main_view.blp:189
 msgid "Release date (newest first)"
-msgstr ""
+msgstr "Data d'estrena (la més recent primer)"
 
 #: src/ui/views/main_view.blp:195
 msgid "Release date (oldest first)"
-msgstr ""
+msgstr "Data d'estrena (la més antiga primer)"
 
 #: src/ui/views/main_view.blp:203
 msgid "Separate watched from unwatched"
-msgstr ""
+msgstr "Separa els continguts vistos dels no vistos"
 
 #: src/ui/views/main_view.blp:208
 msgid "Hide watched"
-msgstr ""
+msgstr "Amaga els continguts vistos"
 
 #: src/ui/views/main_view.blp:215
 msgid "_Refresh"
-msgstr ""
+msgstr "_Actualitza"
 
 #: src/ui/views/main_view.blp:222
 msgid "_Import"
-msgstr ""
+msgstr "_Importar"
 
 #: src/ui/views/main_view.blp:227
 msgid "_Export"
-msgstr ""
+msgstr "_Exportar"
 
 #: src/ui/views/main_view.blp:252
 msgid "From The Movie Database (TMDB)"
-msgstr ""
+msgstr "De The Movie Database (TMDB)"
 
 #: src/ui/views/main_view.blp:257
 msgid "Manually"
-msgstr ""
+msgstr "Manualment"
 
 #: src/ui/widgets/background_indicator.blp:13
 msgid "Background Activities"
-msgstr ""
+msgstr "Activitats en segon pla"
 
 #: src/ui/widgets/background_indicator.blp:34
 msgid "No Background Activities"
-msgstr ""
+msgstr "Sense activitats en segon pla"
 
 #: src/ui/widgets/image_selector.blp:30
 msgid "Edit poster"
-msgstr ""
+msgstr "Editar pòster"
 
 #: src/ui/widgets/image_selector.blp:48
 msgid "Delete poster"
-msgstr ""
+msgstr "Esborrar pòster"
 
 #: src/ui/widgets/poster_button.blp:47
 msgid "The series has a new release"
-msgstr ""
+msgstr "La sèrie té una nova estrena"
 
 #: src/ui/widgets/poster_button.blp:67
 msgid "The series has a new release soon"
-msgstr ""
+msgstr "La sèrie tindrà una nova estrena aviat"
 
 #: src/ui/widgets/poster_button.blp:85
 msgid "This title is marked as watched"
-msgstr ""
+msgstr "Aquest títol està marcat com a vist"
 
 #: src/ui/widgets/search_result_row.blp:89
 msgid "Add to watchlist"
-msgstr ""
+msgstr "Afegir a la llista de seguiment"
 
 #: src/ui/widgets/theme_switcher.blp:29
 msgid "Follow system style"
-msgstr ""
+msgstr "Seguir l'estil del sistema"
 
 #: src/ui/widgets/theme_switcher.blp:43
 msgid "Light style"
-msgstr ""
+msgstr "Estil clar"
 
 #: src/ui/widgets/theme_switcher.blp:57
 msgid "Dark style"
-msgstr ""
+msgstr "Estil fosc"
 
 #: src/views/content_view.py:362
 msgid "Search results"
-msgstr ""
+msgstr "Resultats de la cerca"
 
 #: src/views/first_run_view.py:101
 msgid "Waiting for Network…"
-msgstr ""
+msgstr "Esperant la xarxa…"
 
 #: src/views/first_run_view.py:103
 msgid ""
@@ -1100,16 +1106,16 @@ msgstr ""
 
 #: src/views/first_run_view.py:107
 msgid "Getting things ready…"
-msgstr ""
+msgstr "Enllestint…"
 
 #: src/views/first_run_view.py:108
 msgid "Downloading data"
-msgstr ""
+msgstr "Descarregant dades"
 
 #: src/views/main_view.py:57
 msgctxt "Category"
 msgid "Movies"
-msgstr ""
+msgstr "Pel·lícules"
 
 #: src/views/main_view.py:146
 msgctxt "Notification List activity title"
@@ -1120,25 +1126,26 @@ msgstr ""
 #: src/views/main_view.py:182
 msgctxt "Background activity title"
 msgid "Automatic update"
-msgstr ""
+msgstr "Actualització automàtica"
 
 #. TRANSLATOR: {title} is the title of the series
 #: src/views/main_view.py:326
 #, python-brace-format
 msgid "New release for {title}"
-msgstr ""
+msgstr "Nova estrena de {title}"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:329
 #, python-brace-format
 msgid "A new episode of {title} was released {days} day ago."
-msgstr ""
+msgstr "Un nou capítol de {title} es va estrenar fa {days} dies."
 
 #. TRANSLATOR: {num} is the number of TV Series
 #: src/views/main_view.py:333
 #, python-brace-format
 msgid "New release for {num} TV series on your watchlist"
 msgstr ""
+"Noves estrenes de {num} sèries de televisió de la teva llista de seguiment"
 
 #. TRANSLATOR: {series} is a list of TV series seperated by a comma
 #. TRANSLATOR: {series} is a list of all series affected seperated by a comma
@@ -1146,13 +1153,13 @@ msgstr ""
 #: src/views/main_view.py:372
 #, python-brace-format
 msgid "The TV Series are {series}."
-msgstr ""
+msgstr "Les sèries de televisió son {series}."
 
 #. TRANSLATOR: {title} is the title of the series with a new episode soon
 #: src/views/main_view.py:343
 #, python-brace-format
 msgid "{title} will have a release soon"
-msgstr ""
+msgstr "{title} tindrà una estrena properament"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:346
