@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2025-12-18 16:00+0000\n"
+"PO-Revision-Date: 2025-12-19 19:00+0000\n"
 "Last-Translator: guillermo baeza <guillermobaezaares@proton.me>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/ca/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -1172,12 +1172,14 @@ msgstr ""
 #, python-brace-format
 msgid "{num} TV Series on your watchlist will have a new episode soon"
 msgstr ""
+"{num} sèries de televisió de la teva llista de seguiment estrenaran aviat un "
+"capítol nou"
 
 #. TRANSLATOR: {title} is the title of the series that has gone out of production
 #: src/views/main_view.py:361
 #, python-brace-format
 msgid "{title} has gone out of production"
-msgstr ""
+msgstr "{title} ja no està en producció"
 
 #. TRANSLATOR: {title} is the title of the series that has gone out of production
 #: src/views/main_view.py:364
@@ -1186,24 +1188,26 @@ msgid ""
 "{title} has wrapped up its run. Now is the perfect time to revisit your "
 "favorite moments or find the next binge!"
 msgstr ""
+"{title} ha finalitzat la seva emissió. És el moment perfecte per a reviure "
+"els seus moments preferits o torbar la teva propera marató!"
 
 #. TRANSLATOR: {num} is the number of TV Series
 #: src/views/main_view.py:367
 #, python-brace-format
 msgid "{num} TV Series of your watchlist have gone out of production"
-msgstr ""
+msgstr "{num} sèries de la teva llista de seguiment han acabat la seva emissió"
 
 #. TRANSLATOR: {title} is the title of the movie that has had its release
 #: src/views/main_view.py:378
 #, python-brace-format
 msgid "{title} has had its release!"
-msgstr ""
+msgstr "{title} s'ha estrenat!"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:381
 #, python-brace-format
 msgid "{title} was released {days} day ago."
-msgstr ""
+msgstr "{title} es va estrenar fa {days} dies."
 
 #: src/views/main_view.py:384
 #, python-brace-format
@@ -1215,13 +1219,13 @@ msgstr ""
 #: src/views/main_view.py:388 src/views/main_view.py:403
 #, python-brace-format
 msgid "The movies are {movies}."
-msgstr ""
+msgstr "Les pel·lícules son {movies}."
 
 #. TRANSLATOR: {title} is the title of the movie that will have its release soon
 #: src/views/main_view.py:393
 #, python-brace-format
 msgid "{title} will have its release soon!"
-msgstr ""
+msgstr "{title} s'estrenarà aviat!"
 
 #. TRANSLATOR: {title} is the title of the movie and {days} the number of days
 #: src/views/main_view.py:396
