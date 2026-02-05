@@ -121,7 +121,7 @@ class DbUpdateView(Adw.Bin):
                 if not movie.manual:
                     new_movie = MovieModel(tmdb.get_movie(movie.id))
                     #Check if the soon_release flag should be set, that is the case if the movie is set to release in less than 14 days
-                    if len(movie.release_date) > 0 and datetime.strptime(movie.release_date, '%Y-%m-%d') < datetime.now() + timedelta(days=14): # TODO make this a variable and sync with main_view.py
+                    if len(movie.release_date) > 0 and datetime.strptime(movie.release_date, '%Y-%m-%d') < datetime.now() + timedelta(days=shared.SOON_RELEASE_THRESHOLD_MOVIE):
                         #Writing to the local db since update_movie updates entry of the local db
                         local.set_soon_release_status(movie.id, True, True)
                     local.update_movie(movie, new_movie)
@@ -133,7 +133,7 @@ class DbUpdateView(Adw.Bin):
                     new_serie = SeriesModel(tmdb.get_serie(serie.id))
                      #Check if the soon_release flag should be set, that is the case if the next episode is less than 7 days away
                     compare_date = new_serie.next_air_date
-                    if len(compare_date) > 0 and datetime.strptime(compare_date, '%Y-%m-%d') < datetime.now() + timedelta(days=7): # TODO make this a variable and sync with main_view.py
+                    if len(compare_date) > 0 and datetime.strptime(compare_date, '%Y-%m-%d') < datetime.now() + timedelta(days=shared.SOON_RELEASE_THRESHOLD_SERIES):
                         #Writing to variable since update_series deletes local db entry and creates a new entry with flags from argument
                         serie.soon_release = True
                     local.update_series(serie, new_serie)

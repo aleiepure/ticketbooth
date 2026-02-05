@@ -2,12 +2,16 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import gi
+gi.require_version('Gdk', '4.0')
 from gi.repository import Gdk, Gio, GLib
 from pathlib import Path
 import logging
-from .logging.session_file_handler import SessionFileHandler
+from .app_logging.session_file_handler import SessionFileHandler
 import faulthandler
 import os
+import shutil
+from concurrent.futures import ThreadPoolExecutor
 
 APP_ID = '@app_id@'
 VERSION = '@version@'
@@ -16,8 +20,37 @@ APP_NAME = '@app_name@'
 
 schema = Gio.Settings.new(APP_ID)
 
-data_dir = Path(GLib.get_user_data_dir())
-cache_dir = Path(GLib.get_user_cache_dir())
+# =============================================================================
+# 📁 DIRECTORY ARCHITECTURE (NAMESPACING)
+# =============================================================================
+# We use APP_ID to create a dedicated subdirectory in ~/.local/share and ~/.cache
+# to prevent cluttering the user's home structure.
+# =============================================================================
+_root_data = Path(GLib.get_user_data_dir())
+_root_cache = Path(GLib.get_user_cache_dir())
+
+data_dir = _root_data / APP_ID
+cache_dir = _root_cache / APP_ID
+
+# Migration logic for legacy data (Transitioning from ~/.local/share/ to subdirectory)
+legacy_items = ['data.db', 'poster', 'background', 'series', 'logs']
+if not data_dir.exists():
+    try:
+        # Check if legacy data exists in root data dir
+        legacy_found = any((_root_data / item).exists() for item in legacy_items)
+        data_dir.mkdir(parents=True, exist_ok=True)
+        
+        if legacy_found:
+            logging.info(f"Migrating legacy data to {data_dir}")
+            for item in legacy_items:
+                old_path = _root_data / item
+                if old_path.exists():
+                    shutil.move(str(old_path), str(data_dir / item))
+    except Exception as e:
+        print(f"Migration failed: {e}")
+
+# Ensure cache directory exists
+cache_dir.mkdir(parents=True, exist_ok=True)
 
 poster_dir = data_dir / 'poster'
 background_dir = data_dir / 'background'
@@ -25,23 +58,44 @@ series_dir = data_dir / 'series'
 
 db = data_dir / 'data.db'
 
-if not os.path.exists(data_dir/'logs'):
-    os.makedirs(data_dir/'logs')
-faulthandler.enable(file=open(data_dir/'logs'/'crash.log',"w"))
+# =============================================================================
+# ⚙️ LOGGING & CRASH HANDLING
+# =============================================================================
+log_dir = data_dir / 'logs'
+log_dir.mkdir(parents=True, exist_ok=True)
+
+faulthandler.enable(file=open(log_dir / 'crash.log', "w"))
 
 if '@debug@' == 'True':
     DEBUG = True
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s - %(levelname)s - %(message)s',
-                        filename=data_dir / 'logs' / 'ticketbooth.log')
+                        filename=log_dir / 'ticketbooth.log')
 else:
     DEBUG = False
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s',
-                        filename=data_dir / 'logs' / 'ticketbooth.log')
+                        filename=log_dir / 'ticketbooth.log')
 
-handler = SessionFileHandler(filename=data_dir / 'logs' / 'ticketbooth.log')
+handler = SessionFileHandler(filename=log_dir / 'ticketbooth.log')
 handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logging.getLogger().addHandler(handler)
 
 log_files = None
+
+# =============================================================================
+# 🚀 GLOBAL OPTIMIZATION OBJECTS
+# =============================================================================
+# TEXTURE_CACHE: Stores Gdk.Texture objects in memory to prevent re-loading
+TEXTURE_CACHE = {}
+
+# IMAGE_EXECUTOR: Dedicated thread pool for async image loading.
+# Prevents UI freeze by offloading I/O and Gdk.Texture creation.
+IMAGE_EXECUTOR = ThreadPoolExecutor(max_workers=12)
+
+# =============================================================================
+# 🗓️ BUSINESS LOGIC CONSTANTS
+# =============================================================================
+# Thresholds for marking content as "Recently Released" or "Soon to Release"
+SOON_RELEASE_THRESHOLD_MOVIE = 14  # Days
+SOON_RELEASE_THRESHOLD_SERIES = 7   # Days

@@ -57,7 +57,10 @@ class ContentView(Adw.Bin):
 
         self._stack.set_visible_child_name('loading')
 
-        self._load_content(self.movie_view)
+        # Chunked loading state
+        self._content_loaded = False
+        self._pending_items = []
+        self._load_index = 0
 
         self._set_sorting_function()
         self._set_filter_function()
@@ -74,18 +77,17 @@ class ContentView(Adw.Bin):
     def _on_map(self, user_data: object | None) -> None:
         """
         Callback for the "map" signal.
-        Restores the scroll position when the view is mapped.
-
-        Args:
-            user_data (object or None): additional data passed to the callback
-        Returns:
-            None
+        Starts chunked content loading and restores scroll position.
         """
         
+        # Start chunked loading on first map
+        if not self._content_loaded:
+            self._content_loaded = True
+            GLib.idle_add(self._start_chunked_load)
+        
+        # Restore scroll position
         if hasattr(self, '_saved_scroll_value'):
             vadjustment = self._scrolled_window.get_vadjustment()
-
-            # Restore position after a small delay to ensure content is loaded
             GLib.idle_add(lambda: vadjustment.set_value(self._saved_scroll_value))
 
     def _on_sort_changed(self, pspec: GObject.ParamSpec, user_data: object | None) -> None:
@@ -132,6 +134,113 @@ class ContentView(Adw.Bin):
         """
 
         self._set_filter_function()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # CHUNKED LOADING - Prevents UI freeze with large datasets
+    # ══════════════════════════════════════════════════════════════════════════
+    
+    CHUNK_SIZE = 25  # Widgets per chunk
+    CHUNK_DELAY_MS = 8  # ~120 FPS - UI stays responsive
+    
+    def _start_chunked_load(self) -> bool:
+        """
+        Fetches all content and starts chunked widget creation.
+        Called via GLib.idle_add from _on_map.
+        """
+        logging.info(f"[ContentView] Starting chunked load for {'movies' if self.movie_view else 'series'}")
+        
+        # Fetch all data (this is fast - just DB read + object creation)
+        if self.movie_view:
+            self._pending_items = local.LocalProvider.get_all_movies() or []
+        else:
+            self._pending_items = local.LocalProvider.get_all_series() or []
+        
+        if not self._pending_items:
+            self._stack.set_visible_child_name('empty')
+            logging.info("[ContentView] No content found")
+            return False
+        
+        logging.info(f"[ContentView] Loaded {len(self._pending_items)} items, starting widget creation")
+        
+        self._load_index = 0
+        # Start chunked widget creation
+        GLib.timeout_add(self.CHUNK_DELAY_MS, self._load_next_chunk)
+        
+        return False  # Don't repeat idle_add
+    
+    def _load_next_chunk(self) -> bool:
+        """
+        Creates CHUNK_SIZE widgets and adds them to FlowBox.
+        Returns True to continue, False when done.
+        """
+        if self._load_index >= len(self._pending_items):
+            # All widgets created
+            self._finalize_chunked_load()
+            return False
+        
+        # Show filled view on first chunk
+        if self._load_index == 0:
+            self._stack.set_visible_child_name('filled')
+        
+        # Process one chunk
+        end_index = min(self._load_index + self.CHUNK_SIZE, len(self._pending_items))
+        
+        for i in range(self._load_index, end_index):
+            item = self._pending_items[i]
+            btn = PosterButton(content=item)
+            btn.connect('clicked', self._on_clicked)
+            
+            if not shared.schema.get_boolean('search-enabled') and shared.schema.get_boolean('separate-watched'):
+                if item.watched:
+                    self._watched_flow_box.insert(btn, -1)
+                else:
+                    self._unwatched_flow_box.insert(btn, -1)
+            else:
+                self._flow_box.insert(btn, -1)
+        
+        self._load_index = end_index
+        return True  # Continue with next chunk
+    
+    def _finalize_chunked_load(self) -> None:
+        """
+        Called when all widgets are created.
+        Sets up FlowBox visibility and focusability.
+        """
+        logging.info(f"[ContentView] Chunked load complete: {len(self._pending_items)} widgets created")
+        
+        # Disable focusable on all children
+        idx = 0
+        while self._flow_box.get_child_at_index(idx):
+            self._flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
+        idx = 0
+        while self._watched_flow_box.get_child_at_index(idx):
+            self._watched_flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
+        idx = 0
+        while self._unwatched_flow_box.get_child_at_index(idx):
+            self._unwatched_flow_box.get_child_at_index(idx).set_focusable(False)
+            idx += 1
+
+        # Set box visibility
+        self._full_box.set_visible(False)
+        self._separated_box.set_visible(False)
+        self._unwatched_box.set_visible(False)
+        self._watched_box.set_visible(False)
+
+        if not shared.schema.get_boolean('search-enabled') and shared.schema.get_boolean('separate-watched'):
+            self._separated_box.set_visible(True)
+            if self._watched_flow_box.get_child_at_index(0) is not None:
+                self._watched_box.set_visible(True)
+            if self._unwatched_flow_box.get_child_at_index(0) is not None:
+                self._unwatched_box.set_visible(True)
+        else:
+            self._full_box.set_visible(True)
+        
+        # Clear pending items to free memory
+        self._pending_items = []
 
     def _load_content(self, movie_view: bool) -> None:
         """
@@ -388,6 +497,17 @@ class ContentView(Adw.Bin):
         self._title_lbl.set_label(_("Search results") if shared.schema.get_boolean(
             'search-enabled') else _("Your Watchlist"))
 
-        self.refresh_view()
+        # =============================================================================
+        # PERFORMANCE FIX
+        # =============================================================================
+        # OLD CODE (REMOVED):
+        # self.refresh_view()
+        #
+        # WHY WAS IT REMOVED?
+        # - refresh_view() was called on every typed character
+        # - This recreated all SeriesModels
+        # - 1453 content × every character = too many object creations!
+        # - Just updating the filter function is sufficient
+        # =============================================================================
 
         self._set_filter_function()

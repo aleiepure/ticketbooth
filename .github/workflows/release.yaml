@@ -1,0 +1,58 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: ticketbooth.flatpak
+          manifest-path: me.iepure.Ticketbooth.Devel.json
+          cache-key: flatpak-builder-${{ github.sha }}
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: ticketbooth.flatpak
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: flatpak-bundle
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ticketbooth.flatpak
+          name: TicketBooth Enhanced ${{ github.ref_name }}
+          body: |
+            This is an unofficial enhanced build by void0x14.
+            
+            ### Key Changes:
+            - **Widget Recycling:** Implemented for improved UI performance.
+            - **Logging Fixes:** Resolved logging namespace conflicts.
+            - **Codebase Modernization:** General updates and stability improvements.
+            
+            *Instability is expected as this is a custom build.*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,6 +4,7 @@
 
 import glob
 import logging
+import sqlite3
 from gettext import gettext as _
 from gettext import pgettext as C_
 
@@ -17,7 +18,7 @@ from ..providers.local_provider import LocalProvider as local
 
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/search_result_row.ui')
-class SearchResultRow(Gtk.ListBoxRow):
+class SearchResultRow(Gtk.Box):
     """
     Widget used to show a search result from TMDB in the search window.
 
@@ -157,6 +158,10 @@ class SearchResultRow(Gtk.ListBoxRow):
             f'Clicked result for [{"movie" if self.media_type == "movie" else "TV series"}] {self.title}, {self.year}')
 
         self._add_spinner.set_visible(True)
+        self._add_spinner.set_visible(True)
+        # CRITICAL FIX: "gtk_list_box_row_grab_focus" assertion failure is resolved by 
+        # using Gtk.Box instead of Gtk.ListBoxRow in ListView.
+        
         self._add_btn.set_sensitive(False)
         BackgroundQueue.add(
             activity=BackgroundActivity(
@@ -178,6 +183,8 @@ class SearchResultRow(Gtk.ListBoxRow):
         """
         try:
             local.add_content(id=self.tmdb_id, media_type=self.media_type)
+        except sqlite3.IntegrityError:
+            logging.warning(f"Content {self.title} already exists in DB (IntegrityError ignored)")
         except ConnectionError:
             activity.set_error(True)
 
@@ -193,13 +200,10 @@ class SearchResultRow(Gtk.ListBoxRow):
         self._add_btn.set_icon_name('check-plain')
         self._add_spinner.set_visible(False)
         
-        # Try getting root window and refreshing. If root is gone, use application instance
-        if self.get_root():
-            self.get_root().activate_action('win.refresh', None)
-        else:
-            app = Gio.Application.get_default()
-            if app:
-                app.props.active_window.activate_action('win.refresh')
+        # REMOVED: win.refresh call
+        # Reason: Re-loading 1400+ models is unnecessary and freezes the dialog.
+        # Content is already in DB, the _check_needs_refresh mechanism will 
+        # handle it when the user returns to the main screen.
         
         activity.end()
 

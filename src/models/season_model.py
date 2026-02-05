@@ -40,7 +40,22 @@ class SeasonModel(GObject.GObject):
 
     __gtype_name__ = 'SeasonModel'
 
-    episodes = GObject.Property(type=object)
+    # =============================================================================
+    # LAZY LOADING CHANGE - EPISODES
+    # =============================================================================
+    # OLD: episodes = GObject.Property(type=object)
+    # NEW: _episodes private variable, episodes property via getter
+    # 
+    # WHY?
+    # - Each season contains average 10-20 episodes
+    # - 482 series × 5 seasons × 10 episodes = ~24,000 EpisodeModel
+    # - Loading all at startup is very slow and RAM consuming
+    # - Lazy loading: Only load when needed
+    # =============================================================================
+    _episodes = None  # Private: Episode list
+    _episodes_loaded = False  # Flag: Loaded?
+    _episodes_from_api = False  # Flag: From TMDB?
+
     episodes_number = GObject.Property(type=int, default=0)
     id = GObject.Property(type=str, default='')
     number = GObject.Property(type=int, default=0)
@@ -48,6 +63,42 @@ class SeasonModel(GObject.GObject):
     poster_path = GObject.Property(type=str, default='')
     show_id = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
+
+    @property
+    def episodes(self):
+        """
+        Returns episode list (with Lazy Loading).
+        
+        Thanks to @property decorator:
+        - Writing season.episodes runs this function
+        - No parentheses needed, used like a variable
+        
+        Returns:
+            List[EpisodeModel]: Episode list
+        """
+        # If from TMDB, return directly
+        if self._episodes_from_api:
+            return self._episodes
+        
+        # If not loaded yet, load now
+        if not self._episodes_loaded:
+            from ..providers import local_provider as local
+            self._episodes = local.LocalProvider.get_season_episodes(
+                self.show_id, self.number)
+            self._episodes_loaded = True
+        
+        return self._episodes
+    
+    @episodes.setter
+    def episodes(self, value):
+        """
+        Sets the episode list.
+        
+        Args:
+            value: New episode list or None
+        """
+        self._episodes = value
+        self._episodes_loaded = value is not None
 
     def __eq__(self, other) -> bool:
         """
@@ -86,6 +137,10 @@ class SeasonModel(GObject.GObject):
             self.title = d['name']
             self.show_id = show_id
 
+            # =============================================================================
+            # Load episodes from TMDB immediately (new season is being added)
+            # =============================================================================
+            self._episodes_from_api = True
             self.episodes = self._parse_episodes(
                 tmdb.TMDBProvider.get_season_episodes(show_id, self.number))
         else:
@@ -97,11 +152,15 @@ class SeasonModel(GObject.GObject):
             self.title = t[5]  # type: ignore
             self.show_id = t[6]  # type: ignore
 
+            # =============================================================================
+            # LAZY LOADING - Loading from database
+            # =============================================================================
+            # OLD: self.episodes = local.LocalProvider.get_season_episodes(...)
+            # NEW: Not loading, leaving it to @property getter
+            # =============================================================================
             if len(t) == 8:  # type: ignore
                 self.episodes = t[7]    # type: ignore
-            else:
-                self.episodes = local.LocalProvider.get_season_episodes(
-                    self.show_id, self.number)  # type: ignore
+            # else: Lazy loading - will be loaded on first access
 
     def _download_poster(self, show_id: int, path: str) -> str:
         """

@@ -23,3 +23,28 @@ me.iepure.Ticketbooth.flatpak
 me.iepure.Ticketbooth.Devel.flatpak
 
 /subprojects/blueprint-compiler
+data.json
+
+# Build artifacts
+repo/
+build/
+.flatpak-builder/
+data.json
+
+# Local Knowledge Base (Non-Git)
+.agent/
+
+# Test Environment
+.venv/
+testsprite_tests/
+.pytest_cache/
+.tests/
+*.mkv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Meson generated files
+src/shared.py

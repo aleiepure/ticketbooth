@@ -8,7 +8,7 @@ import re
 
 import requests
 from gi.repository import GObject
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 from .. import shared  # type: ignore
 
@@ -109,4 +109,12 @@ class EpisodeModel(GObject.GObject):
             else:
                 return f'resource://{shared.PREFIX}/blank_still.jpg'
         except (requests.exceptions.ConnectionError, requests.exceptions.SSLError):
+            return f'resource://{shared.PREFIX}/blank_still.jpg'
+        except (UnidentifiedImageError, OSError):
+            logging.error(f"Failed to identify image for {self.title}, using blank substitute.")
+            # Try to delete the corrupt file
+            try:
+                os.remove(f'{shared.series_dir}/{self.show_id}/{self.season_number}{path}')
+            except OSError:
+                pass
             return f'resource://{shared.PREFIX}/blank_still.jpg'

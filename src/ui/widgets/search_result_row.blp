@@ -5,17 +5,33 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $SearchResultRow: ListBoxRow {
+template $SearchResultRow: Box {
 
   map => $_on_map();
   css-name: "search_result_row";
 
   hexpand: true;
   vexpand: true;
-  activatable: false;
-  child: Box {
-    valign: start;
-    vexpand: true;
+  
+  // Previous `activatable` property removed as it is not available in GtkBox
+  
+  // Content moved directly into this Box or kept as nested
+  // Since the template has `child: Box`, and GtkBox does not have a `child` property (it has children),
+  // we need to be careful. BLP syntax for Box children is just listing them?
+  // Or if it inherits Box, it IS a Box.
+  // The original had `child: Box`. ListBoxRow has a `child` property. Box does NOT.
+  // Box uses append/prepend.
+  
+  // Let's look at the structure.
+  // The structure was: ListBoxRow -> Box -> ...
+  // Now it will be: Box -> inner Box -> ...
+  // Or just: Box -> [Overlay, Box]
+  
+  // Wait, `template $SearchResultRow: Box` means SearchResultRow INSTANCE IS A BOX.
+  // So we just add children to it.
+  
+  valign: start;
+    // vexpand: true; // REMOVED (Duplicate)
     spacing: 12;
     orientation: horizontal;
     margin-top: 6;
@@ -104,5 +120,4 @@ template $SearchResultRow: ListBoxRow {
         }
       }
     }
-  };
 }

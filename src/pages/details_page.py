@@ -103,7 +103,21 @@ class DetailsView(Adw.NavigationPage):
         local.set_recent_change_status(self.content.id, False, type(    # type: ignore
             content) is MovieModel)  # reset recent_change since it was clicked on
 
-        self.content_view.refresh_view()
+        # =============================================================================
+        # PERFORMANCE FIX
+        # =============================================================================
+        # OLD CODE (REMOVED):
+        # self.content_view.refresh_view()
+        #
+        # WHY WAS IT REMOVED?
+        # - refresh_view() reloads all content (971 movies + 482 series)
+        # - When each SeriesModel is created, SeasonModel and EpisodeModel are also created
+        # - This = ~24,000 objects recreated on every show detail entry!
+        # - No need to refresh entire list just to update recent_change flag
+        # 
+        # ALTERNATIVE: Only update single poster's badge (can be done later)
+        # =============================================================================
+        
         self.set_title(self.content.title)  # type: ignore
         self._view_stack.set_visible_child_name('loading')
 
@@ -113,6 +127,22 @@ class DetailsView(Adw.NavigationPage):
             self.mobile = True
 
         self._populate_data()
+
+        # =============================================================================
+        # MEMORY LEAK FIX
+        # =============================================================================
+        # Perform cleanup when page is removed from screen (when back button pressed)
+        # 
+        # WHY do we use 'unrealize' instead of 'unmap'?
+        # - 'unmap': Triggered when widget hides, parent hides, OR when reparent occurs
+        # - When ExpanderRow opens, inner widgets get reparented → unmap triggers!
+        # - This sets self.content = None and "Mark as Watched" stops working
+        # 
+        # - 'unrealize': Triggered when widget is completely removed from UI
+        # - NavigationPage gets unrealized when navigating back
+        # - ExpanderRow opening does NOT trigger unrealize
+        # =============================================================================
+        self.connect('unrealize', self._on_unmap)
 
     @Gtk.Template.Callback()
     def _on_breakpoint_applied(self, breakpoint: Adw.Breakpoint) -> None:
@@ -147,6 +177,73 @@ class DetailsView(Adw.NavigationPage):
         self.mobile = False
         if type(self.content) is SeriesModel:
             self._build_seasons_group()
+
+    def _on_unmap(self, widget: Gtk.Widget) -> None:
+        """
+        Called when page is removed from screen (when back button is pressed).
+        
+        =============================================================================
+        MEMORY LEAK FIX
+        =============================================================================
+        
+        WHAT'S THE PROBLEM?
+        -------------------
+        - When user clicks on a series, SeriesModel is created
+        - SeriesModel contains SeasonModels
+        - SeasonModels contain EpisodeModels
+        - When user goes back, these objects stay in memory!
+        - Because self.content still holds "references" to them
+        
+        WHAT'S THE SOLUTION?
+        --------------------
+        - By setting references to None, we allow Python Garbage Collector
+          to clean these objects
+        - self.content = None → GC: "No one is using this object anymore, I can delete it!"
+        
+        WHAT IS A REFERENCE?
+        --------------------
+        - Reference = An "arrow" or "address" pointing to an object
+        - In Python, every variable is actually a reference
+        - GC cleans up objects with no remaining references
+        
+        =============================================================================
+        
+        Args:
+            widget (Gtk.Widget): This page widget (DetailsView)
+        
+        Returns:
+            None
+        """
+        
+        # Check if content exists
+        # hasattr: Asks "Does this object have this attribute?"
+        if hasattr(self, 'content') and self.content is not None:
+            
+            # If content is a SeriesModel (TV series)
+            if type(self.content) is SeriesModel:
+                
+                # Check if seasons exist
+                if hasattr(self.content, 'seasons') and self.content.seasons is not None:
+                    
+                    # Clear episode references for each season
+                    # This nested loop: First iterate seasons, then clear each season's episodes
+                    for season in self.content.seasons:
+                        if hasattr(season, 'episodes') and season.episodes is not None:
+                            # Set episode list to None
+                            # This removes references to EpisodeModels
+                            season.episodes = None
+                    
+                    # Set season list to None
+                    # This removes references to SeasonModels
+                    self.content.seasons = None
+            
+            # Set main content reference to None
+            # This removes reference to SeriesModel or MovieModel
+            # Python GC can now clean all these objects!
+            self.content = None
+            
+            # Log message: Indicate cleanup was done
+            logging.debug('[memory] Content references cleared for garbage collection')
 
     def _populate_data(self) -> None:
         """
@@ -680,8 +777,9 @@ class DetailsView(Adw.NavigationPage):
             self.content_view.refresh_view()
         else:  # if we add content we check if should set the soon_release flag
             compare_date = self.content.release_date if movie else self.content.next_air_date
-            # TODO make this a variable and sync with main_view.py
-            if len(compare_date) > 0 and datetime.strptime(compare_date, '%Y-%m-%d') < datetime.now() + timedelta(days=14 if movie else 7):
+            # Sync with centralized thresholds in shared.py
+            threshold = shared.SOON_RELEASE_THRESHOLD_MOVIE if movie else shared.SOON_RELEASE_THRESHOLD_SERIES
+            if len(compare_date) > 0 and datetime.strptime(compare_date, '%Y-%m-%d') < datetime.now() + timedelta(days=threshold):
                 local.set_soon_release_status(
                     self.content.id, True, movie=movie)
                 self.content_view.refresh_view()

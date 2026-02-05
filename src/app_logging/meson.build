@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-loggingdir = join_paths(pkgdatadir, 'src/logging')
+loggingdir = join_paths(pkgdatadir, 'src/app_logging')
 
 sources = [
   '__init__.py',

@@ -11,6 +11,7 @@ sources = [
   'first_run_view.py',
   'db_update_view.py',
   'content_view.py',
+  'content_grid_view.py',
 ]
 
 install_data(sources, install_dir: viewsdir)

@@ -236,12 +236,103 @@ class MovieModel(GObject.GObject):
             return f'resource://{shared.PREFIX}/blank_poster.jpg', False
 
     def _compute_badge_color(self, path: str) -> bool:
+        """
+        Calculates badge color based on poster's top-right corner brightness.
+        
+        LOGIC: If poster corner is dark → use light badge (for readability)
+               If poster corner is light → use dark badge
+        
+        Args:
+            path (str): Relative path to poster file (e.g., "/abc123.jpg")
+            
+        Returns:
+            bool: True = use light badge (dark background)
+                  False = use dark badge (light background)
+        """
+        
+        # Default value: dark badge (False)
+        # This value is returned if an error occurs
         color_light = False
-        im = Image.open(Path(f'{shared.poster_dir}/{path}'))
-        box = (im.size[0]-175, 0, im.size[0], 175)
-        region = im.crop(box)
-        median = ImageStat.Stat(region).median
-        if sum(median) < 3 * 128:
-            color_light = True
-
+        
+        # TRY block: File open operation may fail
+        # Example errors: file not found, corrupt image, permission issues
+        try:
+            # WITH STATEMENT (Context Manager):
+            # ════════════════════════════════════════════════════════════════
+            # When using "with", Python guarantees:
+            # 1. At block start: Image.open() runs, file is opened
+            # 2. At block end: im.__exit__() is automatically called → file closes
+            # 3. EVEN IF ERROR OCCURS, file is closed (behaves like finally)
+            # 
+            # OLD CODE (BUGGY):
+            #   im = Image.open(...)  ← File stayed open, never closed
+            #
+            # NEW CODE (CORRECT):
+            #   with Image.open(...) as im:  ← Automatically closes when block ends
+            # ════════════════════════════════════════════════════════════════
+            with Image.open(Path(f'{shared.poster_dir}/{path}')) as im:
+                
+                # BOX: Coordinates of the region to crop
+                # Format: (left, top, right, bottom)
+                # ════════════════════════════════════════════════════════════
+                # im.size[0] = image width (pixels)
+                # im.size[1] = image height (pixels)
+                # 
+                # Example: For a 500x750 pixel poster:
+                # box = (500-175, 0, 500, 175) = (325, 0, 500, 175)
+                # This extracts a 175x175 pixel square from top-right corner
+                # ════════════════════════════════════════════════════════════
+                box = (im.size[0]-175, 0, im.size[0], 175)
+                
+                # CROP: Crop the specified region from the image
+                # This operation creates a NEW Image object (region)
+                # IMPORTANT: This also takes up memory and must be closed!
+                region = im.crop(box)
+                
+                # INNER TRY-FINALLY: For cleanup of region object
+                # Even if median calculation fails, region must be closed
+                try:
+                    # IMAGESTAT: PIL's statistics module
+                    # .median = median value for each color channel (R, G, B)
+                    # Example result: [128, 130, 125] (R=128, G=130, B=125)
+                    median = ImageStat.Stat(region).median
+                    
+                    # BRIGHTNESS CALCULATION:
+                    # ════════════════════════════════════════════════════════
+                    # sum(median) = R + G + B (e.g., 128+130+125 = 383)
+                    # 
+                    # If sum < 3 * 128 (384) → image is dark
+                    # If sum >= 384 → image is light
+                    #
+                    # 128 = middle of 8-bit color range (0-255)
+                    # 3 channels × 128 = 384 = "average brightness" threshold
+                    # ════════════════════════════════════════════════════════
+                    if sum(median) < 3 * 128:
+                        # Dark background detected → use light badge
+                        color_light = True
+                        
+                finally:
+                    # REGION.CLOSE(): Free memory of the cropped region
+                    # ════════════════════════════════════════════════════════
+                    # im.crop() creates a new Image object
+                    # This object may also hold file handles (especially for large images)
+                    # finally block: This line ALWAYS runs, even if error occurs
+                    # ════════════════════════════════════════════════════════
+                    region.close()
+                    
+            # WITH block ended → im is automatically closed (im.close() was called)
+            
+        except (OSError, IOError):
+            # ERROR HANDLING:
+            # ════════════════════════════════════════════════════════════════
+            # OSError: File not found, disk error, permission issues
+            # IOError: Corrupt image file, unreadable format
+            # 
+            # pass = Do nothing, return default value (color_light=False)
+            # User experience: App shows dark badge instead of crashing
+            # ════════════════════════════════════════════════════════════════
+            pass
+        
+        # Return the calculated value
         return color_light
+

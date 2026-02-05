@@ -80,13 +80,85 @@ class SeriesModel(GObject.GObject):
     recent_change = GObject.Property(type=bool, default=False)
     release_date = GObject.Property(type=str, default='')
     seasons_number = GObject.Property(type=int, default=0)
-    seasons = GObject.Property(type=object)
+    # =============================================================================
+    # LAZY LOADING CHANGE
+    # =============================================================================
+    # OLD: seasons = GObject.Property(type=object)
+    # NEW: _seasons private variable, seasons property via getter
+    # 
+    # WHY LAZY LOADING?
+    # - User has 482 series
+    # - Each series has average 5 seasons, 50 episodes
+    # - Loading all at startup = 24,000+ objects = SLOW + HIGH RAM
+    # - Lazy loading = Only load what's displayed = FAST + LOW RAM
+    # =============================================================================
+    _seasons = None  # Private variable: Season list (initially empty)
+    _seasons_loaded = False  # Flag: Have seasons been loaded?
+    _seasons_from_api = False  # Flag: Did it come from TMDB?
     soon_release = GObject.Property(type=bool, default=False)
     status = GObject.Property(type=str, default='')
     tagline = GObject.Property(type=str, default='')
     title = GObject.Property(type=str, default='')
     watched = GObject.Property(type=bool, default=False)
     notes = GObject.Property(type=str, default='')
+
+    @property
+    def seasons(self):
+        """
+        Returns season list (with Lazy Loading).
+        
+        =============================================================================
+        HOW DOES LAZY LOADING WORK?
+        =============================================================================
+        
+        1. FIRST ACCESS:
+           - If _seasons_loaded = False
+           - Load from database (get_all_seasons)
+           - Save to _seasons
+           - Set _seasons_loaded = True
+        
+        2. SUBSEQUENT ACCESSES:
+           - _seasons_loaded = True
+           - Return directly from _seasons (no database access!)
+        
+        Python's @property decorator:
+        - Allows us to use function like a variable
+        - Writing series.seasons runs this function
+        - No parentheses needed!
+        
+        Returns:
+            List[SeasonModel]: Season list
+        """
+        # If from TMDB, already loaded, return directly
+        if self._seasons_from_api:
+            return self._seasons
+        
+        # If not loaded yet, load now (lazy loading)
+        if not self._seasons_loaded:
+            # Load seasons from database
+            # Importing local module here (to avoid circular import)
+            from ..providers import local_provider as local
+            self._seasons = local.LocalProvider.get_all_seasons(self.id)
+            self._seasons_loaded = True
+        
+        return self._seasons
+    
+    @seasons.setter
+    def seasons(self, value):
+        """
+        Sets the season list.
+        
+        This setter is used when:
+        - Adding new series from TMDB (_parse_seasons result)
+        - Editing manual series
+        - Clearing cache (value = None)
+        
+        Args:
+            value: New season list or None
+        """
+        self._seasons = value
+        # If value is assigned, consider it loaded
+        self._seasons_loaded = value is not None
 
     def __init__(self, d=None, t=None):
         super().__init__()
@@ -99,8 +171,12 @@ class SeriesModel(GObject.GObject):
             self.genres = self._parse_genres(api_dict=d['genres'])
             self.id = d['id']
             self.in_production = d['in_production']
-            self.last_air_date = d['last_air_date']
-            self.last_episode_number = f"{d['last_episode_to_air']['season_number']}.{d['last_episode_to_air']['episode_number']}"
+            self.last_air_date = d['last_air_date'] if d['last_air_date'] else ""
+            # NULL CHECK: TMDB sometimes returns null for last_episode_to_air
+            if d.get('last_episode_to_air'):
+                self.last_episode_number = f"{d['last_episode_to_air']['season_number']}.{d['last_episode_to_air']['episode_number']}"
+            else:
+                self.last_episode_number = ""
             self.manual = False
             self.new_release = False
             next_episode_to_air = d['next_episode_to_air']
@@ -118,6 +194,11 @@ class SeriesModel(GObject.GObject):
             self.recent_change = False
             self.release_date = d['first_air_date']
             self.seasons_number = d['number_of_seasons']
+            # =============================================================================
+            # Load seasons from TMDB immediately (new series is being added)
+            # Not using lazy loading because all info came from TMDB
+            # =============================================================================
+            self._seasons_from_api = True  # Mark as from TMDB
             self.seasons = self._parse_seasons(d['seasons'])
             self.status = d['status']
             self.tagline = d['tagline']
@@ -125,8 +206,9 @@ class SeriesModel(GObject.GObject):
             self.watched = False
             self.activate_notification = self.in_production
             if self.next_air_date != '':
+                threshold = shared.SOON_RELEASE_THRESHOLD_SERIES
                 self.soon_release = datetime.strptime(
-                    self.next_air_date, '%Y-%m-%d') < datetime.now() + timedelta(days=6)
+                    self.next_air_date, '%Y-%m-%d') < datetime.now() + timedelta(days=threshold)
             else:
                 self.soon_release = False
             self.notes = ''
@@ -161,11 +243,22 @@ class SeriesModel(GObject.GObject):
             self.title = t["title"]  # type: ignore
             self.watched = t["watched"]  # type: ignore
 
-            if len(t) == 28:    # type: ignore # TODO: increase this number every time a new field is added
+            # =============================================================================
+            # LAZY LOADING - Loading from database
+            # =============================================================================
+            # OLD CODE (LOADED IMMEDIATELY - SLOW):
+            # self.seasons = local.LocalProvider.get_all_seasons(self.id)
+            #
+            # NEW CODE (LAZY - FAST):
+            # Not loading seasons! _seasons and _seasons_loaded default to
+            # None and False. When user accesses seasons property
+            # it will be loaded automatically (@property getter)
+            #
+            # If t["seasons"] exists (len 28), assign directly
+            # =============================================================================
+            if len(t) == 28:    # type: ignore
                 self.seasons = t["seasons"]  # type: ignore
-            else:
-                self.seasons = local.LocalProvider.get_all_seasons(
-                    self.id)  # type: ignore
+            # else case: do nothing - lazy loading will kick in
                 
             self.notes = t["notes"]  # type: ignore
 
@@ -307,12 +400,103 @@ class SeriesModel(GObject.GObject):
             return f'resource://{shared.PREFIX}/blank_poster.jpg', False
 
     def _compute_badge_color(self, path: str) -> bool:
+        """
+        Calculates badge color based on poster's top-right corner brightness.
+        
+        LOGIC: If poster corner is dark → use light badge (for readability)
+               If poster corner is light → use dark badge
+        
+        Args:
+            path (str): Relative path to poster file (e.g., "/abc123.jpg")
+            
+        Returns:
+            bool: True = use light badge (dark background)
+                  False = use dark badge (light background)
+        """
+        
+        # Default value: dark badge (False)
+        # This value is returned if an error occurs
         color_light = False
-        im = Image.open(Path(f'{shared.poster_dir}/{path}'))
-        box = (im.size[0]-175, 0, im.size[0], 175)
-        region = im.crop(box)
-        median = ImageStat.Stat(region).median
-        if sum(median) < 3 * 128:
-            color_light = True
-
+        
+        # TRY block: File open operation may fail
+        # Example errors: file not found, corrupt image, permission issues
+        try:
+            # WITH STATEMENT (Context Manager):
+            # ════════════════════════════════════════════════════════════════
+            # When using "with", Python guarantees:
+            # 1. At block start: Image.open() runs, file is opened
+            # 2. At block end: im.__exit__() is automatically called → file closes
+            # 3. EVEN IF ERROR OCCURS, file is closed (behaves like finally)
+            # 
+            # OLD CODE (BUGGY):
+            #   im = Image.open(...)  ← File stayed open, never closed
+            #
+            # NEW CODE (CORRECT):
+            #   with Image.open(...) as im:  ← Automatically closes when block ends
+            # ════════════════════════════════════════════════════════════════
+            with Image.open(Path(f'{shared.poster_dir}/{path}')) as im:
+                
+                # BOX: Coordinates of the region to crop
+                # Format: (left, top, right, bottom)
+                # ════════════════════════════════════════════════════════════
+                # im.size[0] = image width (pixels)
+                # im.size[1] = image height (pixels)
+                # 
+                # Example: For a 500x750 pixel poster:
+                # box = (500-175, 0, 500, 175) = (325, 0, 500, 175)
+                # This extracts a 175x175 pixel square from top-right corner
+                # ════════════════════════════════════════════════════════════
+                box = (im.size[0]-175, 0, im.size[0], 175)
+                
+                # CROP: Crop the specified region from the image
+                # This operation creates a NEW Image object (region)
+                # IMPORTANT: This also takes up memory and must be closed!
+                region = im.crop(box)
+                
+                # INNER TRY-FINALLY: For cleanup of region object
+                # Even if median calculation fails, region must be closed
+                try:
+                    # IMAGESTAT: PIL's statistics module
+                    # .median = median value for each color channel (R, G, B)
+                    # Example result: [128, 130, 125] (R=128, G=130, B=125)
+                    median = ImageStat.Stat(region).median
+                    
+                    # BRIGHTNESS CALCULATION:
+                    # ════════════════════════════════════════════════════════
+                    # sum(median) = R + G + B (e.g., 128+130+125 = 383)
+                    # 
+                    # If sum < 3 * 128 (384) → image is dark
+                    # If sum >= 384 → image is light
+                    #
+                    # 128 = middle of 8-bit color range (0-255)
+                    # 3 channels × 128 = 384 = "average brightness" threshold
+                    # ════════════════════════════════════════════════════════
+                    if sum(median) < 3 * 128:
+                        # Dark background detected → use light badge
+                        color_light = True
+                        
+                finally:
+                    # REGION.CLOSE(): Free memory of the cropped region
+                    # ════════════════════════════════════════════════════════
+                    # im.crop() creates a new Image object
+                    # This object may also hold file handles (especially for large images)
+                    # finally block: This line ALWAYS runs, even if error occurs
+                    # ════════════════════════════════════════════════════════
+                    region.close()
+                    
+            # WITH block ended → im is automatically closed (im.close() was called)
+            
+        except (OSError, IOError):
+            # ERROR HANDLING:
+            # ════════════════════════════════════════════════════════════════
+            # OSError: File not found, disk error, permission issues
+            # IOError: Corrupt image file, unreadable format
+            # 
+            # pass = Do nothing, return default value (color_light=False)
+            # User experience: App shows dark badge instead of crashing
+            # ════════════════════════════════════════════════════════════════
+            pass
+        
+        # Return the calculated value
         return color_light
+
