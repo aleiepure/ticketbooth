@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the ticketbooth package.
 # Juliano Dorigão <jdorigao@gmail.com>, 2023.
 # ssantos <ssantos@web.de>, 2023.
+# Asmodeus <colligare1Asmodeum@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2023-12-19 16:08+0000\n"
-"Last-Translator: ssantos <ssantos@web.de>\n"
+"PO-Revision-Date: 2026-03-01 08:09+0000\n"
+"Last-Translator: Asmodeus <colligare1Asmodeum@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/pt/>\n"
 "Language: pt\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.16.1-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -63,15 +64,15 @@ msgstr "Ver estilo de classificação"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:61
 msgid "Separate watched content from unwatched"
-msgstr ""
+msgstr "Separar o conteúdo assistido do não assistido"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:65
 msgid "Hide watched content"
-msgstr ""
+msgstr "Ocultar conteúdo assistido"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:71
 msgid "Search bar visibility"
-msgstr ""
+msgstr "Visibilidade da barra de pesquisa"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:82
 #, fuzzy
