@@ -5,13 +5,14 @@
 # Nitin Khalia <weblate.scrambled777@simplelogin.com>, 2024.
 # Traladarer <Traladarer@users.noreply.hosted.weblate.org>, 2024.
 # Leo <leomerh96@outlook.com>, 2025.
+# anon <anon0000000000@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2025-02-24 12:03+0000\n"
-"Last-Translator: Leo <leomerh96@outlook.com>\n"
+"PO-Revision-Date: 2026-03-08 11:09+0000\n"
+"Last-Translator: anon <anon0000000000@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/de/>\n"
 "Language: de\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
@@ -28,7 +29,7 @@ msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.desktop.in:14
 msgid "Movies;Films;Shows;TV;Series;Anime;Watch;List;Library;"
-msgstr ""
+msgstr "Filme;Filme;Shows,TV;Serien;Anime;Beobachten;Liste;Bibliothek;"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
@@ -138,22 +139,19 @@ msgstr ""
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:44
 msgid "Movie Library"
-msgstr ""
+msgstr "Film Bibliothek"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:48
-#, fuzzy
 msgid "Movie Details"
-msgstr "Filme"
+msgstr "Film Details"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:52
-#, fuzzy
 msgid "TV Series Library"
-msgstr "Serien"
+msgstr "TV Serien Bibliothek"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:56
-#, fuzzy
 msgid "TV Series Details"
-msgstr "Serien"
+msgstr "TV Serien Details"
 
 #: src/main.py:193
 msgid "Confirm Export?"
@@ -186,11 +184,11 @@ msgstr "Bibliothek exportieren"
 
 #: src/main.py:263
 msgid "Export Completed"
-msgstr ""
+msgstr "Export abgeschlossen"
 
 #: src/main.py:264
 msgid "The library has been exported successfully."
-msgstr ""
+msgstr "Die Bibliothek wurde erfolgreich exportiert."
 
 #: src/main.py:267 src/main.py:277 src/main.py:408 src/main.py:417
 #: src/preferences.py:256 src/window.py:235
@@ -199,13 +197,12 @@ msgid "_OK"
 msgstr "_OK"
 
 #: src/main.py:273
-#, fuzzy
 msgid "Export failed"
-msgstr "_Exportieren"
+msgstr "Exportieren fehlgeschlagen"
 
 #: src/main.py:274
 msgid "An error occurred while exporting the library."
-msgstr ""
+msgstr "Beim Exportieren der Bibliothek ist ein Fehler aufgetreten."
 
 #: src/main.py:329
 msgid "Confirm Import?"
@@ -232,22 +229,23 @@ msgstr "Bibliothek importieren"
 
 #: src/main.py:404
 msgid "Import Completed"
-msgstr ""
+msgstr "Import abgeschlossen"
 
 #: src/main.py:405
 msgid "The library has been imported successfully."
-msgstr ""
+msgstr "Die Bibliothek wurde erfolgreich importiert."
 
 #: src/main.py:413
-#, fuzzy
 msgid "Import failed"
-msgstr "_Importieren"
+msgstr "Importieren fehlgeschlagen"
 
 #: src/main.py:414
 msgid ""
 "Please check the selected archive and try again. Only archives created by "
 "Ticket Booth are supported."
 msgstr ""
+"Bitte überprüfen Sie das ausgewählte Archiv und versuchen Sie es erneut. Es "
+"werden nur Archive unterstützt, die von Ticket Booth erstellt wurden."
 
 #: src/preferences.py:253
 msgctxt "message dialog heading"
@@ -609,7 +607,7 @@ msgstr "Nutzen Sie den »+«-Knopf, um Episoden hinzuzufügen"
 #: src/ui/dialogs/message_dialogs.blp:9
 msgctxt "message dialog heading"
 msgid "Clear Cached Data?"
-msgstr "Zwischengespeicherte Daten löschen"
+msgstr "Zwischengespeicherte Daten löschen?"
 
 #: src/ui/dialogs/message_dialogs.blp:10
 msgctxt "message dialog body"
@@ -872,8 +870,8 @@ msgctxt "preferences"
 msgid ""
 "Register yours <a href='https://www.themoviedb.org/settings/api'>here</a>"
 msgstr ""
-"Registrieren Sie ihren<a href='https://www.themoviedb.org/settings/"
-"api'>hier</a>"
+"Registrieren Sie ihren <a href='https://www.themoviedb.org/settings/api'>"
+"hier</a>"
 
 #: src/ui/preferences.blp:70
 msgctxt "preferences"
@@ -973,27 +971,24 @@ msgstr "Zeige/Verstecke Suchleiste"
 #: src/ui/views/main_view.blp:105
 msgctxt "Search mode"
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: src/ui/views/main_view.blp:106
 msgctxt "Search mode"
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: src/ui/views/main_view.blp:107
-#, fuzzy
 msgctxt "Search mode"
 msgid "Overview"
 msgstr "Übersicht"
 
 #: src/ui/views/main_view.blp:108
-#, fuzzy
 msgctxt "Search mode"
 msgid "Notes"
 msgstr "Notizen"
 
 #: src/ui/views/main_view.blp:109
-#, fuzzy
 msgctxt "Search mode"
 msgid "TMDB ID"
 msgstr "TMDB ID"
