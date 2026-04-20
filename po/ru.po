@@ -1,23 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ticketbooth package.
-# Juliano Dorigão <jdorigao@gmail.com>, 2023.
-# ssantos <ssantos@web.de>, 2023.
-# Asmodeus <colligare1Asmodeum@gmail.com>, 2026.
+# Xapitonov <sergejharitonov001@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2026-03-01 08:09+0000\n"
-"Last-Translator: Asmodeus <colligare1Asmodeum@gmail.com>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/ticket-booth/"
-"ticket-booth/pt/>\n"
-"Language: pt\n"
+"PO-Revision-Date: 2026-02-25 16:09+0000\n"
+"Last-Translator: Xapitonov <sergejharitonov001@gmail.com>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/ticket-booth/"
+"ticket-booth/ru/>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.16.1-dev\n"
 
 #. TRANSLATORS: do not translate
@@ -27,253 +26,248 @@ msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.desktop.in:14
 msgid "Movies;Films;Shows;TV;Series;Anime;Watch;List;Library;"
-msgstr ""
+msgstr "Фильмы;Кино;Сериалы;ТВ;Шоу;Аниме;Список;Библиотека;Смотреть;"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:15
 msgid "Window width"
-msgstr "Largura da janela"
+msgstr "Ширина окна"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:19
 msgid "Window height"
-msgstr "Altura da janela"
+msgstr "Высота окна"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:23
 msgid "Window maximized"
-msgstr "Janela maximizada"
+msgstr "Окно развернуто"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:31
 msgid "Active tab"
-msgstr "Guia ativa"
+msgstr "Активная вкладка"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:35
 msgid "Specifies if the app is run for the first time"
-msgstr "Especifica se o aplicativo é executado pela primeira vez"
+msgstr "Первоначальный запуск приложения"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:39
-#, fuzzy
 msgid "Specifies if the database needs an update"
-msgstr "Especifica se o aplicativo baixou os dados necessários"
+msgstr "Требуется обновление базы данных"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:43
 msgid "Specifies if the app downloaded the required data"
-msgstr "Especifica se o aplicativo baixou os dados necessários"
+msgstr "Загружены необходимые данные"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:57
 msgid "View sorting style"
-msgstr "Ver estilo de classificação"
+msgstr "Стиль сортировки"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:61
 msgid "Separate watched content from unwatched"
-msgstr "Separar o conteúdo assistido do não assistido"
+msgstr "Разделять просмотренное и непросмотренное"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:65
 msgid "Hide watched content"
-msgstr "Ocultar conteúdo assistido"
+msgstr "Скрывать просмотренное"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:71
 msgid "Search bar visibility"
-msgstr "Visibilidade da barra de pesquisa"
+msgstr "Показывать строку поиска"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:82
-#, fuzzy
 msgid "Search mode"
-msgstr "Pesquisar por Título"
+msgstr "Режим поиска"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:86
 msgid "Search query"
-msgstr ""
+msgstr "Поисковый запрос"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:98
 msgid "App color scheme"
-msgstr "Esquema de cores do aplicativo"
+msgstr "Цветовая схема приложения"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:102
 msgid "Language used by TMDB results"
-msgstr "Linguagem usada pelos resultados do TMDB"
+msgstr "Язык результатов TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:115
 msgid "Frequency to check for new data on TMDB"
-msgstr "Frequência para verificar novos dados no TMDB"
+msgstr "Частота проверки обновлений на TMDB"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:119
 msgid "Last autoupdate date"
-msgstr "Data da última atualização automática"
+msgstr "Дата последнего автообновления"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:123
-#, fuzzy
 msgid "Last notification autoupdate date"
-msgstr "Data da última atualização automática"
+msgstr "Дата последнего уведомления автообновления"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:127
 msgid "Clear cache on exit"
-msgstr "Limpar cache ao sair"
+msgstr "Очищать кэш при выходе"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:131
 msgid "Use the user's TMDB key"
-msgstr ""
+msgstr "Использовать ключ TMDB пользователя"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:135
 msgid "User's TMDB key"
-msgstr ""
+msgstr "Ключ TMDB пользователя"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:15 src/ui/about_dialog.blp:10
 msgid "Keep track of your favorite shows"
-msgstr "Acompanhe seus programas favoritos"
+msgstr "Отслеживайте любимые шоу"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:20
 msgid ""
 "Ticket Booth allows you to build your watchlist of movies and TV Shows, keep "
 "track of watched titles, and find information about the latest releases."
 msgstr ""
-"O Ticket Booth permite que você crie sua lista de filmes e programas de TV, "
-"acompanhe os títulos assistidos e encontre informações sobre os últimos "
-"lançamentos."
+"Ticket Booth помогает вести список для просмотра фильмов и сериалов, "
+"отслеживать просмотренное и узнавать о новинках."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:22
 msgid ""
 "Ticket Booth does not allow you to watch or download content. This app uses "
 "the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
-"O Ticket Booth não permite que você assista ou baixe conteúdo. Este "
-"aplicativo usa a API TMDB, mas não é endossado ou certificado pelo TMDB."
+"Ticket Booth не позволяет смотреть или скачивать контент. Приложение "
+"использует API TMDB, но не является официальным продуктом TMDB."
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:44
 msgid "Movie Library"
-msgstr ""
+msgstr "Библиотека фильмов"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:48
-#, fuzzy
 msgid "Movie Details"
-msgstr "Filmes"
+msgstr "Детали фильма"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:52
-#, fuzzy
 msgid "TV Series Library"
-msgstr "Série de TV"
+msgstr "Библиотека сериалов"
 
 #: data/me.iepure.Ticketbooth.metainfo.xml.in:56
-#, fuzzy
 msgid "TV Series Details"
-msgstr "Série de TV"
+msgstr "Детали сериала"
 
 #: src/main.py:193
 msgid "Confirm Export?"
-msgstr ""
+msgstr "Подтвердить экспорт?"
 
 #: src/main.py:194
 msgid ""
 "Exporting your library will create an archive containing all your data. You "
 "can import this archive later to restore your library."
 msgstr ""
+"Экспорт создаст архив со всеми данными. Его можно импортировать позже для "
+"восстановления библиотеки."
 
 #: src/main.py:196 src/main.py:332 src/widgets/episode_row.py:272
 #: src/widgets/season_expander.py:146
-#, fuzzy
 msgctxt "alert dialog action"
 msgid "_Cancel"
-msgstr "_Cancelar"
+msgstr "_Отмена"
 
 #: src/main.py:197
 msgctxt "alert dialog action"
 msgid "_Export"
-msgstr ""
+msgstr "_Экспорт"
 
 #: src/main.py:230
 msgctxt "Background activity title"
 msgid "Exporting library"
-msgstr ""
+msgstr "Экспорт библиотеки"
 
 #: src/main.py:263
 msgid "Export Completed"
-msgstr ""
+msgstr "Экспорт завершён"
 
 #: src/main.py:264
 msgid "The library has been exported successfully."
-msgstr ""
+msgstr "Библиотека успешно экспортирована."
 
 #: src/main.py:267 src/main.py:277 src/main.py:408 src/main.py:417
 #: src/preferences.py:256 src/window.py:235
-#, fuzzy
 msgctxt "alert dialog action"
 msgid "_OK"
-msgstr "OK"
+msgstr "_ОК"
 
 #: src/main.py:273
 msgid "Export failed"
-msgstr ""
+msgstr "Ошибка экспорта"
 
 #: src/main.py:274
 msgid "An error occurred while exporting the library."
-msgstr ""
+msgstr "Произошла ошибка при экспорте библиотеки."
 
 #: src/main.py:329
 msgid "Confirm Import?"
-msgstr ""
+msgstr "Подтвердить импорт?"
 
 #: src/main.py:330
 msgid ""
 "Importing a library will merge it with the current library. This action "
 "cannot be undone and in case of conflicts, the new data will be kept."
 msgstr ""
+"Импорт объединит библиотеки. Действие необратимо, при конфликтах сохранятся "
+"новые данные."
 
 #: src/main.py:333
 msgctxt "alert dialog action"
 msgid "_Import"
-msgstr ""
+msgstr "_Импорт"
 
 #: src/main.py:366
 msgctxt "Background activity title"
 msgid "Importing library"
-msgstr ""
+msgstr "Импорт библиотеки"
 
 #: src/main.py:404
 msgid "Import Completed"
-msgstr ""
+msgstr "Импорт завершён"
 
 #: src/main.py:405
 msgid "The library has been imported successfully."
-msgstr ""
+msgstr "Библиотека успешно импортирована."
 
 #: src/main.py:413
 msgid "Import failed"
-msgstr ""
+msgstr "Ошибка импорта"
 
 #: src/main.py:414
 msgid ""
 "Please check the selected archive and try again. Only archives created by "
 "Ticket Booth are supported."
-msgstr ""
+msgstr "Проверьте выбранный архив. Поддерживаются только архивы Ticket Booth."
 
 #: src/preferences.py:253
 msgctxt "message dialog heading"
 msgid "No Network"
-msgstr "Sem rede"
+msgstr "Нет сети"
 
 #: src/preferences.py:254
 msgctxt "message dialog body"
 msgid "Connect to the Internet to complete the setup."
-msgstr "Conecte-se à Internet para concluir a configuração."
+msgstr "Подключитесь к интернету для завершения настройки."
 
 #: src/preferences.py:321
 msgctxt "Background activity title"
 msgid "Clear cache"
-msgstr "Limpar cache"
+msgstr "Очистить кэш"
 
 #. TRANSLATORS: {number} is the number of titles
 #: src/preferences.py:373 src/preferences.py:375
 #, python-brace-format
 msgid "{number} Titles"
-msgstr "{number} Títulos"
+msgstr "{number} тайтлов"
 
 #: src/preferences.py:412
 msgctxt "Background activity title"
 msgid "Delete all movies"
-msgstr "Apagar todos os filmes"
+msgstr "Удалить все фильмы"
 
 #: src/preferences.py:423
 msgctxt "Background activity title"
 msgid "Delete all TV Series"
-msgstr "Apagar todas as séries de TV"
+msgstr "Удалить все сериалы"
 
 #. TRANSLATORS: {total_space:.2f} is the total occupied space
 #: src/preferences.py:498
@@ -282,18 +276,18 @@ msgid ""
 "Ticket Booth is currently using {total_space:.2f} MB. Use the options below "
 "to free some space."
 msgstr ""
-"Ticket Booth usa atualmente {total_space:.2f} MB. Use as opções abaixo para "
-"liberar espaço."
+"Ticket Booth использует {total_space:.2f} МБ. Используйте опции ниже для "
+"освобождения места."
 
 #: src/preferences.py:502 src/preferences.py:504
 #, python-brace-format
 msgid "{space:.2f} MB occupied"
-msgstr "{space:.2f} MB ocupado"
+msgstr "{space:.2f} МБ занято"
 
 #: src/window.py:232
 msgctxt "message dialog heading"
 msgid "Background Activies Running"
-msgstr "Atividades em segundo plano em execução"
+msgstr "Фоновые задачи"
 
 #: src/window.py:233
 msgctxt "message dialog body"
@@ -302,38 +296,37 @@ msgid ""
 "before exiting. Look for the indicator in the header bar to check when they "
 "are finished."
 msgstr ""
-"Algumas atividades estão sendo executadas em segundo plano e precisam ser "
-"concluídas antes de sair. Procure o indicador na barra de cabeçalho para "
-"verificar quando terminar."
+"В фоне выполняются задачи, завершите их перед выходом. Следите за "
+"индикатором в заголовке."
 
 #: src/dialogs/add_manual_dialog.py:90
 msgid "Edit Movie"
-msgstr "Editar filme"
+msgstr "Редактировать фильм"
 
 #: src/dialogs/add_manual_dialog.py:93
 msgid "Edit TV Series"
-msgstr "Editar série de TV"
+msgstr "Редактировать сериал"
 
 #: src/dialogs/add_manual_dialog.py:296
 #, python-brace-format
 msgid "Season {num}"
-msgstr "Temporada {num}"
+msgstr "Сезон {num}"
 
 #: src/dialogs/add_manual_dialog.py:336 src/widgets/search_result_row.py:165
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Add {title}"
-msgstr "Adicionar {title}"
+msgstr "Добавить {title}"
 
 #: src/dialogs/add_manual_dialog.py:342
 #, python-brace-format
 msgctxt "Background activity title"
 msgid "Update {title}"
-msgstr "Atualizar {title}"
+msgstr "Обновить {title}"
 
 #: src/dialogs/edit_season_dialog.py:44 src/widgets/season_expander.py:43
 msgid "Season"
-msgstr "Temporada"
+msgstr "Сезон"
 
 #. type: ignore
 #: src/pages/details_page.py:213 src/pages/details_page.py:311
@@ -342,265 +335,267 @@ msgstr "Temporada"
 #: src/ui/widgets/poster_button.blp:141 src/widgets/episode_row.py:129
 #: src/widgets/episode_row.py:160 src/widgets/episode_row.py:330
 msgid "Watched"
-msgstr "Assistido"
+msgstr "Просмотрено"
 
 #: src/pages/details_page.py:216 src/pages/details_page.py:314
 #: src/pages/details_page.py:376 src/pages/details_page.py:445
 #: src/pages/details_page.py:591 src/widgets/episode_row.py:132
 #: src/widgets/episode_row.py:163 src/widgets/episode_row.py:333
 msgid "Mark as Watched"
-msgstr "Marcar como assistido"
+msgstr "Отметить просмотренным"
 
 #: src/pages/details_page.py:223
 msgid "Runtime of Movie"
-msgstr ""
+msgstr "Продолжительность фильма"
 
 #. TRANSLATORS: {num} is the total number of seasons
 #: src/pages/details_page.py:235
 #, python-brace-format
 msgid "{num} Season"
 msgid_plural "{num} Seasons"
-msgstr[0] "{num} Temporada"
-msgstr[1] "{num} Temporadas"
+msgstr[0] "{num} сезон"
+msgstr[1] "{num} сезона"
+msgstr[2] "{num} сезонов"
 
 #: src/pages/details_page.py:239
 msgid "Number of Seasons"
-msgstr ""
+msgstr "Количество сезонов"
 
 #. TRANSLATORS: {num} is the total number of episodes
 #: src/pages/details_page.py:244 src/pages/details_page.py:291
 #, python-brace-format
 msgid "{num} Episode"
 msgid_plural "{num} Episodes"
-msgstr[0] "{num} Episódio"
-msgstr[1] "{num} Episódios"
+msgstr[0] "{num} эпизод"
+msgstr[1] "{num} эпизода"
+msgstr[2] "{num} эпизодов"
 
 #: src/pages/details_page.py:478 src/ui/dialogs/add_manual.blp:182
 msgid "Status"
-msgstr "Estado"
+msgstr "Статус"
 
 #: src/pages/details_page.py:486 src/ui/dialogs/add_manual.blp:186
 msgid "Original Language"
-msgstr "Idioma Original"
+msgstr "Оригинальный язык"
 
 #: src/pages/details_page.py:496 src/ui/dialogs/add_manual.blp:192
 msgid "Original Title"
-msgstr "Título original"
+msgstr "Оригинальное название"
 
 #: src/pages/details_page.py:509
 msgid "Budget"
-msgstr "Orçamento"
+msgstr "Бюджет"
 
 #: src/pages/details_page.py:519
 msgid "Revenue"
-msgstr "Receita"
+msgstr "Кассовые сборы"
 
 #: src/pages/details_page.py:529
 msgid "In Production"
-msgstr "Em Produção"
+msgstr "В производстве"
 
 #: src/pages/details_page.py:532
 msgid "Yes"
-msgstr "Sim"
+msgstr "Да"
 
 #: src/pages/details_page.py:533
 msgid "No"
-msgstr "Não"
+msgstr "Нет"
 
 #: src/pages/details_page.py:538
 msgid "TMDB ID"
-msgstr ""
+msgstr "ID TMDB"
 
 #. TRANSLATORS: {h} and {m} are the runtime hours and minutes respectively
 #: src/pages/details_page.py:564 src/widgets/episode_row.py:185
 #, python-brace-format
 msgid "{h}h {m}min"
-msgstr "{h}h {m}min"
+msgstr "{h}ч {m}мин"
 
 #. TRANSLATORS: {m} is the runtime minutes
 #: src/pages/details_page.py:567 src/widgets/episode_row.py:189
 #, python-brace-format
 msgid "{m}min"
-msgstr "{m}min"
+msgstr "{m}мин"
 
 #. TRANSLATORS: {title} is the showed content's title
 #: src/pages/details_page.py:650
 #, python-brace-format
 msgid "Updating {title}"
-msgstr "A atualizar {title}"
+msgstr "Обновление {title}"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:657
 #, python-brace-format
 msgid "Update {title}"
-msgstr "Atualizar {title}"
+msgstr "Обновить {title}"
 
 #: src/pages/details_page.py:720
 msgid "Loading Metadata…"
-msgstr "A carregar metadados…"
+msgstr "Загрузка метаданных…"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:740
 #, python-brace-format
 msgctxt "message dialog heading"
 msgid "Delete {title}?"
-msgstr "Apagar {title}?"
+msgstr "Удалить {title}?"
 
 #. type: ignore
 #: src/pages/details_page.py:742
 msgctxt "message dialog body"
 msgid "This title will be deleted from your watchlist."
-msgstr "Este título será apagado da sua lista de observação."
+msgstr "Тайтл будет удалён из списка."
 
 #: src/pages/details_page.py:743
 msgctxt "message dialog action"
 msgid "_Cancel"
-msgstr "_Cancelar"
+msgstr "_Отмена"
 
 #: src/pages/details_page.py:744
 msgctxt "message dialog action"
 msgid "_Delete"
-msgstr "_Excluir"
+msgstr "_Удалить"
 
 #. TRANSLATORS: {title} is the content's title
 #: src/pages/details_page.py:777
 #, python-brace-format
 msgid "Delete {title}"
-msgstr "Apagar {title}"
+msgstr "Удаление {title}"
 
 #: src/ui/about_dialog.blp:9
 msgid ""
 "Copyright © 2023 - 2025 Alessandro Iepure\n"
 "Some icons are copyright of the GNOME Project"
 msgstr ""
+"Авторское право © 2023–2025 Алессандро Иепуре\n"
+"Некоторые иконки © Проект GNOME"
 
 #. TRANSLATORS: replace with your name (with optional email or website)
 #: src/ui/about_dialog.blp:16
 msgid "translator-credits"
-msgstr "Juliano Dorigão <jdorigao@gmail.com>"
+msgstr "Xapitonov"
 
 #: src/ui/dialogs/add_manual.blp:42 src/widgets/search_result_row.py:80
 msgctxt "Category"
 msgid "Movie"
-msgstr "Filme"
+msgstr "Фильм"
 
 #: src/ui/dialogs/add_manual.blp:47 src/views/main_view.py:63
 #: src/widgets/search_result_row.py:82
 msgctxt "Category"
 msgid "TV Series"
-msgstr "Série de TV"
+msgstr "ТВ-сериал"
 
 #: src/ui/dialogs/add_manual.blp:55 src/ui/dialogs/edit_season.blp:24
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Отмена"
 
 #: src/ui/dialogs/add_manual.blp:61 src/ui/dialogs/edit_season.blp:30
 #: src/ui/pages/edit_episode_page.blp:19
 msgid "Save"
-msgstr "Gravar"
+msgstr "Сохранить"
 
 #: src/ui/dialogs/add_manual.blp:86 src/ui/dialogs/edit_season.blp:52
 #: src/ui/pages/edit_episode_page.blp:41
 msgid "General"
-msgstr "Geral"
+msgstr "Общие"
 
 #: src/ui/dialogs/add_manual.blp:89 src/ui/dialogs/edit_season.blp:55
 #: src/ui/pages/edit_episode_page.blp:55
 msgid "Title (required)"
-msgstr "Título (obrigatório)"
+msgstr "Название (обязательно)"
 
 #: src/ui/dialogs/add_manual.blp:94
 msgid "Release Date"
-msgstr "Data de lançamento"
+msgstr "Дата выхода"
 
 #: src/ui/dialogs/add_manual.blp:113
 msgid "Genres (comma separated)"
-msgstr "Gêneros (separados por vírgula)"
+msgstr "Жанры (через запятую)"
 
 #: src/ui/dialogs/add_manual.blp:119 src/ui/pages/edit_episode_page.blp:60
 msgid "Runtime (minutes)"
-msgstr "Duração (minutos)"
+msgstr "Продолжительность (минуты)"
 
 #: src/ui/dialogs/add_manual.blp:129
 msgid "Tagline"
-msgstr "Slogan"
+msgstr "Слоган"
 
 #: src/ui/dialogs/add_manual.blp:135 src/ui/pages/details_page.blp:292
 msgid "Created by"
-msgstr "Criado por"
+msgstr "Создатели"
 
 #: src/ui/dialogs/add_manual.blp:140 src/ui/pages/edit_episode_page.blp:71
 msgid "Overview"
-msgstr "Visão geral"
+msgstr "Описание"
 
 #: src/ui/dialogs/add_manual.blp:160
 msgid "Seasons (required)"
-msgstr "Temporadas (obrigatório)"
+msgstr "Сезоны (обязательно)"
 
 #: src/ui/dialogs/add_manual.blp:161
 msgid "Use the + button to add seasons"
-msgstr "Use o botão + para adicionar temporadas"
+msgstr "Используйте + для добавления сезонов"
 
 #: src/ui/dialogs/add_manual.blp:166 src/ui/dialogs/edit_season.blp:67
 msgid "Add"
-msgstr "Adicionar"
+msgstr "Добавить"
 
 #: src/ui/dialogs/add_manual.blp:179 src/ui/pages/details_page.blp:351
 msgid "Additional Information"
-msgstr "Informações adicionais"
+msgstr "Дополнительная информация"
 
 #: src/ui/dialogs/add_manual.blp:198
 msgid "Budget (US$)"
-msgstr "Orçamento (US$)"
+msgstr "Бюджет (USD)"
 
 #: src/ui/dialogs/add_manual.blp:210
 msgid "Revenue (US$)"
-msgstr "Receita (US$)"
+msgstr "Кассовые сборы (USD)"
 
 #: src/ui/dialogs/add_manual.blp:220
 msgid "In production"
-msgstr "Em produção"
+msgstr "В производстве"
 
 #: src/ui/dialogs/add_tmdb.blp:27
 msgid "Search The Movie Database…"
-msgstr "Buscar no banco de dados de filmes…"
+msgstr "Поиск в The Movie Database…"
 
 #: src/ui/dialogs/add_tmdb.blp:37
 msgid "Search For a Title"
-msgstr "Pesquisar por Título"
+msgstr "Поиск тайтла"
 
 #: src/ui/dialogs/add_tmdb.blp:39
 msgid ""
 "Start typing in the search bar to see a list of matching movies and TV series"
 msgstr ""
-"Comece a digitar na barra de pesquisa para ver uma lista de filmes e séries "
-"de TV correspondentes"
+"Начните печатать в строке поиска для просмотра подходящих фильмов и сериалов"
 
 #: src/ui/dialogs/add_tmdb.blp:46
 msgid "No Results Found"
-msgstr "Nenhum resultado encontrado"
+msgstr "Результаты не найдены"
 
 #: src/ui/dialogs/add_tmdb.blp:48
 msgid "Try a different search"
-msgstr "Tente uma pesquisa diferente"
+msgstr "Попробуйте другой поиск"
 
 #: src/ui/dialogs/edit_season.blp:14
 msgid "Edit Season"
-msgstr "Editar temporada"
+msgstr "Редактировать сезон"
 
 #: src/ui/dialogs/edit_season.blp:61
 msgid "Episodes (required)"
-msgstr "Episódios (obrigatório)"
+msgstr "Эпизоды (обязательно)"
 
 #: src/ui/dialogs/edit_season.blp:62
 msgid "Use the + button to add episodes"
-msgstr "Use o botão + para adicionar episódios"
+msgstr "Используйте + для добавления эпизодов"
 
 #: src/ui/dialogs/message_dialogs.blp:9
-#, fuzzy
 msgctxt "message dialog heading"
 msgid "Clear Cached Data?"
-msgstr "Limpar dados de pesquisa em cache"
+msgstr "Очистить кэш?"
 
 #: src/ui/dialogs/message_dialogs.blp:10
 msgctxt "message dialog body"
@@ -608,177 +603,171 @@ msgid ""
 "This operation will clear all stored cache data. It might get downloaded "
 "again next time you add content from TMDB."
 msgstr ""
+"Эта операция удалит весь сохранённый кэш. Данные могут загрузиться снова при "
+"следующем добавлении контента из TMDB."
 
 #: src/ui/dialogs/message_dialogs.blp:13 src/ui/dialogs/message_dialogs.blp:40
-#, fuzzy
 msgctxt "message dialog action"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Отмена"
 
 #: src/ui/dialogs/message_dialogs.blp:14 src/ui/dialogs/message_dialogs.blp:41
-#, fuzzy
 msgctxt "message dialog action"
 msgid "Clear"
-msgstr "Apagar os dados"
+msgstr "Очистить"
 
 #: src/ui/dialogs/message_dialogs.blp:19
-#, fuzzy
 msgctxt "message dialog heading"
 msgid "Clear Stored Data?"
-msgstr "Apagar os dados"
+msgstr "Удалить данные?"
 
 #: src/ui/dialogs/message_dialogs.blp:20
 msgctxt "message dialog body"
 msgid ""
 "This operation will permanentlly delete the selected data, loosing all your "
 "changes."
-msgstr ""
+msgstr "Эта операция навсегда удалит выбранные данные со всеми изменениями."
 
 #: src/ui/dialogs/message_dialogs.blp:26
-#, fuzzy
 msgid "Movies"
-msgstr "Filmes"
+msgstr "Фильмы"
 
 #: src/ui/dialogs/message_dialogs.blp:34
-#, fuzzy
 msgid "TV Series"
-msgstr "Série de TV"
+msgstr "ТВ-сериалы"
 
 #: src/ui/gtk/help-overlay.blp:15
 msgctxt "shortcut window"
 msgid "General"
-msgstr "Geral"
+msgstr "Общие"
 
 #: src/ui/gtk/help-overlay.blp:18
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr "Mostrar atalhos"
+msgstr "Показать сочетания клавиш"
 
 #: src/ui/gtk/help-overlay.blp:23
 msgctxt "shortcut window"
 msgid "Show Preferences"
-msgstr "Mostrar preferências"
+msgstr "Показать настройки"
 
 #: src/ui/gtk/help-overlay.blp:28
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Search your Watchlist"
-msgstr "A sua lista"
+msgstr "Поиск по списку для просмотра"
 
 #: src/ui/gtk/help-overlay.blp:33
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr "Sair"
+msgstr "Выход"
 
 #: src/ui/gtk/help-overlay.blp:39
 msgctxt "shortcut window"
 msgid "Library management"
-msgstr "Gestão de biblioteca"
+msgstr "Управление библиотекой"
 
 #: src/ui/gtk/help-overlay.blp:42
 msgctxt "shortcut window"
 msgid "Add title from TMDB"
-msgstr "Adicionar título do TMDB"
+msgstr "Добавить тайтл из TMDB"
 
 #: src/ui/gtk/help-overlay.blp:47
 msgctxt "shortcut window"
 msgid "Add title manually"
-msgstr "Adicionar título manualmente"
+msgstr "Добавить тайтл вручную"
 
 #: src/ui/gtk/help-overlay.blp:51
 msgctxt "shortcut window"
 msgid "Refresh library"
-msgstr "Atualizar biblioteca"
+msgstr "Обновить библиотеку"
 
 #: src/ui/pages/details_page.blp:30 src/ui/views/main_view.blp:84
 msgid "Main Menu"
-msgstr "Menu principal"
+msgstr "Главное меню"
 
 #: src/ui/pages/details_page.blp:146
 msgid "Number of Episodes"
-msgstr ""
+msgstr "Количество эпизодов"
 
 #: src/ui/pages/details_page.blp:156
 msgid "Air Date of Next Episode"
-msgstr ""
+msgstr "Дата выхода следующего эпизода"
 
 #: src/ui/pages/details_page.blp:209
 msgid "Update Metadata"
-msgstr "Atualizar metadados"
+msgstr "Обновить метаданные"
 
 #: src/ui/pages/details_page.blp:222 src/ui/widgets/episode_row.blp:87
 #: src/ui/widgets/season_expander.blp:42
 msgid "Edit"
-msgstr "Editar"
+msgstr "Редактировать"
 
 #: src/ui/pages/details_page.blp:235
 msgid "Delete"
-msgstr "Apagar"
+msgstr "Удалить"
 
 #: src/ui/pages/details_page.blp:264
 msgid "Description"
-msgstr "Descrição"
+msgstr "Описание"
 
 #: src/ui/pages/details_page.blp:320
 msgid "Seasons"
-msgstr "Temporadas"
+msgstr "Сезоны"
 
 #: src/ui/pages/details_page.blp:379
 msgid "Notes"
-msgstr ""
+msgstr "Заметки"
 
 #: src/ui/pages/details_page.blp:483 src/ui/views/main_view.blp:234
 msgid "_Preferences"
-msgstr "_Preferências"
+msgstr "_Настройки"
 
 #: src/ui/pages/details_page.blp:488 src/ui/views/main_view.blp:239
 msgid "_Keyboard Shortcuts"
-msgstr "_Atalhos do teclado"
+msgstr "_Горячие клавиши"
 
 #: src/ui/pages/details_page.blp:493 src/ui/views/main_view.blp:244
 msgid "_About Ticket Booth"
-msgstr "_Sobre Ticket Booth"
+msgstr "_О программе Ticket Booth"
 
 #: src/ui/pages/edit_episode_page.blp:9
 msgid "Edit Episode"
-msgstr "Editar episódio"
+msgstr "Редактировать эпизод"
 
 #: src/ui/pages/edit_episode_page.blp:45
 msgid "Episode Number (required)"
-msgstr "Número do episódio (obrigatório)"
+msgstr "Номер эпизода (обязательно)"
 
 #: src/ui/preferences.blp:15 src/ui/views/main_view.blp:131
 msgid "Preferences"
-msgstr "Preferências"
+msgstr "Настройки"
 
 #: src/ui/preferences.blp:18
 msgctxt "preferences"
 msgid "Optional Download"
-msgstr "Descarregar opcional"
+msgstr "Опциональная загрузка"
 
 #: src/ui/preferences.blp:19
-#, fuzzy
 msgctxt "preferences"
 msgid ""
 "For a complete experience, a download of 15 KB is required. The initial "
 "setup could not retrieve the data automatically and thus offline mode has "
 "been activated. It will remain active until the setup is completed."
 msgstr ""
-"Para uma experiência completa uma descarga de 15 KB é necessária. A "
-"configuração inicial não conseguiu recuperar os dados automaticamente e, "
-"portanto, o modo offline foi ativado. Permanecerá ativo até que a "
-"configuração seja concluída."
+"Для полного опыта требуется загрузка 15 КБ. Начальная настройка не смогла "
+"получить данные автоматически, поэтому включён автономный режим. Он "
+"останется активным до завершения настройки."
 
 #. TRANSLATORS: When clicked, it completes the initial setup by downloading the optional data.
 #: src/ui/preferences.blp:23
 msgctxt "preferences"
 msgid "Complete Setup"
-msgstr "Configuração completa"
+msgstr "Завершить настройку"
 
 #: src/ui/preferences.blp:34
 msgctxt "preferences"
 msgid "Offline Mode"
-msgstr "Modo offline"
+msgstr "Автономный режим"
 
 #: src/ui/preferences.blp:35
 msgctxt "preferences"
@@ -787,19 +776,18 @@ msgid ""
 "some features that require the Internet and/or access to third party APIs "
 "will not be available."
 msgstr ""
-"O Ticket Booth pode funcionar totalmente offline. Se optar por executar "
-"neste modo, alguns recursos que exigem Internet e/ou acesso a APIs de "
-"terceiros não estarão disponíveis."
+"Ticket Booth работает полностью оффлайн. В этом режиме недоступны функции, "
+"требующие интернет или сторонние API."
 
 #: src/ui/preferences.blp:38
 msgctxt "preferences"
 msgid "Enable Offline Mode"
-msgstr "Ativar modo offline"
+msgstr "Включить автономный режим"
 
 #: src/ui/preferences.blp:43
 msgctxt "preferences"
 msgid "The Movie Database (TMDB)"
-msgstr "O banco de dados de filmes (TMDB)"
+msgstr "The Movie Database (TMDB)"
 
 #: src/ui/preferences.blp:44
 msgctxt "preferences"
@@ -812,294 +800,290 @@ msgid ""
 "to TMDB</a>. Additionally, an automatic update is performed on a frequency "
 "of your choosing."
 msgstr ""
-"O TMDB fornece metadados localizados para a maioria dos conteúdos. O Ticket "
-"Booth descarguerá no idioma de sua preferência, selecionável abaixo. Caso "
-"não esteja disponível, o inglês dos EUA será usado e depois o idioma "
-"original do conteúdo. Se nenhum estiver disponível, resultará numa linha em "
-"branco. Por favor, considere <a href='https://www.themoviedb.org/bible/"
-"new_content'>contribuir para o TMDB</a>. Além disso, uma atualização "
-"automática é realizada na frequência da sua escolha."
+"TMDB предоставляет локализованные метаданные. Ticket Booth загрузит их на "
+"предпочитаемом языке. При отсутствии — английский US, затем оригинальный "
+"язык контента. Если ничего нет — пустая строка. <a href='https://"
+"www.themoviedb.org/bible/new_content'>Внесите вклад в TMDB</a>. "
+"Автообновление по выбранной частоте."
 
 #: src/ui/preferences.blp:47
 msgctxt "preferences"
 msgid "TMDB Results Language"
-msgstr "Idioma dos resultados TMDB"
+msgstr "Язык результатов TMDB"
 
 #: src/ui/preferences.blp:52
 msgctxt "preferences"
 msgid "Update Frequency"
-msgstr "Frequência de atualização"
+msgstr "Частота обновления"
 
 #: src/ui/preferences.blp:53
 msgctxt "preferences"
 msgid "Restart Ticket Booth after changing"
-msgstr "Reinicie Ticket Booth após alterar"
+msgstr "Перезапустите Ticket Booth после изменения"
 
 #: src/ui/preferences.blp:56
 msgctxt "preferences"
 msgid "Never"
-msgstr "Nunca"
+msgstr "Никогда"
 
 #: src/ui/preferences.blp:57
 msgctxt "preferences"
 msgid "Daily"
-msgstr "Diário"
+msgstr "Ежедневно"
 
 #: src/ui/preferences.blp:58
 msgctxt "preferences"
 msgid "Weekly"
-msgstr "Semanalmente"
+msgstr "Еженедельно"
 
 #: src/ui/preferences.blp:59
 msgctxt "preferences"
 msgid "Monthly"
-msgstr "Mensal"
+msgstr "Ежемесячно"
 
 #: src/ui/preferences.blp:65
 msgctxt "preferences"
 msgid "Use Your API Key"
-msgstr ""
+msgstr "Использовать ваш API-ключ"
 
 #: src/ui/preferences.blp:66
 msgctxt "preferences"
 msgid ""
 "Register yours <a href='https://www.themoviedb.org/settings/api'>here</a>"
 msgstr ""
+"<a href='https://www.themoviedb.org/settings/api'>Зарегистрируйте здесь</a>"
 
 #: src/ui/preferences.blp:70
 msgctxt "preferences"
 msgid "Your API key"
-msgstr ""
+msgstr "Ваш API-ключ"
 
 #: src/ui/preferences.blp:75
-#, fuzzy
 msgctxt "preferences"
 msgid "Save Key"
-msgstr "Gravar"
+msgstr "Сохранить ключ"
 
 #: src/ui/preferences.blp:86
 msgctxt "preferences"
 msgid "Housekeeping"
-msgstr "Serviço de limpeza"
+msgstr "Уборка"
 
 #: src/ui/preferences.blp:90
 msgctxt "preferences"
 msgid "Clear Cache on Exit"
-msgstr "Limpar Cache ao Sair"
+msgstr "Очищать кэш при выходе"
 
 #: src/ui/preferences.blp:94
 msgctxt "preferences"
 msgid "Clear Cached Search Data"
-msgstr "Limpar dados de pesquisa em cache"
+msgstr "Очистить кэш поиска"
 
 #: src/ui/preferences.blp:104
 msgctxt "preferences"
 msgid "Clear Data"
-msgstr "Apagar os dados"
+msgstr "Очистить данные"
 
 #: src/ui/views/content_view.blp:14
 msgid "Your Watchlist Is Empty"
-msgstr "A sua lista está vazia"
+msgstr "Список для просмотра пуст"
 
 #: src/ui/views/content_view.blp:15
-#, fuzzy
 msgid "Add content with the + button or import from an older watchlist."
-msgstr "Adicione conteúdo com o botão +."
+msgstr "Добавьте контент кнопкой + или импортируйте из старого списка."
 
 #: src/ui/views/content_view.blp:111 src/views/content_view.py:363
 msgid "Your Watchlist"
-msgstr "A sua lista"
+msgstr "Ваш список для просмотра"
 
 #: src/ui/views/content_view.blp:140
 msgid "Unwatched"
-msgstr ""
+msgstr "Непросмотренное"
 
 #: src/ui/views/db_update_view.blp:29
 msgid "Updating your watchlist"
-msgstr ""
+msgstr "Обновление списка для просмотра"
 
 #: src/ui/views/db_update_view.blp:30
 msgid ""
 "After updating Ticket Booth we need to update the local database entries"
-msgstr ""
+msgstr "После обновления Ticket Booth требуется обновить локальную базу данных"
 
 #: src/ui/views/db_update_view.blp:49 src/ui/views/first_run_view.blp:55
 msgid "Use Offline Mode"
-msgstr "Usar o modo offline"
+msgstr "Использовать автономный режим"
 
 #: src/ui/views/db_update_view.blp:55 src/ui/views/first_run_view.blp:61
 msgid "Try again on next run"
-msgstr "Tente novamente na próxima execução"
+msgstr "Повторить при следующем запуске"
 
 #: src/ui/views/db_update_view.blp:66
 msgid "Activate Notifications?"
-msgstr ""
+msgstr "Включить уведомления?"
 
 #: src/ui/views/db_update_view.blp:67
 msgid ""
 "Would you like to activate notifications for all series that are still in "
 "production and for all movies that have not yet released?"
 msgstr ""
+"Активировать уведомления для всех производящихся сериалов и неизданных "
+"фильмов?"
 
 #: src/ui/views/db_update_view.blp:76
-#, fuzzy
 msgid "Activate"
-msgstr "Guia ativa"
+msgstr "Включить"
 
 #: src/ui/views/db_update_view.blp:85
 msgid "Deactivate"
-msgstr ""
+msgstr "Отключить"
 
 #: src/ui/views/main_view.blp:69
 msgid "Add a title to your library"
-msgstr "Adicione um título à sua biblioteca"
+msgstr "Добавить тайтл в библиотеку"
 
 #: src/ui/views/main_view.blp:76
 msgid "Show/Hide search bar"
-msgstr ""
+msgstr "Показать/скрыть строку поиска"
 
 #: src/ui/views/main_view.blp:105
 msgctxt "Search mode"
 msgid "Title"
-msgstr ""
+msgstr "Название"
 
 #: src/ui/views/main_view.blp:106
 msgctxt "Search mode"
 msgid "Genre"
-msgstr ""
+msgstr "Жанр"
 
 #: src/ui/views/main_view.blp:107
-#, fuzzy
 msgctxt "Search mode"
 msgid "Overview"
-msgstr "Visão geral"
+msgstr "Описание"
 
 #: src/ui/views/main_view.blp:108
 msgctxt "Search mode"
 msgid "Notes"
-msgstr ""
+msgstr "Заметки"
 
 #: src/ui/views/main_view.blp:109
 msgctxt "Search mode"
 msgid "TMDB ID"
-msgstr ""
+msgstr "ID TMDB"
 
 #: src/ui/views/main_view.blp:119
-#, fuzzy
 msgid "Search Your Watchlist"
-msgstr "A sua lista"
+msgstr "Поиск по списку для просмотра"
 
 #: src/ui/views/main_view.blp:130
 msgid "Offline Mode Enabled"
-msgstr "Modo offline ativado"
+msgstr "Включён автономный режим"
 
 #: src/ui/views/main_view.blp:161
 msgid "_Sorting"
-msgstr "_Ordenação"
+msgstr "_Сортировка"
 
 #: src/ui/views/main_view.blp:165
 msgid "A-Z"
-msgstr "A-Z"
+msgstr "А-Я"
 
 #: src/ui/views/main_view.blp:171
 msgid "Z-A"
-msgstr "Z-A"
+msgstr "Я-А"
 
 #: src/ui/views/main_view.blp:177
 msgid "Date added (newest first)"
-msgstr "Data adicionada (mais recente primeiro)"
+msgstr "Дата добавления (сначала новые)"
 
 #: src/ui/views/main_view.blp:183
 msgid "Date added (oldest first)"
-msgstr "Data adicionada (o mais antigo primeiro)"
+msgstr "Дата добавления (сначала старые)"
 
 #: src/ui/views/main_view.blp:189
 msgid "Release date (newest first)"
-msgstr "Data de lançamento (mais recente primeiro)"
+msgstr "Дата выхода (сначала новые)"
 
 #: src/ui/views/main_view.blp:195
 msgid "Release date (oldest first)"
-msgstr "Data de lançamento (mais antigo primeiro)"
+msgstr "Дата выхода (сначала старые)"
 
 #: src/ui/views/main_view.blp:203
 msgid "Separate watched from unwatched"
-msgstr ""
+msgstr "Разделять просмотренное и непросмотренное"
 
 #: src/ui/views/main_view.blp:208
 msgid "Hide watched"
-msgstr ""
+msgstr "Скрывать просмотренное"
 
 #: src/ui/views/main_view.blp:215
 msgid "_Refresh"
-msgstr "_Atualizar"
+msgstr "_Обновить"
 
 #: src/ui/views/main_view.blp:222
 msgid "_Import"
-msgstr ""
+msgstr "_Импорт"
 
 #: src/ui/views/main_view.blp:227
 msgid "_Export"
-msgstr ""
+msgstr "_Экспорт"
 
 #: src/ui/views/main_view.blp:252
 msgid "From The Movie Database (TMDB)"
-msgstr "Do banco de dados de filmes (TMDB)"
+msgstr "Из The Movie Database (TMDB)"
 
 #: src/ui/views/main_view.blp:257
 msgid "Manually"
-msgstr "Manualmente"
+msgstr "Вручную"
 
 #: src/ui/widgets/background_indicator.blp:13
 msgid "Background Activities"
-msgstr "Atividades em segundo plano"
+msgstr "Фоновые задачи"
 
 #: src/ui/widgets/background_indicator.blp:34
 msgid "No Background Activities"
-msgstr "Sem atividades em segundo plano"
+msgstr "Нет фоновых задач"
 
 #: src/ui/widgets/image_selector.blp:30
 msgid "Edit poster"
-msgstr "Editar pôster"
+msgstr "Редактировать постер"
 
 #: src/ui/widgets/image_selector.blp:48
 msgid "Delete poster"
-msgstr "Apagar pôster"
+msgstr "Удалить постер"
 
 #: src/ui/widgets/poster_button.blp:47
 msgid "The series has a new release"
-msgstr ""
+msgstr "У сериала новый выпуск"
 
 #: src/ui/widgets/poster_button.blp:67
 msgid "The series has a new release soon"
-msgstr ""
+msgstr "Скоро новый выпуск сериала"
 
 #: src/ui/widgets/poster_button.blp:85
 msgid "This title is marked as watched"
-msgstr ""
+msgstr "Тайтл отмечен просмотренным"
 
 #: src/ui/widgets/search_result_row.blp:89
 msgid "Add to watchlist"
-msgstr "Adicionar à lista"
+msgstr "Добавить в список для просмотра"
 
 #: src/ui/widgets/theme_switcher.blp:29
 msgid "Follow system style"
-msgstr "Seguir o estilo do sistema"
+msgstr "Следовать системному стилю"
 
 #: src/ui/widgets/theme_switcher.blp:43
 msgid "Light style"
-msgstr "Estilo claro"
+msgstr "Светлый стиль"
 
 #: src/ui/widgets/theme_switcher.blp:57
 msgid "Dark style"
-msgstr "Estilo escuro"
+msgstr "Тёмный стиль"
 
 #: src/views/content_view.py:362
 msgid "Search results"
-msgstr ""
+msgstr "Результаты поиска"
 
 #: src/views/first_run_view.py:101
 msgid "Waiting for Network…"
-msgstr "A aguardar rede…"
+msgstr "Ожидание сети…"
 
 #: src/views/first_run_view.py:103
 msgid ""
@@ -1107,51 +1091,50 @@ msgid ""
 "are not connected to the Internet or don't want to wait, you can skip this "
 "step and continue offline without some features."
 msgstr ""
-"Para uma experiência completa é necessária uma descarga de 15 KB. Porém, se "
-"não estiver conectado à Internet ou não quiser esperar, pode pular esta "
-"etapa e continuar offline sem alguns recursos."
+"Для полного опыта требуется загрузка 15 КБ. Если нет интернета или не хотите "
+"ждать, пропустите шаг и продолжите оффлайн без некоторых функций."
 
 #: src/views/first_run_view.py:107
 msgid "Getting things ready…"
-msgstr "A preparar…"
+msgstr "Подготовка…"
 
 #: src/views/first_run_view.py:108
 msgid "Downloading data"
-msgstr "A descarregar dados"
+msgstr "Загрузка данных"
 
 #: src/views/main_view.py:57
 msgctxt "Category"
 msgid "Movies"
-msgstr "Filmes"
+msgstr "Фильмы"
 
 #: src/views/main_view.py:146
 msgctxt "Notification List activity title"
 msgid "Automatic update of notification list"
-msgstr ""
+msgstr "Автообновление списка уведомлений"
 
 #: src/views/main_view.py:162 src/views/main_view.py:172
 #: src/views/main_view.py:182
 msgctxt "Background activity title"
 msgid "Automatic update"
-msgstr "Atualização automática"
+msgstr "Автообновление"
 
 #. TRANSLATOR: {title} is the title of the series
 #: src/views/main_view.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "New release for {title}"
-msgstr "Apagar {title}"
+msgstr "Новый выпуск для {title}"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:329
 #, python-brace-format
 msgid "A new episode of {title} was released {days} day ago."
-msgstr ""
+msgstr "Новый эпизод {title} вышел {days} дн. назад."
 
 #. TRANSLATOR: {num} is the number of TV Series
 #: src/views/main_view.py:333
 #, python-brace-format
 msgid "New release for {num} TV series on your watchlist"
-msgstr ""
+msgstr "Новый выпуск для {num} ТВ-сериалов в вашем списке"
 
 #. TRANSLATOR: {series} is a list of TV series seperated by a comma
 #. TRANSLATOR: {series} is a list of all series affected seperated by a comma
@@ -1159,31 +1142,31 @@ msgstr ""
 #: src/views/main_view.py:372
 #, python-brace-format
 msgid "The TV Series are {series}."
-msgstr ""
+msgstr "Сериалы {series}."
 
 #. TRANSLATOR: {title} is the title of the series with a new episode soon
 #: src/views/main_view.py:343
 #, python-brace-format
 msgid "{title} will have a release soon"
-msgstr ""
+msgstr "{title} скоро выйдет"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:346
 #, python-brace-format
 msgid "A new episode will release in {days} day."
-msgstr ""
+msgstr "Новый эпизод выйдет через {days} дн."
 
 #. TRANSLATOR: {num} is the number of TV Series
 #: src/views/main_view.py:350
 #, python-brace-format
 msgid "{num} TV Series on your watchlist will have a new episode soon"
-msgstr ""
+msgstr "{num} сериалов из списка скоро получат новые эпизоды"
 
 #. TRANSLATOR: {title} is the title of the series that has gone out of production
 #: src/views/main_view.py:361
 #, python-brace-format
 msgid "{title} has gone out of production"
-msgstr ""
+msgstr "{title} завершил производство"
 
 #. TRANSLATOR: {title} is the title of the series that has gone out of production
 #: src/views/main_view.py:364
@@ -1192,108 +1175,107 @@ msgid ""
 "{title} has wrapped up its run. Now is the perfect time to revisit your "
 "favorite moments or find the next binge!"
 msgstr ""
+"{title} завершил показ. Идеальное время пересмотреть любимые моменты или "
+"найти новый сериал для марафона!"
 
 #. TRANSLATOR: {num} is the number of TV Series
 #: src/views/main_view.py:367
 #, python-brace-format
 msgid "{num} TV Series of your watchlist have gone out of production"
-msgstr ""
+msgstr "{num} сериалов из списка завершили производство"
 
 #. TRANSLATOR: {title} is the title of the movie that has had its release
 #: src/views/main_view.py:378
 #, python-brace-format
 msgid "{title} has had its release!"
-msgstr ""
+msgstr "{title} вышел!"
 
 #. TRANSLATOR: {title} is the title of the series and {days} the number of days
 #: src/views/main_view.py:381
 #, python-brace-format
 msgid "{title} was released {days} day ago."
-msgstr ""
+msgstr "{title} вышел {days} дн. назад."
 
 #: src/views/main_view.py:384
 #, python-brace-format
 msgid "{num} movies on your watchlist have had their releases."
-msgstr ""
+msgstr "{num} фильмов из списка вышли."
 
 #. TRANSLATOR: {movies} is a list of all movies affected seperated by a comma
 #. TRANSLATOR: {movies} will be list of all series affected seperated by a comma
 #: src/views/main_view.py:388 src/views/main_view.py:403
 #, python-brace-format
 msgid "The movies are {movies}."
-msgstr ""
+msgstr "Фильмы {movies}."
 
 #. TRANSLATOR: {title} is the title of the movie that will have its release soon
 #: src/views/main_view.py:393
 #, python-brace-format
 msgid "{title} will have its release soon!"
-msgstr ""
+msgstr "{title} скоро выйдет!"
 
 #. TRANSLATOR: {title} is the title of the movie and {days} the number of days
 #: src/views/main_view.py:396
 #, python-brace-format
 msgid "{title} will have its release in {days} day."
-msgstr ""
+msgstr "{title} выйдет через {days} дн."
 
 #. TRANSLATOR: {num} is the number of movies
 #: src/views/main_view.py:400
 #, python-brace-format
 msgid "{num} movies on your watchlist will have their releases soon"
-msgstr ""
+msgstr "{num} фильмов из списка скоро выйдут"
 
 #. TRANSLATOR: {num} is the number of affected items
 #: src/views/main_view.py:413
 #, python-brace-format
 msgid "{num} items of your watchlist have an update"
-msgstr ""
+msgstr "{num} элементов списка обновились"
 
 #. TRANSLATOR: {count_movies} is the number of movies
 #: src/views/main_view.py:418 src/views/main_view.py:427
 #, python-brace-format
 msgid "These updates affect {count_movies} movie"
-msgstr ""
+msgstr "Эти обновления касаются {count_movies} фильм(а/ов)"
 
 #. TRANSLATOR: the connector between the two parts of the sentence (foo and bar)
 #: src/views/main_view.py:420
 msgid " and "
-msgstr ""
+msgstr " и "
 
 #. TRANSLATOR: {count_series} is the number of series
 #: src/views/main_view.py:422
 #, python-brace-format
 msgid " {count_series} TV serie"
-msgstr ""
+msgstr " {count_series} сериал(ов/а)"
 
 #. TRANSLATOR: {count_series} is the number of series
 #: src/views/main_view.py:430
 #, python-brace-format
 msgid "These updates affect {count_series} TV serie"
-msgstr ""
+msgstr "Эти обновления касаются {count_series} сериал(ов/а)"
 
 #: src/widgets/episode_row.py:267 src/widgets/season_expander.py:141
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "alert dialog heading"
 msgid "Delete {title}?"
-msgstr "Apagar {title}?"
+msgstr "Удалить {title}?"
 
 #: src/widgets/episode_row.py:270
-#, fuzzy
 msgctxt "alert dialog body"
 msgid "All changes to this episode will be lost."
-msgstr "Todas as alterações neste episódio serão perdidas."
+msgstr "Все изменения в эпизоде будут потеряны."
 
 #: src/widgets/episode_row.py:273 src/widgets/season_expander.py:147
-#, fuzzy
 msgctxt "alert dialog action"
 msgid "_Delete"
-msgstr "_Excluir"
+msgstr "_Удалить"
 
 #: src/widgets/search_result_row.py:100 src/widgets/search_result_row.py:192
 msgid "Already in your watchlist"
-msgstr "Já está na sua lista"
+msgstr "Уже в списке для просмотра"
 
 #: src/widgets/season_expander.py:144
-#, fuzzy
 msgctxt "alert dialog body"
 msgid "This season contains unsaved metadata."
-msgstr "Esta temporada contém metadados não gravados."
+msgstr "В сезоне есть несохранённые метаданные."

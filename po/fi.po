@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ticketbooth package.
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2025.
+# "Tinde (Joke)" <jouko.tiilikainen@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: ticketbooth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-11 10:41+0200\n"
-"PO-Revision-Date: 2025-05-14 17:03+0000\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
+"PO-Revision-Date: 2026-04-04 21:09+0000\n"
+"Last-Translator: \"Tinde (Joke)\" <jouko.tiilikainen@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/ticket-booth/"
 "ticket-booth/fi/>\n"
 "Language: fi\n"
@@ -16,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 #. TRANSLATORS: do not translate
 #: data/me.iepure.Ticketbooth.desktop.in:8
 msgid "@app_name@"
-msgstr ""
+msgstr "@app_name@"
 
 #: data/me.iepure.Ticketbooth.desktop.in:14
 msgid "Movies;Films;Shows;TV;Series;Anime;Watch;List;Library;"
@@ -59,7 +60,7 @@ msgstr "Määrittää latasiko sovellus tarvittavan datan"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:57
 msgid "View sorting style"
-msgstr ""
+msgstr "Näytä lajittelutyyli"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:61
 msgid "Separate watched content from unwatched"
@@ -75,11 +76,11 @@ msgstr "Hakupalkin näkyvyys"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:82
 msgid "Search mode"
-msgstr ""
+msgstr "Hakutila"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:86
 msgid "Search query"
-msgstr ""
+msgstr "Hakukysely"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:98
 msgid "App color scheme"
@@ -91,15 +92,15 @@ msgstr "TMDB-tuloksissa käytettävä kieli"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:115
 msgid "Frequency to check for new data on TMDB"
-msgstr ""
+msgstr "TMDB:n uusien tietojen tarkistustiheys"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:119
 msgid "Last autoupdate date"
-msgstr ""
+msgstr "Viimeinen automaattinen päivityspäivä"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:123
 msgid "Last notification autoupdate date"
-msgstr ""
+msgstr "Viimeisimmän ilmoituksen automaattisen päivityksen päivämäärä"
 
 #: data/me.iepure.Ticketbooth.gschema.xml.in:127
 msgid "Clear cache on exit"
