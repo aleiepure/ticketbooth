@@ -117,6 +117,16 @@ class MainView(Adw.Bin):
 
         if not shared.schema.get_boolean('first-run'):
             self._check_update_content()
+            if shared.schema.get_int('tmdb-status') == 2:
+                self.account = tmdb.make_account()
+                BackgroundQueue.add(
+                        activity=BackgroundActivity(
+                            activity_type=ActivityType.SYNC,
+                            title=C_('Background activity title',
+                                     'TMDB sync'),
+                            task_function=self._sync_content),
+                        on_done=self._on_sync_done)
+        
 
     def _check_update_content(self) -> None:
         """
@@ -433,6 +443,20 @@ class MainView(Adw.Bin):
             notification.set_body(body)
             self.app.send_notification(None, notification)
 
+    def _sync_content(self, activity: BackgroundActivity) -> None:
+
+        local.sync_tmdb(self.account)
+
+    def _on_sync_done(self,
+                        source: GObject.Object,
+                        result: Gio.AsyncResult,
+                        cancellable: Gio.Cancellable,
+                        activity: BackgroundActivity):
+        """Callback to complete async activity"""
+
+        self.refresh()
+        logging.info('TMDB sync done')
+        activity.end()
     def _on_notification_list_done(self,
                                    source: GObject.Object,
                                    result: Gio.AsyncResult,

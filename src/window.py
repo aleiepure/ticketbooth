@@ -11,14 +11,15 @@ from gettext import pgettext as C_
 from gi.repository import Adw, Gio, GLib, Gtk
 
 from . import shared  # type: ignore
-from .background_queue import BackgroundQueue
+from .background_queue import (ActivityType, BackgroundActivity,
+                                BackgroundQueue)
 from .dialogs.add_manual_dialog import AddManualDialog
 from .dialogs.add_tmdb_dialog import AddTMDBDialog
 from .views.first_run_view import FirstRunView
 from .views.db_update_view import DbUpdateView
 from .views.main_view import MainView
 from .providers.local_provider import LocalProvider as local
-
+from .providers.tmdb_provider import TMDBProvider as tmdb
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/window.ui')
 class TicketboothWindow(Adw.ApplicationWindow):
@@ -99,6 +100,25 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         logging.info('Refresh requested')
         source._win_stack.get_child_by_name('main').refresh()
+
+    def _sync(self, new_state: None, source: Gtk.Widget) -> None:
+        """
+        Callback for the win.sync action
+
+        Args:
+            new_state (None): stateless action, always None
+            source (Gtk.Widget): widget that caused the activation
+
+        Returns:
+            None
+        """
+        BackgroundQueue.add(
+            activity=BackgroundActivity(
+                activity_type=ActivityType.SYNC,
+                title=C_('Background activity title',
+                            'TMDB force sync'),
+                task_function=local.merge_tmdb_watchlist),
+            on_done=source._win_stack.get_child_by_name('main').refresh())
 
     def _update_background_indicator(self, new_state: None, source: Gtk.Widget) -> None:
         """
@@ -190,17 +210,30 @@ class TicketboothWindow(Adw.ApplicationWindow):
         ('add-manual', _add_manual),
         ('refresh', _refresh),
         ('update-backgroud-indicator', _update_background_indicator),
+        ('sync', _sync),
         ('search', None, None, 'true' if shared.schema.get_boolean('search-enabled')
          else 'false', _search),
     }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.add_action_entries(self._actions, self)
+        actions_to_insert = self._actions
+        # Deactivate sync option if tmdb is not setup TODO find a way to do revert this when login/logout to/from TMDB 
+        if shared.schema.get_int('tmdb-status') != 2:
+            actions_to_insert = {action for action in actions_to_insert if action[0] != "sync"}
+        self.add_action_entries(actions_to_insert, self)
+
         self._restore_state()
         self.app = kwargs.get("application")
         if shared.DEBUG:
             self.add_css_class('devel')
+
+        if (shared.schema.get_boolean("first-run")):
+            local.reset_recent_change() #Safety if the app is killed instead of closed
+        # Safety if somebody kills the app while session ID was acquired but sync not finished
+        if shared.schema.get_int('tmdb-status') == 1:
+            shared.schema.set_int('tmdb-status', 0)
+            shared.schema.set_string('tmdb-session-id', '')
 
         shared.schema.bind('offline-mode', self.lookup_action('add-tmdb'),
                            'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
@@ -210,6 +243,7 @@ class TicketboothWindow(Adw.ApplicationWindow):
         if shared.schema.get_boolean('onboard-complete'):
             Gio.NetworkMonitor.get_default().connect(
                 'network-changed', self._on_network_changed)
+
 
     @Gtk.Template.Callback('_on_close_request')
     def _on_close_request(self, user_data: object | None) -> bool:
@@ -246,7 +280,12 @@ class TicketboothWindow(Adw.ApplicationWindow):
 
         # recent_change reset
         local.reset_recent_change()
-        logging.info('recent_change reseted')
+
+        #Check if the tmdb status is set to 1 (session ID accquired but no sync) if this is the case delete session ID and set to 0 (No setup done)
+        if shared.schema.get_int('tmdb-status') == 1:
+            shared.schema.set_int('tmdb-status', 0)
+            shared.schema.set_string('tmdb-session-id', '')
+            
         logging.info('Closing')
         return False
 

@@ -20,6 +20,7 @@ class ActivityType(Enum):
     ADD = 0
     REMOVE = 1
     UPDATE = 2
+    SYNC = 3
 
 
 class BackgroundActivity(GObject.GObject):

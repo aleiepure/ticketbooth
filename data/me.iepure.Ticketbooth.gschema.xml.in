@@ -134,6 +134,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<default>''</default>
 			<summary>User's TMDB key</summary>
 		</key>
+		<key name="tmdb-status" type="i">
+			<default>0</default>
+			<summary>Status of TMDB setup, 0 nothing, 1 Session ID accquired, 2 setup completed </summary>
+		</key>
+		<key name="tmdb-session-id" type="s">
+			<default>''</default>
+			<summary>Session ID TMDB</summary>
+		</key>
 
 	</schema>
 </schemalist>

@@ -5,6 +5,7 @@
 import glob
 import logging
 import os
+from time import sleep
 from gettext import gettext as _
 from gettext import pgettext as C_
 from pathlib import Path
@@ -37,6 +38,24 @@ class PreferencesDialog(Adw.PreferencesDialog):
     _exit_cache_switch = Gtk.Template.Child()
     _cache_row = Gtk.Template.Child()
     _data_row = Gtk.Template.Child()
+
+    _tmdb_sync_row = Gtk.Template.Child()
+    _tmdb_setup_page = Gtk.Template.Child()
+    _tmdb_carousel = Gtk.Template.Child()
+    _first_tmdb_page = Gtk.Template.Child()
+    _second_tmdb_page = Gtk.Template.Child()
+    _tmdb_close_btn = Gtk.Template.Child()
+    _tmdb_continue_btn = Gtk.Template.Child()
+    _tmdb_session_ID_btn = Gtk.Template.Child()
+    _keep_tmdb_check_btn = Gtk.Template.Child()
+    _keep_both_check_btn = Gtk.Template.Child()
+    _tmdb_spinner = Gtk.Template.Child()
+    _tmdb_radio_button_box = Gtk.Template.Child()
+
+    request_token = ''
+    session_id = ''
+    account = None
+    tmdb_cancel = None
 
     def __init__(self):
         super().__init__()
@@ -559,3 +578,243 @@ class PreferencesDialog(Adw.PreferencesDialog):
             tmdb.set_key(self._own_key_entryrow.get_text())
         else:
             tmdb.set_key(tmdb.get_builtin_key())
+
+    
+    @Gtk.Template.Callback('_tmdb_sync_row_activated')
+    def _tmdb_sync_row_activated(self, user_data: object | None) -> None:
+        """
+        Open TMDB sync subpage.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        self.push_subpage(self._tmdb_setup_page)
+
+    @Gtk.Template.Callback('_on_tmdb_close_btn_clicked')
+    def _on_tmdb_close_btn_clicked(self, user_data: object | None) -> None:
+        """
+        Cancels sync if active, else closes TMDB sync subpage. 
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        if self.tmdb_cancel:
+            self.tmdb_cancel.cancel() # This is connected to self._tmdb_watchlist_sync_cancel()
+            return
+        self.pop_subpage()
+
+    @Gtk.Template.Callback('_tmdb_sync_map')
+    def _tmdb_sync_map(self, user_data: object | None) -> None:
+        """
+        Show different carousel page depending on the tmdb sync status
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        index = shared.schema.get_int('tmdb-status')
+        
+        # If we are on the last step there is no continue button
+        if index == 2:
+            self._tmdb_continue_btn.set_visible(False)
+        
+        # Workaround to scroll to page
+        task = Gio.Task.new()
+        task.run_in_thread(
+            lambda*_:self.go_to_page(index)
+        )
+
+    def go_to_page(self, index):
+        """
+        Helper function to scroll carousel to right page.
+
+        Args:
+            index: Page number to scroll to.
+
+        Returns:
+            None
+        """
+        sleep(0.05)
+        page = self._tmdb_carousel.get_nth_page(index)
+        self._tmdb_carousel.scroll_to(page, False)
+
+    @Gtk.Template.Callback('_tmdb_link_clicked')
+    def _tmdb_link_clicked(self, user_data: object | None) -> None:
+        """
+        Get request token and opens TMDB link to accept the request token
+
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        token = tmdb.get_request_token()
+        if token:
+            self.request_token = token
+            Gtk.UriLauncher(uri=f"https://www.themoviedb.org/authenticate/{token}").launch()
+            self._tmdb_continue_btn.set_sensitive(True)
+        else:
+            toast = Adw.Toast(
+                title=_("Error: Could not connect to TMDB. Are you online?"), 
+                timeout=5)
+            self.add_toast(toast)
+
+    @Gtk.Template.Callback('_on_tmdb_continue_btn_clicked')
+    def _on_tmdb_continue_btn_clicked(self, user_data: object | None) -> None:
+        """
+        Changes the page of the carousel if all the requirements are met, else it displays an Error Toast
+        
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        index = int(self._tmdb_carousel.get_position())
+        if index == 0: 
+            # Check if request token was confirmed 
+            self.session_id = tmdb.get_session(self.request_token)
+            if self.session_id == None:
+                # Show Error Toast and return.
+                toast = Adw.Toast(
+                    title=_("Error: Could not connect to TMDB Account. Did you approve the request?"), 
+                    timeout=5)
+                self.add_toast(toast)
+                return
+            
+            self.account = tmdb.make_account(self.session_id)
+            #Check if account can be accessed, highly unlikely to fail right after get_session worked
+            if self.account == None:
+                toast = Adw.Toast(
+                    title=_("Error: Could not connect to TMDB Account."), 
+                    timeout=5)
+                self.add_toast(toast)
+                return
+
+            shared.schema.set_int('tmdb-status', 1)
+
+            next_page = self._tmdb_carousel.get_nth_page(index + 1)
+            self._tmdb_carousel.scroll_to(next_page, True)
+            
+            self._tmdb_continue_btn.set_label(_("Start Sync"))
+
+        elif index == 1:
+            # Change appearance of back button back to cancel sync button
+            self._tmdb_close_btn.remove_css_class("suggested-action")
+            self._tmdb_close_btn.add_css_class("destructive-action")
+            self._tmdb_close_btn.set_label(_("Cancel Sync"))
+
+            #Show Spinner
+            self._tmdb_spinner.set_visible(True)
+            self._tmdb_radio_button_box.set_sensitive(False)
+
+            # Do the watchlist sync asynchronous to make it cancellable
+            self.tmdb_cancel = Gio.Cancellable.new()
+            self.tmdb_cancel.connect(self._tmdb_watchlist_sync_cancel, None, None)
+            self.tmdb_watchlist_task = Gio.Task.new(self, self.tmdb_cancel, self._tmdb_watchlist_sync_completed, None)
+            self.tmdb_watchlist_task.run_in_thread(
+                lambda*_:self._tmdb_watchlist_sync()
+            )
+
+    def _tmdb_watchlist_sync(self):
+        """
+        Starts the watchlist sync. 
+        
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        if self._keep_tmdb_check_btn.get_active():
+            #delete both movies and series
+            logging.info('Deleting all TV series')
+            for serie in local.get_all_series():    # type: ignore
+                local.delete_series(serie.id)
+                logging.debug(f'Deleted ({serie.id}) {serie.title}')
+
+            logging.info('Deleting all movies')
+            for movie in local.get_all_movies():    # type: ignore
+                local.delete_movie(movie.id)
+                logging.debug(f'Deleted ({movie.id}) {movie.title}')
+
+            local.add_tmdb_watchlist_to_local(self.account)
+        elif self._keep_both_check_btn.get_active(): 
+            local.merge_tmdb_watchlist(self.account)
+
+        shared.schema.set_int('tmdb-status', 2)
+
+    def _tmdb_watchlist_sync_completed(self, source: GObject.Object | None, result: Gio.AsyncResult, data: object | None):
+        """
+        Once the watchlist sync is completed change UI.
+
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        
+        self._tmdb_spinner.set_visible(False)
+        self._tmdb_radio_button_box.set_sensitive(True)
+        #Switch to last page
+        next_page = self._tmdb_carousel.get_nth_page(2)
+        self._tmdb_carousel.scroll_to(next_page, True)
+
+        # Change appearance of back button back to normal back button
+        self._tmdb_close_btn.remove_css_class("destructive-action")
+        self._tmdb_close_btn.add_css_class("suggested-action")
+        self._tmdb_close_btn.set_label(_("Go Back"))
+        self.tmdb_cancel = None # No idea if this is needed or happens automatically
+        
+        #Remove continue button
+        self._tmdb_continue_btn.set_visible(False)
+
+    def _tmdb_watchlist_sync_cancel(self):
+        """
+        Callback if watchlist sync is cancelled
+
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        self._tmdb_spinner.set_visible(False)
+        self._tmdb_radio_button_box.set_sensitve(True)
+
+
+    @Gtk.Template.Callback('_tmdb_logout_clicked')
+    def _tmdb_logout_clicked(self, user_data: object | None) -> None:
+        """
+        Callback if logout button is clicked
+
+        Args:
+           None
+
+        Returns:
+            None
+        """
+        result = tmdb.delete_session()
+        if result:
+            shared.schema.set_string('tmdb-session-id', '')
+            shared.schema.set_int('tmdb-status', 0)
+            self._tmdb_continue_btn.set_visible(True)
+            self._tmdb_continue_btn.set_sensitive(False)
+            self._tmdb_continue_btn.set_label(_("Continue"))
+            
+            self.close_subpage()
+        else: 
+            toast = Adw.Toast(
+                title=_("Error while logging out of your Account. Are you online?"), 
+                timeout=5)
+            self.add_toast(toast)

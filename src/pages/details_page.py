@@ -792,8 +792,14 @@ class DetailsView(Adw.NavigationPage):
 
         if type(self.content) is MovieModel:
             local.delete_movie(self.content.id)
+            if shared.schema.get_int('tmdb-status') == 2:
+                account = tmdb.make_account()
+                tmdb.add_content_to_tmdb_watchlist(account, movie = True, id = self.content.id, add = False)
         else:
             local.delete_series(self.content.id)  # type: ignore
+            if shared.schema.get_int('tmdb-status') == 2:
+                account = tmdb.make_account()
+                tmdb.add_content_to_tmdb_watchlist(account, movie = False, id = self.content.id, add = False)
 
     def _on_delete_done(self,
                         source: GObject.Object,

@@ -41,7 +41,7 @@ template $PreferencesDialog: Adw.PreferencesDialog {
 
     Adw.PreferencesGroup _tmdb_group {
       title: C_("preferences", "The Movie Database (TMDB)");
-      description: C_("preferences", "TMDB provides localized metadata for most content. Ticket Booth will download it in your prefered language, selectable below. In case it is not available, it will fallback to English US and then to the content's original language. If neither are available, it will result in a blank string. Please consider <a href='https://www.themoviedb.org/bible/new_content'>contributing to TMDB</a>. Additionally, an automatic update is performed on a frequency of your choosing.");
+      description: C_("preferences", "TMDB provides localized metadata for most content. Ticket Booth will download content in your preferred language, selectable below. In the event that the content is not available in your preferred language, TMDB will default to English (US) and then to the content's original language. If neither are available the result will be a blank string. Please consider <a href='https://www.themoviedb.org/bible/new_content'>contributing to TMDB</a>. Additionally, an automatic update is performed on a frequency of your choosing. We also support syncing with your TMDB accounts watchlist. To use this feature you will need an account on TMDB. You can create one <a href='https://www.themoviedb.org/signup'>here</a>.");
 
       Adw.ComboRow _language_comborow {
         title: C_("preferences", "TMDB Results Language");
@@ -80,6 +80,16 @@ template $PreferencesDialog: Adw.PreferencesDialog {
 
         changed => $_on_own_key_changed();
       }
+      Adw.ActionRow _tmdb_sync_row {
+        title: _("TMDB sync settings");
+        activatable: true;
+        activated => $_tmdb_sync_row_activated();
+        [suffix]
+        Gtk.Image {
+          icon-name: "go-next-symbolic";
+          styles ["dim-label"]
+        }
+      }
     }
 
     Adw.PreferencesGroup _housekeeping_group {
@@ -110,6 +120,139 @@ template $PreferencesDialog: Adw.PreferencesDialog {
           }
         }
       }
+    }   
+  }
+}
+
+Adw.NavigationPage _tmdb_setup_page {
+  map => $_tmdb_sync_map();
+
+  Box { 
+    orientation: vertical;
+    vexpand: true;
+    hexpand: true;
+    valign: center;
+    halign: center;
+
+    Adw.Carousel _tmdb_carousel {
+      vexpand: true;
+      hexpand: true;
+      allow-scroll-wheel: false;
+      allow-mouse-drag: false;
+      allow-long-swipes: false;
+
+      Adw.StatusPage _first_tmdb_page {
+        vexpand: true;
+        hexpand: true;
+        title: _("Access TMDB Account");
+        description: _("To sync your watchlist between Ticketbooth and TMDB you will need to give us access to your Account. We will only access your watchlist and nothing else. Please follow the instructions in the link that will open once you click the button below.");
+        
+        Box {
+          width-request: 30;
+          halign: center;
+          valign: center;
+          margin-top: 24;
+          Gtk.Button _tmdb_session_ID_btn {
+            width-request: 50;
+            label: _("Open TMDB");
+            styles  ["suggested-action"]
+            clicked => $_tmdb_link_clicked();
+          }
+        }
+        
+      }
+    
+
+      
+    Adw.StatusPage _second_tmdb_page {
+
+      vexpand: true;
+      hexpand: true;
+      title: _("Decide how to Sync");
+      description: _("Please decide if you want to delete the local watchlist or if you want to merge your local and TMDB watchlist. Be careful, the first option will <b>delete</b> your local watchlist and is <b>irreversible</b>.");
+
+      Box {
+        orientation: vertical;
+        valign: center;
+        halign: center;
+
+        Overlay {
+          [overlay]
+          Spinner _tmdb_spinner{
+            spinning: true;
+            visible: false;
+            height-request: 48;
+          }
+          Box _tmdb_radio_button_box{
+            orientation: vertical;
+            Gtk.CheckButton _keep_tmdb_check_btn {
+              label: _("Keep TMDB watchlist");
+              margin-bottom: 12;
+              active: false;
+            }
+            Gtk.CheckButton _keep_both_check_btn {
+              label: _("Merge both watchlists");
+              margin-bottom: 12;
+              active: true;
+              group: _keep_tmdb_check_btn;
+            }
+          }
+        }
+      }
+    } 
+      
+
+      Adw.StatusPage _last_tmdb_page {
+        vexpand: true;
+        hexpand: true;
+        title: _("TMDB Sync is activated");
+        description: _("Use the button below to logout of your TMDB Account. This will revoke Ticketbooths access to your account and will stop the sync.");
+
+        Box {
+          width-request: 35;
+          margin-top: 24;
+          halign: center;
+          Gtk.Button _tmdb_session_ID_logout_btn {
+            label: _("Logout from TMDB");
+            styles  ["destructive-action"]
+            clicked => $_tmdb_logout_clicked();
+          }
+        }
+      }
+    }
+  
+    Box {
+      orientation: horizontal;
+      width-request: 400;
+      hexpand: true;
+      vexpand: true;
+      halign: center;
+      valign: center;
+      Box{
+        hexpand: true;
+        halign: start;
+        margin-start: 30;
+        Gtk.Button _tmdb_close_btn {
+          visible: true;
+          label: _("Go back");
+          styles ["suggested-action", "pill"]
+          clicked => $_on_tmdb_close_btn_clicked();
+        }
+      }
+      
+    
+      Box{
+        hexpand: true;
+        halign: end;
+        margin-end: 30;
+        Gtk.Button _tmdb_continue_btn {
+          label: _("Continue");
+          visible: true;
+          sensitive: false;
+          styles ["suggested-action", "pill"]
+          clicked => $_on_tmdb_continue_btn_clicked();
+        }
+      }      
     }
   }
 }

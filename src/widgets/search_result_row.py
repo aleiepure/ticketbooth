@@ -14,7 +14,7 @@ from .. import shared  # type: ignore
 from ..background_queue import (ActivityType, BackgroundActivity,
                                 BackgroundQueue)
 from ..providers.local_provider import LocalProvider as local
-
+from ..providers.tmdb_provider import TMDBProvider as tmdb
 
 @Gtk.Template(resource_path=shared.PREFIX + '/ui/widgets/search_result_row.ui')
 class SearchResultRow(Gtk.ListBoxRow):
@@ -180,6 +180,17 @@ class SearchResultRow(Gtk.ListBoxRow):
             local.add_content(id=self.tmdb_id, media_type=self.media_type)
         except ConnectionError:
             activity.set_error(True)
+
+        if shared.schema.get_int('tmdb-status') == 2:
+            try:
+                account = tmdb.make_account()
+                tmdb.add_content_to_tmdb_watchlist(account, movie = self.media_type == 'movie', id = self.tmdb_id, add = True)
+            except (tmdb.base.APIKeyError, tmdb.base.HTTPError):
+                # Show Toast to notify that TMDB syncing is not working
+                toast = Adw.Toast(
+                    title=_("Could not add content to TMDB watchlist. You could try again with a refresh."), 
+                    timeout=5)
+                self.get_ancestor(Adw.Window).get_transient_for().add_toast(toast)
 
     def _on_add_done(self,
                      source: GObject.Object,
