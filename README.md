@@ -28,6 +28,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <a href="#license">License</a>
 </div>
 
+>[!warning]
+> As of April 2026, this project is considered EoL (End of Life) and the repo has been archived.\
+> There are alternative apps that provide most of the same functionalities (e.g., [Memento](https://flathub.org/en/apps/io.github.ans_ibrahim.Memento)).
+
 ## Features
 
 Ticket Booth allows you to build your watchlist of movies and TV Shows, keep track of watched titles, and find information about the latest releases.
